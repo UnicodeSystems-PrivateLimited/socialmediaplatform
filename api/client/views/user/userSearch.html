@@ -1,0 +1,88 @@
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title"><span *ngIf=" !searchCount">No</span>{{searchCount}} Member found for your search</h3>
+                </div>
+
+                <div class="box-body">
+                    <div id="example2_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
+                        <!--<div class="row"><div class="col-sm-6"><div class="dataTables_length" id="example1_length"><label>Show <select name="example1_length" aria-controls="example1" class="form-control input-sm"><option value="10">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option></select> entries</label></div></div><div class="col-sm-6"><div id="example1_filter" class="dataTables_filter"><label>Search:<input type="search" class="form-control input-sm" placeholder="" aria-controls="example1"></label></div></div></div>-->
+                        <div class="row">
+                            <div class="col-sm-12"> 
+                                <div class="table-responsive">
+                                    <!--<table id="example" class="table table-bordered table-hover dataTable" cellspacing="0" width="100%">-->
+                                    <table class="table table-bordered table-hover text-center search-result-member" cellspacing="0" width="100%">
+                                        <tbody>
+                                            <!--                                        <tr *ngFor="#user of users">
+                                                                                        <td><a [routerLink]="['../User.detail',{id:user._id}]">{{user.name}}</a></td>
+                                                                                        <td>{{user.local.email}}</td>
+                                                                                        <td>{{user.updated_on}}</td>
+                                                                                        <td>{{user.status}}</td> 
+                                                                                    </tr>-->
+                                            <!--<tr *ngFor="#friend of friends">
+                                                <td width="10%">
+                                                    <img src="theme/dist/img/user3-128x128.jpg" alt="" />
+                                                </td>
+                                                <td width="45%" class="member-details">
+                                                    <p class="member-name">{{friend.friend_id.fname}} {{friend.friend_id.lname}}</p>
+                                                    <p class="member-points">140 points</p>
+                                                    <p class="member-address"*ngIf="friend.friend_id.city!=''">{{friend.friend_id.city}}</p>
+                                                </td>
+                                                <td width="45%">
+                                                    <ul class="list-inline">
+                                                        <li><a href="#"><i class="fa fa-user-plus">&nbsp;</i> Add Friend</a></li>
+                                                        <li><a href="#"><i class="fa fa-envelope">&nbsp;</i> Add Friend</a></li>
+                                                        <li><a href="#"><i class="fa fa-share">&nbsp;</i> Add Friend</a></li>
+                                                    </ul>
+                                                </td>
+                                            </tr>   -->
+                                               <tr *ngIf="searchCount == 0 || !searchCount">
+                                               
+                                                <td width="100%" class="member-details">
+                                                    <p class="member-name">No Member Found</p>
+                                                  
+                                                </td>
+                                             
+                                            </tr>
+                                            <tr *ngFor="# user of userSearchList">
+                                                <td width="10%">
+                                                    <img *ngIf="user.photo" src="theme/files/ProfilePicture/{{user.photo}}" alt="" />
+                                                    <img *ngIf="!user.photo" src="theme/files/ProfilePicture/no_image.png" alt="" />
+                                                </td>
+                                                <td width="45%" class="member-details">
+                                                    <p (click)="getProfileById(user._id)" class="member-name c-p">{{user.lname}}{{user.fname}}</p>
+                                                    <p class="member-points">140 points</p>
+<!--                                                    <p class="member-address">lives in united states</p>-->
+                                                </td>
+                                                <td width="45%">
+                                                    <ul class="list-inline">
+                                                        <li *ngIf="user.status==6" (click)="addAsFriend(user._id)" class="c-p"><a ><i class="fa fa-user-plus">&nbsp;</i> Add Friend</a></li>
+                                                        <li *ngIf="user.status==1" (click)="cancelRequestedFriend(user._id,user)" class="c-p"><a><i class="fa fa-user-times" aria-hidden="true"></i>&nbsp;Cancel Friend Request</a></li>
+                                                        <li *ngIf="user.status==2" (click)="acceptFriendRequest(user._id,user)" class="c-p"><a><i class="fa fa-user-plus" aria-hidden="true"></i>&nbsp;Accept Friend Request</a></li>
+                                                        <li *ngIf="user.status==2" (click)="friendRequestReject(user._id,user)" class="c-p"><a><i class="fa fa-user-plus" aria-hidden="true"></i>&nbsp;Reject</a></li>
+                                                        <li *ngIf="user.status==3" (click)="friendRemove(user._id,user)" class="c-p"><a><i class="fa fa-user-plus" aria-hidden="true"></i>&nbsp;UnFriend</a></li>
+                                                  
+                                                        <li *ngIf="user.status !==4" (click)="blockFriend(user._id,user)" class="c-p"><a ><i class="fa fa-ban" aria-hidden="true"></i>&nbsp;Block</a></li>
+                                                        <li *ngIf="user.status == 4" (click)="unblockFriend(user._id,user)" class="c-p"><a ><i class="fa fa-unlock" aria-hidden="true"></i>&nbsp;Unblock</a></li>
+                                                        <li *ngIf="user.forgot_password_code == 6" (click)="setFollow(user._id,user)" class="c-p"><a >&nbsp;Follow</a></li>
+                                                        <li *ngIf="user.forgot_password_code == 3" (click)="setUnFollow(user._id,user)" class="c-p"><a >&nbsp;UnFollow</a></li>
+                                                        
+                                                    </ul>
+                                                </td>
+                                            </tr>   
+                                           
+                                             
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

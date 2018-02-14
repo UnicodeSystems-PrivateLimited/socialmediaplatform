@@ -1,0 +1,154 @@
+<!-- <div class="page-loader-section layout-row layout-align-center-center" *ngIf="loader">
+  <div class="page-loader pl-dash">Loading...</div>
+</div> -->
+<div class="master-setting-page" *ngIf="JournalPost">
+  <div class="custom1-modal-header layout-row layout-align-space-between-center m-b-20">
+    <div class="h3 header-title layout-row flex-70">Journal -&nbsp; <span *ngIf="JournalByJournalId" tooltipPlacement="bottom" tooltip="{{JournalByJournalId?.title}}" class="j-m-h journal-page-title c-p">{{JournalByJournalId?.title}}</span></div>
+    <div class="dropdown layout-row sub-serc-icon-btn">
+      <button class="btn cat-btn dropdown-toggle layout-row layout-align-space-between-center" type="button" data-toggle="dropdown">{{filterText}} &nbsp;&nbsp;<span class="caret">&nbsp;</span>
+      </button>
+      <ul class="dropdown-menu">
+        <li><a (click)="filter(0)">All</a></li>
+        <li><a (click)="filter(1)">Posts</a></li>
+        <li><a (click)="filter(2)">Questions</a></li>
+        <li><a (click)="filter(3)">Photos</a></li>
+        <li><a (click)="filter(4)">Videos</a></li>
+        <li><a (click)="filter(5)">Links</a></li>
+        <li><a (click)="filter(6)">Audios</a></li>
+        <li><a (click)="filter(7)">Documents</a></li>
+      </ul>
+    </div>
+    <div class="header-options layout-row">
+      <p class="member-name c-p fx-bck" (click)="goToUserProfile()"><i class="fa fa-arrow-circle-o-left" aria-hidden="true"></i></p>
+    </div>
+  </div>
+  <div class="jouneral-body layout-column layout-align-space-between margin-l-10 margin-r-10">
+      <div class="page-loader-section layout-row layout-align-center-center" *ngIf="loader">
+          <div class="page-loader pl-dash">Loading...</div>
+        </div>
+     <div class="no-data" *ngIf="JournalPost.length == 0">There are no posts to display</div>
+    <div class="layout-row flex-75" *ngFor="let journal of JournalPost; let j = index;">
+      <div class="journal-icon-block flex-10 layout-row layout-align-start-start">
+        <i aria-hidden="true" [ngClass]="getclassList(journal)"></i>
+      </div>
+      <div class="link-block layout-row flex-90 layout-align-space-between border whit-bg college-b border-radius-3px ">
+        <div class="content-block-desc layout-column flex-100 layout-wrap layout-row ">
+          <div class="detaial flex-100">
+            <div class="layout-row">
+              <div class="layout-column flex-80">
+                <h3 class="content-block-desc-title message text-formatting">{{journal?.description}}</h3>
+                <h3 class="content-block-desc-title text-formatting" *ngIf="journal.created_on">{{journal?.created_on | datetime}}</h3>
+              </div>
+              <div class="flex-20 delete-wrap">
+                <span class="delete" (click)="deletePostModel(journal,j)" tooltip="Remove from Journal"><i class="fa fa-trash" aria-hidden="true"></i></span>
+              </div>
+            </div>
+            <div class="flex-100 layout-row detaial-box">
+              <div class="flex-60 layout-column">
+                <div *ngIf="journal.post_id.post_type == 5" class="content-block-desc-link">
+                  <a class="message text-formatting link" target="_blank" *ngIf="journal.post_id.link[0].description" href="{{journal.post_id.link[0].description}}"> {{journal.post_id.link[0].description}} </a>
+                </div>
+                <div *ngIf="journal.post_id.post_type == 1" class="content-block-desc-link">
+                  <h6 class="message text-formatting j-sub-heading" embedDirective> {{journal.post_id.message}} </h6>
+                </div>
+                <div *ngIf="journal.post_id.post_type == 2" class="content-block-desc-link">
+                  <h6 class="message text-formatting j-sub-heading" embedDirective> {{journal.post_id.question}} </h6>
+                </div>
+                <div *ngIf="journal.post_id.post_type == 7" class="content-block-desc-image">
+                  <h6 class="message text-formatting j-sub-heading" *ngIf="journal.post_id.document[0].file_name"> {{journal.post_id.document[0].file_name | documentNameFilter}} </h6>
+                  <a href="public/files/{{getFoldername(journal.post_id.types)}}/Documents/{{journal.post_id.origin_creator?journal.post_id.origin_creator._id:journal.post_id.created_by._id}}/{{journal.post_id.document[0].file_name}}"
+                    target="_blank" class="pdflink">
+                    <span class="title" *ngIf="journal.post_id.document[0].file_name">
+                      <span *ngIf="journal.post_id.document[0].file_name.split('.').pop() == 'txt' || journal.post_id.document[0].file_name.split('.').pop() == 'text'">
+                        <i class="fa fa-file-text fa-4x">&nbsp;</i>
+                      </span>
+                      <span *ngIf="journal.post_id.document[0].file_name.split('.').pop() == 'pdf'">
+                        <i class="fa fa-file-pdf-o fa-4x">&nbsp;</i>
+                      </span>
+                      <span *ngIf="journal.post_id.document[0].file_name.split('.').pop() == 'doc' || journal.post_id.document[0].file_name.split('.').pop() == 'dot' || journal.post_id.document[0].file_name.split('.').pop() == 'word' || journal.post_id.document[0].file_name.split('.').pop() == 'wiz' || journal.post_id.document[0].file_name.split('.').pop() == 'w6w' || journal.post_id.document[0].file_name.split('.').pop() == 'docx'">
+                        <i class="fa fa-file-word-o fa-4x">&nbsp;</i>
+                      </span>
+                      <span *ngIf="journal.post_id.document[0].file_name.split('.').pop() == 'xls' || journal.post_id.document[0].file_name.split('.').pop() == 'xlm' || journal.post_id.document[0].file_name.split('.').pop() == 'xll' || journal.post_id.document[0].file_name.split('.').pop() == 'xlc' || journal.post_id.document[0].file_name.split('.').pop() == 'xlb' || journal.post_id.document[0].file_name.split('.').pop() == 'xlw' || journal.post_id.document[0].file_name.split('.').pop() == 'xlsx'">
+                        <i class="fa fa-file-excel-o fa-4x">&nbsp;</i>
+                      </span>
+                      <span *ngIf="journal.post_id.document[0].file_name.split('.').pop() == 'ppt' || journal.post_id.document[0].file_name.split('.').pop() == 'pot' || journal.post_id.document[0].file_name.split('.').pop() == 'pps' || journal.post_id.document[0].file_name.split('.').pop() == 'ppa' || journal.post_id.document[0].file_name.split('.').pop() == 'pwz' ">
+                        <i class="fa fa-file-powerpoint-o fa-4x">&nbsp;</i>
+                      </span>
+                      <span *ngIf="journal.post_id.document[0].file_name.split('.').pop() == 'xml'">
+                        <i class="fa fa-file-o fa-4x">&nbsp;</i>
+                      </span>
+                    </span>
+                  </a>
+                </div>
+                <div *ngIf="journal.post_id.post_type == 3" class="content-block-desc-image c-p">
+                  <img *ngIf="journal.post_id.photo[0].title==null" (click)="getDetailView(journal.post_id,journal.post_id._id)" class="img-responsive" src="public/files/{{getFoldername(journal.post_id.types)}}/Photos/{{journal.post_id.origin_creator?journal.post_id.origin_creator._id:journal.post_id.created_by._id}}/{{journal.post_id.photo[0].file_name}}"
+                    alt="{{journal.post_id.photo[0].file_name}}">
+                  <img *ngIf="journal.post_id.photo[0].title!=null" (click)="getDetailView(journal.post_id,journal.post_id._id)" class="img-responsive" src="{{journal.post_id.photo[0].title}}"
+                    alt="{{journal.post_id.photo[0].title}}">
+                </div>
+                <div *ngIf="journal.post_id.post_type == 4" class="content-block-desc-image c-p" (click)="getDetailView(journal.post_id,journal.post_id._id)">
+                  <h6 class="message text-formatting j-sub-heading" *ngIf="journal.post_id.video[0].file_name">{{journal.post_id.video[0].file_name | documentNameFilter}}</h6>
+                  <video *ngIf="journal.post_id.video[0].title==null" width="100%" height="100%">
+                    <source src="public/files/{{getFoldername(journal.post_id.types)}}/Videos/{{journal.post_id.origin_creator?journal.post_id.origin_creator._id:journal.post_id.created_by._id}}/{{journal?.post_id.video[0].file_name}}"
+                      type="video/mp4">
+                  </video>
+                  <iframe *ngIf="journal.post_id.video[0].title!=null" width="100%" height="100%" [src]="journal?.post_id.video[0].title | youtubeSafeUrl">
+                  </iframe>
+                </div>
+                <div *ngIf="journal.post_id.post_type == 6" class="content-block-desc-image c-p" (click)="getDetailView(journal.post_id,journal.post_id._id)">
+                  <h6 class="message text-formatting j-sub-heading" *ngIf="journal.post_id.audio[0].file_name">{{journal.post_id.audio[0].file_name | documentNameFilter}}</h6>
+                  <audio controls *ngIf="journal.post_id.audio[0].title==null">
+                    <source src="public/files/{{getFoldername(journal.post_id.types)}}/Audios/{{journal.post_id.origin_creator?journal.post_id.origin_creator._id:journal.post_id.created_by._id}}/{{journal.post_id.audio[0].file_name}}"
+                      type="audio/mpeg"> Your browser does not support the audio element.
+                  </audio>
+                  <audio controls *ngIf="journal.post_id.audio[0].title!=null">
+                    <source src="{{journal.post_id.audio[0].title}}" type="audio/mp4">
+                  </audio>
+                </div>
+              </div>
+              <div class="flex-40 layout-column">
+                <h5 class="layout-column message text-formatting c-p" *ngIf="journal.post_id && journal.post_id.name!=null" (click)="getDetailView(journal.post_id,journal.post_id._id)" embedDirective>{{journal?.post_id.name }}</h5>
+                <h5 class="layout-column message text-formatting" *ngIf="journal.post_id.link[0] && journal.post_id.link[0].title!=''" embedDirective>{{journal?.post_id.link[0].title }}</h5>
+                <h3 class="content-block-desc-title layout-column text-formatting" *ngIf="journal.post_id && journal.post_id.created_on!=null">{{journal?.post_id.created_on | datetime }}</h3>
+                <h5 class="layout-column message text-formatting c-p" *ngIf="journal.post_id && journal.post_id.created_by!=null" (click)="getProfileById(journal.post_id.created_by._id)">by {{journal?.post_id.created_by |nameFilter}}</h5>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Post Detail View -->
+<div class="modal fade asset-detail-dialog " id="profileAssetImgModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeStateDialog(postid)"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body setting-page flex-100 layout-row">
+        <data-profile-Pic *ngIf="dialogState" [postId]="postid"></data-profile-Pic>
+      </div>
+    </div>
+  </div>
+</div>
+<!--post delete modal-->
+<div class="modal fade modal-align-fix " id="postDeleteModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body setting-page flex-100 layout-row">
+        <div class="modal-body layout-column flex-100 ">
+          <div class="modal-body">
+            <div class="upload-area flex-60 layout-align-start-center layout-row">
+              <h4>Are you sure you want to remove this post from the Journal?</h4>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="add-btn cancel-btn" data-dismiss="modal">Cancel</button>
+        <button class="add-btn" data-dismiss="modal" (click)="deletePostFromJournal()">Yes</button>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>

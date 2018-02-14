@@ -1,0 +1,33 @@
+page-term {
+ ul{
+     padding-left: 20px;
+
+     li{
+        margin-bottom: 6px;
+     }
+ }
+ h4{
+     font-size: 1.8rem;
+    padding-bottom: 0px;
+    border-bottom: 1px solid;
+    display: inline-block;
+ }
+ h5{
+     font-size: 1.5rem;
+ }
+ .address-footer{
+     .add-location{
+         color:#000;
+         span{ color: #f3843e;}
+     }
+ }
+ ion-label{
+     color: #f3843e;
+     &.label{
+         white-space: normal;
+     }
+ }
+ .rights-desclaimers{
+     p {margin: 10px 0px; padding-left: 10px !important;}
+ }
+}

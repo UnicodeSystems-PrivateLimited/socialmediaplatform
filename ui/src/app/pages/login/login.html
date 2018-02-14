@@ -1,0 +1,77 @@
+<div class="account-bg">
+    <div class="account-header">
+        <div class="header-logo">Student<span>Network</span></div>
+    </div>
+    <div class="login-box page-wrap">
+        <div class="login-logo">Login to Your Account</div>
+        <!-- /.login-logo -->
+        <div class="login-box-body login-pad">
+            <p class="alert alert-danger" *ngIf="loginMsg">{{loginMsg}}</p> 
+            <p class="alert alert-success" *ngIf="successMsg">{{successMsg}}</p> 
+            <form (ngSubmit)="onSubmit()" #loginForm="ngForm">
+                <div class="form-group has-feedback">
+                    <label>email</label>
+                    <input [(ngModel)]="login.email" (ngControl)="email" #email="ngForm" type="email" class="form-control" placeholder="Email Address" required />
+                    <!--<span class="glyphicon glyphicon-envelope form-control-feedback"></span>-->
+                  
+                    <span [hidden]="email.valid || email.pristine" class=" help-input text-red" >Email is required</span>
+                </div>
+                <div class="form-group has-feedback">
+                    <label>password</label>
+                    <input [(ngModel)]="login.password" (ngControl)="password" #password="ngForm" type="password" class="form-control" placeholder="Password" required />
+                    <!--<span class="glyphicon glyphicon-lock form-control-feedback"></span>-->
+                   
+                     <div [hidden]="password.valid || password.pristine"  class="help-input text-red">Password is required</div>
+                </div>
+                <div class="row pd10">
+                    <div class="col-xs-6">
+                        <div class="checkbox icheck accounts-check">
+                            <label><input [(ngModel)]="agree" type="checkbox"> Keep me logged in</label>
+                        </div>
+                    </div>
+                    <!-- /.col -->
+                    <div class="col-xs-6 text-right">
+                        <a class="link-muted account-small-text" [routerLink]="['../ForgotPassword']">Forgot Your Password?</a>
+                    </div>
+                    <!-- /.col -->
+                </div>
+                <div class="row pd10">
+                    <div class="col-sm-12 text-center">
+                        <button [disabled]="!loginForm.form.valid" type="submit" class="btn btn-primary btn-block">login</button>
+                    </div>
+                </div>
+            </form>
+
+            <div class="social-auth-links text-center">
+                <p class="pd10">- OR -</p>
+                <div class="row">
+                    <div class="col-sm-6" style="padding-right: 4px;">
+                        <button (click)="sociallogin('/auth/facebook')" class="btn btn-block btn-social btn-facebook"><i class="fa fa-facebook"></i> Sign in using Facebook</button>
+                    </div>
+                    <div class="col-sm-6 " style="padding-left: 4px;">
+                        <button (click)="sociallogin('/auth/google')" class="btn btn-block btn-social btn-google"><i class="fa fa-google"></i> Sign in using Google+</button>
+                    </div>
+                    <div class="col-sm-12 pd10"> <p class="pd10 text-indent-orange mr-0">Don't have an account? <a [routerLink]="['../Register']" class="text-center">Register below! </a></p></div>
+                </div>
+            </div>
+            <!-- /.social-auth-links -->
+            
+        </div>
+        <!-- /.login-box-body -->
+    </div>
+    <div class="account-footer text-center">
+        <p>@Student Network Web, All Rights Reserved.  |   <a [routerLink]="['TermOfUseLoginComponent']">Terms of use </a>- <a [routerLink]="['PrivacyPolicyLoginComponent']">Privacy Policy</a> - <a [routerLink]="['FaqLoginComponent']">FAQ</a> - <a [routerLink]="['ContactUsLoginComponent']">Contact Us</a></p>
+    </div>
+</div>
+<div class="spin-wrap vision-spin" *ngIf="contentLoding">
+    <!--                                                <div class="spinners">  
+                                                        <div class="double-bounce1"></div>
+                                                        <div class="double-bounce2"></div>
+                                                    </div>  -->
+    <div class="sk-folding-cube">
+        <div class="sk-cube1 sk-cube"></div>
+        <div class="sk-cube2 sk-cube"></div>
+        <div class="sk-cube4 sk-cube"></div>
+        <div class="sk-cube3 sk-cube"></div>
+    </div>
+</div>

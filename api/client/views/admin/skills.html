@@ -1,0 +1,106 @@
+<div class="master-setting-page">
+    <div class="custom1-modal-header layout-row layout-align-space-between m-b-20">
+        <div class="h3 header-title">Skills</div>
+        <div class="header-options layout-row">
+            <div class="spinner-lazy-block myload" *ngIf="contentLoding">
+                <div class="spinner-lazy">
+                    <div class="bounce1"></div>
+                    <div class="bounce2"></div>
+                    <div class="bounce3"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="table-body">
+
+        <div class="serch-area flex-100 layout-row layout-align-end-start" >
+            <div class="flex-80">
+                <form (ngSubmit)="getSkill($event)">
+                    <div class="input-group flex-30 flex-xs-60">
+                        <input class="form-control" type="text" placeholder="Filter" [(ngModel)]="skillname.name"/>
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="submit" >Go!</button>
+                        </span>
+                    </div>
+                    <span class="error_file_message">{{errorSearch}}</span>
+                </form>    
+            </div>
+            <div class="flex-20 layout-row layout-align-end-start">
+                <button (click)="openSkill($event)" class="add-btn-detail btn" id="add-skill-btn" data-toggle="modal">ADD</button>
+            </div>
+        </div>
+
+        <div class="">
+
+
+            <table id="example2" class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>Skill Id</th>
+                        <th>Skill</th>                     
+                        <th>Edit</th>
+                        <th>Delete</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="#sub of skills;#i=index">
+                        <td>{{i+1}}</td>
+                        <td>{{sub.title}} </td> 
+                        <td> <span class="row-edit-btn" id="updateBtn{{sub._id}}" data-toggle="modal" (click)="editSkill(sub._id,sub.title)"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></span>
+                        </td>
+                        <td><span class="row-del-btn" (click)="deleteSkillById(sub._id)"> <i class="fa fa-trash" aria-hidden="true"></i></span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade modal-align-fix" id = "add-skill-modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="clearAddSkill()"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Add Skills</h4>
+            </div>
+            <div class="modal-body setting-page ">
+
+                <div class="modal-body setting-page flex-100 layout-row">
+                    <label class="flex-20 layout-row layout-align-center-center">Skill</label>
+                    <input class="flex-70 pad-5-10" placeholder="add skill.." type="text" [(ngModel)]="message.name" />
+                </div>
+                <span class="error_file_message">{{errorAddSkill}}</span>
+            </div>
+            <div class="modal-footer">
+                <button class="add-btn cancel-btn" data-dismiss="modal" (click)="clearAddSkill()">Cancel</button>
+                <button class="add-btn" (click)="addSkill()" >Add</button>
+            </div>
+
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+<div class="modal fade modal-align-fix" id = "edit-skill-modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Edit Skill </h4>
+            </div>
+
+            <div class="modal-body setting-page flex-100 layout-row">
+                <label class="flex-20 layout-row layout-align-center-center">Skill</label>
+                <input class="flex-70 pad-5-10" type="text" [(ngModel)]="message.name"  value=""/>
+            </div>
+            <span class="error_file_message">{{errorUpdateSkill}}</span>
+            <div class="modal-footer">
+                <button class="add-btn cancel-btn" data-dismiss="modal">Cancel</button>
+                <button class="add-btn"  (click)="updateSkill()"  >Update</button>
+            </div>
+
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>

@@ -1,0 +1,172 @@
+page-my-profile {
+    .header {
+        &::after {
+            background-image: none;
+            height: 0;
+        }
+        .header-title {
+            margin: 0;
+        }
+        .toolbar {
+            padding: 0;
+            min-height: 40px;
+            .toolbar-background {
+                border: none;
+            }
+            &.noHeight{
+                min-height: 0px;
+            }
+        }
+        ion-navbar.toolbar {
+            min-height: 54px;
+        }
+        .segment {
+            .segment-button {
+                color: #fff;
+                border-bottom: 4px solid transparent;
+                opacity: 1;
+                height: 4.2rem;
+                .icon {
+                    font-size: 2.5rem;
+                    line-height: 2rem;
+                    vertical-align: middle;
+                    margin-right: 5px;
+                }
+            }
+            .segment-button.segment-activated {
+                border-bottom: 4px solid #feb101;
+            }
+        }
+        .toolbar-ios .segment-button {
+            max-width: initial !important;
+            line-height: 5.4rem;
+            height: 5.2rem;
+        }
+    }
+    .content {
+        background-color: #fff;
+        .profile {
+            .item-button {
+                height: 3.6rem;
+            }
+            .text-input {
+                font-size: 14px;
+            }
+            .profile-pic {
+                .item-inner {
+                    border: none;
+                }
+                img {
+                    border-radius: 50%;
+                    width: 115px;
+                    height: 115px;
+                }
+                .label {
+                    text-align: center;
+                    position: relative;
+                    margin-top: 0;
+                }
+                .button {
+                    background-color: #00c478;
+                    box-shadow: none;
+                    width: 30px;
+                    height: 30px;
+                    border-radius: 50%;
+                    position: absolute;
+                    bottom: 9px;
+                    right: 70px;
+                }
+            }
+        }
+        .academics {
+            .category-heading {
+                font-size: 14px;
+                color: #323d45;
+                white-space: pre-wrap;
+                font-weight: 500;
+            }
+            .item-inner {
+                border: none;
+            }
+            .item {
+                padding-left: 10px;
+                font-size: 14px;
+                margin-bottom: 4px;
+            }
+            .label {
+                margin: 0;
+                h5{ margin-top: 20px;}
+            }
+            .select-subject {
+                border: 1px solid #ccc;
+                margin-bottom: 15px;
+                background-color: #fff;
+                .searchbar {
+                    padding: 0;
+                    border-bottom: 1px solid #ccc;
+                    .searchbar-input {
+                        box-shadow: none;
+                    }
+                }
+                .searchbar-ios {
+                    background: transparent;
+                }
+                .add-btn {
+                    padding: 0 2.6em;
+                    height: 3.5rem;
+                    font-size: 1.2rem;
+                    margin: 10px 0;
+                }
+                .select-date {
+                    margin-bottom: 0;
+                }
+                .add-subject-list {
+                    .date{font-size: 10px;}
+                    .label {
+                        margin: 0;
+                    }
+                    .item {
+                        padding: 0;
+                        padding-left: 8px;
+                        font-size: inherit;
+                        margin-bottom: 5px;
+                        min-height: 2.4rem;
+                        .item-inner {
+                            border: none;
+                        }
+                        .input-wrapper {
+                            justify-content: space-between;
+                            align-items: center;
+                            background-color: #F1F1F1;
+                            border: 1px solid #ccc;
+                        }
+                        .subject-name {
+                            justify-content: space-between;
+                            align-items: center;
+                            padding: 0 0 0 10px;
+                            p {
+                                white-space: pre-wrap;
+                                margin: 5px 0;
+                            }
+                            .button {
+                                height: 1.6rem;
+                                padding: 0 5px;
+                                margin: 5px 0;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    .card{
+        .card-header{
+            font-size: 1.4rem;
+        }
+    }
+    .goto-mywall{
+        .label{
+            text-align: center;
+        }
+    }
+}

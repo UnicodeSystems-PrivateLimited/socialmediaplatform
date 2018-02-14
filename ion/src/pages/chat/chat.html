@@ -1,0 +1,105 @@
+<!--
+  Generated template for the Chat page.
+
+  See http://ionicframework.com/docs/v2/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header class="header gradient">
+    <ion-navbar>
+        <ion-title>
+            <h1 class="header-title" text-center>Chat</h1>
+        </ion-title>
+    </ion-navbar>
+    <ion-toolbar no-border-top>
+        <ion-segment [(ngModel)]="chatGlobalService.chat">
+            <ion-segment-button value="single">
+                <ion-icon name="person"></ion-icon>
+            </ion-segment-button>
+            <ion-segment-button value="group">
+                <ion-icon name="people" class="font-size"></ion-icon>
+            </ion-segment-button>
+        </ion-segment>
+    </ion-toolbar>
+</ion-header>
+
+
+<ion-content>
+    <div [ngSwitch]="chatGlobalService.chat">
+        <ion-item-group *ngSwitchCase="'single'">
+            <ion-item class="search-friend">
+                <ion-searchbar ion-text color="white" [(ngModel)]="searchText"></ion-searchbar>
+            </ion-item>
+            <div *ngIf="chatGlobalService.friends && chatGlobalService.friends.length > 0">
+                <ion-item text-wrap *ngFor="let friend of chatGlobalService.friends| friendsearchpipe:searchText ;let j = index" (click)="getCurrentBuddy(friend,j)"
+                    class="channel-list" [class.selected-user]="CUser == j">
+                    <ion-avatar item-left>
+                        <img *ngIf="friend.user.photo" src="{{dataService.apiBaseUrl}}public/files/ProfilePicture/{{friend?.user.photo}}">
+                        <img *ngIf="!friend.user.photo" src="{{dataService.apiBaseUrl}}public/files/ProfilePicture/no_image.png">
+                    </ion-avatar>
+                    <h4><span *ngIf="friend.user.fname">{{friend.user.fname+' '}}</span>
+                        <span *ngIf="friend.user.lname">{{" "+friend.user.lname}}</span>
+                        <!--<span class="time-cust">20 min ago</span>-->
+                    </h4>
+                    <div class="chat-user-status" [class.user-online]="friend.status == 1"></div>
+                    <!--<ion-icon name="text" item-right></ion-icon>-->
+                    <!--<p item-right>{{friend.mCounter}}</p>-->
+                </ion-item>
+            </div>
+            <div *ngIf="chatGlobalService.friends.length == 0">
+                <ion-item text-wrap>
+                    You do not have any Friends.
+                </ion-item>
+            </div>
+        </ion-item-group>
+
+        <ion-item-group *ngSwitchCase="'group'">
+            <ion-item class="search-list">
+                <ion-searchbar ion-text color="white" [(ngModel)]="groupSearch"></ion-searchbar>
+                <button ion-button (click)="onAddGroup()" class="add-list"><ion-icon name="add-circle"></ion-icon></button>
+            </ion-item>
+            <ion-item>My Groups</ion-item>
+            <div *ngIf="chatGlobalService.groups">
+                <div *ngIf="chatGlobalService.groups.length > 0">
+                    <ion-item text-wrap *ngFor="let group of chatGlobalService.groups | groupSearchPipe:groupSearch;let i = index">
+                        <ion-avatar item-left>
+                            <img *ngIf="group.icon" src="{{dataService.apiBaseUrl}}public/files/Groupchat/{{group.icon}}">
+                            <img *ngIf="!group.icon" src="{{dataService.apiBaseUrl}}public/files/Groupchat/no_image.png">
+                        </ion-avatar>
+                        <ion-label (click)="onGroupClick(group)">
+                            <h2>{{ group.title }}</h2>
+                        </ion-label>
+                        <ion-badge item-end *ngIf="group.mCounter>=0 " item-right>{{group.mCounter}}</ion-badge>
+                        <button ion-button icon-only class="grp-del-btn" *ngIf="profile  && group.created_by._id==profile.id" (click)="onDeleteClick(group._id,group.title)"
+                            item-right><i class="fa fa-trash-o"></i></button>
+                    </ion-item>
+                </div>
+                <div *ngIf="chatGlobalService.groups.length == 0">
+                    <ion-item text-wrap>
+                       You have not created a chat group. Click + to create a chat group.
+                    </ion-item>
+                </div>
+            </div>
+            <ion-item>Other Groups</ion-item>
+            <div *ngIf="chatGlobalService.otherGroup">
+                <div *ngIf="chatGlobalService.otherGroup.length > 0">
+                    <ion-item text-wrap *ngFor="let othgroup of chatGlobalService.otherGroup| groupSearchPipe:groupSearch;let i=index " (click)="onGroupClick(othgroup)">
+                        <ion-avatar item-left>
+                            <img *ngIf="othgroup.icon" src="{{dataService.apiBaseUrl}}public/files/Groupchat/{{othgroup.icon}}">
+                            <img *ngIf="!othgroup.icon" src="{{dataService.apiBaseUrl}}public/files/Groupchat/no_image.png">
+                        </ion-avatar>
+                        <ion-label>
+                            <h2>{{ othgroup.title }}</h2>
+                        </ion-label>
+                        <ion-badge item-end *ngIf="othgroup.mCounter>=0 " item-right>{{othgroup.mCounter}}</ion-badge>
+                    </ion-item>
+                </div>
+                <div *ngIf="chatGlobalService.otherGroup.length == 0">
+                    <ion-item text-wrap>
+                        No other groups found.
+                    </ion-item>
+                </div>
+            </div>
+        </ion-item-group>
+    </div>
+    <ion-spinner icon="spiral" *ngIf="loader"></ion-spinner>
+</ion-content>

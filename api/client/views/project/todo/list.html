@@ -1,0 +1,164 @@
+<!--<div class="active tab-pane" id="activity">-->
+<!--<section class="content">-->
+<div class="row">
+    <!-- left column -->
+    <div class="col-md-12">
+        <!-- general form elements -->
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                <h3 class="box-title">Add Todo</h3>
+                <div class="box-tools pull-right">
+                    <button data-widget="collapse" class="btn btn-box-tool" type="button"><i class="fa fa-minus"></i>
+                    </button>
+                    <button data-widget="remove" class="btn btn-box-tool" type="button"><i class="fa fa-times"></i></button>
+                </div>
+            </div>
+            <!-- /.box-header -->
+            <!-- form start -->
+            {{diagnostic}}
+            <form (ngSubmit)="onSubmit()" role="form">
+                <div class="box-body">
+                    <div class="input-group input-group-sm">
+                        <div class="input-group-btn">
+                            <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle" type="button" aria-expanded="false">Priority
+                                <span class="fa fa-caret-down"></span></button>
+                            <ul class="dropdown-menu">
+                                <li><a href="#">Urgent</a></li>
+                                <li><a href="#">High</a></li>
+                                <li><a href="#">Normal</a></li>
+                            </ul>
+                        </div>
+                        <span class="input-group-addon"><i class="fa fa-star-o"></i></span>
+                        <input [(ngModel)]="newTodo.title" type="text" class="form-control" placeholder="Add todo ...">
+                        <span class="input-group-btn">
+                                                <button class="btn btn-flat no-radius" type="button"><i class="fa fa-check"></i></button>
+                                            </span>
+                        <span class="input-group-btn">
+                                                <button class="btn btn-flat btn-warning no-radius" type="button"><i class="fa fa-calendar"></i></button>
+                                            </span>
+                    </div>
+                </div>
+                <!-- /.box-body -->
+                <!--              <div class="box-footer">
+                                                    <button class="btn btn-primary" type="submit">Submit</button>
+                                                  </div>-->
+            </form>
+        </div>
+        <!-- /.box -->
+    </div>
+</div>
+<!-- /.row -->
+<!--</section>-->
+<!-- Post -->
+<div class="post todo-post" *ngFor="#todo of todos">
+    <div id="accordion">
+        <div class="user-block" (click)="myaccord($event)">
+            <div class="checkbox todo-check form-group">
+                <label>
+                    <input type="checkbox" name="check-1">
+
+                    <span class="username">
+                                <h4 (click)=addtodoForm(!isOpen)>{{todo.title}}</h4>
+                                
+                            </span>
+
+                </label>
+                <a href="#" class="pull-right btn-box-tool"><i class="fa fa-times"></i></a>
+                <a href="#" class="pull-right btn-box-tool"><i class="fa fa-pencil-square-o"></i></a>
+            </div>
+        </div>
+        <!-- /.user-block -->
+        <div class="box-body" style="display:none;">
+            <p>
+                Lorem ipsum represents a long-held tradition for designers, typographers and the like. Some people hate it and argue for
+                its demise, but others ignore the hate as they create awesome tools to help create filler text for everyone
+                from bacon lovers to Charlie Sheen fans.
+            </p>
+
+
+            <input class="form-control input-sm" type="text" placeholder="Type a comment">
+        </div>
+
+        <!--todo icon section-->
+        <ul class="todo-description-list">
+            <li><a href="#" class="link-black text-sm"><i class="fa fa-share margin-r-5"></i> Share</a></li>
+            <li><a href="#" class="link-black text-sm"><i class="fa fa-paperclip margin-r-5"></i> Attach</a>
+                <li><a href="#" class="link-black text-sm"><i class="fa fa-share-alt margin-r-5"></i> Assignee</a>
+                    <li class="pull-right">
+                        <a href="#" class="link-black text-sm"><i class="fa fa-comments-o margin-r-5"></i> Comments
+                                    (5)</a></li>
+        </ul>
+        <!--end todo icon section-->
+    </div>
+</div>
+<!-- /.post -->
+
+<!-- Post -->
+<div class="post clearfix">
+    <div class="user-block">
+        <img class="img-circle img-bordered-sm" src="theme/dist/img/user7-128x128.jpg" alt="User Image">
+        <span class="username">
+                                <a href="#">Sarah Ross</a>
+                                <a href="#" class="pull-right btn-box-tool"><i class="fa fa-times"></i></a>
+                            </span>
+        <span class="description">Sent you a message - 3 days ago</span>
+    </div>
+    <!-- /.user-block -->
+    <p>
+        Lorem ipsum represents a long-held tradition for designers, typographers and the like. Some people hate it and argue for
+        its demise, but others ignore the hate as they create awesome tools to help create filler text for everyone from
+        bacon lovers to Charlie Sheen fans.
+    </p>
+
+    <form class="form-horizontal">
+        <div class="form-group margin-bottom-none">
+            <div class="col-sm-9">
+                <input class="form-control input-sm" placeholder="Response">
+            </div>
+            <div class="col-sm-3">
+                <button type="submit" class="btn btn-danger pull-right btn-block btn-sm">Send</button>
+            </div>
+        </div>
+    </form>
+</div>
+<!-- /.post -->
+<!--</div>-->
+
+
+<aside class="control-sidebar control-sidebar-light todo-control-sidebar" [class.control-sidebar-open]="isOpen">
+
+    <div class="box box-info">
+        <div class="box-header with-border">
+            <h3 class="box-title">Add Todo Details</h3>
+        </div>
+        <!-- /.box-header -->
+        <!-- form start -->
+        <form class="form">
+            <div class="box-body">
+                <div class="form-group">
+                    <label class=" control-label">Todo</label>
+
+                    <input type="email" class="form-control">
+
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Description</label>
+
+                    <input type="text" class="form-control">
+
+                </div>
+            </div>
+            <!-- /.box-body -->
+            <div class="box-footer">
+                <button type="submit" class="btn btn-default" (click)=addtodoForm(!isOpen)>Cancel</button>
+                <button type="submit" class="btn btn-info pull-right"><i class="fa fa-plus-circle"></i>&nbsp;Add</button>
+            </div>
+            <!-- /.box-footer -->
+        </form>
+    </div>
+    <!-- /.box -->
+    <!-- Content of the sidebar goes here -->
+</aside>
+<!-- The sidebar's background -->
+<!-- This div must placed right after the sidebar for it to work-->
+<div class="control-sidebar-bg"></div>

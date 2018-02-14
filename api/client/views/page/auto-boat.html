@@ -1,0 +1,205 @@
+
+<div class="tab-content">
+    <div class="tab-pane active chat-main-tab" id="control-sidebar-home-tab">
+        <div class="main-chat-channel">
+            <div class="box box-primary">
+                <div class="nav-tabs-custom chat-channel-tab layout-column" >
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a href="#c_tab_1" data-toggle="tab" class="text-center"><i class="fa fa-clock-o" aria-hidden="true"></i></a></li>
+                        <!--<li><a href="#c_tab_2" data-toggle="tab"  class="text-center"><i class="fa fa-user" aria-hidden="true"></i></a></li>-->
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="c_tab_1">
+
+                            <div class="box-header with-border">
+                                <div class="box-tools ">
+                                    <div class="has-feedback">
+                                        <input type="text" [(ngModel)]="search.text"   class="form-control input-sm" placeholder="Search...">
+                                        <span class="glyphicon glyphicon-search form-control-feedback"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <ul class="nav nav-pills nav-stacked user-chat-list" *ngIf="friends">
+                                <li *ngFor="#friend of friends | myfilter:search?.text;#j=index" (click)="getCurrentBuddy(friend,j)">
+                                    <a  onclick="return false;" class="channel-list"  [class.selected-user]="CUser == j">
+                                        <div class="pull-left img-placeholder">
+                                            <img src="theme/files/ProfilePicture/{{friend.user.photo}}">
+                                        </div>
+                                        <h4>{{friend.user.fname+' '+friend.user.lname}} <small><i class="fa fa-commenting-o"></i> {{friend.mCounter}}</small>
+                                        </h4>
+                                        <!--<p class="time-ago">{{ friend.user.login_details.last_login | amTimeAgo}}</p>-->
+                                        <div class="chat-user-status" [class.user-online]="friend.status==1"></div>
+                                    </a>
+                                </li>
+
+                            </ul>
+                        </div>
+<!--                        <div class="tab-pane" id="c_tab_2">
+                            
+                            <div class="box-header with-border">
+                                <div class="box-tools ">
+                                    <div class="has-feedback">
+                                        <input type="text" [(ngModel)]="search.text" class="form-control input-sm" placeholder="Search...">
+                                        <span class="glyphicon glyphicon-search form-control-feedback"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <ul class="nav nav-pills nav-stacked user-chat-list" *ngIf="friends">
+                                <li *ngFor="#friend of friends | myfilter:search?.text;#j=index" (click)="getCurrentBuddy(friend,j)">
+                                    <a  onclick="return false;" class="channel-list"  [class.selected-user]="CUser == j">
+                                        <div class="pull-left img-placeholder">
+                                            <img src="theme/files/ProfilePicture/{{friend.user.photo}}">
+                                        </div>
+                                        <h4>{{friend.user.fname+' '+friend.user.lname}}
+                                        </h4>
+                                        <p class="time-ago">&nbsp;</p>
+                                        
+                                    </a>
+                                </li>
+
+                            </ul>
+                            
+                            
+                            
+                        </div>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="main-chat-editor">
+            <div class="box box-primary direct-chat direct-chat-primary main-chat-box">
+                <div class="box-header with-border layout-row layout-align-start-center">
+                    <div class="chat-head-img" *ngIf="cBuddy">
+                        <img  src="theme/files/ProfilePicture/{{cBuddy.user.photo}}">
+                    </div>
+                    <h3 class="box-title chat-head-title" *ngIf="cBuddy">{{cBuddy.user.fname}}</h3>
+                </div>
+                <div class="box-body main-chat-body">
+                    <div class="direct-chat-messages layout-column" *ngIf="cBuddy && textBoxes.inBoxes[clientPref + cBuddy.id]">
+                    <div class="direct-chat-messages layout-column" *ngIf="cBuddy">
+                        
+                         <div class="direct-chat-msg layout-row layout-align-space-between" *ngFor="#msgh of defaultHistory[clientPref + cBuddy.id].messages" [class.direct-chat-msg-bg]="msgh.to['_id'] == userIdGlobal">
+                            <div class="layout-row flex-85 ">
+                                <div class="layout-row layout-align-start-center pre-chat-img-wrap flex-10">
+                                    <span *ngIf="msgh.from"><img class="pre-chat-img" src="theme/files/ProfilePicture/{{msgh.from.photo}}" alt="{{msgh.from.photo}}"></span>
+                                        <span *ngIf="!msgh.from"><img class="pre-chat-img" src="theme/files/ProfilePicture/no_image.png" alt="no image1"></span>
+                                </div>
+                                <div class="pre-chat-text flex-85">
+                                    {{msgh.body}}
+                                </div>
+                            </div>
+                            <div class="pre-chat-info flex-15"><i class="fa fa-clock-o" aria-hidden="true"></i>&nbsp;{{msgh.date| amTimeAgo}}</div>
+
+
+                        </div>
+                         
+                         
+                        <div class="direct-chat-msg layout-row layout-align-space-between" *ngFor="#msg of textBoxes.inBoxes[clientPref + cBuddy.id]" [class.direct-chat-msg-bg]="msg.self == true">
+                            <div class="layout-row flex-85 ">
+                                <div class="layout-row layout-align-start-center pre-chat-img-wrap flex-10">
+                                    <span *ngIf="msg.avatar"><img class="pre-chat-img" src="theme/files/ProfilePicture/{{msg.avatar}}" alt="{{msg.avatar}}"></span>
+                                    <span *ngIf="!msg.avatar"><img class="pre-chat-img" src="theme/files/ProfilePicture/no_image.png" alt="no image1"></span>
+                                    <!--<img class="pre-chat-img" src="theme/files/ProfilePicture/{{data.avatar}}" alt="message user image">-->
+                                </div>
+                                <div class="pre-chat-text flex-85">
+                                    {{msg.data.body}}
+                                </div>
+                            </div>
+                            <div class="pre-chat-info flex-15"><i class="fa fa-clock-o" aria-hidden="true"></i>&nbsp;{{msg.date| amTimeAgo}}</div>
+
+
+                        </div>
+                        </div>
+                       
+                       
+                        
+                       
+
+
+
+                    </div>
+
+<!--                    <div class="direct-chat-contacts">
+                        <ul class="contacts-list">
+                            <li>
+                                <a href="#">
+                                    <img class="contacts-list-img" src="../dist/img/user1-128x128.jpg" alt="Contact Avatar">
+                                    <div class="contacts-list-info">
+                                        <span class="contacts-list-name">
+                                            Count Dracula
+                                            <small class="contacts-list-date pull-right">2/28/2015</small>
+                                        </span>
+                                        <span class="contacts-list-msg">How have you been? I was...</span>
+                                    </div>
+
+                                </a>
+                            </li>
+                        </ul>textBoxes.outBoxes[this.clientPref + this.cBuddy.id]
+                    </div>-->
+                </div>
+
+                <div class="box-footer">
+                    <div class="input-group  main-chat-input-block layout-row">
+                        <textarea (keypress)="chatInputAction($event)" *ngIf="cBuddy" [(ngModel)]="textBoxes.outBoxes[clientPref+cBuddy.id].text" name="message" placeholder="Type Message ..." rows="2" cols="60" class="form-control main-chat-input"></textarea>
+                        <span class="input-group-btn-chat">
+                            <button type="button" class="btn btn-default" (click)="sendData()">Send</button>
+                        </span>
+                    </div>
+                </div>
+                <!-- /.box-footer-->
+            </div>
+            <!--/.direct-chat -->
+        </div>
+        <div class="col-sm-3 main-chat-options " [class.chat-option-toggle]="ison">
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Chat Options</h3>
+                    <div class="box-tools pull-right">
+                        <button class="btn btn-box-tool" data-widget="collapse" type="button">
+                            <i class="fa fa-minus"></i>
+                        </button>
+
+                    </div>
+                </div>
+                <div class="box-body">
+                    <div class="box-footer no-padding">
+                        <ul class="nav nav-pills nav-stacked">
+                            <li>
+                                <a href="#">List Option 1</a>
+                            </li>
+                            <li>
+                                <a href="#">List Option 2</a>
+                            </li>
+                            <li>
+                                <a href="#">List Option 3</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+    <div class="tab-pane" id="control-sidebar-stats-tab">Stats Tab Content</div>
+    <!-- /.tab-pane -->
+    <!-- Settings tab content -->
+    <div class="tab-pane" id="control-sidebar-settings-tab">
+        <form method="post">
+            <h3 class="control-sidebar-heading">General Settings</h3>
+
+            <div class="form-group">
+                <label class="control-sidebar-subheading">
+                    Report panel usage
+                    <input type="checkbox" class="pull-right" checked>
+                </label>
+
+                <p>
+                    Some information about this general settings option
+                </p>
+            </div>
+        </form>
+    </div>
+
+</div>

@@ -1,0 +1,63 @@
+<div class="setting-page setting-page-wrap">
+    <div class="custom1-modal-header layout-row layout-align-space-between m-b-20">
+        <div class="h3 header-title">Contact Us</div>
+        <div class="header-options layout-row">
+
+        </div>
+    </div>
+
+    <div class=" tab-pane active ">
+        <div class="layout-row layout-align-space-between contactinfo-section">
+            <div class="account-info flex-50 layout-column p-10">
+                <div class="account-section-1 layout-column m-b-20">
+
+                    <div class="center layout-column layout-align-center-start m-b-20">
+                        <span class="f-w-b">First Name</span>
+                        <input [(ngModel)]="contactData.fname" class="form-control" id="inputName" placeholder="Enter name " type="text">
+                    </div>
+                    <div class="center layout-column layout-align-center-start m-b-20">
+                        <span class="f-w-b">E-Mail</span>
+                        <input [(ngModel)]="contactData.email" class="form-control" id="inputName" placeholder="Enter email" type="email">
+                    </div>
+                    <div class="center layout-column layout-align-center-start m-b-20">
+                        <span class="f-w-b">Subject</span>
+                        <input [(ngModel)]="contactData.subject" class="form-control" id="inputName" placeholder="Enter email subject" type="text">
+                    </div>
+                    <div class="center layout-column layout-align-center-start m-b-20">
+                        <span class="f-w-b">Message</span>
+                        <!-- <input class="form-control flex-60 flex-xs-80"  placeholder="Comment" type="text"> -->
+                        <textarea [(ngModel)]="contactData.message" class="form-control" id="inputName" placeholder="message" type="text">
+                                    </textarea>
+                    </div>
+                    <div class="layout-align-start-center layout-row" (click)="onSubmit()">
+                        <button class="setting-btn">Submit</button>
+                    </div>
+                </div>
+            </div>
+            <div class="account-info flex-50 layout-column location-info p-10">
+                <div class="layout-column layout-align-center-center m-b-20  map-location-icon">
+                    <div class="layout-column layout-align-center-center">
+                        <p class="layout-column layout-align-center-center location-icon-text">
+                            <i class="fa fa-map-marker"></i>
+                            <span>Location</span>
+                        </p>
+
+                        <p class="layout-column layout-align-center-center">
+                            <span>QualQuant Signals</span>
+                            <span>1099 Wall Street West, Suite 138</span>
+                            <span>Lyndhurst, NJ 07071, USA</span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="layout-row map-frame layout-align-center-center">
+                    <div [style.width.px]="'380'" [style.height.px]="'220'">
+                        <div id="map" style="height:100%; width:100%;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>

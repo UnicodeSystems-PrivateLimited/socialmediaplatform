@@ -1,0 +1,839 @@
+<div class="wrapper" *ngIf="user" style="background-color:#e5e5e5;">
+    <header class="main-header">
+        <nav role="navigation" class="navbar navbar-static-top">
+            <div class="container" (click)="clearUserSearchDropDown()">
+                <div class="layout-row">
+                    <div class="flex-20  hidden-xs" (click)="chatBoxClose()">
+                        <a class="logo">
+                            <!-- mini logo for sidebar mini 50x50 pixels -->
+                            <span class="header-logo logo-mini"><b>S</b><span>N</span></span>
+                            <!-- logo for regular state and mobile devices -->
+                            <span class="header-logo logo-lg"><b>Student</b><span>Network</span></span>
+                        </a>
+                    </div>
+                    <div class="flex-10 layout-row layout-align-center-center nav-toggle-icon visible-flex-xs nav-toggle-icon" (click)="toggleNav()">
+                        <i class="fa" aria-hidden="true" [class.fa-times]="toggleState" [class.fa-bars]="!toggleState"></i>
+
+                    </div>
+                    <div class="flex-20 visible-xs">
+                        <a class="logo">
+                            <span class="header-logo logo-mini"><b>S</b><span>N</span></span>
+
+                            <span class="header-logo logo-lg"><b>Student</b><span>Network</span></span>
+                        </a>
+                    </div>
+
+                    <!-- Header Navbar: style can be found in header.less -->
+
+                    <!-- Sidebar toggle button-->
+                    <!--                                <a role="button" data-toggle="offcanvas" class="sidebar-toggle" href="#">
+                                                        <span class="sr-only">Toggle navigation</span>
+                                                    </a>-->
+                    <!-- Navbar Right Menu -->
+                    <div class="flex-80 hidden-flex-xs" >
+                        <div class="layout-row flex-100 layout-align-space-between" >
+                            <div class="collapse navbar-collapse"  (click)="chatBoxClose()">
+                                <ul class="nav navbar-nav layout-row">
+                                    <li class="dropdown" *ngIf="page.subject">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Subject<span class="caret"></span></a>
+                                        <ul class="dropdown-menu" role="menu">
+                                            <li *ngFor="#sub of page.subject"><a class="c-p"  (click)="getSubjectWall(sub.subject_id._id)" *ngIf="sub.subject_id">{{sub.subject_id.name}}</a></li>
+
+                                        </ul>
+                                    </li>
+                                    <li class="dropdown" *ngIf="page.college">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">College / University<span class="caret"></span></a>
+                                        <ul class="dropdown-menu" role="menu">
+                                            <li *ngFor="#coll of page.college"><a class="c-p" (click)="getCollegeWall(coll.college_id._id)" *ngIf="coll.college_id">{{coll.college_id.name}}</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="dropdown" *ngIf="page.bachelors">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Bachelors Program<span class="caret"></span></a>
+                                        <ul class="dropdown-menu" role="menu">
+                                            <li *ngFor="#deg of page.bachelors"><a class="c-p"  *ngIf="deg.degree_id && !degreeType(deg.degree_id.type)"(click)="getDegreeWall(deg.degree_id._id)">{{deg.degree_id.name}}</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="dropdown" *ngIf="page.masters">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Masters Program<span class="caret"></span></a>
+                                        <ul class="dropdown-menu" role="menu">
+                                            <li *ngFor="#deg of page.masters"><a class="c-p" *ngIf="deg.degree_id && degreeType(deg.degree_id.type)"(click)="getDegreeWall(deg.degree_id._id)">{{deg.degree_id.name}}</a></li>
+                                        </ul>
+                                    </li>
+
+                                </ul>
+                            </div>
+                            <div class="navbar-custom-menu nav-options">
+                                <ul class="nav navbar-nav layout-row layout-align-space-between ">
+                                    <!-- Messages: style can be found in dropdown.less-->
+                                    <li class="flex-40 layout-align-center-center search-input-block hide-sm" (click)="chatBoxClose()">
+                                        <form (ngSubmit)="userList()" class="navbar-form navbar-left" role="search">
+                                            <div class="form-group nav-search input-left-icon">
+                                                <span class="fa fa-search">&nbsp;</span>
+                                                <input #obj  [(ngModel)]="userSearchField.name" (keyup)="userSearch($event)" (focus)="userSearch($event)" type="text" class="form-control hello" id="navbar-search-input" placeholder="Search here" autocomplete="off">
+                                            </div>
+                                        </form>
+                                        <div *ngIf="userSearchList" class="user-search-list-wrap">
+                                            <ul class="user-search-list">
+                                                <li class="layout-row layout-align-space-between search-li"  *ngFor="#user of userSearchList" (click)="getProfileById(user._id)">
+                                                    <div class="search-result-left layout-row">
+                                                        <div class="search-thumb">
+                                                            <img *ngIf="user.photo" alt="User Image" class="img-circle" src="theme/files/ProfilePicture/{{user.photo}}">
+                                                            <img *ngIf="!user.photo" alt="User Image" class="img-circle" src="theme/files/ProfilePicture/no_image.png">
+                                                        </div>
+                                                        <div class="result-title">{{user.fname}}&nbsp;{{user.lname}}</div>
+                                                    </div>
+                                                    <div class="search-result-right">
+                                                        <div class="result-icon">
+                                                            <i class="fa fa-user-plus" aria-hidden="true"></i>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </li>
+                                    <li  class="layout-align-center-center">
+                                        <a data-toggle="control-sidebar">&#124;</a>
+                                    </li>
+                                    <li class="dropdown messages-menu layout-align-center-center height-scroll" (click)="chatBoxClose();">
+                                        <a data-toggle="dropdown" class="dropdown-toggle" >
+                                            <i class="fa fa-users"></i>
+                                            <span class="label label-danger" *ngIf="page.friendRequestnotificationData">{{page.friendRequestnotificationData.length}}</span>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            <li class="header" *ngIf="page.friendRequestnotificationData">You have {{page.friendRequestnotificationData.length}} friend request</li>
+                                            <li *ngIf="page.friendRequestnotificationData">
+                                                <!--inner menu: contains the actual data--> 
+                                                <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 200px;"><ul class="menu" style="overflow: hidden; width: 100%; height: 200px;">
+                                                        <li *ngFor="#notify of page.friendRequestnotificationData">
+                                                            <!--<a href="javascript:void(0)" >-->
+                                                            <a (click)="changeFriendNoficationStatus(notify.from)"  [routerLink]="['./User.list']" >
+                                                                <span *ngIf="notify.userdata"><i class="fa fa-users text-aqua"></i> {{notify.userdata.fname+' '+notify.userdata.lname}} {{notify.title}}</span>
+                                                            </a>
+                                                            <a (click)="changeFriendNoficationStatus(notify.from._id)"  [routerLink]="['./User.list']" >    
+                                                                <span *ngIf="notify.from && notify.from._id!=null"><i class="fa fa-users text-aqua"></i> {{notify.from.fname+' '+notify.from.lname}} {{notify.title}}</span>
+                                                                <!--<span *ngIf="notify"><i class="fa fa-users text-aqua"></i> {{notify.title}}</span>-->
+                                                            </a>
+                                                        </li>
+
+                                                    </ul>
+                                                    <div class="slimScrollBar" style="background: rgb(0, 0, 0) none repeat scroll 0% 0%; width: 3px; position: absolute; top: 0px; opacity: 0.4; display: block; border-radius: 7px; z-index: 99; right: 1px;"></div><div class="slimScrollRail" style="width: 3px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: rgb(51, 51, 51) none repeat scroll 0% 0%; opacity: 0.2; z-index: 90; right: 1px;"></div></div>
+                                            </li>
+                                            <!--<li class="footer"><a href="#">View all</a></li>-->
+                                        </ul>
+                                    </li>
+                                    <!-- Notifications: style can be found in dropdown.less -->
+                                    <li class="dropdown notifications-menu layout-align-center-center" (click)="mytoggle();">
+                                        <a  class="dropdown-toggle">
+                                            <i class="fa fa-wechat"></i>
+                                            <span class="label label-danger">{{page.totPendUserMsg}}</span>
+                                        </a>
+
+                                    </li>
+                                    <!-- Tasks: style can be found in dropdown.less -->
+                                    <li class="dropdown tasks-menu layout-align-center-center height-scroll" (click)="chatBoxClose()">
+                                        <!--<a data-toggle="dropdown" class="dropdown-toggle"  >-->
+                                        <a data-toggle="dropdown" class="dropdown-toggle"  >
+                                            <i class="fa fa-bell"></i>
+                                            <span class="label label-danger" *ngIf="page.notificationData">{{page.notificationData.length}}</span>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            <li class="header" *ngIf="page.notificationData">You have {{page.notificationData.length}} notifications</li>
+                                            <li *ngIf="page.notificationData">
+                                                <!--inner menu: contains the actual data--> 
+                                                <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 200px;"><ul class="menu" style="overflow: hidden; width: 100%; height: 200px;">
+                                                        <li *ngIf="page.notificationData" *ngFor="#noti of page.notificationData">
+                                                            <!--<a *ngIf="noti" (click)="changeNoficationStatus(noti.userdata)">-->
+                                                            <!--<a *ngIf="noti" [routerLink]="['./User.list']" (click)="getFriendRequestNotification(noti.from)" >-->
+                                                            <a *ngIf="noti?.post_type == 0" [routerLink]="['./User.list']" (click)="arriveNotification(noti)" >
+                                                                <!--<i class="fa fa-users text-aqua"></i>{{noti.from.fname+' '+noti.from.lname}} {{noti.title}}-->
+                                                                <span *ngIf="noti?.userdata"> <i class="fa fa-users text-aqua"></i> {{noti.userdata.fname+' '+noti.userdata.lname}} {{noti.title}}</span>
+                                                            </a>
+                                                            <a *ngIf="noti?.post_type == 0" [routerLink]="['./User.list']" (click)="arriveNotification(noti)">
+                                                                <span *ngIf="noti?.from && noti.from._id!=null"> <i class="fa fa-users text-aqua"></i> {{noti.from.fname+' '+noti.from.lname}} {{noti.title}}</span>
+                                                            </a>
+                                                            <a *ngIf="noti?.post_type == 1" [routerLink]="['GroupDetail',{groupId:noti.groupId}]" (click)="arriveNotification(noti)" >
+                                                                <!--<i class="fa fa-users text-aqua"></i>{{noti.from.fname+' '+noti.from.lname}} {{noti.title}}-->
+                                                                <span *ngIf="noti?.userdata"> <i class="fa fa-users text-aqua"></i> {{noti.userdata.fname+' '+noti.userdata.lname}} {{noti.title}}</span>
+                                                            </a>
+                                                            <a *ngIf="noti?.post_type == 1"  [routerLink]="['GroupDetail',{groupId:noti.groupId}]" (click)="arriveNotification(noti)">
+                                                                <span *ngIf="noti?.from && noti.from._id!=null"> <i class="fa fa-users text-aqua"></i> {{noti.from.fname+' '+noti.from.lname}} {{noti.title}}</span>
+                                                            </a>
+
+
+                                                            <a *ngIf="noti?.post_type == 2" [routerLink]="['EventDetail',{eventId:noti.eventId}]" (click)="arriveNotification(noti)" >
+                                                                <!--<i class="fa fa-users text-aqua"></i>{{noti.from.fname+' '+noti.from.lname}} {{noti.title}}-->
+                                                                <span *ngIf="noti?.userdata"> <i class="fa fa-users text-aqua"></i> {{noti.userdata.fname+' '+noti.userdata.lname}} {{noti.title}}</span>
+                                                            </a>
+                                                            <a *ngIf="noti?.post_type == 2" [routerLink]="['EventDetail',{eventId:noti.eventId}]" (click)="arriveNotification(noti)">
+                                                                <span *ngIf="noti?.from && noti.from._id!=null"> <i class="fa fa-users text-aqua"></i> {{noti.from.fname+' '+noti.from.lname}} {{noti.title}}</span>
+                                                            </a>
+                                                            <a *ngIf="noti?.post_type == 3" [routerLink]="['./User.list']" (click)="arriveNotification(noti)" >
+                                                                <!--<i class="fa fa-users text-aqua"></i>{{noti.from.fname+' '+noti.from.lname}} {{noti.title}}-->
+                                                                <span *ngIf="noti?.userdata"> <i class="fa fa-users text-aqua"></i> {{noti.userdata.fname+' '+noti.userdata.lname}} {{noti.title}}</span>
+                                                            </a>
+                                                            <a *ngIf="noti?.post_type == 3" [routerLink]="['./User.list']" (click)="arriveNotification(noti)">
+                                                                <span *ngIf="noti?.from && noti.from._id!=null"> <i class="fa fa-users text-aqua"></i> {{noti.from.fname+' '+noti.from.lname}} {{noti.title}}</span>
+                                                            </a>
+                                                            <a *ngIf="noti?.post_type == 4" [routerLink]="['./User.profile']" (click)="arriveNotification(noti)" >
+                                                                <!--<i class="fa fa-users text-aqua"></i>{{noti.from.fname+' '+noti.from.lname}} {{noti.title}}-->
+                                                                <span *ngIf="noti?.userdata"> <i class="fa fa-users text-aqua"></i> {{noti.userdata.fname+' '+noti.userdata.lname}} {{noti.title}}</span>
+                                                            </a>
+                                                            <a *ngIf="noti?.post_type == 4" [routerLink]="['./User.profile']" (click)="arriveNotification(noti)">
+                                                                <span *ngIf="noti?.from && noti.from._id!=null"> <i class="fa fa-users text-aqua"></i> {{noti.from.fname+' '+noti.from.lname}} {{noti.title}}</span>
+                                                            </a>
+                                                        </li>
+                                                        <!--                                                                                                                <li>
+                                                                                                                    <a href="#">
+                                                                                                                        <i class="fa fa-warning text-yellow"></i> Very long description here that may not fit into the
+                                                                                                                        page and may cause design problems
+                                                                                                                    </a>
+                                                                                                                </li>
+                                                                                                                <li>
+                                                                                                                    <a href="#">
+                                                                                                                        <i class="fa fa-users text-red"></i> 5 new members joined
+                                                                                                                    </a>
+                                                                                                                </li>
+                                                                                                                <li>
+                                                                                                                    <a href="#">
+                                                                                                                        <i class="fa fa-shopping-cart text-green"></i> 25 sales made
+                                                                                                                    </a>
+                                                                                                                </li>
+                                                                                                                <li>
+                                                                                                                    <a href="#">
+                                                                                                                        <i class="fa fa-user text-red"></i> You changed your username
+                                                                                                                    </a>
+                                                                                                                </li>-->
+                                                    </ul><div class="slimScrollBar" style="background: rgb(0, 0, 0) none repeat scroll 0% 0%; width: 3px; position: absolute; top: 0px; opacity: 0.4; display: block; border-radius: 7px; z-index: 99; right: 1px;"></div><div class="slimScrollRail" style="width: 3px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: rgb(51, 51, 51) none repeat scroll 0% 0%; opacity: 0.2; z-index: 90; right: 1px;"></div></div>
+                                            </li>
+                                            <!--<li class="footer"><a href="#">View all</a></li>-->
+                                        </ul>
+                                    </li>
+                                    <!-- User Account: style can be found in dropdown.less -->
+                                    <li class="dropdown user user-menu img-full layout-align-center-center" *ngIf="user" (click)="chatBoxClose()">
+                                        <a data-toggle="dropdown" class="dropdown-toggle nav-user" href="#" >
+                                            <!--hello-->
+                                            <img *ngIf="user.photo" class="img-circle nav-profile-img" src="theme/files/ProfilePicture/{{user.photo}}" alt="{{user.photo}}">
+                                            <img *ngIf="!user.photo" class="img-circle nav-profile-img" src="theme/files/ProfilePicture/no_image.png" alt="no_image.png">
+                                            <!--<span class="hidden-xs"> <span *ngIf="user.fname">Hi,{{user.fname}}</span> <span *ngIf="user.lname">{{user.lname}}</span></span>-->
+                                        </a>
+                                        <ul class="dropdown-menu profile-menu-drop">
+                                            <!-- User image -->
+                                            <li class="user-header">
+                                                <img *ngIf="user.photo" class="img-circle" src="theme/files/ProfilePicture/{{user.photo}}" alt="{{user.photo}}">
+                                                <img *ngIf="!user.photo" class="img-circle" src="theme/files/ProfilePicture/no_image.png" alt="no_image.png">
+
+                                                <p>
+                                                    <span *ngIf="page.user.name">{{page.user.name}}</span> 
+                                                    <!--<span *ngIf="user.lname">{{user.lname}}</span>-->
+                                                    <!--<small>Member since Nov. 2012</small>-->
+                                                </p>
+                                            </li>
+                                            <!-- Menu Body -->
+                                            <li class="user-body">
+                                                <div class="row">
+                                                    <div class="col-xs-4 text-center">
+                                                        <a [routerLink]="['Dashboard.connection',{id:3}]" >Followers</a>
+                                                    </div>
+                                                    <div class="col-xs-4 text-center">
+                                                        <a href="#">Sales</a>
+                                                    </div>
+                                                    <div class="col-xs-4 text-center">
+                                                        <a [routerLink]="['Dashboard.connection',{id:1}]">Friends</a>
+                                                    </div>
+                                                </div>
+                                                <!-- /.row -->
+                                            </li>
+                                            <!-- Menu Footer-->
+                                            <li class="user-footer">
+                                                <div class="pull-left">
+                                                    <a class="btn btn-default btn-flat" [routerLink]="['./User.profile']">Profile</a>
+                                                </div>
+                                                <div class="pull-right">
+                                                    <a [routerLink]="['../User.logout']" class="btn btn-default btn-flat" href="#" (click)="userStatus.logout()">Sign out</a>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <!-- Control Sidebar Toggle Button -->
+                                    <!--                                    <li class="layout-align-center-center">
+                                                                            <a data-toggle="control-sidebar" href="#"><i class="fa fa-ellipsis-v"></i></a>
+                                                                        </li>-->
+
+                                </ul>
+                            </div>
+                        </div>
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                    </div>
+                    <div class="flex-80 visible-flex-xs layout-row layout-align-end-center">
+                        <button type="button" class="navbar-toggle collapsed" (click)="toggleMobileMenu()" data-toggle="collapse" data-target="#navbar-collapse">
+                            <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="mobile-top-bar visible-flex-xs" [class.openMobMenu]="mobMenuState" >
+                    <ul class="sidebar-menu">
+
+                        <li class="treeview">
+                            <a (click)="toggleSubject=!toggleSubject" class="c-p" >
+
+                                <span>Subject</span>
+                                <i class="fa pull-right" [class.fa-angle-down]="!toggleSubject" [class.fa-angle-up]="toggleSubject"></i>
+                            </a>
+                            <ul class="treeview-menu" [class.toggleMenu]="toggleSubject">
+                                <li *ngFor="#sub of subject" (click)="subMenu(sub)" [class.activeitems]="sub==activeItem"><a class="c-p"  (click)="getSubjectWall(sub.subject_id._id)" *ngIf="sub.subject_id">{{sub.subject_id.name}}</a></li>
+                            </ul>
+
+                        </li>
+                        <li class="treeview">
+                            <a (click)="toggleCollege=!toggleCollege" class="c-p" >
+
+                                <span>College / University</span>
+                                <i class="fa pull-right" [class.fa-angle-down]="!toggleCollege" [class.fa-angle-up]="toggleCollege"></i>
+                            </a>
+                            <ul class="treeview-menu" [class.toggleMenu]="toggleCollege">
+                                <li *ngFor="#coll of college" (click)="subMenu(coll)" [class.activeitems]="coll==activeItem"><a class="c-p" (click)="getCollegeWall(coll.college_id._id)" *ngIf="coll.college_id">{{coll.college_id.name}}</a></li></ul>
+
+                        </li>
+                        <li class="treeview">
+                            <a (click)="toggleBechlour=!toggleBechlour" class="c-p" >
+
+                                <span>Bachelors Program</span>
+                                <i class="fa pull-right" [class.fa-angle-down]="!toggleBechlour" [class.fa-angle-up]="toggleBechlour"></i>
+                            </a>
+                            <ul class="treeview-menu" [class.toggleMenu]="toggleBechlour">
+                                <li *ngFor="#deg of bachelors" (click)="subMenu(deg)" [class.activeitems]="deg==activeItem"><a class="c-p"  *ngIf="deg.degree_id && !degreeType(deg.degree_id.type)"(click)="getDegreeWall(deg.degree_id._id)">{{deg.degree_id.name}}</a></li>
+                            </ul>
+                        </li>
+                        <li class="treeview">
+                            <a (click)="toggleMaster=!toggleMaster" class="c-p" >
+
+                                <span>Masters Program</span>
+                                <i class="fa pull-right" [class.fa-angle-down]="!toggleMaster" [class.fa-angle-up]="toggleMaster"></i>
+                            </a>
+                            <ul class="treeview-menu" [class.toggleMenu]="toggleMaster">
+                                <li *ngFor="#deg of masters" (click)="subMenu(deg)" [class.activeitems]="deg==activeItem"><a class="c-p" *ngIf="deg.degree_id && degreeType(deg.degree_id.type)"(click)="getDegreeWall(deg.degree_id._id)">{{deg.degree_id.name}}</a></li>
+                            </ul>
+                        </li>
+                        <li class="search-input-block">
+                            <form (ngSubmit)="userList()" class="navbar-form navbar-left" role="search">
+                                <div class="form-group nav-search input-left-icon layout-align-center-center layout-row">
+                                    <span class="fa fa-search">&nbsp;</span>
+                                    <input #obj  [(ngModel)]="userSearchField.name" (keyup)="userSearch($event)" (focus)="userSearch($event)" type="text" class="form-control hello" id="navbar-search-input" placeholder="Search here" autocomplete="off">
+                                </div>
+                            </form>
+                            <div *ngIf="userSearchList" class="user-search-list-wrap">
+                                <ul class="user-search-list">
+                                    <li class="layout-row layout-align-space-between search-li"  *ngFor="#user of userSearchList" (click)="getProfileById(user._id)">
+                                        <div class="search-result-left layout-row">
+                                            <div class="search-thumb">
+                                                <img *ngIf="user.photo" alt="User Image" class="img-circle" src="theme/files/ProfilePicture/{{user.photo}}">
+                                                <img *ngIf="!user.photo" alt="User Image" class="img-circle" src="theme/files/ProfilePicture/no_image.png">
+                                            </div>
+                                            <div class="result-title">{{user.fname}}&nbsp;{{user.lname}}</div>
+                                        </div>
+                                        <div class="search-result-right">
+                                            <div class="result-icon">
+                                                <i class="fa fa-user-plus" aria-hidden="true"></i>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li class="dropdown messages-menu layout-align-center-center  col-xs-4 display-inline-block ">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="true">
+                                <i class="fa fa-users"></i>
+                                <span class="label label-danger">4</span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li class="header">You have 10 notifications</li>
+                                <li>
+                                    <!-- inner menu: contains the actual data -->
+                                    <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 200px;"><ul class="menu" style="overflow: hidden; width: 100%; height: 200px;">
+                                            <li>
+                                                <a href="#">
+                                                    <i class="fa fa-users text-aqua"></i> 5 new members joined today
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#">
+                                                    <i class="fa fa-warning text-yellow"></i> Very long description here that may not fit into the
+                                                    page and may cause design problems
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#">
+                                                    <i class="fa fa-users text-red"></i> 5 new members joined
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#">
+                                                    <i class="fa fa-shopping-cart text-green"></i> 25 sales made
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#">
+                                                    <i class="fa fa-user text-red"></i> You changed your username
+                                                </a>
+                                            </li>
+                                        </ul><div class="slimScrollBar" style="background: rgb(0, 0, 0) none repeat scroll 0% 0%; width: 3px; position: absolute; top: 0px; opacity: 0.4; display: block; border-radius: 7px; z-index: 99; right: 1px;"></div><div class="slimScrollRail" style="width: 3px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: rgb(51, 51, 51) none repeat scroll 0% 0%; opacity: 0.2; z-index: 90; right: 1px;"></div></div>
+                                </li>
+                                <li class="footer"><a href="#">View all</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown notifications-menu layout-align-center-center  col-xs-4  display-inline-block ">
+                            <a class="dropdown-toggle">
+                                <i class="fa fa-wechat"></i>
+                                <span class="label label-danger">10</span>
+                            </a>
+
+                        </li>
+                        <li class="dropdown tasks-menu layout-align-center-center display-inline-block">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                <i class="fa fa-bell"></i>
+                                <span class="label label-danger">9</span>
+                            </a>
+
+                        </li>
+                        <li class="dropdown user user-menu img-full layout-align-center-center" *ngIf="user">
+                            <p class="display-inline-block m-l-15">
+                                <span *ngIf="user.fname">{{user.fname}}</span> <span *ngIf="user.lname">{{user.lname}}</span>
+                                <!--<small>Member since Nov. 2012</small>-->
+                            </p>
+                            <a (click)="toggleProfile=!toggleProfile" class="display-inline-block dropdown-toggle nav-user" href="#" >
+                                <!--hello-->
+                                <img *ngIf="user.photo" class="img-circle nav-profile-img" src="theme/files/ProfilePicture/{{user.photo}}" alt="{{user.photo}}">
+                                <img *ngIf="!user.photo" class="img-circle nav-profile-img" src="theme/files/ProfilePicture/no_image.png" alt="no_image.png">
+                                <!--<span class="hidden-xs"> <span *ngIf="user.fname">Hi,{{user.fname}}</span> <span *ngIf="user.lname">{{user.lname}}</span></span>-->
+                            </a>
+                            <ul class="treeview-menu" [class.toggleMenu]="toggleProfile">
+                                <!-- User image -->
+
+                                <!-- Menu Body -->
+                                <li class="user-body m-l-15 ">
+                                    <div class="row">
+                                        <div class="col-xs-4 text-center ">
+                                            <a [routerLink]="['Dashboard.connection',{id:3}]" >Followers</a>
+                                        </div>
+                                        <div class="col-xs-4 text-center ">
+                                            <a href="#">Sales</a>
+                                        </div>
+                                        <div class="col-xs-4 text-center ">
+                                            <a [routerLink]="['Dashboard.connection',{id:1}]">Friends</a>
+                                        </div>
+                                    </div>
+                                    <!-- /.row -->
+                                </li>
+                                <!-- Menu Footer-->
+                                <li class="user-footer">
+                                    <div >
+                                        <a class="btn btn-default btn-flat" [routerLink]="['./User.profile']">Profile</a>
+                                    </div>
+                                    <div >
+                                        <a [routerLink]="['../User.logout']" class="btn btn-default btn-flat" href="#" (click)="userStatus.logout()">Sign out</a>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+
+
+                    </ul>
+
+
+
+
+
+                    <!--                    <ul class="mob-nav-list">
+                    
+                                            <li class="mob-dropdown" *ngIf="subject">
+                                                <a class="dropdown-toggle" >Subject<span class="caret"></span></a>
+                                                <ul class="mob-dropdown-menu" role="menu">
+                                                    <li *ngFor="#sub of subject"><a class="c-p"  (click)="getSubjectWall(sub.subject_id._id)" *ngIf="sub.subject_id">{{sub.subject_id.name}}</a></li>
+                    
+                                                </ul>
+                                            </li>
+                                            <li class="mob-dropdown" *ngIf="college">
+                                                <a  class="dropdown-toggle" data-toggle="dropdown">College / University<span class="caret"></span></a>
+                                                <ul class="mob-dropdown-menu" role="menu">
+                                                    <li *ngFor="#coll of college"><a class="c-p" (click)="getCollegeWall(coll.college_id._id)" *ngIf="coll.college_id">{{coll.college_id.name}}</a></li>
+                                                </ul>
+                                            </li>
+                                            <li class="mob-dropdown" *ngIf="bachelors">
+                                                <a class="dropdown-toggle" data-toggle="dropdown">Bachelors Program<span class="caret"></span></a>
+                                                <ul class="mob-dropdown-menu" role="menu">
+                                                    <li *ngFor="#deg of bachelors"><a class="c-p"  *ngIf="deg.degree_id && !degreeType(deg.degree_id.type)"(click)="getDegreeWall(deg.degree_id._id)">{{deg.degree_id.name}}</a></li>
+                                                </ul>
+                                            </li>
+                                            <li class="mob-dropdown" *ngIf="masters">
+                                                <a  class="dropdown-toggle" data-toggle="dropdown">Masters Program<span class="caret"></span></a>
+                                                <ul class="mob-dropdown-menu" role="menu">
+                                                    <li *ngFor="#deg of masters"><a class="c-p" *ngIf="deg.degree_id && degreeType(deg.degree_id.type)"(click)="getDegreeWall(deg.degree_id._id)">{{deg.degree_id.name}}</a></li>
+                                                </ul>
+                                            </li>
+                                            <li class="search-input-block">
+                                                <form (ngSubmit)="userList()" class="navbar-form navbar-left" role="search">
+                                                    <div class="form-group nav-search input-left-icon">
+                                                        <span class="fa fa-search">&nbsp;</span>
+                                                        <input #obj  [(ngModel)]="userSearchField.name" (keyup)="userSearch($event)" (focus)="userSearch($event)" type="text" class="form-control hello" id="navbar-search-input" placeholder="Search here" autocomplete="off">
+                                                    </div>
+                                                </form>
+                                                <div *ngIf="userSearchList" class="user-search-list-wrap">
+                                                    <ul class="user-search-list">
+                                                        <li class="layout-row layout-align-space-between search-li"  *ngFor="#user of userSearchList" (click)="getProfileById(user._id)">
+                                                            <div class="search-result-left layout-row">
+                                                                <div class="search-thumb">
+                                                                    <img *ngIf="user.photo" alt="User Image" class="img-circle" src="theme/files/ProfilePicture/{{user.photo}}">
+                                                                    <img *ngIf="!user.photo" alt="User Image" class="img-circle" src="theme/files/ProfilePicture/no_image.png">
+                                                                </div>
+                                                                <div class="result-title">{{user.fname}}&nbsp;{{user.lname}}</div>
+                                                            </div>
+                                                            <div class="search-result-right">
+                                                                <div class="result-icon">
+                                                                    <i class="fa fa-user-plus" aria-hidden="true"></i>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </li>
+                    
+                    
+                                        </ul>-->
+                </div>
+            </div>
+        </nav>
+    </header>
+    <!-- Left side column. contains the logo and sidebar -->
+    <div class="container container-setting" (click)="clearUserSearchDropDown()">
+        <div class="layout-row flex-100">
+            <aside class="main-sidebar flex-20" [class.toggle-main-sidenav]="toggleState">
+                <!-- sidebar: style can be found in sidebar.less -->
+                <section class="sidebar" style="height: auto;">
+                    <!-- Sidebar user panel -->
+                    <div *ngIf="page.friendProfileId"> 
+                        <div class="user-panel text-center " *ngIf="page.userdetails">
+                            <div class="image">
+                                <img *ngIf="page.userdetails.photo" class="img-circle" src="theme/files/ProfilePicture/{{page.userdetails.photo}}" alt="{{page.userdetails.photo}}">
+                                <img *ngIf="!page.userdetails.photo" class="img-circle" src="theme/files/ProfilePicture/no_image.png" alt="no_image.png" height="50px" width="50px">
+
+                            </div>    
+                            <div class="info">
+                                <p><span *ngIf="page.userdetails.fname">{{page.userdetails.fname}}</span> <span *ngIf="page.userdetails.lname">{{page.userdetails.lname}}</span></p>
+                                <!--                                <a href="#"><i class="fa fa-circle text-success"></i> Online</a>-->
+                            </div>
+                        </div>
+                    </div>    
+                    <div *ngIf="!page.friendProfileId && !page.wallId"> 
+                        <div class="user-panel text-center " *ngIf="user">
+                            <div class="image" id="profileModal" data-toggle = "modal" (click)="updatePic()">
+                                <img *ngIf="user.photo" class="img-circle" src="theme/files/ProfilePicture/{{user.photo}}" alt="{{user.photo}}">
+                                <img *ngIf="!user.photo" class="img-circle" src="theme/files/ProfilePicture/no_image.png" alt="no_image.png" height="50px" width="50px">
+                                <div class="dp-hover-edit" *ngIf="!(type=='Facebook' || type=='Google')">Add/Update Photo</div>
+                            </div>
+                            <div class="info">
+                                <p><span *ngIf="page.user.name">{{page.user.name}}</span> 
+                                    <!--<span *ngIf="user.lname">{{user.lname}}</span>-->
+                                </p>
+                                <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+                            </div>
+                        </div>
+                    </div>    
+                    <div *ngIf="page.wallId"> 
+                        <div class="user-panel text-center " *ngIf="page.walldetails">
+                            <div class="image">
+                                <img *ngIf="page.walldetails.icon" class="img-circle" src="theme/files/{{page.wall_type}}/Icon/{{page.walldetails.icon}}" alt="{{page.walldetails.icon}}">
+                                <img *ngIf="!page.walldetails.icon" src="theme/files/WallPicture/no_image.png" alt="no_image.png" height="50px" width="50px">
+                            </div>    
+                            <div class="info">
+                                <p><span *ngIf="page.walldetails.name">{{page.walldetails.name}}</span></p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- search form -->
+                    <!--            <form class="sidebar-form" method="get" action="#">
+                                    <div class="input-group">
+                                        <input type="text" placeholder="Search..." class="form-control" name="q">
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-flat" id="search-btn" name="search" type="submit"><i class="fa fa-search"></i>
+                                            </button>
+                                        </span>
+                                    </div>
+                                </form>-->
+                    <div class="invite-section">
+                        <a class="btn btn-default face invite-btn display-full" href="javascript:void(0)" (click)="FacebookInviteFriends()">
+                            <i class="fa fa-facebook">&nbsp;</i>
+                            <span >Invite Friends</span>
+                        </a>
+                        <a class="btn btn-default googl display-full" href="javascript:void(0)" (click)="GoogleInviteFriends()" data-toggle="modal" data-target="#invite-modal">
+                            <i class="fa fa-google-plus">&nbsp;</i>
+                            <span>Invite Friends</span>
+                        </a>
+                        <a *ngIf="(page.wallId && !page.is_member)&&(page.join==0) " (click)="openSubjectAddModel()" class="btn btn-default display-full" id="join-modal-btn"  data-toggle="modal" >
+                            <i class="fa fa-plus">&nbsp;</i>
+                            <span>Join {{page.wall_type}}</span>
+                        </a>
+                    </div>
+
+                    <!-- /.search form -->
+                    <!-- sidebar menu: : style can be found in sidebar.less -->
+                    <ul class="sidebar-menu">
+                        <li class="treeview">
+                            <a [routerLink]="['./Dashboard']">
+                                <i class="fa fa-dashboard"></i> <span>Dashboard</span>
+                            </a>
+                        </li>
+                        <li class="treeview">
+                            <a [routerLink]="['./User.list']">
+                                <i class="fa fa-users"></i>
+                                <span>list</span>
+                                <!--<span class="label label-primary pull-right">4</span>-->
+                            </a>
+                        </li>
+                        <li class="treeview">
+                            <a [routerLink]="['Group.Home']">
+                                <i class="fa fa-users"></i>
+                                <span>Groups</span>
+                                <i class="fa fa-angle-down pull-right"></i>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li><a><i class="fa fa-circle"></i>Group 1</a></li>
+                                <li><a><i class="fa fa-circle"></i>Group 2</a></li>
+                                <li><a><i class="fa fa-circle"></i>Group 3</a></li>
+                                <li><a><i class="fa fa-circle"></i>Group 4</a></li>
+                            </ul>
+                            <!--<a class=""><i class="fa fa-pulse">&nbsp;</i>create group</a>-->
+                        </li>
+                        <li class="treeview">
+                            <a [routerLink]="['Event.Home']">
+                                <i class="fa fa-calendar"></i>
+                                <span>Events</span>
+                                <i class="fa fa-angle-down pull-right"></i>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li><a><i class="fa fa-circle-o"></i>Group 1</a></li>
+                                <li><a><i class="fa fa-circle-o"></i>Group 2</a></li>
+                                <li><a><i class="fa fa-circle-o"></i>Group 3</a></li>
+                                <li><a><i class="fa fa-circle-o"></i>Group 4</a></li>
+                            </ul>
+                            <!--<a class=""><i class="fa fa-pulse">&nbsp;</i>Create Event</a>-->
+                        </li>
+                        <!--<li class="header">LABELS</li>-->
+                        <li class="treeview"><a [routerLink]="['Blog.home',{id:null}]"><i class="fa fa-comment-o" aria-hidden="true"></i> <span>Blog</span></a></li>
+                        <li class="treeview"><a [routerLink]="['./Settings']"><i class="fa fa-cog" aria-hidden="true"></i> <span>Setting</span></a></li>
+                        <li class="treeview"><a ><i class="fa fa-shopping-bag"></i> <span>Sell Stuff</span></a></li>
+
+                    </ul>
+                </section>
+                <!-- /.sidebar -->
+            </aside>
+            <!-- Content Wrapper. Contains page content -->
+            <div class="content-wrapper flex-80">
+                <!-- Content Header (Page header) -->
+                <router-outlet></router-outlet>
+                <!-- /.content -->
+            </div>
+            <!-- /.content-wrapper -->
+        </div>
+    </div>
+    <!-- Main Footer -->
+    <footer class="main-footer">
+        <!-- To the right -->
+        <div class="layout-row layout-align-space-between hidden-xs">
+            <div class="footer-info flex-40 layout-row layout-align-start-center">  <strong>Copyright &copy; 2015 <a href="#">Company</a>.</strong> All rights reserved.</div>
+            <div class="input-group flex-25">
+                <div class="input-group-btn">
+                    <button type="button" class="btn btn-default" (click)="subscribeUser()">Subscribe</button>
+                </div><!-- /btn-group -->
+                <input [(ngModel)]="subscriber.email"class="form-control" type="email" placeholder="enter email ID">
+            </div>
+        </div>
+        <!-- Default to the left -->
+
+    </footer>
+
+    <!-- Control Sidebar -->
+    <aside class="control-sidebar control-sidebar-light" [class.control-sidebar-open]="page.chatToggleGlobal">
+        <!-- Create the tabs -->
+        <!--<ul class="nav nav-tabs nav-justified control-sidebar-tabs">
+            <li class="active"><a href="#control-sidebar-home-tab" data-toggle="tab"><i class="fa fa-home"></i></a></li>
+            <li><a href="#control-sidebar-settings-tab" data-toggle="tab"><i class="fa fa-gears"></i></a></li>
+        </ul>-->
+
+
+
+        <!---------------- Tab panes ---------------->
+
+        <auto-boat [userStatus]="userStatus"></auto-boat>
+    </aside>
+    <!-- /.control-sidebar -->
+    <!-- Add the sidebar's background. This div must be placed
+         immediately after the control sidebar -->
+    <div class="control-sidebar-bg"></div>
+</div>
+
+<!-- ./wrapper -->
+<div id="invite-modal1" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Google Invitation</h4>
+            </div>
+            <div class="modal-body">
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <ul class="products-list product-list-in-box">
+                        <li class="item">
+                            <div class="product-img">
+                                <img src="theme/dist/img/user1-128x128.jpg" alt="Product Image">
+                            </div>
+                            <div class="product-info">
+                                <a href="javascript:void(0)" class="product-title">jhon macclene
+                                    <span class="label label-warning pull-right label-success">Invite</span>
+                                </a>
+                                <span class="product-description">
+                                    hello I am your Google Friend
+                                </span>
+                            </div>
+                        </li>
+                        <!-- /.item -->
+                        <li class="item">
+                            <div class="product-img">
+                                <img src="theme/dist/img/user3-128x128.jpg" alt="Product Image">
+                            </div>
+                            <div class="product-info">
+                                <a href="javascript:void(0)" class="product-title">jack daniels
+                                    <span class="label label-warning pull-right">Invite</span></a>
+                                <span class="product-description">
+                                    hello I am your Google Friend
+                                </span>
+                            </div>
+                        </li>
+                        <!-- /.item -->
+                        <li class="item">
+                            <div class="product-img">
+                                <img src="theme/dist/img/user4-128x128.jpg" alt="Product Image">
+                            </div>
+                            <div class="product-info">
+                                <a href="javascript:void(0)" class="product-title">hugh jackman<span class="label label-warning pull-right label-success">Invite</span></a>
+                                <span class="product-description">
+                                    hello I am your Google Friend
+                                </span>
+                            </div>
+                        </li>
+                        <!-- /.item -->
+                        <li class="item">
+                            <div class="product-img">
+                                <img src="theme/dist/img/user5-128x128.jpg" alt="Product Image">
+                            </div>
+                            <div class="product-info">
+                                <a href="javascript:void(0)" class="product-title">jack nicholson
+                                    <span class="label label-warning pull-right">Invite</span></a>
+                                <span class="product-description">
+                                    hello I am your Google Friend
+                                </span>
+                            </div>
+                        </li>
+                        <!-- /.item -->
+                    </ul>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-default send-invitation-btn">send invitation</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+<div class="modal fade modal-align-fix" id = "myModal1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeRefresh()"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Upload Profile Pic</h4>
+            </div>
+            <div class="modal-body">
+                <div class="layout-row uplod-pic">
+                    <div class="upload-area flex-60 layout-align-start-center layout-row" *ngIf="user">
+                        <img *ngIf="user.photo" alt="User Image" class="img-circle" src="theme/files/ProfilePicture/{{user.photo}}" height="150px" width="150px">
+                        <img *ngIf="!user.photo" alt="User Image" class="img-circle" src="theme/files/ProfilePicture/no_image.png" height="150px" width="150px">
+                    </div>
+                    <!--<div class="upl0ad flex-40 layout-align-end-center layout-row"><button>Upload</button></div>-->
+                </div>
+
+                <div class="layout-column uplod-pic profile-dec-block" *ngIf="user">
+                    <div class="upload-area flex-60 layout-align-start-center layout-row">
+                        <input id="exampleInputFile" type="file" id="img_upload" (change)="fileChangeEvent($event)" >
+                        <span style="color:red">{{errorIcon}}</span>
+
+                    </div>
+                    <!-- <div class="c-p remove-btn" (click)=" removeProfileImage()">Remove Picture</div>-->
+                    <span class="p-5 text-muted"> Note : Upload only jpg/png/gif/tif files.</span>
+                    <div class="rem-btn-blk layout-row layout-align-end-center">
+                        <button *ngIf="user.photo" class="btn btn-sm" data-dismiss="modal" (click)="removeProfileImage()">Remove Picture</button>
+                        <!--<div class="upl0ad flex-40 layout-align-end-center layout-row"><button>Upload</button></div>-->
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button data-dismiss="modal" (click)="closeRefresh()">Cancel</button>
+                <button  (click)="upload(user._id,user)">Upload</button>
+            </div>
+
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+<div class="modal fade modal-align-fix" id = "join-modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Join {{page.wall_type}}</h4>
+            </div>
+            <div class="modal-body ">
+                <div class="border flex-97 layout-column">
+                    <div class="h5 duration-title">Enter Duration of the {{page.wall_type}}</div>
+                    <div class="m-t-10 layout-row layout-align-center-center">
+
+                        <div class="form-group flex-45">
+                            <label>From:</label>
+
+                            <div class="input-group date">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-calendar"></i>
+                                </div>
+                                <input class="form-control pull-right" id="date-from"  name="date-from-sub"  type="text">
+                                <!--<input #df [(ngModel)]= "register.subjects_start_date[0]" class="form-control pull-right" name="date-from"  type="text">-->
+                            </div>
+                            <!-- /.input group -->
+                        </div>
+                        <div class="form-group flex-45 margin-l-10">
+                            <label>To:</label>
+
+                            <div class="input-group date">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-calendar"></i>
+                                </div>
+                                <input  class="form-control pull-right" id="date-to" name="date-to-sub"  type="text">
+                            </div>
+                            <!-- /.input group -->
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="add-btn" data-dismiss="modal">Cancel</button>
+                <button class="add-btn" (click)="joinSubject()" data-dismiss="modal">Add</button>
+            </div>
+
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+
+

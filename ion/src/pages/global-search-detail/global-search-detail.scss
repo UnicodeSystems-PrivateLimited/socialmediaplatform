@@ -1,0 +1,25 @@
+page-global-search-detail {
+    .header {
+        &::after {
+            background-image: none;
+            height: 0;
+        }
+        .header-title {
+            margin: 0;
+        }
+        .toolbar {
+            min-height: 54px;
+        }
+    }
+    .content {
+        background-color: #dfdfdf;
+        .item {
+            padding-left: 10px;
+            background-color: transparent;
+            border-bottom: 1px solid #898989;
+            .item-inner{
+                border: none;
+            }
+        }
+    }
+}

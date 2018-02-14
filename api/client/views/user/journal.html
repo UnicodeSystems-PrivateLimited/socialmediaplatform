@@ -1,0 +1,65 @@
+<div class="master-setting-page">
+    <div class="custom1-modal-header layout-row layout-align-space-between m-b-20">
+        <div class="h3 header-title">Journal -&nbsp; <span class="j-m-h">{{JournalByJournalId?.title}}</span></div>
+        <div class="header-options layout-row">
+
+        </div>
+    </div>
+    <div class="jouneral-body layout-column layout-align-space-between margin-l-10 margin-r-10">
+
+        <div class="layout-row flex-75"  *ngFor="#journal of JournalPost">
+             <div class="journal-icon-block flex-15 layout-row layout-align-start-start">
+                <i  aria-hidden="true" [ngClass]="getclassList(journal)"></i>
+            </div>
+            <div  class="link-block layout-row flex-80 layout-align-space-between border whit-bg college-b border-radius-3px ">
+
+                <div  class="content-block-desc layout-column flex-80 layout-wrap layout-row margin-l-10">
+
+                    <div  class="detaial flex-80 c-p">
+
+                        <h3  class="content-block-desc-title">{{journal?.description}}</h3>
+                        <h5  class="content-block-desc-sub-title">{{journal?.post_id.created_on | amDateFormat:'LL' }}</h5>
+                        <div *ngIf="journal.post_id.post_type == 5" class="content-block-desc-link">
+                            <h6 class="j-sub-heading"> {{journal.post_id.link[0].title}} </h6>
+                            <a  class="link" > {{journal.post_id.link[0].description}} </a>
+                        </div>
+                        <div *ngIf="journal.post_id.post_type == 1" class="content-block-desc-link">
+                            <h6 class="j-sub-heading"> {{journal.post_id.message}} </h6>
+
+                        </div>
+                        <div *ngIf="journal.post_id.post_type == 2" class="content-block-desc-link">
+                            <h6 class="j-sub-heading"> {{journal.post_id.question}} </h6>
+
+                        </div>
+                        <div *ngIf="journal.post_id.post_type == 7" class="content-block-desc-link">
+                            <h6 class="j-sub-heading"> {{journal.post_id.document[0].title}} </h6>
+                            <a href="theme/files/{{getFoldername(journal.post_id.types)}}/Documents/{{journal.post_id.created_by}}/{{journal.post_id.document[0].file_name}}" target="_blank" class="content-block-desc-title">{{journal.post_id.document[0].file_name}}</a>
+                        </div>
+                        <div *ngIf="journal.post_id.post_type == 3" class="content-block-desc-image">
+                            <h6 class="j-sub-heading">{{journal.post_id.photo[0].name}}</h6>
+
+                            <img (click)="getDetailView(journal.post_id._id)" class="img-responsive" src="theme/files/{{getFoldername(journal.post_id.types)}}/Photos/{{journal.post_id.created_by}}/{{journal.post_id.photo[0].file_name}}" alt="{{journal.post_id.photo[0].file_name}}" >
+                        </div>
+                        <div *ngIf="journal.post_id.post_type == 4" class="content-block-desc-image">
+                            <h6 class="j-sub-heading">{{journal.post_id.video[0].name}}</h6>
+
+                            <video (click)="getDetailView(journal.post_id._id)" width="100%" height="100%" >
+                                <source src="theme/files/{{getFoldername(journal.post_id.types)}}/Videos/{{journal.post_id.created_by}}/{{journal?.post_id.video[0].file_name}}" type="video/mp4">
+                            </video>
+                        </div>
+                        <div *ngIf="journal.post_id.post_type == 6" class="content-block-desc-image">
+                            <h6 class="j-sub-heading">{{journal.post_id.audio[0].name}}</h6>
+
+                            <audio controls>
+                                <source src="theme/files/{{getFoldername(journal.post_id.types)}}/Audios/{{journal.post_id.created_by}}/{{journal.post_id.audio[0].file_name}}" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </div>
+
+                    </div>
+                </div> 
+            </div>
+        </div>
+
+    </div>
+</div>

@@ -1,0 +1,196 @@
+<div class="profile-asset-detail" *ngIf="post">
+    <div class="custom1-modal-header asset-detail-block">
+        <div class="h3 header-title">Profile Detail</div>
+        <div class="header-options layout-row">
+            <div class="flex layout-row layout-align-space-between layout-xs-column">
+                <div class="profile-asset flex-60 layout-column flex-sm-50 flex-xs-100">
+                    <div class="bg-asset layout-row layout-align-center-center">
+                        <div class="asset-img" *ngIf="post.post_type == 3">
+
+                            <img src="theme/files/{{getFoldername(post?.types)}}/Photos/{{post?.created_by._id}}/{{post?.photo[0].file_name}}" alt="">
+                        </div>
+
+                        <div *ngIf="post.post_type == 4" class="asset-img">
+
+
+                            <video width="100%" height="100%" controls >
+                                <source src="theme/files/{{getFoldername(post?.types)}}/Videos/{{post?.created_by._id}}/{{post?.video[0].file_name}}" type="video/mp4">
+                            </video>
+                        </div>
+                        <div *ngIf="post.post_type == 6" class="asset-img">
+
+
+                            <audio controls>
+                                <source src="theme/files/{{getFoldername(post?.types)}}/Audios/{{post?.created_by._id}}/{{post?.audio[0].file_name}}" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </div>
+
+                    </div>
+                    <!--            <div class="profile-asset-data layout-row">
+                                    <div class="asset-cat flex-40"><i class="fa fa-folder-o" aria-hidden="true"></i>Cargory:<span>weelness</span></div>
+                                    <div class="asset-cat flex-60 layout-row layout-align-end-start">
+                                        <ul class="layout-row c-p">
+                                            <li>
+                                               <i class="fa fa-book" aria-hidden="true"></i> Journal
+                                            </li>
+                                            <li>
+                                             <i class="fa fa-share" aria-hidden="true"></i> Share
+                                            </li>
+                                            <li>
+                                                <i class="fa fa-expand"></i> Full View 
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>-->
+                </div>
+                <div class="profile-asset-detl flex-35 layout-column flex-sm-50 flex-xs-100">
+                    <div class="asset-user layout-row">
+                        <div class="layout-row flex-70 layout-align-start-center">
+                            <div class="img-auser c-p" *ngIf="post.created_by" (click)="getProfileById(post.created_by._id)" >
+                                <img *ngIf="post.created_by.photo"  src="theme/files/ProfilePicture/{{post.created_by.photo}}" style="height:s 31px ;width: 37px">
+                                <img *ngIf="!post.created_by.photo"  src="theme/files/ProfilePicture/no_image.png" style="height:s 31px ;width: 37px">
+                                <!--<img src="theme/dist/img/text-user.png" style="height: 31px ;width: 37px"/>-->
+                            </div>
+                            <div class="img-auser-detail layout-column">
+                                <div class="img-auser-name c-p" (click)="getProfileById(post.created_by._id)">{{post.created_by.fname}}&nbsp;{{post.created_by.lname}}</div>   
+                                <div class="img-auser-date">{{post.created_on | amTimeAgo}}</div>   
+                            </div>
+                        </div>
+                        <div class="icon-expand flex-30 layout-row layout-align-end-start">
+
+                            <i class="fa fa-list-ul" aria-hidden="true"></i>
+                        </div>
+                    </div>
+                    <div class="dtl-dtl"></div>
+                    <div class="layout-row asset-smiley">
+                        <!--                        <div class="layout-row asset-smiley flex-40">
+                                                    <ul class="layout-row firstul c-p layout-align-start-end">
+                                                                            <li> <img src="theme/dist/img/surprise-active.png" style="height: 26px ;width: 26px"/><div class="abo">1</div></li>
+                                                                            <li> <img src="theme/dist/img/love-it-active.png" style="height: 26px ;width: 26px"/><div class="abo">1</div></li>
+                                                                            <li><img src="theme/dist/img/funny-active.png" style="height: 26px ;width: 26px"/><div class="abo">1</div></li>
+                                                    
+                                                    <img src="theme/dist/img/hand2.png" style="height: 20px ;width: 20px"/><span class="margin-l-10 bump-font">Bump Up!!</span>
+                                                    </ul>
+                        
+                        
+                        
+                                                </div>-->
+                        <div class="flex-100 smily-comment layout-align-end-center layout-row">
+                            <ul class="layout-row c-p">                         
+
+                                <li class="layout-column layout-align-center-center">
+                                    <i class="fa fa-commenting-o" aria-hidden="true"></i>
+                                    <span>({{post.comments.length}}) Comments</span>
+                                </li>
+                                <li class="layout-column layout-align-center-center c-p" (click)="addPostJournal(post.created_by._id,post._id)" >
+                                    <i class="fa fa-book" aria-hidden="true"></i>
+                                    <span>Journal</span>
+                                </li>
+                                <li class="layout-column layout-align-center-center c-p" (click)="share(post)">
+                                    <i class="fa fa-share" aria-hidden="true"></i> 
+                                    <span *ngIf="post.share"> ({{post.share.length}})Share</span>
+                                </li>
+                                <li class="layout-column layout-align-center-center c-p" (click)="addLike(post._id,post)">
+                                    <img src="theme/dist/img/hand2.png" style="height: 20px ;width: 20px"/>
+                                    <span class="margin-l-10 bump-font">({{post.likes.length}})Bump Up!!</span>
+                                </li>
+                            </ul>
+
+                        </div>
+
+                    </div>
+                    <div class="layout-column comment-block">
+                        <div class="layout-column comment-section comment-body">
+                            <ul>
+                                <li *ngFor="#comment of post.comments">
+                                    <div class="layout-row">
+                                        <div class="comenter-pic c-p" (click)="getProfileById(comment.comment_by._id)">
+                                            <img *ngIf="comment.comment_by.photo"  src="theme/files/ProfilePicture/{{comment.comment_by.photo}}" style="height:s 31px ;width: 25px">
+                                            <img *ngIf="!comment.comment_by.photo"  src="theme/files/ProfilePicture/no_image.png" style="height:s 31px ;width: 25px">
+                                            <!--                                            <img src="theme/dist/img/text-user.png" style="height:s 31px ;width: 25px"/>-->
+                                        </div>
+                                        <div class="comenter-detail layout-column">
+                                            <div class="comenter-coment">{{comment.body}}</div>
+                                            <div class="comenter-detl c-p" (click)="getProfileById(comment.comment_by._id)">{{comment.comment_by.fname+' '+comment.comment_by.lname}}</div>
+                                            <div class="comenter-like layout-row">
+                                                <!--<div class="comenter-like-cont">0 likes</div>-->
+                                                <div class="comenter-like-day">{{comment.date | amTimeAgo}}</div>
+                                                <div class="comenter-like-del" (click)="deleteComment(post._id,comment._id,post)">Delete</div>
+                                                <!--<div class="comenter-like-edit">Edit</div>-->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <!--                                <li>
+                                                                    <div class="layout-row">
+                                                                        <div class="comenter-pic">
+                                                                            <img src="theme/dist/img/text-user.png" style="height: 25px ;width: 25px"/>
+                                                                        </div>
+                                                                        <div class="comenter-detail layout-column">
+                                                                            <div class="comenter-coment">wata aswome pic</div>
+                                                                            <div class="comenter-detl">Test uni teaster</div>
+                                                                            <div class="comenter-like layout-row">
+                                                                                <div class="comenter-like-cont">0 likes</div>
+                                                                                <div class="comenter-like-day">9 day's ago</div>
+                                                                                <div class="comenter-like-del">Delete</div>
+                                                                                <div class="comenter-like-edit">Edit</div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </li>-->
+                            </ul> 
+                        </div>
+                        <div class="comment-footer flex-1">
+                            <div class="layout-row">
+                                <div class="new-user-pic">
+                                    <img src="theme/dist/img/text-user.png" style="height: 25px ;width: 25px"/>
+                                </div>
+                                <div class="new-user-input flex-80"><input placeholder="Write"  [(ngModel)]="postComment.comment" /></div>
+                                <div class="new-user-button">
+                                    <button class="add-btn" (click)="addComment(post._id,post)">Send</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal fade modal-align-fix " id = "add-post-journal">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                    <h4 class="modal-title">Journal </h4>
+                                </div>
+                                <div class="modal-body setting-page flex-100 layout-row">
+                                    <label class="flex-20 layout-row layout-align-center-center">Descriptions</label>
+                                    <input id="exampleInputFile"  class="flex-50 pad-5-10" placeholder="Write" [(ngModel)]="description.description" />
+                                </div>
+                                <div class="modal-body setting-page flex-100 layout-row">
+                                    <label class="flex-20 layout-row layout-align-center-center">Journal</label>
+
+                                    <div class="dropdown flex-50">
+                                        <button type="text" data-toggle="dropdown" placeholder="Select Journal" class="flex-50">{{select_journal}}
+                                            <span class="caret"></span></button>
+                                        <ul class="dropdown-menu" >
+                                            <div *ngFor="#journals of JournalByUserId">
+                                                <li *ngIf="journals"><a (click)="saveJournalId(journals._id,journals.title)">{{journals.title}}</a></li>    
+                                            </div>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <div class="modal-footer">
+                                    <button class="add-btn cancel-btn" data-dismiss="modal">Cancel</button>
+                                    <button class="add-btn" data-dismiss="modal" (click)="addPostInJournal()">Update</button>
+                                </div>
+
+                            </div><!-- /.modal-content -->
+                        </div><!-- /.modal-dialog -->
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

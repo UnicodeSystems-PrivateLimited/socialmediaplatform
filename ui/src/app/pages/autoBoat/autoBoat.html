@@ -1,0 +1,486 @@
+<div class="tab-content chat_sec">
+<h3 class="chat-head-msg">Chat with your Friends and Groups</h3>
+    <div  (click)="togContactList()" class="mob-chat-list-btn with-border layout-row layout-align-center-center">
+                  <h3 *ngIf="stateMain"> Contact List</h3>
+                  <h3 *ngIf="!stateMain"> Chat Box</h3>
+                </div>
+    
+    <div class="tab-pane active chat-main-tab" id="control-sidebar-home-tab">
+         
+        <div class="main-chat-channel" [class.state-main]="stateMain" [class.state-side]="stateSide">
+            <div class="box box-primary layout-row">
+               
+                <div class="nav-tabs-custom flex-100 chat-channel-tab layout-column head_cust" >
+                    <ul class="nav nav-tabs">
+                        <li [class.actives]="singleChatTab"><a data-toggle="tab" class="text-center" (click)="changeTab()" tooltip="Single chat"><i class="fa fa-user" aria-hidden="true"></i></a></li>
+                        <li [class.actives]="groupChatTab"><a data-toggle="tab"  class="text-center" (click)="changeTab2()" tooltip="Group chat"><i class="fa fa-users" aria-hidden="true"></i></a></li>
+                    </ul>
+                    
+                            <div class="box-header with-border" *ngIf="singleChatTab">
+                                <div class="box-tools ">
+                                    <div class="has-feedback">
+                                        <input type="text" [(ngModel)]="search.text"   class="form-control input-sm" placeholder="Search...">
+                                        <span class="glyphicon glyphicon-search form-control-feedback"></span>
+                                    </div>
+                                </div>
+                            </div>
+                    <div class="tab-content cust-tab">
+                        
+                        
+                        <!--friend chat-->
+                        <div class="tab-pane active" id="c_tab_1" [class.showtab]="singleChatTab" [class.hidetab]="!singleChatTab">
+
+                            <ul class="nav nav-pills nav-stacked user-chat-list" *ngIf="friends">
+                                <li *ngFor="let friend of friends | myfilter:search?.text;let j=index" (click)="getCurrentBuddy(friend,j)">
+                                    <a  onclick="return false;" class="channel-list"  [class.selected-user]="CUser == j">
+                                        <div class="pull-left img-placeholder">
+                                            <span *ngIf="friend.user.photo"><img src="public/files/ProfilePicture/{{friend?.user.photo}}"></span>
+                                            <span *ngIf="!friend.user.photo"><img src="public/files/ProfilePicture/no_image.png"></span>
+                                        </div>
+                                        <h4><span *ngIf="friend.user.fname">{{friend.user.fname+' '}}</span><span *ngIf="friend.user.lname">{{" "+friend.user.lname}}</span> <small><i class="fa fa-commenting-o"></i> {{friend.mCounter}}</small>
+                                        <!--<br><span class="time-cust">20 min ago</span>-->
+                                        </h4>
+                                        
+                                        <!--<p class="time-ago">{{ friend.user.login_details.last_login | amCalendar}}</p>-->
+                                        <div class="chat-user-status" [class.user-online]="friend.status==1"></div>
+                                    </a>
+                                </li>
+
+                            </ul>
+                        </div>
+                            
+                        
+                        <!--group chat-->
+                        <!--<div class="tab-pane" id="c_tab_2" *ngIf="groups">-->
+                        <div class="tab-pane" id="c_tab_2" [class.showtab]="groupChatTab" [class.hidetab]="!groupChatTab">
+                            <div class="box-header with-border">
+                                <span (click)="openGroupModal()"  class="btn-title btn-a-g btn-sm btn c-p" id="group-modal" data-toggle="modal" >Add Group</span>
+                                <div class="box-tools jiui ">
+                                    <div class="has-feedback" >
+                                        <!--<input type="text"   class="form-control input-sm" placeholder="Search...">-->
+                                        <input type="text" [(ngModel)]="groupSearchField.name"   class="form-control input-sm" placeholder="Search...">
+                                        <!--<span class="glyphicon glyphicon-search form-control-feedback">{{error.groupMember}}</span>-->
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!--<ul class="user-search-list abso box-bor" *ngIf="groupSearchField" >
+                            <li class="layout-row layout-align-space-between search-li" *ngFor="#user of groupSearchField"  >
+                            <li class="layout-row layout-align-space-between search-li"   >
+                                <div class="search-result-left layout-row">
+                                    <div class="search-thumb">
+                                                                        <img alt="User Image" class=" " src="theme/files/ProfilePicture/no_image.png">
+                                    </div>
+                                    <div class="result-title"></div>
+                                    <div class="result-title">{{user.title}}</div>
+                                </div>
+                                <div class="search-result-right">
+                                    <div class="result-icon">
+                                        <i aria-hidden="true" class="fa fa-user-plus"></i>
+                                    </div>
+                                </div>
+                            </li>                                                
+                            </ul>-->
+                            <ul class="nav nav-pills nav-stacked user-chat-list" >
+                                <li >
+                                    <h4 class="at-gr-head" *ngIf="groups && groups.length>0">My groups</h4>   
+                                <li *ngFor="let group of groups  | myGroupfilter:groupSearchField?.name;let i=index">
+                                    <a  onclick="return false;" class="channel-list" (click)="groupData(group)" >
+                                        <div class="pull-left img-placeholder">
+                                            <span *ngIf="group.icon"><img src="public/files/Groupchat/{{group.icon}}"  height="42px" width="42px"></span>
+                                            <span *ngIf="!group.icon"><img src="public/files/Groupchat/no-image-event.jpg"  height="42px" width="42px"></span>
+                                        </div>
+                                        <h4 id="groupchateditor" >{{group.title}}<small *ngIf="group.mCounter>=0 "><i class="fa fa-commenting-o"></i> {{group.mCounter}}</small></h4>
+                                        <!--<p class="time-ago">&nbsp;</p>-->
+                                        
+                                    </a>
+                                </li>
+                                <h4 class="at-gr-head" *ngIf="otherGroup && otherGroup.length>0">Others Group</h4>   
+                                <li *ngFor="let othgroup of otherGroup  | myGroupfilter:groupSearchField?.name;let i=index">
+                                    <a  onclick="return false;" class="channel-list"  (click)="groupData(othgroup)" >
+                                        <div class="pull-left img-placeholder">
+                                            <span *ngIf="othgroup.icon"><img src="public/files/Groupchat/{{othgroup.icon}}"  height="42px" width="42px"></span>
+                                            <span *ngIf="!othgroup.icon"><img src="public/files/Groupchat/no-image-event.jpg"  height="42px" width="42px"></span>
+                                        </div>
+                                        <h4 id="groupchateditor" >{{othgroup.title}}<small *ngIf="othgroup.mCounter>=0 "><i class="fa fa-commenting-o"></i> {{othgroup.mCounter}}</small></h4>
+                                        <!--<p class="time-ago">&nbsp;</p>-->
+
+                                    </a>
+                                </li>
+
+                            </ul>
+                        </div>
+                            
+                            
+                            
+                        
+                        
+                        
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+<!--        <div class="main-chat-editor-section">-->
+        <div class="main-chat-editor" id="main-chat-editor" [class.state-editor]="stateEditor">
+            <div class="box box-primary direct-chat direct-chat-primary main-chat-box">
+               
+                <div class="box-header with-border layout-row layout-align-start-center">
+                    <div class="chat-head-img" *ngIf="cBuddy && cBuddy.user ">
+                        <img *ngIf="cBuddy.user.photo" src="public/files/ProfilePicture/{{cBuddy?.user.photo}}">
+                        <img *ngIf="!cBuddy.user.photo" src="public/files/ProfilePicture/no_image.png">
+                    </div>
+                    <h3 class="box-title chat-head-title" *ngIf="cBuddy && cBuddy.user">{{cBuddy.user.fname}}&nbsp;<span *ngIf="cBuddy.user.lname">{{cBuddy.user.lname}}</span></h3>
+                </div>
+                <div #scrollMe class="box-body main-chat-body">
+                    <div class="direct-chat-messages layout-column" *ngIf="cBuddy && cBuddy.user && textBoxes.inBoxes[clientPref + cBuddy.id]">
+                    <div class="direct-chat-messages layout-column" *ngIf="cBuddy && cBuddy.user">
+                        
+                         <div class="direct-chat-msg layout-column layout-align-start-center" *ngFor="let msgh of defaultHistory[clientPref + cBuddy.id].messages" >
+                            <div class="layout-row flex-100 " style="width: 98%;">
+                                <div class="layout-row layout-align-start-center pre-chat-img-wrap flex-10">
+                                        <span *ngIf="msgh.from && msgh.from.photo">
+                                            <span *ngIf="msgh.from._id==cBuddy.id && cBuddy.user "><img class="pre-chat-img" src="public/files/ProfilePicture/{{cBuddy?.user.photo}}" alt="{{cBuddy.user.photo}}"></span>
+                                            <span *ngIf="msgh.from._id!=cBuddy.id"><img class="pre-chat-img" src="public/files/ProfilePicture/{{msgh?.from.photo}}" alt="{{msgh.from.photo}}"></span>
+                                        </span>
+                                        <span *ngIf="msgh.from && !msgh.from.photo"><img class="pre-chat-img" src="public/files/ProfilePicture/no_image.png" alt="no image1"></span>
+                                </div>
+                                <div class="pre-chat-text flex-100" [class.post-chat-text]="msgh.from._id == userIdGlobal">
+                                    {{msgh.body}}
+                                </div>
+                            </div>
+                            <div class="pre-chat-info flex-100" style="width: 98%;"><i class="fa fa-clock-o" aria-hidden="true"></i>&nbsp;{{msgh.date| datetime}}</div>
+
+
+                        </div>
+                         
+                         
+                        <div class="direct-chat-msg layout-column layout-align-end-center send-chat-msg" *ngFor="let msg of textBoxes.inBoxes[clientPref + cBuddy.id]" [class.direct-chat-msg-bg]="msg.self == true">
+                            <div class="layout-row flex-100 " style="width:98%;">
+                                <!--<div class="layout-row layout-align-start-center pre-chat-img-wrap flex-10">
+                                    <span *ngIf="msg.avatar"><img class="pre-chat-img" src="public/files/ProfilePicture/{{msg.avatar}}" alt="{{msg.avatar}}"></span>
+                                    <span *ngIf="!msg.avatar"><img class="pre-chat-img" src="public/files/ProfilePicture/no_image.png" alt="no image1"></span>
+                                    <img class="pre-chat-img" src="public/files/ProfilePicture/{{data.avatar}}" alt="message user image">
+                                </div>-->
+                                <div class="post-chat-text flex-100" >
+                                    {{msg.data.body}}
+                                </div>
+                                
+                            </div>
+                            <div class="pre-chat-info flex-100" style="width:98%;"><i class="fa fa-clock-o" aria-hidden="true"></i>&nbsp;{{msg.date| datetime}}</div>
+
+
+                        </div>
+                        </div>
+                    </div>
+                       
+                </div>
+                       
+                <div class="box-footer">
+                    <div class="input-group  main-chat-input-block layout-row">
+                        <textarea (keypress)="chatInputAction($event)" *ngIf="cBuddy && cBuddy.user" [(ngModel)]="textBoxes.outBoxes[clientPref+cBuddy.id].text" name="message" placeholder="Type Message ..." rows="2" cols="60" class="form-control main-chat-input"></textarea>
+                        <span class="input-group-btn-chat">
+                            <button type="button" class="btn btn-default" (click)="sendData()">Send</button>
+                        </span>
+                    </div>
+                        <span *ngIf="singlechattext.error!='' " style='color:red'>{{singlechattext.error}}</span>
+                </div>
+                <!-- /.box-footer-->
+            </div>
+            <!--/.direct-chat -->
+        </div>
+                        
+                       
+
+
+        <div class="group-chat-editor" id="group-chat-editor"  [class.state-editor]="stateEditor">
+            <div class="box box-primary direct-chat direct-chat-primary main-chat-box">
+                <div class="box-header with-border layout-row layout-align-space-between">
+                    <div class="head-chat flex-45 layout-row layout-align-start-center">
+                    <div class="chat-head-img grp-chat-head-img" *ngIf="chatGroupData">
+                        <span *ngIf="chatGroupData.icon"><img src="public/files/Groupchat/{{chatGroupData.icon}}"  height="42px" width="42px"></span>
+                    </div>
+                    <h3 class="box-title chat-head-title grp-chat-tn" *ngIf="chatGroupData">{{chatGroupData.title}}</h3>
+                    </div>
+                    <div class="group-chat-btn layout-xs-column flex-55 layout-row" *ngIf="chatGroupData">
+                         <button type="button"  data-toggle="modal" (click)="listMember()" class="list-mem-btn btn btn-default" >Member List</button>
+                        <button type="button"  data-toggle="modal" (click)="deleteModel(chatGroupData._id)" class="del-btn btn" *ngIf="profile && chatGroupData  && chatGroupData.created_by._id==profile.id ">Delete</button>
+                        <!--<button type="button" class="btn btn-default" id="group-add-mem" data-toggle="modal" (click)="openAddMemberModal()" *ngIf="profile && chatGroupData  && chatGroupData.created_by._id==profile.id "><i class="fa fa-plus"></i>Add Member</button>-->
+                        <button type="button" class="btn btn-default" id="group-add-mem" data-toggle="modal" (click)="openAddMemberModal()" ><i class="fa fa-plus"></i>Add Member</button>
+                    </div>
+                </div>
+                <div #scrollMe class="box-body main-chat-body">
+<!--                    <div class="direct-chat-messages layout-column" >
+                    <div class="direct-chat-messages layout-column" >-->
+<div *ngIf="groupchatdefaulthistory && groupchatdefaulthistory!=null && groupchatdefaulthistory.length>0">
+                    <div  class="direct-chat-msg layout-column layout-align-space-between {{j}}" *ngFor="let groupchatdefaulthistorys  of groupchatdefaulthistory ;let j=index" >
+                        <div class="layout-row flex-100 " style="width:98%;">
+
+                                <div class="layout-row layout-align-start-center pre-chat-img-wrap flex-10">
+                                <span *ngIf="groupchatdefaulthistorys && groupchatdefaulthistorys?.from.photo!=''"><img class="pre-chat-img" src="public/files/ProfilePicture/{{groupchatdefaulthistorys.from.photo}}" alt="{{groupchatdefaulthistorys.from.photo}}"></span>
+                                <span *ngIf="groupchatdefaulthistorys && groupchatdefaulthistorys?.from.photo=='' "><img class="pre-chat-img" src="public/files/ProfilePicture/no_image.png" alt="no image1"></span>
+                    </div>
+                            <div class="pre-chat-text flex-100" *ngIf="groupchatdefaulthistorys" [class.post-chat-text]="groupchatdefaulthistorys?.from._id == userIdGlobal">
+                                {{groupchatdefaulthistorys.body}}
+                                </div>
+                            </div>
+                        <div class="pre-chat-info flex-100" *ngIf="groupchatdefaulthistorys" style="width:98%;"><i class="fa fa-clock-o" aria-hidden="true"></i>&nbsp;{{groupchatdefaulthistorys.cdate| datetime}}</div>
+
+                                    </div>
+                </div>
+
+                         
+                    <!--<div  *ngIf="groupchathistory && groupchathistory!=null  && groupchathistory.length>0" class="direct-chat-msg layout-row layout-align-space-between" *ngFor="#groupchathistoryies  of groupchathistory">-->
+                    <div *ngIf="groupchathistory && groupchathistory!=null  && groupchathistory.length>0">
+                    <div   class="direct-chat-msg layout-column layout-align-space-between {{k}}" *ngFor="let groupchathistorys  of groupchathistory ;let k=index">
+                        <!--<div  class="layout-row flex-100 ">-->
+                            <div class="layout-row flex-100 " style="width:98%;">
+                                <div class="layout-row layout-align-start-center pre-chat-img-wrap flex-10">
+                                    <span *ngIf="groupchathistorys  && (groupchathistorys?.userdata.photo!=null && groupchathistorys?.userdata.photo!='')"><img class="pre-chat-img" src="public/files/ProfilePicture/{{groupchathistorys.userdata.photo}}" alt="{{groupchathistorys.userdata.photo}}"></span>
+                                    <span *ngIf="groupchathistorys && (groupchathistorys?.userdata.photo==null || groupchathistorys?.userdata.photo=='')"><img class="pre-chat-img" src="public/files/ProfilePicture/no_image.png" alt="no image1"></span><!--
+                                    <img class="pre-chat-img" src="theme/files/ProfilePicture/{{data.avatar}}" alt="message user image">-->
+                                </div>
+                                <div class="pre-chat-text flex-100" *ngIf="groupchathistorys">
+                                    {{groupchathistorys.body}}
+                                </div>
+                            </div>
+                            <div class="pre-chat-info flex-100" style="width:98%;" *ngIf="groupchathistorys"><i class="fa fa-clock-o" aria-hidden="true"></i>&nbsp;{{groupchathistorys.cdate| datetime}}</div>
+                        <!--</div>-->
+
+<!--                        </div>
+                    </div>-->
+                    </div>
+                </div>
+
+                </div>
+
+                <div class="box-footer">
+                    <div class="input-group  main-chat-input-block layout-row">
+                        <textarea  (keypress)="groupchatInputAction($event)"  [(ngModel)]="groupchattext.groupchatmsg" name="message"  placeholder="Type Message ..." rows="2" cols="60" class="form-control main-chat-input"></textarea>
+                        <!--<span class="input-group-btn-chat" *ngIf="groups.length>0 && otherGroup.length >0 ">-->
+                        <span class="input-group-btn-chat" >
+                            <button type="button" class="mb-hide-xs btn btn-default" (click)="sendGroupData()">Send</button>
+                            <button type="button" class="mb-mob-disp btn btn-default" (click)="sendGroupData()"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></button>
+                        </span>
+                    </div>
+                    <span *ngIf="groupchattext.error!='' " style='color:red'>{{groupchattext.error}}</span>
+                    <span *ngIf="addmember.error!='' " style='color:red'>{{addmember.error}}</span>
+                </div>
+                <!-- /.box-footer-->
+            </div>
+            <!--/.direct-chat -->
+        </div>
+        <!--</div>-->
+
+                    </div>
+
+
+
+<div class="modal fade modal-align-fix " id = "groupModal" >
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"  (click)="closeGroupModel()"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" >Add Group</h4>
+                </div>
+
+            <div class="modal-body setting-page flex-100 layout-row">
+                <div class="modal-body layout-column flex-100 ">
+
+
+
+                    <div class="form-group">
+                        <label for="albumTitle">Group Name</label>
+                        <input type="text" [(ngModel)]="groupdata.title" class="form-control" placeholder="Group Name" name="eventName" id="eventName" required="required">
+                        <span class="error_file_message">{{errorGroupMsg.errorName}}</span>
+                    </div>
+
+                    
+                    <div class="modal-body">
+                        <div class="layout-column uplod-pic">
+                            <div class="upload-area flex-60 layout-align-start-center layout-row">
+                                <input id="exampleInputFile" type="file" id="img_upload" (change)="photoChangeEvent($event)" placeholder="choose image">
+                            </div>
+                            <span class="error_file_message"*ngIf="errorGroupMsg && errorGroupMsg.errorIcon!=null">{{errorGroupMsg.errorIcon}}</span>
+                            <span class="p-5"> Note : Upload only jpg/png/gif/tif files.</span>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+                <button class="add-btn cancel-btn" data-dismiss="modal" (click)="closeGroupModel()">Cancel</button>
+                <button class="add-btn"  (click)="createGroup()" >Save</button>
+            </div>
+
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+<div class="back-chat" (click)= "chatBoxClose()"><span><i class="fa fa-chevron-circle-right" aria-hidden="true"></i>
+</span></div>
+</div>
+
+<div class="modal fade modal-align-fix " id = "groupDeleteModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+<div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" ><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Delete </h4>
+            </div>
+
+            <div class="modal-body setting-page flex-100 layout-row">
+                <div class="modal-body layout-column flex-100 ">
+
+
+ 
+
+
+                    <div class="modal-body">
+
+                        <div class="upload-area flex-60 layout-align-start-center layout-row">
+                            <h4>Are you sure you want to delete this Group?</h4> 
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+                <button class="add-btn cancel-btn" data-dismiss="modal">Cancel</button>
+                <button class="add-btn" data-dismiss="modal" (click)="deleteGroup()" >Yes</button>
+            </div>
+
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+
+<div class="modal fade modal-align-fix" id = "addGroupMember" (click)="clearGroupMemberList()">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" ><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Add Member</h4>
+            </div>
+
+            <div class="modal-body setting-page flex-100 layout-row">
+                <div class="modal-body layout-column flex-100">
+                    <div class="form-group">
+                        <label for="albumTitle">Select Member</label>
+                        <input type="text" [(ngModel)]="userSearchField.name" (keyup)="friendSearch($event)" (focus)="friendSearch($event)" class="form-control" placeholder="Search Member"  required="required">
+                        <span class="error_file_message">{{errorAddMember}}</span>
+                        <ul class="user-search-list abso box-bor" *ngIf="userSearchList" >
+                            <li class="layout-row layout-align-space-between search-li" *ngFor="let user of userSearchList" (click)="addToGroup(user._id,user)" >
+                                <div class="search-result-left layout-row">
+                                    <div class="search-thumb">
+                                        <img *ngIf="user.photo" alt="User Image" class=" " src="public/files/ProfilePicture/{{user?.photo}}">
+                                        <img *ngIf="!user.photo" alt="User Image" class=" " src="public/files/ProfilePicture/no_image.png">
+                                    </div>
+                                    <div class="result-title">{{user.fname}} <span *ngIf="user.lname">{{user.lname}}</span></div>
+                                </div>
+                                <div class="search-result-right">
+                                    <div class="result-icon">
+                                        <i aria-hidden="true" class="fa fa-user-plus"></i>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="">
+                        <ul class="group-mem-list layout-row layout-align-space-between layout-wrap">
+                            <li class="layout-row layout-align-space-between search-li flex-32" *ngFor="let user of tmpMembers" >
+                                <div class="search-result-left layout-row">
+                                    <div class="search-thumb">
+                                        <img *ngIf="user.photo" alt="User Image" class=" " src="public/files/ProfilePicture/{{user.photo}}">
+                                        <img *ngIf="!user.photo" alt="User Image" class=" " src="public/files/ProfilePicture/no_image.png">
+                                    </div>
+                                    <div class="result-title layout-align-center-center layout-row">{{user.fname}} <span *ngIf="user.lname">{{user.lname}}</span></div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+                <button class="add-btn cancel-btn" data-dismiss="modal" (click)="clearGroupMemberList()">Cancel</button>
+                <button class="add-btn"  (click)="addMembers()" >Save</button>
+        </div>
+
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+
+
+<div class="modal fade modal-align-fix" id="listMember">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" ><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Added Members</h4>
+    </div>
+
+            <div class="modal-body setting-page flex-100 layout-row">
+                <div class="modal-body layout-column flex-100">
+
+                    <div class="">
+                        <ul class="group-mem-list layout-row layout-align-space-between layout-wrap" *ngIf="chatGroupData">
+                            <li class="layout-row layout-align-space-between search-li flex-32" *ngFor="let member of chatGroupData.members">
+                                <div class="search-result-left layout-row flex-100">
+                                    <div class="search-thumb">
+                                        <!--<img *ngIf="user.photo" alt="User Image" class=" " src="{{user.photo}}">-->
+                                        <span *ngIf="member && member.user_id.photo!=null"><img  alt="User Image" class=" " src="public/files/ProfilePicture/{{member.user_id.photo}}"  height="42px" width="42px"></span>
+                                        <span *ngIf="member && member.user_id.photo==null"><img  alt="User Image" class=" " src="public/files/ProfilePicture/no_image.png"  height="42px" width="42px"></span>
+                                    </div>
+                                    <div *ngIf="member && member.user_id.fname!=null" class="result-title layout-align-center-center layout-row flex-50">{{member.user_id.fname+' '+member.user_id.lname}}</div>
+                                    <div class="gc-ml-d-s layout-row layout-align-end-center flex-20" *ngIf="profile && chatGroupData && member && chatGroupData.created_by._id==profile.id && member.user_id._id!=profile.id">
+                                         <span  class="gc-del-btn c-p" (click)="onMemberDelete(member.user_id._id,chatGroupData._id,member.user_id.fname)">x</span>
+                                      </div>
+                                </div>
+                            </li>                                                
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+                <button class="add-btn cancel-btn" data-dismiss="modal">Cancel</button>
+                <!--<button class="add-btn"  >Save</button>-->
+    </div>
+
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+<!--delete group member-->
+<div class="modal fade modal-align-fix " id="memberDeleteModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Delete Member </h4>
+            </div>
+
+            <div class="modal-body setting-page flex-100 layout-row">
+                <div class="modal-body layout-column flex-100 ">
+                    <div class="modal-body">
+                        <div class="upload-area flex-60 layout-align-start-center layout-row">
+                            <h4>Are you sure you want to remove the added member from the list?</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button class="add-btn cancel-btn" data-dismiss="modal">Cancel</button>
+                <button class="add-btn" data-dismiss="modal" (click)="removeGroupMember()">Yes</button>
+            </div>
+
+        </div>
+    </div>
+</div>

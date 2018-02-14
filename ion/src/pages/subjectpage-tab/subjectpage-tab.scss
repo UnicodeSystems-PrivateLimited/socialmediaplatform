@@ -1,0 +1,12 @@
+page-subjectpage-tab {
+.tabs {
+    .tabbar{background: #0d0d0d;     padding: 9px; }
+    
+    .tab-button{color: #868686; padding: 0 2px; position: relative;}
+    .tab-button[aria-selected=true]{padding: 0 2px;}
+    .tab-button-icon{color: #868686; }  
+    
+}
+.tabs-md .tab-button{min-height: 4.6rem;}
+
+}

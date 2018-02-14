@@ -1,0 +1,816 @@
+<div class="page-loader-section layout-row layout-align-center-center" *ngIf="!(user && userData) ">
+    <div class="page-loader pl-dash">Loading...</div>
+</div>
+<section class="content p-0" *ngIf="user && userData ">
+    <div class="custom1-modal layout-column">
+        <div class="custom1-modal-header layout-row layout-align-space-between">
+            <div class="h3 header-title">Dashboard</div>
+            <div class="header-options layout-row layout-align-end">
+            </div>
+        </div>
+        <div class="custom1-modal-body layout-column layout-align-space-between my-profile-modal ">
+            <div class="layout-row flex-wrap layout-xs-column layout-wrap layout-align-space-between">
+                <div class="layout-column flex-32 flex-xs-100 res-margin layout-align-space-between">
+                    <div class="layout-row trans-scale c-p" (click)="mytoggle()">
+                        <div class="flex-25 noti-icon layout-align-center-center layout-row"><i class="fa fa-envelope" aria-hidden="true"></i></div>
+                        <div class="flex-75 layout-row layout-align-center-center noti-detail layout-wrap">
+                            <div class="flex-80 flex-sm-80">
+                                <div class="title">Messages</div>
+                            </div>
+                            <div class="flex-20 text-right flex-sm-20">
+                                <div class="title">{{page.totPendUserMsg}}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layout-row trans-scale">
+                        <div class="flex-25 noti-icon layout-align-center-center layout-row bell"><i class="fa fa-bell" aria-hidden="true"></i>
+                        </div>
+                        <div class="flex-75 layout-row layout-align-center-center noti-detail layout-wrap bell-column">
+                            <div class="flex-80 flex-sm-80">
+                                <div class="title">Notification</div>
+                            </div>
+                            <div class="flex-20 text-right flex-sm-20">
+                                <div class="title">{{page.notificationData.length}}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layout-row trans-scale c-p" [routerLink]="['Connection',{id:1,pageType:1}]">
+                        <div class="flex-25 noti-icon layout-align-center-center layout-row"><i class="fa fa-user" aria-hidden="true"></i>
+                        </div>
+                        <div class="flex-75 layout-row layout-align-center-center noti-detail layout-wrap">
+                            <div class="flex-80 flex-sm-80">
+                                <div class="title">New Members</div>
+                            </div>
+                            <div class="flex-20 text-right flex-sm-20">
+                                <div class="title">{{page.friendRequestnotificationData.length}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="layout-column flex-32 bar-section flex-xs-100 res-margin layout-align-space-between">
+                    <div class="layout-column height pad-10 layout-align-space-between">
+                        <div class="bar-startus layout-row ">
+                            <div class="layout-column flex-50">
+                                <div class="bar " id="bar">
+                                    <div class="progress" id="progress">
+                                        <div id="progress-bar" class="progress-bar progress-bar-yellow" [style.width.%]="profilepercent">
+                                            <div>{{profilepercent}}% Complete</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class=" layout-column flex-50 layout-align-sm-center-end">
+                                <div class="login-detail">
+                                    <span>Last Login:</span>
+                                    <span class="counter">{{userData?.loginDetails.lastLogin | amDateFormat:'LL'}}</span>
+                                </div>
+                                <div class="login-detail">
+                                    <span>Total Login:</span>
+                                    <span class="counter">{{userData?.loginDetails.totalLogin}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div [routerLink]="['Settings']" class="layout-row layout-align-space-between pad-10 trans-scale c-p">
+                        <span *ngIf="profilepercent!=100">Complete Your Profile</span>
+                        <span *ngIf="profilepercent==100">Edit Your Profile</span>
+                        <span><i class="fa fa-arrow-circle-o-right" aria-hidden="true"></i></span>
+                    </div>
+                </div>
+                <div class="layout-column flex-32 follwer flex-xs-100 res-margin">
+                    <div class="layout-row follwer1 trans-scale c-p" [routerLink]="['Connection',{id:1,pageType:1}]">
+                        <div class="layout-row flex-50 layout-align-space-between-center pad-10">
+                            <div class="first layout-row layout-align-space-between-center">Friends </div>
+                        </div>
+                        <div class="layout-row flex-50 layout-align-end-center  pad-10">
+                            <div class="first1">
+                                <span>{{userData?.friendsCount}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layout-row follwer2 trans-scale c-p" [routerLink]="['Connection',{id:3,pageType:1}]">
+                        <div class="layout-row flex-50 layout-align-space-between-center pad-10">
+                            <div class="first layout-row layout-align-space-between-center">Followers </div>
+                        </div>
+                        <div class="layout-row flex-50 layout-align-end-center  pad-10">
+                            <div class="first1">
+                                <span>{{userData?.followersCount}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layout-row follwer3 trans-scale c-p" [routerLink]="['Connection',{id:2,pageType:1}]">
+                        <div class="layout-row flex-50 layout-align-space-between-center pad-10">
+                            <div class="first layout-row layout-align-space-between-center">Following </div>
+                        </div>
+                        <div class="layout-row flex-50 layout-align-end-center  pad-10">
+                            <div class="first1">
+                                <span>{{userData?.followingsCount}}</span>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="layout-row layout-wrap cuurent-subject m-t-10 m-b-10 layout-align-space-between">
+                <div class="layout-column flex-49 whit-bg  border margin-r-10 m-b-10 flex-xs-100 res-margin">
+                    <div class="custom1-modal layout-column">
+                        <div class="custom1-modal-header layout-row layout-align-space-between pad-10 layout-wrap">
+                            <div class="layout-row layout-wrap flex-80">
+                                <div class="header-title-icon layout-row layout-align-center-center flex-10 flex-sm-20 flex-xs-20">
+                                    <!-- <i class="fa fa-book" aria-hidden="true"></i> -->
+                                    <img src="public/dist/img/currently-taking.png" width="20" /></div>
+                                <div class="header-title flex-80"> Currently Taking <span class="value-badge">({{userData.current_subjects.length}})</span>
+                                </div>
+                                
+                            </div>
+                            <div class="header-options layout-row flex-15 layout-align-end">
+                                <div class="modal-option option2 layout-row layout-align-center-center" tooltipPlacement="top" tooltip="Edit/Add Subject">
+                                    <i class="fa fa-pencil c-p" aria-hidden="true" [routerLink]="['Settings']"></i>
+                                </div>
+                            </div>
+                            <span class="layout-row  title_description">Click on any subject to connect with others or click icon on right to add subject you are taking / interested in.</span>
+                        </div>
+                        <div class="custom1-modal-body layout-row layout-wrap layout-align-start-start c-m-b-w">
+                            <div class="content-block layout-row flex-50 flex-sm-100 flex-xs-100 layout-align-space-between layout-align-xs-center-center"
+                                *ngFor="let current_subject of userData.current_subjects">
+                                <div class="content-block-img bg-math layout-column layout-align-center-center">
+                                    <i class="fa fa-calculator" aria-hidden="true"></i>
+                                </div>
+                                <div class="content-block-desc layout-column flex-70 c-p layout-align-xs-center-center margin-l-10" *ngIf="current_subject"
+                                    (click)="getSubjectWall(current_subject.subject_id)">
+                                    <h3 class="content-block-desc-title">{{current_subject.name}}</h3>
+                                    <h5 class="content-block-desc-sub-title" *ngIf="current_subject.from_date">{{current_subject.from_date| date:'MMM y'}}&nbsp; to&nbsp;{{current_subject.to_date|
+                                        date:'MMM y'}}</h5>
+                                    <!--<div class="content-block-desc-link" *ngIf="current_subject.subjects_user_type==3"> (Subject Expert)</div>
+                                    <div class="content-block-desc-link" *ngIf="current_subject.subjects_user_type==4"> (Teacher of Subject)</div>
+                                    <div class="content-block-desc-link" *ngIf="current_subject.subjects_user_type==5"> (Just Interested)</div>-->
+                                </div>
+                            </div>
+                            <div class="no-count-section" *ngIf="userData.current_subjects.length == 0">
+                                <i class="fa fa-exclamation-circle" aria-hidden="true"></i>&nbsp; No Current subjects found
+                            </div>
+                        </div>
+                    </div>
+                </div>
+              
+                <div class="layout-column flex-49 whit-bg  border flex-xs-100 res-margin m-b-10">
+                    <div class="custom1-modal layout-column">
+                        <div class="custom1-modal-header layout-row layout-align-space-between-center pad-10 layout-wrap">
+                            <div class="layout-row layout-wrap flex-80">
+                                <div class="header-title-icon layout-row layout-align-center-center flex-10 flex-sm-20 flex-xs-20">
+                                    <!-- <i class="fa fa-book" aria-hidden="true"></i></div> -->
+                                    <img src="public/dist/img/future-subject.png" width="20" /></div>
+                                <div class="header-title flex-80"> Future Subjects <span class="value-badge">({{userData.future_subjects.length}})</span>
+                                </div>
+                            </div>
+                            <div class="header-options layout-row flex-15 layout-align-end">
+                                <div class="modal-option option2 layout-row layout-align-center-center" tooltipPlacement="top" tooltip="Edit/Add Subject">
+                                    <i class="fa fa-pencil c-p" aria-hidden="true" [routerLink]="['Settings']"></i>
+                                </div>
+                            </div>
+                                <span class="layout-row title_description">Click on any subject to connect with others or click icon on right to add subject you anticipate taking in the future.</span>
+                            
+                        </div>
+                        <div class="custom1-modal-body layout-row layout-wrap layout-align-start-start c-m-b-w">
+                            <div class="content-block layout-row flex-50 flex-sm-100 layout-align-space-between-center flex-xs-100 layout-align-xs-center-center"
+                                *ngFor="let future_subject of userData.future_subjects">
+                                <div class="content-block-img bg-bio layout-column layout-align-center-center flex-30">
+                                    <i class="fa fa-heartbeat" aria-hidden="true"></i>
+                                </div>
+                                <div class="content-block-desc layout-column flex-70 c-p layout-align-xs-center-center margin-l-10" *ngIf="future_subject"
+                                    (click)="getSubjectWall(future_subject.subject_id)">
+                                    <h3 class="content-block-desc-title">{{future_subject.name}}</h3>
+                                    <h5 class="content-block-desc-sub-title" *ngIf="future_subject.from_date">{{future_subject.from_date| date:'MMM y'}}&nbsp; to&nbsp;{{future_subject.to_date|
+                                        date:'MMM y'}}</h5>
+                                </div>
+                            </div>
+                            <div class="no-count-section" *ngIf="userData.future_subjects.length == 0">
+                                <i class="fa fa-exclamation-circle" aria-hidden="true"></i>&nbsp; No future subjects found
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                  <div class="layout-column flex-49 whit-bg  border flex-xs-100 res-margin m-b-10">
+                    <div class="custom1-modal layout-column">
+                        <div class="custom1-modal-header layout-row layout-align-space-between-center pad-10 layout-wrap">
+                            <div class="layout-row layout-wrap flex-80">
+                                <div class="header-title-icon layout-row layout-align-center-center flex-10 flex-sm-20 flex-xs-20">
+                                    <!-- <i class="fa fa-book" aria-hidden="true"></i></div> -->
+                                    <img src="public/dist/img/past-subject.png" width="20" /></div>
+                                <div class="header-title flex-80"> Past Subjects <span class="value-badge">({{userData.past_subjects.length}})</span>
+                                </div>
+                            </div>
+                            <div class="header-options layout-row flex-15 layout-align-end">
+                                <div class="modal-option option2 layout-row layout-align-center-center" tooltipPlacement="top" tooltip="Edit/Add Subject">
+                                    <i class="fa fa-pencil c-p" aria-hidden="true" [routerLink]="['Settings']"></i>
+                                </div>
+                            </div>
+                            <span class="layout-row  title_description">Click on any subject to connect with others or click icon on right to add subject you took in the past.</span>                            
+                        </div>
+                        <div class="custom1-modal-body layout-row layout-wrap layout-align-start-start c-m-b-w">
+                            <div class="content-block layout-row flex-50 flex-sm-100 layout-align-space-between-center flex-xs-100 layout-align-xs-center-center"
+                                *ngFor="let past_subject of userData.past_subjects">
+                                <div class="content-block-img bg-bio layout-column layout-align-center-center flex-30">
+                                    <i class="fa fa-heartbeat" aria-hidden="true"></i>
+                                </div>
+                                <div class="content-block-desc layout-column flex-70 c-p layout-align-xs-center-center margin-l-10" *ngIf="past_subject"
+                                    (click)="getSubjectWall(past_subject.subject_id)">
+                                    <h3 class="content-block-desc-title">{{past_subject.name}}</h3>
+                                    <h5 class="content-block-desc-sub-title" *ngIf="past_subject.from_date">{{past_subject.from_date| date:'MMM y'}}&nbsp; to&nbsp;{{past_subject.to_date| date:'MMM y'}}
+                                    </h5>
+                                </div>
+                            </div>
+                            <div class="no-count-section" *ngIf="userData.past_subjects.length == 0">
+                                <i class="fa fa-exclamation-circle" aria-hidden="true"></i>&nbsp; No Past subjects found
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="layout-column flex-49 whit-bg  border flex-xs-100 res-margin m-b-10">
+                    <div class="custom1-modal layout-column">
+                        <div class="custom1-modal-header layout-row layout-align-space-between-center pad-10 layout-wrap">
+                            <div class="layout-row layout-wrap flex-80">
+                                <div class="header-title-icon layout-row layout-align-center-center flex-10 flex-sm-20 flex-xs-20">
+                                    <!-- <i class="fa fa-book" aria-hidden="true"></i></div> -->
+                                    <img src="public/dist/img/subject-expert.png" width="20" /></div>
+                                <div class="header-title flex-80"> Subject Expert <span class="value-badge">({{userData.subject_experts_list.length}})</span>
+                                </div>
+                            </div>
+                            <div class="header-options layout-row flex-15 layout-align-end">
+                                <div class="modal-option option2 layout-row layout-align-center-center" tooltipPlacement="top" tooltip="Edit/Add Subject">
+                                    <i class="fa fa-pencil c-p" aria-hidden="true" [routerLink]="['Settings']"></i>
+                                </div>
+                            </div>
+                            <span class="layout-row title_description">Click on any subject to connect with others or click icon on right to add subject you are an expert in.</span>
+                            
+                        </div>
+                        <div class="custom1-modal-body layout-row layout-wrap layout-align-start-start c-m-b-w">
+                            <div class="content-block layout-row flex-50 flex-sm-100 layout-align-space-between-center flex-xs-100 layout-align-xs-center-center"
+                                *ngFor="let expert of userData.subject_experts_list">
+                                <div class="content-block-img bg-bio layout-column layout-align-center-center flex-30">
+                                    <i class="fa fa-heartbeat" aria-hidden="true"></i>
+                                </div>
+                                <div class="content-block-desc layout-column flex-70 c-p layout-align-xs-center-center margin-l-10" *ngIf="expert" (click)="getSubjectWall(expert.subject_id)">
+                                    <h3 class="content-block-desc-title">{{expert.name}}</h3>
+                                </div>
+                            </div>
+                            <div class="no-count-section" *ngIf="userData.subject_experts_list.length == 0">
+                                <i class="fa fa-exclamation-circle" aria-hidden="true"></i>&nbsp; No subject expert found
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="layout-column flex-49 whit-bg  border flex-xs-100 res-margin">
+                    <div class="custom1-modal layout-column">
+                        <div class="custom1-modal-header layout-row layout-align-space-between-center pad-10 layout-wrap">
+                            <div class="layout-row layout-wrap flex-80">
+                                <div class="header-title-icon layout-row layout-align-center-center flex-10 flex-sm-20 flex-xs-20">
+                                    <!-- <i class="fa fa-book" aria-hidden="true"></i></div> -->
+                                    <img src="public/dist/img/subject-teacher.png" width="20" /></div>
+                                <div class="header-title flex-80">Subject Teacher<span class="value-badge">({{userData.subject_teacher_list.length}})</span>
+                                </div>
+                            </div>
+                            <div class="header-options layout-row flex-15 layout-align-end">
+                                <div class="modal-option option2 layout-row layout-align-center-center" tooltipPlacement="top" tooltip="Edit/Add Subject">
+                                    <i class="fa fa-pencil c-p" aria-hidden="true" [routerLink]="['Settings']"></i>
+                                </div>
+                            </div>
+                            <span class="layout-row title_description">Click on any subject to connect with others or click icon on right to add subject if you are a teacher.</span>
+                            
+                        </div>
+                        <div class="custom1-modal-body layout-row layout-wrap layout-align-start-start c-m-b-w">
+                            <div class="content-block layout-row flex-50 flex-sm-100 layout-align-space-between-center flex-xs-100 layout-align-xs-center-center"
+                                *ngFor="let teacher of userData.subject_teacher_list">
+                                <div class="content-block-img bg-bio layout-column layout-align-center-center flex-30">
+                                    <i class="fa fa-heartbeat" aria-hidden="true"></i>
+                                </div>
+                                <div class="content-block-desc layout-column flex-70 c-p layout-align-xs-center-center margin-l-10" *ngIf="teacher" (click)="getSubjectWall(teacher.subject_id)">
+                                    <h3 class="content-block-desc-title">{{teacher.name}}</h3>
+                                </div>
+                            </div>
+                            <div class="no-count-section" *ngIf="userData.subject_teacher_list.length == 0">
+                                <i class="fa fa-exclamation-circle" aria-hidden="true"></i>&nbsp; No subject teacher found
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="layout-column flex-49 whit-bg  border flex-xs-100 res-margin">
+                    <div class="custom1-modal layout-column">
+                        <div class="custom1-modal-header layout-row layout-align-space-between-center pad-10 layout-wrap">
+                            <div class="layout-row layout-wrap flex-80">
+                                <div class="header-title-icon layout-row layout-align-center-center flex-10 flex-sm-20 flex-xs-20">
+                                    <!-- <i class="fa fa-book" aria-hidden="true"></i></div> -->
+                                    <img src="public/dist/img/just-interested.png" width="20" /></div>
+                                <div class="header-title flex-80"> Just Interested <span class="value-badge">({{userData.just_interested_list.length}})</span>
+                                </div>
+                            </div>
+                            <div class="header-options layout-row flex-15 layout-align-end">
+                                <div class="modal-option option2 layout-row layout-align-center-center" tooltipPlacement="top" tooltip="Edit/Add Subject">
+                                    <i class="fa fa-pencil c-p" aria-hidden="true" [routerLink]="['Settings']"></i>
+                                </div>
+                            </div>
+                            <span class="layout-row title_description">Click on any subject to connect with others or click icon on right to add subject if you are interested.</span>
+                            
+                        </div>
+                        <div class="custom1-modal-body layout-row layout-wrap layout-align-start-start c-m-b-w">
+                            <div class="content-block layout-row flex-50 flex-sm-100 layout-align-space-between-center flex-xs-100 layout-align-xs-center-center"
+                                *ngFor="let interest of userData.just_interested_list">
+                                <div class="content-block-img bg-bio layout-column layout-align-center-center flex-30">
+                                    <i class="fa fa-heartbeat" aria-hidden="true"></i>
+                                </div>
+                                <div class="content-block-desc layout-column flex-70 c-p layout-align-xs-center-center margin-l-10" *ngIf="interest" (click)="getSubjectWall(interest.subject_id)">
+                                    <h3 class="content-block-desc-title">{{interest.name}}</h3>
+                                </div>
+                            </div>
+                            <div class="no-count-section" *ngIf="userData.just_interested_list.length == 0">
+                                <i class="fa fa-exclamation-circle" aria-hidden="true"></i>&nbsp; No interested user found
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="layout-row layout-wrap col-deg-title">
+                <div class="header-title pad-10">Click on any college / degree to connect with others or click icon to add college / degree.</div>
+            </div>
+            <div class="layout-column layout-align-space-between ">
+                <!-- /.box-header -->
+                <div class="padding-0">
+                    <div class="layout-row flex-100  layout-align-space-between layout-wrap ">
+                        <div class="flex-49" *ngFor="let current_college of userData.current_colleges">
+                            <div class="m-b-10 flex-100">
+                                <div class="content-block layout-row layout-align-space-between border whit-bg college-b border-radius-3px">
+                                    <div class="layout-column layout-align-center-center flex-20 flex-sm-30 flex-xs-30 abnk">
+                                        <i class="fa fa-bank" aria-hidden="true"></i>
+                                    </div>
+                                    <div class="content-block-desc layout-column flex-80 layout-wrap layout-row margin-l-10">
+                                        <h3 class="content-block-desc-title flex-xs-80">Current College</h3>
+                                        <div class="detaial flex-80 c-p" (click)="getCollegeWall(current_college.college_id)">
+                                            <h5 class="content-block-desc-sub-title">{{current_college.name}}</h5>
+                                            <h5 class="content-block-desc-title flex-xs-80" *ngIf="current_college.from_date">{{current_college.from_date| date:'MMM y'}}&nbsp; to&nbsp;{{current_college.to_date|date:'MMM y'}}</h5>
+                                        </div>
+                                        <div class="icon-pencil-edit flex-15 layout-row text-right" tooltipPlacement="top" tooltip="Edit/Add College">
+                                            <div class="modal-option option1 layout-row layout-align-end-start flex-100">
+                                                <i class="fa fa-pencil c-p" aria-hidden="true" [routerLink]="['Settings']"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex-49" *ngFor="let past_college of userData.past_colleges">
+                            <div class="m-b-10 flex-100">
+                                <div class="content-block layout-row layout-align-space-between border whit-bg college-b border-radius-3px past-col">
+                                    <div class="layout-column layout-align-center-center flex-20 flex-sm-30 abnk flex-xs-30">
+                                        <i class="fa fa-bank" aria-hidden="true"></i>
+                                    </div>
+                                    <div class="content-block-desc layout-column flex-80 layout-wrap layout-row margin-l-10">
+                                        <h3 class="content-block-desc-title flex-xs-80">Past College</h3>
+                                        <div class="detaial flex-80 c-p" (click)="getCollegeWall(past_college.college_id)">
+                                            <h5 class="content-block-desc-sub-title">{{past_college.name}}</h5>
+                                            <h5 class="content-block-desc-title flex-xs-80" *ngIf="past_college.from_date">{{past_college.from_date| date:'MMM y'}}&nbsp; to&nbsp;{{past_college.to_date|date:'MMM y'}}</h5>
+                                        </div>
+                                        <div class="icon-pencil-edit flex-15 layout-row text-right">
+                                            <div class="modal-option option1 layout-row layout-align-end-start flex-100" tooltipPlacement="top" tooltip="Edit/Add College">
+                                                <i class="fa fa-pencil  c-p" aria-hidden="true" [routerLink]="['Settings']"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex-49" *ngFor="let future_college of userData.future_colleges">
+                            <div class="m-b-10 flex-100">
+                                <div class="content-block layout-row layout-align-space-between border whit-bg college-b border-radius-3px past-col">
+                                    <div class="layout-column layout-align-center-center flex-20 flex-sm-30 abnk flex-xs-30">
+                                        <i class="fa fa-bank" aria-hidden="true"></i>
+                                    </div>
+                                    <div class="content-block-desc layout-column flex-80 layout-wrap layout-row margin-l-10">
+                                        <h3 class="content-block-desc-title flex-xs-80">Future College</h3>
+                                        <div class="detaial flex-80 c-p" (click)="getCollegeWall(future_college.college_id)">
+                                            <h5 class="content-block-desc-sub-title">{{future_college.name}}</h5>
+                                            <h5 class="content-block-desc-title flex-xs-80" *ngIf="future_college.from_date">{{future_college.from_date| date:'MMM y'}}&nbsp; to&nbsp;{{future_college.to_date|date:'MMM y'}}</h5>
+                                        </div>
+                                        <div class="icon-pencil-edit flex-15 layout-row text-right">
+                                            <div class="modal-option option1 layout-row layout-align-end-start flex-100" tooltipPlacement="top" tooltip="Edit/Add College">
+                                                <i class="fa fa-pencil  c-p" aria-hidden="true" [routerLink]="['Settings']"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+            </div>
+            <div class="layout-column layout-align-space-between">
+                <!-- /.box-header -->
+                <div class="padding-0">
+                    <div class="layout-row flex-100  layout-align-space-between layout-wrap ">
+                        <div class="flex-49" *ngFor="let current_degree of userData.current_degrees">
+                            <div class="m-b-10 flex-100">
+                                <div class="content-block layout-row layout-align-space-between border whit-bg college-b border-radius-3px">
+                                    <div class="layout-column layout-align-center-center flex-20 flex-sm-30 flex-xs-30 abnk">
+                                        <i class="fa fa-graduation-cap" aria-hidden="true"></i>
+                                    </div>
+                                    <div class="content-block-desc layout-column flex-80 layout-wrap layout-row margin-l-10">
+                                        <h3 class="content-block-desc-title flex-xs-80">Current Degree</h3>
+                                        <div class="detaial flex-80 c-p" (click)="getDegreeWall(current_degree.degree_id)">
+                                            <h5 class="content-block-desc-sub-title">{{current_degree.name}}</h5>
+                                            <h5 class="content-block-desc-title flex-xs-80" *ngIf="current_degree.from_date">{{current_degree.from_date| date:'MMM y'}}&nbsp; to&nbsp;{{current_degree.to_date|date:'MMM y'}}</h5>
+                                        </div>
+                                        <div class="icon-pencil-edit flex-15 layout-row text-right" tooltipPlacement="top" tooltip="Edit/Add Degree">
+                                            <div class="modal-option option1 layout-row layout-align-end-start flex-100">
+                                                <i class="fa fa-pencil c-p" aria-hidden="true" [routerLink]="['Settings']"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex-49" *ngFor="let past_degree of userData.past_degrees">
+                            <div class="m-b-10 flex-100">
+                                <div class="content-block layout-row layout-align-space-between border whit-bg college-b border-radius-3px past-col">
+                                    <div class="layout-column layout-align-center-center flex-20 flex-sm-30 abnk flex-xs-30">
+                                        <i class="fa fa-graduation-cap" aria-hidden="true"></i>
+                                    </div>
+                                    <div class="content-block-desc layout-column flex-80 layout-wrap layout-row margin-l-10">
+                                        <h3 class="content-block-desc-title flex-xs-80 ">Past Degree</h3>
+                                        <div class="detaial flex-80 c-p" (click)="getDegreeWall(past_degree.degree_id)">
+                                            <h5 class="content-block-desc-sub-title">{{past_degree.name}}</h5>
+                                            <h5 class="content-block-desc-title flex-xs-80" *ngIf="past_degree.from_date">{{past_degree.from_date| date:'MMM y'}}&nbsp; to&nbsp;{{past_degree.to_date|date:'MMM y'}}</h5>
+                                        </div>
+                                        <div class="icon-pencil-edit flex-15 layout-row text-right">
+                                            <div class="modal-option option1 layout-row layout-align-end-start flex-100" tooltipPlacement="top" tooltip="Edit/Add Degree">
+                                                <i class="fa fa-pencil  c-p" aria-hidden="true" [routerLink]="['Settings']"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex-49" *ngFor="let future_degree of userData.future_degrees">
+                            <div class="m-b-10 flex-100">
+                                <div class="content-block layout-row layout-align-space-between border whit-bg college-b border-radius-3px past-col">
+                                    <div class="layout-column layout-align-center-center flex-20 flex-sm-30 abnk flex-xs-30">
+                                        <i class="fa fa-graduation-cap" aria-hidden="true"></i>
+                                    </div>
+                                    <div class="content-block-desc layout-column flex-80 layout-wrap layout-row margin-l-10">
+                                        <h3 class="content-block-desc-title flex-xs-80 ">Future Degree</h3>
+                                        <div class="detaial flex-80 c-p" (click)="getDegreeWall(future_degree.degree_id)">
+                                            <h5 class="content-block-desc-sub-title">{{future_degree.name}}</h5>
+                                            <h5 class="content-block-desc-title flex-xs-80" *ngIf="future_degree.from_date">{{future_degree.from_date| date:'MMM y'}}&nbsp; to&nbsp;{{future_degree.to_date|date:'MMM y'}}</h5>
+                                        </div>
+                                        <div class="icon-pencil-edit flex-15 layout-row text-right">
+                                            <div class="modal-option option1 layout-row layout-align-end-start flex-100" tooltipPlacement="top" tooltip="Edit/Add Degree">
+                                                <i class="fa fa-pencil  c-p" aria-hidden="true" [routerLink]="['Settings']"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+            </div>
+            <div class="layout-row layout-wrap photo-video-section layout-align-space-between-start m-b-10">
+                <div class="flex-49 whit-bg border border-radius-3px margin-r-10 no-margin flex-xs-100 layout-row">
+                    <div class="box box-warning  modal-border-box layout-column photo_sec">
+                        <div class="box-header">
+                            <h6 class="title w-53"><i class="fa fa-camera" aria-hidden="true"></i> Latest Photos</h6>
+                            <div class="box-tools pull-right">
+                                <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                            </div>
+                        </div>
+                        <div class="box-body placeholder-thumbnail-container m-b-20 layout-row layout-wrap layout-align-sm-space-start-center layout-align-start-center"
+                            *ngIf="photoData && photoData!=''">
+                            <div class="flex-31 placeholder-thumbnail flex-sm-45 m-t-10 layout-align-sm-center-center layout-row flex-xs-50 layout-align-xs-center-center layout-align-center-center"
+                                *ngFor="let photos of photoData">
+                                <div class="img-placeholder" *ngIf="(photos.photo[0] != null && photos.types==1) && photos.photo[0].title==null ">
+                                    <img class="img-thumb c-p" (click)="updateId(photos._id)" src="public/files/Subject/Photos/{{photos.origin_creator?photos.origin_creator:photos.created_by}}/{{photos.photo[0].file_name}}"
+                                        alt="Photo">
+                                </div>
+                                <div class="img-placeholder" *ngIf="(photos.photo[0] != null && photos.types==1) && photos.photo[0].title!=null">
+                                    <img class="img-thumb c-p" (click)="updateId(photos._id)" src="{{photos.photo[0].title}}" alt="Photo">
+                                </div>
+                                <div class="img-placeholder" *ngIf="(photos.photo[0] != null && photos.types==2)&& photos.photo[0].title==null">
+                                    <img class="img-thumb c-p" (click)="updateId(photos._id)" src="public/files/College/Photos/{{photos.origin_creator?photos.origin_creator:photos.created_by}}/{{photos.photo[0].file_name}}"
+                                        alt="Photo">
+                                </div>
+                                <div class="img-placeholder" *ngIf="(photos.photo[0] != null && photos.types==2) && photos.photo[0].title!=null">
+                                    <img class="img-thumb c-p" ((click)="updateId(photos._id)" src="{{photos.photo[0].title}}" alt="Photo">
+                                </div>
+                                <div class="img-placeholder" *ngIf="(photos.photo[0] != null && photos.types==3) && photos.photo[0].title==null">
+                                    <img class="img-thumb c-p" (click)="updateId(photos._id)" src="public/files/Degree/Photos/{{photos.origin_creator?photos.origin_creator:photos.created_by}}/{{photos.photo[0].file_name}}"
+                                        alt="Photo">
+                                </div>
+                                <div class="img-placeholder" *ngIf="(photos.photo[0] != null && photos.types==3) && photos.photo[0].title!=null">
+                                    <img class="img-thumb c-p" (click)="updateId(photos._id)" src="{{photos.photo[0].title}}" alt="Photo">
+                                </div>
+                                <div class="img-placeholder" *ngIf="(photos.photo[0] != null && photos.types==5) && photos.photo[0].title==null">
+                                    <img class="img-thumb c-p" (click)="updateId(photos._id)" src="public/files/Timeline/Photos/{{photos.origin_creator?photos.origin_creator:photos.created_by}}/{{photos.photo[0].file_name}}"
+                                        alt="Photo">
+                                </div>
+                                <div class="img-placeholder" *ngIf="(photos.photo[0] != null && photos.types==5) && photos.photo[0].title!=null">
+                                    <img class="img-thumb c-p" (click)="updateId(photos._id)" src="{{photos.photo[0].title}}" alt="Photo">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="box-footer text-center c-p" *ngIf="photoData != ''">
+                            <a class="uppercase" (click)="getTimelineProfileById(3)">View more</a>
+                        </div>
+                        <div class="no-count-section" *ngIf="photoData == ''">
+                            <i class="fa fa-exclamation-circle" aria-hidden="true"></i>&nbsp; Photos not found​
+                        </div>
+                    </div>
+                </div>
+                <div class="flex-49 whit-bg border border-radius-3px flex-xs-100 layout-row">
+                    <div class="box box-warning  modal-border-box layout-column">
+                        <div class="box-header">
+                            <h6 class="title w-53"><i class="fa fa-video-camera" aria-hidden="true"></i> Latest Videos</h6>
+                            <div class="box-tools pull-right">
+                                <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                            </div>
+                        </div>
+                        <div class="box-body placeholder-thumbnail-container m-b-20 layout-row layout-wrap layout-align-sm-space-start-center layout-align-start-center"
+                            *ngIf="videoData && videoData!=''">
+                            <div class="flex-31 m-t-10 placeholder-thumbnail flex-xs-50 layout-align-sm-center-center layout-row flex-xs-50 layout-align-xs-center-center layout-align-center-center"
+                                *ngFor="let videos of videoData">
+                                <div class="img-placeholder video-wrap-play" *ngIf="videos.video[0] != null && videos.types==1" (click)="getDetailVideoView(videos._id)">
+                                    <video #cmp *ngIf="videos.video[0].title==null" width="100%" height="100%">
+                                        <source src="public/files/Subject/Videos/{{videos.origin_creator?videos.origin_creator:videos.created_by}}/{{videos.video[0].file_name}}" type="video/mp4">
+                                    </video>
+                                    <iframe *ngIf="videos.video[0].title!=null" width="100%" height="100%" [src]="videos.video[0]?.title | youtubeSafeUrl">
+                                    </iframe>
+                                    <div class="video-wrap-layer">
+                                        <i class="fa fa-play-circle" aria-hidden="true"></i>
+                                    </div>
+                                </div>
+                                <div class="img-placeholder video-wrap-play" *ngIf="videos.video[0] != null && videos.types==2" (click)="getDetailVideoView(videos._id)">
+                                    <video #cmp *ngIf="videos.video[0].title==null" width="100%" height="100%">
+                                        <source src="public/files/College/Videos/{{videos.origin_creator?videos.origin_creator:videos.created_by}}/{{videos.video[0].file_name}}" type="video/mp4">
+                                    </video>
+                                    <iframe *ngIf="videos.video[0].title!=null" width="100%" height="100%" [src]="videos.video[0]?.title | youtubeSafeUrl">
+                                    </iframe>
+                                    <div class="video-wrap-layer">
+                                        <i class="fa fa-play-circle" aria-hidden="true"></i>
+                                    </div>
+                                </div>
+                                <div class="img-placeholder video-wrap-play" *ngIf="videos.video[0] != null && videos.types==3" (click)="getDetailVideoView(videos._id)">
+                                    <video #cmp *ngIf="videos.video[0].title==null" width="100%" height="100%">
+                                        <source src="public/files/Degree/Videos/{{videos.origin_creator?videos.origin_creator:videos.created_by}}/{{videos.video[0].file_name}}" type="video/mp4">
+                                    </video>
+                                    <iframe *ngIf="videos.video[0].title!=null" width="100%" height="100%" [src]="videos.video[0]?.title | youtubeSafeUrl">
+                                    </iframe>
+                                    <div class="video-wrap-layer">
+                                        <i class="fa fa-play-circle" aria-hidden="true"></i>
+                                    </div>
+                                </div>
+                                <div class="img-placeholder video-wrap-play" *ngIf="videos.video[0] != null && videos.types==5" (click)="getDetailVideoView(videos._id)">
+                                    <video #cmp *ngIf="videos.video[0].title==null" width="100%" height="100%">
+                                        <source src="public/files/Timeline/Videos/{{videos.origin_creator?videos.origin_creator:videos.created_by}}/{{videos.video[0].file_name}}" type="video/mp4">
+                                    </video>
+                                    <iframe *ngIf="videos.video[0].title!=null" width="100%" height="100%" [src]="videos.video[0]?.title | youtubeSafeUrl">
+                                    </iframe>
+                                    <div class="video-wrap-layer">
+                                        <i class="fa fa-play-circle" aria-hidden="true"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="box-footer text-center c-p" *ngIf="videoData != ''">
+                            <a class="uppercase" (click)="getTimelineProfileById(4)">View more</a>
+                        </div>
+                        <div class="no-count-section" *ngIf="videoData == ''">
+                            <i class="fa fa-exclamation-circle" aria-hidden="true"></i>&nbsp; Videos not found
+                        </div>
+                    </div>
+                </div>
+                <!--Skills-->
+               <div class="flex-100 margin-top whit-bg border border-radius-3px flex-xs-100 layout-row">
+    <div class="box box-warning  modal-border-box layout-column">
+        <div class="box-header">
+            <h6 class="title w-53">Skill & Endorsements</h6>
+            <!--<div class="icon-pencil-edit flex-15 layout-row text-right" >
+                <div class="modal-option option1 layout-row layout-align-end-start flex-100">
+                    
+                </div>
+            </div>-->
+            <div class="box-tools pull-right">
+                <button class="btn btn-box-tool" data-widget="collapse" (click)="onClickEditSkills()" tooltipPlacement="top" tooltip="Add/Edit Skill"><i class="fa fa-pencil c-p" aria-hidden="true"></i></button>
+                <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                
+            </div>
+        </div>
+      <div class="box-body skill-box-body padding-10 p-b-20" *ngIf="skills">
+    <div class="layout-column skill-row" *ngFor="let skill of skills">
+        <div class="layout-row layout-align-space-between" *ngIf="skill.skill_id">
+            <div class="custom-bullet layout-row flex-40 flex-xs-80">
+                <div class="c-b-body layout-row layout-align-center-center" style="padding:8px">
+                    <span class="">{{skill.skill_id.title}}</span>
+                    <div class="c-b-head layout-column layout-align-center-center">
+                        <span class="">{{skill.endorse.length}}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="flex-45 layout-row  layout-align-end-center flex-xs-20" *ngIf="skill.endorse">
+                <span *ngFor="let endorse of skill.endorse" class="related-user" (click)="getProfileById(endorse.user_id._id)">
+                                        <img *ngIf="endorse.user_id.photo" class="c-p" src="public/files/ProfilePicture/{{endorse.user_id.photo}}" alt="{{endorse.user_id.fname}}">
+                                        <img *ngIf="!endorse.user_id.photo" class="c-p" src="public/files/ProfilePicture/no_image.png" alt="{{endorse.user_id.fname}}">
+                                    </span>
+                <i class="fa fa-caret-right" aria-hidden="true"></i>
+            </div>
+        </div>
+        <div class="no-count-section" *ngIf="!skills">
+            <i class="fa fa-exclamation-circle" aria-hidden="true"></i>&nbsp; No skills added
+        </div>
+    </div>
+</div>
+  
+    </div>
+</div>
+                           
+            </div>
+            <div class="">
+                <div class="layout-row layout-wrap layout-align-space-between fri-folblock">
+                    <!--##############################################-->
+                    <div class="box box-warning box-solid border flex-32 flex-xs-100 ">
+                        <div class="box-header with-border box-header-bg border-radius-3px">
+                            <h3 class="box-title semi-bold">Friends </h3>
+                            <span class="count-num pull-right">{{userData.friendsCount}}</span>
+                            <div class="box-tools pull-right">
+                            </div>
+                        </div>
+                        <div class="box-body padding-0">
+                            <div class="">
+                                <div class="m-b-40" *ngIf="userData.friends && userData.friends!=''">
+                                    <ul class="users-list clearfix f-custom-box">
+                                        <li class="flex-xs-50 flex-33 felx-sm-50" *ngFor="let friend of userData.friends | slice:0:6;let f = index">
+                                            <span (mouseover)="UserPopupOpen($event,friend.friend_id)">
+                                                <a (click)="getProfileById(friend.friend_id)" class="member-border display-full c-p">
+                                              <span *ngIf="friend.photo"><img src="public/files/ProfilePicture/{{friend.photo}}" alt="User Image"></span>
+                                            <span *ngIf="!friend.photo"><img src="public/files/ProfilePicture/no_image.png" alt="User Image"></span>
+                                            <span *ngIf="friend.name" style="display:inline-block" class="mem-name">{{friend.name}}</span>  
+
+                                        </a>
+                                            </span>
+                                            <div class="setting-page flex-100 layout-row current-student-popup">
+                                                <div class="setting-page flex-100 layout-row" *ngIf="studentUser.userDetails">
+                                                    <a *ngIf="studentUser.userDetails.photo" class="member-border display-full c-p" (click)="getProfileById(friend.friend_id)">
+                                                        <img src="public/files/ProfilePicture/{{studentUser.userDetails.photo}}" style="height: 50px; width: 50px;" alt="User Image">
+                                                    </a>
+                                                    <a *ngIf="!studentUser.userDetails.photo" class="member-border display-full c-p" (click)="getProfileById(friend.friend_id)">
+                                                        <img src="public/files/ProfilePicture/no_image.png" style="height: 50px; width: 50px;" alt="User Image">
+                                                    </a>
+                                                    <div class="flex-100 layout-column">
+                  <h4 class="m-b-10" *ngIf="studentUser.userDetails && studentUser.userDetails?.fname">{{studentUser.userDetails.fname}}<span *ngIf="studentUser.userDetails?.lname">&nbsp;{{studentUser.userDetails.lname}}</span></h4>
+                  <span class="font-12">{{studentUser.friendsCount}} Friends, {{studentUser.followersCount}} Followers, {{studentUser.followingsCount}} Following</span>
+                </div>
+                                                </div>
+                                                <div class="setting-page flex-100 layout-row" style="width:100%" *ngIf="studentUser.is_logged_user == false">
+                                                    <button *ngIf="studentUser.current_friends_status_code == 6" (click)="addAsFriend(studentUser)" type="button" class="btn bg-orange btn-flat flex-40 flex-xs-100">Add as Friend</button>
+                                                    <button *ngIf="studentUser.current_friends_status_code == 3" type="button" class="btn disabled bg-orange btn-flat flex-40 flex-xs-100">Already Friend</button>
+                                                    <button *ngIf="studentUser.current_friends_status_code == 1" (click)="cancelRequestedFriend(studentUser)" type="button" class="btn bg-orange btn-flat flex-40 flex-xs-100">Cancel Request</button>
+                                                    <button *ngIf="studentUser.current_friends_status_code == 2" type="button" class="btn bg-orange btn-flat flex-40 flex-xs-100"
+                                                        (click)="getFriendList()">Accept Request</button>
+                                                    <button *ngIf="studentUser.following_friend_status_code == 6" (click)="setFollow(studentUser)" type="button" class="btn bg-orange btn-flat flex-40 flex-xs-100">Follow</button>
+                                                    <button *ngIf="studentUser.following_friend_status_code == 3" (click)="setUnFollow(studentUser)" type="button" class="btn bg-orange btn-flat flex-40 flex-xs-100">UnFollow</button>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="no-count-section" *ngIf="userData.friends=='' || userData.friends == 0">
+                                    <i class="fa fa-exclamation-circle" aria-hidden="true"></i>&nbsp; No Friends
+                                </div>
+                            </div>
+                            <div class="box-footer text-center " *ngIf="userData.friends && userData.friends!=''">
+                                <a class="uppercase" [routerLink]="['Connection',{id:1,pageType:1}]">View more</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box box-warning box-solid border flex-32 flex-xs-100">
+                        <div class="box-header with-border box-header-bg border-radius-3px">
+                            <h3 class="box-title semi-bold">Followers </h3>
+                            <span class="count-num pull-right" >{{userData.followersCount}}</span>
+                            <div class="box-tools pull-right">
+                            </div>
+                        </div>
+                        <div class="box-body padding-0">
+                            <div class="">
+                                <div class="m-b-40" *ngIf="userData.followers && userData.followers!=''">
+                                    <ul class="users-list clearfix f-custom-box">
+                                        <li (mouseover)="UserPopupOpen($event,follower.follower_id)" class="flex-xs-50 flex-33 felx-sm-50" *ngFor="let follower of userData.followers | slice:0:6;let f = index">
+                                            <a (click)="getProfileById(follower.follower_id)" class="member-border display-full c-p" [class.is-friend]="follower.follower_friends_status == 1">
+                                                <span *ngIf="follower.photo"><img src="public/files/ProfilePicture/{{follower.photo}}" alt="User Image"></span>
+                                                <span *ngIf="!follower.photo"><img src="public/files/ProfilePicture/no_image.png" alt="User Image"></span>
+                                                <span *ngIf="follower.name" style="display:inline-block" class="mem-name">{{follower.name}}</span>                                                                                            
+                                            </a>
+                                            <div class="setting-page flex-100 layout-row current-student-popup">
+                                                <div class="setting-page flex-100 layout-row" *ngIf="studentUser.userDetails">
+                                                    <a *ngIf="studentUser.userDetails.photo" class="member-border display-full c-p" (click)="getProfileById(follower.follower_id)">
+                                                        <img src="public/files/ProfilePicture/{{studentUser.userDetails.photo}}" style="height: 50px; width: 50px;" alt="User Image">
+                                                    </a>
+                                                    <a *ngIf="!studentUser.userDetails.photo" class="member-border display-full c-p" (click)="getProfileById(follower.follower_id)">
+                                                        <img src="public/files/ProfilePicture/no_image.png" style="height: 50px; width: 50px;" alt="User Image">
+                                                    </a>
+                                                    <div class="flex-100 layout-column">
+                  <h4 class="m-b-10" *ngIf="studentUser.userDetails && studentUser.userDetails?.fname">{{studentUser.userDetails.fname}}<span *ngIf="studentUser.userDetails?.lname">&nbsp;{{studentUser.userDetails.lname}}</span></h4>
+                  <span class="font-12">{{studentUser.friendsCount}} Friends, {{studentUser.followersCount}} Followers, {{studentUser.followingsCount}} Following</span>
+                </div>
+                                                </div>
+                                                <div class="setting-page flex-100 layout-row" style="width:100%" *ngIf="studentUser.is_logged_user == false">
+                                                    <button *ngIf="studentUser.current_friends_status_code == 6" (click)="addAsFriend(studentUser)" type="button" class="btn bg-orange btn-flat flex-40 flex-xs-100">Add as Friend</button>
+                                                    <button *ngIf="studentUser.current_friends_status_code == 3" type="button" class="btn disabled bg-orange btn-flat flex-40 flex-xs-100">Already Friend</button>
+                                                    <button *ngIf="studentUser.current_friends_status_code == 1" (click)="cancelRequestedFriend(studentUser)" type="button" class="btn bg-orange btn-flat flex-40 flex-xs-100">Cancel Request</button>
+                                                    <button *ngIf="studentUser.current_friends_status_code == 2" type="button" class="btn bg-orange btn-flat flex-40 flex-xs-100"
+                                                        (click)="getFriendList()">Accept Request</button>
+                                                    <button *ngIf="studentUser.following_friend_status_code == 6" (click)="setFollow(studentUser)" type="button" class="btn bg-orange btn-flat flex-40 flex-xs-100">Follow</button>
+                                                    <button *ngIf="studentUser.following_friend_status_code == 3" (click)="setUnFollow(studentUser)" type="button" class="btn bg-orange btn-flat flex-40 flex-xs-100">UnFollow</button>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="no-count-section" *ngIf="userData.followers=='' || userData.followers == 0">
+                                    <i class="fa fa-exclamation-circle" aria-hidden="true"></i>&nbsp;You do not have any
+                                    Followers
+                                </div>
+                            </div>
+                            <div class="box-footer text-center " *ngIf="userData.followers && userData.followers!=''">
+                                <a href="javascript::" class="uppercase" [routerLink]="['Connection',{id:3,pageType:1}]">View more</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box box-warning box-solid border flex-32 flex-xs-100">
+                        <div class="box-header with-border box-header-bg border-radius-3px">
+                            <h3 class="box-title semi-bold">Following </h3>
+                            <span class="count-num pull-right" >{{userData.followingsCount}}</span>
+                            <div class="box-tools pull-right">
+                            </div>
+                            <!-- /.box-tools -->
+                        </div>
+                        <div class="box-body padding-0">
+                            <div class="">
+                                <div class="m-b-40" *ngIf="userData.followings && userData.followings!=''">
+                                    <ul class="users-list clearfix f-custom-box">
+                                        <li (mouseover)="UserPopupOpen($event,following.following_id)" class="flex-xs-50 flex-33 felx-sm-50" *ngFor="let following of userData.followings | slice:0:6;let f = index">
+                                            <a (click)="getProfileById(following.following_id)" class="member-border display-full c-p" [class.is-friend]="following.following_friend_status == 1">
+                                                <span *ngIf="following.photo"><img src="public/files/ProfilePicture/{{following.photo}}" alt="User Image"></span>
+                                                <span *ngIf="!following.photo"><img src="public/files/ProfilePicture/no_image.png" alt="User Image"></span>
+                                                <span *ngIf="following.name" style="display:inline-block" class="mem-name">{{following.name}}</span>                                                                                            
+                                            </a>
+                                            <div class="setting-page flex-100 layout-row current-student-popup">
+                                                <div class="setting-page flex-100 layout-row" *ngIf="studentUser.userDetails">
+                                                    <a *ngIf="studentUser.userDetails.photo" class="member-border display-full c-p" (click)="getProfileById(following.following_id)">
+                                                        <img src="public/files/ProfilePicture/{{studentUser.userDetails.photo}}" style="height: 50px; width: 50px;" alt="User Image">
+                                                    </a>
+                                                    <a *ngIf="!studentUser.userDetails.photo" class="member-border display-full c-p" (click)="getProfileById(following.following_id)">
+                                                        <img src="public/files/ProfilePicture/no_image.png" style="height: 50px; width: 50px;" alt="User Image">
+                                                    </a>
+                                                    <div class="flex-100 layout-column">
+                                                    <h4 class="m-b-10" *ngIf="studentUser.userDetails && studentUser.userDetails?.fname">{{studentUser.userDetails.fname}}<span *ngIf="studentUser.userDetails?.lname">&nbsp;{{studentUser.userDetails.lname}}</span></h4>
+                                                    <span class="font-12">{{studentUser.friendsCount}} Friends, {{studentUser.followersCount}} Followers, {{studentUser.followingsCount}} Following</span>
+                                                    </div>
+                                                </div>
+                                                <div class="setting-page flex-100 layout-row" style="width:100%" *ngIf="studentUser.is_logged_user == false">
+                                                    <button *ngIf="studentUser.current_friends_status_code == 6" (click)="addAsFriend(studentUser)" type="button" class="btn bg-orange btn-flat flex-40 flex-xs-100">Add as Friend</button>
+                                                    <button *ngIf="studentUser.current_friends_status_code == 3" type="button" class="btn disabled bg-orange btn-flat flex-40 flex-xs-100">Already Friend</button>
+                                                    <button *ngIf="studentUser.current_friends_status_code == 1" (click)="cancelRequestedFriend(studentUser)" type="button" class="btn bg-orange btn-flat flex-40 flex-xs-100">Cancel Request</button>
+                                                    <button *ngIf="studentUser.current_friends_status_code == 2" type="button" class="btn bg-orange btn-flat flex-40 flex-xs-100"
+                                                        (click)="getFriendList()">Accept Request</button>
+                                                    <button *ngIf="studentUser.following_friend_status_code == 6" (click)="setFollow(studentUser)" type="button" class="btn bg-orange btn-flat flex-40 flex-xs-100">Follow</button>
+                                                    <button *ngIf="studentUser.following_friend_status_code == 3" (click)="setUnFollow(studentUser)" type="button" class="btn bg-orange btn-flat flex-40 flex-xs-100">UnFollow</button>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="no-count-section" *ngIf="userData.followings=='' || userData.followings == 0">
+                                    <i class="fa fa-exclamation-circle" aria-hidden="true"></i>&nbsp;You are not Following
+                                    any users
+                                </div>
+                            </div>
+                            <div class="box-footer text-center " *ngIf="userData.followings && userData.followings!=''">
+                                <a class="uppercase" [routerLink]="['Connection',{id:2,pageType:1}]">View more</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<div class="modal fade asset-detail-dialog " id="profileAssetImgModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeStateDialog()"><span aria-hidden="true">&times;</span></button>
+            <div class="modal-body setting-page flex-100 layout-row">
+                <data-profile-Pic *ngIf="dialogState" [postId]="postid"></data-profile-Pic>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>

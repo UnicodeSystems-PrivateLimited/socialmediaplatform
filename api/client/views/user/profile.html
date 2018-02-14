@@ -1,0 +1,1401 @@
+
+<section *ngIf="user && userData" class="content p-0">
+
+
+    <div class="custom1-modal layout-column">
+        <div class="custom1-modal-header layout-row layout-align-space-between">
+            <div class="h3 header-title">Profile</div>
+            <div class="header-options layout-row">
+                <div class="modal-option option1 layout-row layout-align-center-center">
+                    <i class="c-p fa fa-plus-square c-green" aria-hidden="true"></i>
+                    <span class="c-p btn-title" id="event-modal1" data-toggle="modal" (click)="evnet_dash()">Create New Event</span>
+                </div>
+
+            </div>
+        </div>
+        <div class="custom1-modal-body layout-row layout-align-space-between ">
+            <div class="flex-55 flex-xs-30">
+                <div class=" modal-body-title">
+                    <h3>{{user.fname}}
+                        <br>
+                        <span class="modal-sub-title" *ngIf="userData.profilestatus.title">&nbsp; ({{userData.profilestatus.title}})</span>
+                    </h3>
+
+                </div>
+                <div class=" modal-body-content">
+                </div>
+                <div class=" modal-share" *ngIf="user.social_link">
+                    <a *ngIf="user.social_link.linkedin" href="{{user.social_link.linkedin}}" target="_blank" class="btn btn-social-icon btn-linkedin"><i class="fa fa-linkedin"></i></a>
+                    <a *ngIf="user.social_link.twitter" href="{{user.social_link.twitter}}" target="_blank" class="btn btn-social-icon btn-twitter"><i class="fa fa-twitter"></i></a>
+                    <a *ngIf="user.social_link.bitbucket" href="{{user.social_link.bitbucket}}" target="_blank" class="btn btn-social-icon btn-bitbucket"><i class="fa fa-bitbucket"></i></a>
+                    <a *ngIf="user.social_link.tumblr" href="{{user.social_link.tumblr}}" target="_blank" class="btn btn-social-icon btn-tumblr"><i class="fa fa-tumblr"></i></a>
+                    <a *ngIf="user.social_link.facebook" href="{{user.social_link.facebook}}" target="_blank" class="btn btn-social-icon btn-facebook"><i class="fa fa-facebook"></i></a>
+                    <a *ngIf="user.social_link.google_plus" href="{{user.social_link.google_plus}}" target="_blank" class="btn btn-social-icon btn-google"><i class="fa fa fa-google-plus"></i></a>
+                </div>
+            </div>
+            <div class="profile-info-data flex-40 layout-column layout-align-start flex-xs-70">
+                <div class="login-info-block layout-row layout-xs-column">
+                    <div class="layout-column layout-align-center-center flex-40 flex-xs-100">
+                        <div class="info-value" *ngIf="userData.loginDetails.totalLogin">
+                            {{userData.loginDetails.totalLogin}}
+                        </div>
+                        <div class="info-title">
+                            Total Login
+                        </div>
+                    </div>
+                    <div class="layout-column layout-align-center-center flex-60 flex-xs-100">
+                        <div class="info-value" *ngIf="userData.loginDetails.lastLogin ">
+                            {{userData.loginDetails.lastLogin| amTimeAgo}}
+                        </div>
+                        <div class="info-title" *ngIf="userData.loginDetails.totalLogin>1">
+                            Last Login
+                        </div>
+                        <div class="info-title" *ngIf="userData.loginDetails.totalLogin==1">
+                            First Login
+                        </div>
+                    </div>
+                </div>
+                <div class="count-info-block layout-row layout-align-space-between">
+                    <div class="layout-column layout-align-xs-center-center">
+                        <div class="count-title">
+                            Friends
+
+                        </div>
+                        <div class="count-value">
+                            {{userData.friendsCount}}
+                        </div>
+                    </div>
+                    <div class="layout-column layout-align-xs-center-center">
+                        <div class="count-title">
+                            Followers
+
+                        </div>
+                        <div class="count-value">
+                            {{userData.followersCount}}
+                        </div>
+                    </div>
+                    <div class="layout-column layout-align-xs-center-center">
+                        <div class="count-title">
+                            Following
+
+                        </div>
+                        <div class="count-value">
+                            {{userData.followingsCount}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="nav-tabs-custom user-profile-tab">
+                <ul class="nav nav-tabs  layout-row" (click)="initialPage()">
+                    <li class="flex-11">
+                        <a data-toggle="tab" href="#timeline" (click)="getUserTimeline()" class="layout-row layout-align-center-center">
+                            <i class="fa fa-clock-o" aria-hidden="true"></i>
+                            <span> Timeline</span> 
+                        </a>
+                    </li>
+                    <li class="flex-11">
+                        <a data-toggle="tab" href="#activity" (click)="getUserAllPost()" class="layout-row layout-align-center-center">
+                            <i class="fa fa-envelope" aria-hidden="true"></i>
+                            <span> Post</span> 
+                        </a>
+                    </li>
+                    <li class="flex-11">
+                        <a data-toggle="tab" href="#photos" (click)="getUserPost(3)" class="layout-row layout-align-center-center">
+                            <i class="fa fa-picture-o" aria-hidden="true"></i>
+                            <span> Photos</span> 
+                        </a>
+                    </li>
+                    <li class="flex-11">
+                        <a data-toggle="tab" href="#videos" (click)="getUserPost(4)"  class="layout-row layout-align-center-center">
+                            <i class="fa fa-youtube-play" aria-hidden="true"></i>
+                            <span>  Videos</span> 
+                        </a>
+                    </li>
+                    <li class="flex-11">
+                        <a data-toggle="tab" href="#links" (click)="getUserPost(5)" class="layout-row layout-align-center-center">
+                            <i class="fa fa-link" aria-hidden="true"></i>
+                            <span>  Link</span> 
+                        </a>
+                    </li>
+                    <li class="flex-11">
+                        <a data-toggle="tab" href="#documents" (click)="getUserPost(7)" class="layout-row layout-align-center-center">
+                            <i class="fa fa-book" aria-hidden="true"></i>
+                            <span> Document</span> 
+                        </a>
+                    </li>
+                    <li class="flex-11">
+                        <a data-toggle="tab" href="#audios" (click)="getUserPost(6)" class="layout-row layout-align-center-center">
+                            <i class="fa fa-headphones" aria-hidden="true"></i>
+                            <span> Audio</span> 
+                        </a>
+                    </li>
+                    <li class="flex-11">
+                        <a data-toggle="tab" href="#questions" (click)="getUserPost(2)" class="layout-row layout-align-center-center">
+                            <i class="fa fa-question-circle" aria-hidden="true"></i>
+                            <span>   Question</span> 
+                        </a>
+                    </li>
+                    <li class="flex-11">
+                        <a data-toggle="tab" href="#journals" (click)="getJournalByUserId(user._id)" class="layout-row layout-align-center-center">
+                            <i class="fa fa-archive" aria-hidden="true"></i>
+                            <span>   Journals</span> 
+                        </a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div class=" tab-pane" id="activity" (window:scroll)="onScrollListPost($event)">
+
+                        <div class="post flex-75 flex-sm-100 flex-xs-100" *ngFor="#data of postdataAll; #j=index">
+                             <div class="user-block">
+                                <img *ngIf="data.created_by.photo" alt="user image" class="img-circle img-bordered-sm" src="theme/files/ProfilePicture/{{data.created_by.photo}}">
+                                <img *ngIf="!data.created_by.photo" alt="user image" class="img-circle img-bordered-sm" src="theme/files/ProfilePicture/no_image.png" >
+                                <span class="username">
+                                    {{data.created_by.fname + " " + data.created_by.lname}}
+                                </span>
+                                <span class="description">{{data.created_on| amTimeAgo}}</span>
+                            </div>
+                            <div class="" *ngIf="data.message">
+                                <p> {{data.message}} </p>
+                            </div>
+                            <div class="row" *ngIf="data.photo[0]" >
+                                <div class="col-sm-12">
+
+                                    <div class="photo-container">
+                                        <h4 class=" header-title" *ngIf="data.name && data.name ===null">{{data.name}}</h4>
+                                        <img alt="Photo" class="img-responsive" src="theme/files/{{getFoldername(data.types)}}/Photos/{{data.created_by._id}}/{{data.photo[0].file_name}}" >
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="row" *ngIf="data.video[0]" >
+                                <h4 class=" header-title" *ngIf="data.name && data.name ===null">{{data.name}}</h4>
+                                <div class="col-sm-12">
+                                    <div class="photo-container">
+                                        <video width="100%" height="100%" controls >
+                                            <source src="theme/files/{{getFoldername(data.types)}}/Videos/{{data.created_by._id}}/{{data.video[0].file_name}}" type="video/mp4">
+                                        </video>
+                                    </div>
+
+                                </div>
+                            </div> 
+                            <div class="row" *ngIf="data.audio[0]" >
+                                <div class="col-sm-12">
+
+
+                                    <div class="audio-container">
+                                        <h4 class=" header-title" *ngIf="data.name && data.name ===null">{{data.name}}</h4>
+                                        <h4 class=" header-title">{{data.audio[0].file_name}}</h4>
+                                        <audio controls >
+                                            <source src="theme/files/{{getFoldername(data.types)}}/Audios/{{data.created_by._id}}/{{data.audio[0].file_name}}" type="audio/ogg">
+                                        </audio>
+                                    </div>
+                                </div>
+                            </div> 
+                            <div class="row" *ngIf="data.document[0]" >
+                                <div class="col-sm-12">
+                                    <div class="post-body">
+                                        <div class="document-container">
+                                            <h4 class=" header-title" *ngIf="data.name && data.name ===null">{{data.name}}</h4>
+                                            <a href="theme/files/{{getFoldername(data.types)}}/Documents/{{data.created_by._id}}/{{data.document[0].file_name}}" class="pdflink" ><span class="title" *ngIf="data.document[0].title">{{data.document[0].title}}</span><span class="title" *ngIf!="data.document[0].title"><i class="fa fa-file" aria-hidden="true"></i></span></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> 
+                            <div class="row" *ngIf="data.link[0]" >
+                                <div class="col-sm-12">
+                                    <div class="post-body">
+                                        <div class="link-container">
+                                            <h4 class=" link-title" *ngIf="data.link[0].title">{{data.link[0].title}}</h4>
+                                            <span class="link-heading"><i _ngcontent-fbs-5="" aria-hidden="true" class="fa fa-link"></i></span><a class="link" href="{{data.link[0].description}}" target="_blank" *ngIf="data.link[0].description">{{data.link[0].description}}</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> 
+                            <div class="row" *ngIf="data.question" >
+                                <div class="col-sm-12">
+                                    <div class="question-block">
+                                        <span class="question" >{{data.question}}</span>
+                                    </div>
+                                </div>
+                            </div> 
+                            <div class="post-btm layout-row layout-align-space-between-center layout-xs-column" _ngcontent-ket-7="">
+                                <ul class="list-inline smile-dropdown" _ngcontent-ket-7="">
+                                    <li >
+                                        <a class="link-black text-sm c-p" _ngcontent-ket-7="" (click)="addLike(data._id,data)">
+                                            <img src="theme/dist/img/hand2.png" style="height: 20px ;width: 20px"/>
+                                        </a><span _ngcontent-ket-7=""> {{data.likes.length}} </span>
+                                    </li>
+                                </ul>
+                                <ul class="list-inline user-acitvity" _ngcontent-ket-7="">
+                                    <li class="c-p"  (click)=toggleCommentPost(!togCommentPost,j)><a class="link-black text-sm" _ngcontent-ket-7=""><i class="fa fa-commenting margin-r-5 fa-1x" _ngcontent-ket-7=""></i><span _ngcontent-ket-7=""> {{data.comments.length}} </span>comment</a></li>
+                                    <li class="c-p" (click)=addJournalActivity(data.created_by._id,data._id)><a class="link-black text-sm" _ngcontent-ket-7=""><i class="fa fa-file-text margin-r-5 fa-1x" _ngcontent-ket-7=""></i>journal</a>
+                                    </li>
+                                    <li class="" >
+                                        <a (click)="share(data)" class="link-black text-sm c-p" _ngcontent-ket-7=""><i class="fa  fa-share margin-r-5 fa-1x" _ngcontent-ket-7=""></i> share
+                                            <span *ngIf="data.share"> ({{data.share.length}})</span></a>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div class="post-toggle-area" [class.display-comment]="togCommentPost && j == thisPostElement">
+                                 <div class="post-comment-section">
+                                    <div class="post-comment-body">
+                                        <ul class="post-comment-list">
+                                            <li class="layout-row"  *ngFor="#comment of data.comments">
+                                                <div (click)="getProfileById(comment.comment_by._id)" class="post-comment-img flex-10 c-p">
+                                                    <img *ngIf="comment.comment_by.photo" class="img-circle" src="theme/files/ProfilePicture/{{comment.comment_by.photo}}">
+                                                    <img *ngIf="!comment.comment_by.photo" class="img-circle" src="theme/files/ProfilePicture/no_image.png">
+                                                </div>
+                                                <div class="post-comment-body layout-column flex-90"> 
+                                                    <div class="layout-row layout-align-space-between">
+                                                        <div (click)="getProfileById(comment.comment_by._id)" class="flex-75 comment-by c-p">{{comment.comment_by.fname}}</div>
+                                                        <span class="flex-25 text-right">{{comment.date| amTimeAgo}}</span>
+                                                    </div>
+                                                    <div class="post-comment-text">
+                                                        {{comment.body}}
+                                                    </div>
+                                                </div>
+                                                <span  class="delete" (click)="deleteComment(data._id,comment._id, data)">delete</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="post-comment-footer">
+                                        <form (ngSubmit)="addComment(data._id,data)">
+                                            <div class="input-group">
+
+                                                <input [(ngModel)]="postComment.comment" class="form-control" type="text"  placeholder="Type a comment">
+                                                <span class="input-group-addon" (click)="addComment(data._id,data)"><i class="fa fa-paper-plane-o"></i></span>
+
+                                            </div>
+                                        </form>
+                                    </div>
+
+
+                                </div>
+                            </div>
+
+
+
+
+                            <!--                            <div class="post-toggle-area" [class.display-comment]="togCommentPost && j == thisPostElement">
+                                                             <div class="post-comment-section">
+                                                                <div class="post-comment-body">
+                                                                    <ul class="post-comment-list">
+                                                                        <li class="layout-row" >
+                                                                            <div class="post-comment-img flex-10 c-p">
+                            
+                                                                                <img  class="img-circle" src="theme/files/ProfilePicture/no_image.png">
+                                                                            </div>
+                                                                            <div class="post-comment-body layout-column flex-90"> 
+                                                                                <div class="layout-row layout-align-space-between">
+                                                                                    <div class="flex-75 comment-by c-p">Rex</div>
+                                                                                    <span class="flex-25 text-right">1 min ago</span>
+                                                                                </div>
+                                                                                <div class="post-comment-text">
+                                                                                    Hi im there!!
+                                                                                </div>
+                                                                            </div>
+                                                                                                                                    <span *ngIf="comment.comment_by._id==isResult || posts.created_by._id==isResult" class="delete"(click)="deleteComment(posts._id,comment._id, posts)">delete</span>
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                                <div class="post-comment-footer">
+                                                                    <form >
+                                                                        <div class="input-group">
+                            
+                                                                            <input class="form-control" type="text"  placeholder="Type a comment">
+                                                                            <span class="input-group-addon"><i class="fa fa-paper-plane-o"></i></span>
+                            
+                                                                        </div>
+                                                                    </form>
+                                                                </div>
+                            
+                            
+                                                            </div>
+                                                        </div>-->
+                        </div>
+                    </div>
+
+                    <div class="tab-pane" id="timeline" (window:scroll)="onScrollListTimeline($event)">
+
+                        <ul class="timeline timeline-inverse">
+                            <li *ngFor="#data of timelinedata; #j=index">
+                                <i [ngClass]="getclassList(data)"></i>
+                                <div class="timeline-item flex-75" *ngIf="data.friend_id">
+                                    <span class="time"><i class="fa fa-clock-o"></i>{{data.timestamp| amTimeAgo}}</span>
+                                    <h3 class="timeline-header no-border"><a class="c-p" (click)="getProfileById(data.friend_id._id)">{{data.friend_id.fname}}</a> is now friend with you
+                                    </h3>
+                                </div>
+                                <div class="timeline-item flex-75" *ngIf="data.post_id">
+                                    <span class="time"><i class="fa fa-clock-o"></i> {{data.timestamp| amTimeAgo}}</span>
+
+                                    <h3 class="timeline-header">You {{data.title}}</h3>
+
+                                    <div class="timeline-body" *ngIf="data.post_id.photo[0]">
+                                        <h4 class=" header-title" *ngIf="data.post_id.name">{{data.post_id.name}}</h4>
+                                        <img class="img-responsive" src="theme/files/{{getFoldername(data.type)}}/Photos/{{data.post_id.created_by}}/{{data.post_id.photo[0].file_name}}" alt="Photo" >
+
+                                    </div>
+                                    <div class="timeline-body" *ngIf="data.post_id.link[0]">
+                                        <span class="title" *ngIf="data.post_id.link[0].title">{{data.post_id.link[0].title}}</span>
+                                        <span>Link:</span><span class="title" *ngIf="data.post_id.link[0].description">{{data.post_id.link[0].description}}</span>
+                                    </div>
+                                    <div class="timeline-body" *ngIf="data.post_id.video[0]">
+                                        <h4 class=" header-title" *ngIf="data.post_id.name && data.post_id.name===null">{{data.post_id.name}}</h4>
+                                        <video width="100%" height="100%" controls >
+                                            <source src="theme/files/{{getFoldername(data.type)}}/Videos/{{data.post_id.created_by}}/{{data.post_id.video[0].file_name}}" type="video/mp4">
+                                        </video> 
+                                    </div>
+                                    <div class="timeline-body" *ngIf="data.post_id.audio[0]">
+                                        <h4 class=" header-title" *ngIf="data.post_id.name && data.post_id.name===null">{{data.post_id.name}}</h4>
+                                        <audio controls >
+                                            <source src="theme/files/{{getFoldername(data.type)}}/Audios/{{data.post_id.created_by._id}}/{{data.post_id.audio[0].file_name}}" type="audio/ogg">
+                                        </audio>
+                                    </div>
+                                    <div class="timeline-body" *ngIf="data.post_id.message">
+                                        {{data.post_id.message}}
+                                    </div>
+                                    <div class="timeline-body" *ngIf="data.post_id.question">
+                                        {{data.post_id.question}}
+                                    </div>
+                                    <div class="timeline-body" *ngIf="data.post_id.document[0]">
+                                        <h4 class=" header-title" *ngIf="data.post_id.name && data.post_id.name===null">{{data.post_id.name}}</h4>
+                                        <a href="theme/files/{{getFoldername(data.type)}}/Documents/{{data.post_id.created_by._id}}/{{data.post_id.document[0].file_name}}" class="pdflink" ><span class="title" *ngIf="data.post_id.document[0].title">{{data.post_id.document[0].title}}</span><span class="title" *ngIf!="data.post_id.document[0].title"><i class="fa fa-file-pdf-o" aria-hidden="true"></i>Download</span></a>
+                                    </div>
+                                    <div class="timeline-footer">
+                                        <div class="left-btn-group">
+
+                                        </div>
+                                        <div class="right-btn-group">
+                                            <ul class="list-inline user-acitvity">
+                                                <li  class="c-p" (click)=toggleComment(!togComment,j)>
+                                                    <a  class="link-black text-sm"><i class="fa fa-commenting margin-r-5 fa-1x"></i><span>  </span>comment</a></li>
+                                                <li class="c-p" (click)="addPostJournal(data.created_by._id,data.post_id._id)">
+                                                    <a class="link-black text-sm"><i class="fa fa-file-text margin-r-5 fa-1x"></i>journal</a>
+                                                </li>
+                                                <li class="">
+                                                    <a class="link-black text-sm" (click)="share(data.post_id)"><i class="fa  fa-share margin-r-5 fa-1x"></i> share <span *ngIf="data.post_id.share"> ({{data.post_id.share.length}})</span></a>
+                                                </li>
+                                            </ul>
+                                        </div>  
+
+                                    </div>
+
+                                    <div class="post-toggle-area" [class.display-comment]="togComment && j == thisElement">
+                                         <div class="post-comment-section">
+                                            <div class="post-comment-body">
+                                                <ul class="post-comment-list">
+                                                    <li class="layout-row"  *ngFor="#comment of data.post_id.comments">
+                                                        <div (click)="getProfileById(comment.comment_by._id)" class="post-comment-img flex-10 c-p">
+                                                            <img *ngIf="comment.comment_by.photo" class="img-circle" src="theme/files/ProfilePicture/{{comment.comment_by.photo}}">
+                                                            <img *ngIf="!comment.comment_by.photo" class="img-circle" src="theme/files/ProfilePicture/no_image.png">
+                                                        </div>
+                                                        <div class="post-comment-body layout-column flex-90"> 
+                                                            <div class="layout-row layout-align-space-between">
+                                                                <div (click)="getProfileById(comment.comment_by._id)" class="flex-75 comment-by c-p">{{comment.comment_by.fname}}</div>
+                                                                <span class="flex-25 text-right">{{comment.date| amTimeAgo}}</span>
+                                                            </div>
+                                                            <div class="post-comment-text">
+                                                                {{comment.body}}
+                                                            </div>
+                                                        </div>
+                                                        <span  class="delete" (click)="deleteComment(data.post_id._id,comment._id, data.post_id)">delete</span>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="post-comment-footer">
+                                                <form (ngSubmit)="addComment(data.post_id._id,data.post_id)">
+                                                    <div class="input-group">
+
+                                                        <input [(ngModel)]="postComment.comment" class="form-control" type="text"  placeholder="Type a comment">
+                                                        <span class="input-group-addon" (click)="addComment(data.post_id._id,data.post_id)"><i class="fa fa-paper-plane-o"></i></span>
+
+                                                    </div>
+                                                </form>
+                                            </div>
+
+
+                                        </div>
+                                    </div>
+
+
+                                    <!--                                    <div class="post-toggle-area" [class.display-comment]="togComment && j == thisElement">
+                                                                             <div class="post-comment-section">
+                                                                                <div class="post-comment-body">
+                                                                                    <ul class="post-comment-list">
+                                                                                        <li class="layout-row" >
+                                                                                            <div class="post-comment-img flex-10 c-p">
+                                    
+                                                                                                <img  class="img-circle" src="theme/files/ProfilePicture/no_image.png">
+                                                                                            </div>
+                                                                                            <div class="post-comment-body layout-column flex-90"> 
+                                                                                                <div class="layout-row layout-align-space-between">
+                                                                                                    <div class="flex-75 comment-by c-p">Rex</div>
+                                                                                                    <span class="flex-25 text-right">1 min ago</span>
+                                                                                                </div>
+                                                                                                <div class="post-comment-text">
+                                                                                                    Hi im there!!
+                                                                                                </div>
+                                                                                            </div>
+                                                                                                                                                    <span *ngIf="comment.comment_by._id==isResult || posts.created_by._id==isResult" class="delete"(click)="deleteComment(posts._id,comment._id, posts)">delete</span>
+                                                                                        </li>
+                                                                                    </ul>
+                                                                                </div>
+                                                                                <div class="post-comment-footer">
+                                                                                    <form >
+                                                                                        <div class="input-group">
+                                    
+                                                                                            <input class="form-control" type="text"  placeholder="Type a comment">
+                                                                                            <span class="input-group-addon"><i class="fa fa-paper-plane-o"></i></span>
+                                    
+                                                                                        </div>
+                                                                                    </form>
+                                                                                </div>
+                                    
+                                    
+                                                                            </div>
+                                                                        </div>-->
+                                </div>
+                            </li>
+                            <li>
+                                <i class="fa fa-clock-o bg-gray"></i>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="tab-pane" id="photos" (window:scroll)="onScrollList($event,3)" >
+                        <div class="custom1-modal-header layout-row layout-align-space-between">
+                            <div class="h3 header-title layout-row layout-align-center-center">
+                                <span ng-bind="Heading" class="ng-binding">Photo</span> 
+                            </div>
+                        </div>
+                        <div class="tab-pane">
+                            <div class="layout-row layout-wrap" >
+                                <div class="flex-25 flex-sm-50 flex-xs-100 user-photos layout-align-xs-center-center layout-xs-row"  *ngFor="#data of postdata; #j=index">
+                                     <div *ngIf="data.photo[0]" (click)="getDetailView(data._id)">
+                                        <figure>
+                                            <img *ngIf="data.created_by.photo" src="theme/files/{{getFoldername(data.types)}}/Photos/{{data.created_by._id}}/{{data.photo[0].file_name}}" alt="">
+                                            <img *ngIf="!data.created_by.photo" src="theme/files/{{getFoldername(data.types)}}/Photos/{{data.created_by._id}}/{{data.photo[0].file_name}}" alt="">
+                                            <figcaption>
+                                                <h3 *ngIf="data.name && data.name==null">{{data.name}}</h3>
+                                                <!--<span>Burnt Toast Creative</span>-->
+                                                <a href="#" class="close-caption hidden">x</a>
+                                            </figcaption>
+                                        </figure>                      
+                                    </div>
+                                </div>
+                            </div>    
+                        </div>
+
+                    </div>
+                    <div class="tab-pane" id="videos" (window:scroll)="onScrollList($event,4)">
+                        <div class="custom1-modal-header layout-row layout-align-space-between">
+                            <div class="h3 header-title layout-row layout-align-center-center">
+                                <span ng-bind="Heading" class="ng-binding">Videos</span> 
+                            </div>
+
+                        </div>
+                        <div class="tab-pane">
+                            <div class="layout-row layout-wrap">
+                                <div class="flex-25 flex-sm-50 flex-xs-100 user-videos" *ngFor="#data of postdata; #j=index">
+                                     <div class="video-wrap-play" *ngIf="data.video[0]" (click)="getDetailView(data._id)">
+                                        <h4 class=" header-title" *ngIf="data.name && data.name==null ">{{data.name}}</h4>
+                                        <video  width="100%" height="100%"  >
+                                            <source src="theme/files/{{getFoldername(data.types)}}/Videos/{{data.created_by._id}}/{{data.video[0].file_name}}" type="video/mp4">
+                                        </video>
+                                        <div class="video-wrap-layer" (click)="getDetailView(data._id)">
+                                            <i class="fa fa-play-circle" aria-hidden="true"></i>
+                                        </div>
+                                        <!--<img src="theme" alt="" (click)="playVideo(data.types,data.created_by._id,data.video[0].file_name)">-->
+                                    </div>
+                                </div>
+                            </div>    
+                        </div>
+
+                    </div>
+                    <div class="tab-pane" id="links" (window:scroll)="onScrollList($event,5)">
+                        <div class="custom1-modal-header layout-row layout-align-space-between">
+                            <div class="h3 header-title layout-row layout-align-center-center">
+                                <span ng-bind="Heading" class="ng-binding">Links</span> 
+                            </div>
+                            <!--                            <div class="header-options layout-row flex-60">
+                                                            <div class="modal-option option1 layout-row layout-align-center-center">
+                                                                <div class="input-group">
+                                                                    <span class="input-group-addon"><i class="fa fa-link"></i></span>
+                                                                    <input type="email" class="form-control" placeholder="link Search">
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-option option2 layout-row layout-align-center-center">
+                                                                <select class="form-control">
+                                                                    <option>option 1</option>
+                                                                    <option>option 2</option>
+                                                                    <option>option 3</option>
+                                                                    <option>option 4</option>
+                                                                    <option>option 5</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>-->
+                        </div>
+                        <div class="tab-pane">
+                            <div class="layout-row layout-wrap layout-align-space-between layout-xs-column">
+                                <div class="layout-column flex-49 layout-align-space-between layout-wrap flex-xs-100 " *ngFor="#data of postdata; #j=index">
+                                     <div class="m-b-20" *ngIf="data.link[0]">
+                                        <div class="link-block layout-row layout-align-space-between border whit-bg college-b border-radius-3px trans-scale">
+                                            <div class="layout-column layout-align-center-center flex-20 flex-sm-30 abnk">
+                                                <i class="fa fa-link" aria-hidden="true"></i>
+
+                                            </div>
+                                            <div class="content-block-desc layout-column flex-80 layout-wrap layout-row margin-l-10">
+
+                                                <div class="detaial flex-80 c-p">
+                                                    <h3 class="content-block-desc-title" *ngIf="data.link[0].title">{{data.link[0].title}}</h3>
+                                                    <h5 class="content-block-desc-sub-title"></h5>
+                                                    <div class="content-block-desc-link">
+                                                        <a target="_blank" *ngIf="data.link[0].description" href="{{data.link[0].description}}" class="link" >{{data.link[0].description}}</a>
+                                                    </div>
+                                                </div>
+                                                <div class="icon-pencil-edit flex-10 layout-row text-right">
+
+
+                                                </div>
+                                            </div> 
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>    
+                        </div>
+                    </div>
+
+
+                    <div class="tab-pane" id="documents" (window:scroll)="onScrollList($event,7)">
+                        <div class="custom1-modal-header layout-row layout-align-space-between">
+                            <div class="h3 header-title layout-row layout-align-center-center">
+                                <span ng-bind="Heading" class="ng-binding">Document</span> 
+                            </div>
+                            <!--                            <div class="header-options layout-row flex-60">
+                                                            <div class="modal-option option1 layout-row layout-align-center-center">
+                                                                <div class="input-group">
+                                                                    <span class="input-group-addon"><i class="fa fa-book"></i></span>
+                                                                    <input type="email" class="form-control" placeholder="link Search">
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-option option2 layout-row layout-align-center-center">
+                                                                <select class="form-control">
+                                                                    <option>option 1</option>
+                                                                    <option>option 2</option>
+                                                                    <option>option 3</option>
+                                                                    <option>option 4</option>
+                                                                    <option>option 5</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>-->
+                        </div>
+                        <div class="tab-pane">
+                            <div class="layout-row layout-wrap layout-align-space-between">
+                                <div class="layout-column flex-49 flex-xs-100 layout-align-space-between layout-wrap " *ngFor="#data of postdata; #j=index">
+                                     <div class="m-b-20" *ngIf="data.document[0]">
+                                        <div class="document-block layout-row layout-align-space-between border whit-bg college-b border-radius-3px trans-scale">
+                                            <div class="layout-column layout-align-center-center flex-20 flex-sm-30 flex-xs-30 abnk">
+                                                <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
+
+                                            </div>
+                                            <div class="content-block-desc layout-column flex-80 layout-wrap layout-row margin-l-10">
+
+                                                <div class="detaial flex-90 c-p">
+                                                    <h4 class=" header-title" *ngIf="data.name && data.name==null">{{data.name}}</h4>
+                                                    <a href="theme/files/{{getFoldername(data.types)}}/Documents/{{data.created_by._id}}/{{data.document[0].file_name}}" target="_blank" class="content-block-desc-title">{{data.document[0].file_name}}</a>
+                                                    <h5 class="content-block-desc-sub-title"></h5>
+                                                    <div class="content-block-desc-link">
+                                                        {{data.created_on| amTimeAgo}}
+                                                    </div>
+                                                </div>
+
+                                            </div> 
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>    
+                        </div>
+
+                    </div>
+                    <div class="tab-pane" id="audios" (window:scroll)="onScrollList($event,6)">
+                        <div class="custom1-modal-header layout-row layout-align-space-between">
+                            <div class="h3 header-title layout-row layout-align-center-center">
+                                <span ng-bind="Heading" class="ng-binding">Audio</span> 
+                            </div>
+                            <!--                            <div class="header-options layout-row flex-60">
+                                                            <div class="modal-option option1 layout-row layout-align-center-center">
+                                                                <div class="input-group">
+                                                                    <span class="input-group-addon"><i class="fa fa-headphones"></i></span>
+                                                                    <input type="email" class="form-control" placeholder="link Search">
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-option option2 layout-row layout-align-center-center">
+                                                                <select class="form-control">
+                                                                    <option>option 1</option>
+                                                                    <option>option 2</option>
+                                                                    <option>option 3</option>
+                                                                    <option>option 4</option>
+                                                                    <option>option 5</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>-->
+                        </div>
+
+                        <div class="tab-pane">
+                            <div class="layout-row layout-wrap layout-align-space-between">
+                                <div class="layout-column flex-49 layout-align-space-between layout-wrap flex-xs-100 " *ngFor="#data of postdata; #j=index">
+                                     <div class="m-b-20" *ngIf="data.audio[0]" (click)="getDetailView(data._id)">
+                                        <div class=" pad-10 layout-row layout-align-space-between border whit-bg college-b border-radius-3px trans-scale">
+                                            <div class="layout-column layout-align-center-center flex-20 flex-sm-30 slex-xs-30 abnk">
+                                                <i class="fa fa-headphones" aria-hidden="true"></i>
+
+                                            </div>
+                                            <div class="content-block-desc layout-column flex-90 layout-wrap layout-row margin-l-10">
+
+                                                <div class="detaial flex-100 c-p">
+                                                    <h4 class=" header-title" *ngIf="data.name && data.name==null">{{data.name}}</h4>
+                                                    <h3 class="content-block-desc-title">{{data.audio[0].file_name}}</h3>
+                                                    <!--                                                    <h5 class="content-block-desc-sub-title"></h5>-->
+                                                    <div class="content-block-desc-link">
+                                                        <audio controls>
+                                                            <!--<source src="theme/files/{{getFoldername(data.type)}}/Audios/{{data.created_by._id}}/{{data.audio[0].file_name}}" type="audio/ogg">-->
+                                                            <source src="theme/files/{{getFoldername(data.types)}}/Audios/{{data.created_by._id}}/{{data.audio[0].file_name}}" type="audio/mpeg">
+                                                            Your browser does not support the audio element.
+                                                        </audio>
+                                                    </div>
+                                                </div>
+
+                                                <h5 class="content-block-desc-sub-title"></h5>
+                                            </div> 
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>    
+                        </div>
+
+                    </div>
+                    <div class="tab-pane" id="questions" (window:scroll)="onScrollList($event,2)">
+                        <div class="custom1-modal-header layout-row layout-align-space-between">
+                            <div class="h3 header-title layout-row layout-align-center-center">
+                                <span ng-bind="Heading" class="ng-binding"> Question</span> 
+                            </div>
+
+                        </div>
+                        <div class="tab-pane">
+
+
+
+                            <div class="post" *ngFor="#data of postdata; #j=index">
+                                 <div class="user-block" *ngIf="data.question" >
+                                    <img *ngIf="data.created_by.photo" alt="user image" class="img-circle img-bordered-sm" src="theme/files/ProfilePicture/{{data.created_by.photo}}">
+                                    <img *ngIf="!data.created_by.photo" alt="user image" class="img-circle img-bordered-sm" src="theme/files/ProfilePicture/no_image.png" >
+                                    <div class="user-question">
+                                        <!--                                        <i class="fa fa-question-circle" aria-hidden="true"></i><span>{{data.question}}</span>-->
+
+                                    </div>
+                                    <div class="user-detail">
+                                        <span class="username">
+                                            <a href="#">{{data.created_by.fname + ' ' + data.created_by.lname}}</a>
+                                        </span>
+                                        <span class="description">Shared<span *ngIf="data.privacy==1"> publicly </span><span *ngIf="data.privacy==2"> privately </span><span *ngIf="data.privacy==3"> to friends </span>- {{data.created_on|amTimeAgo }}</span>
+                                    </div>
+
+                                </div>
+                                <div class="post-body">
+                                    <div class="question-toggle-area">
+                                        <div class="post-comment-section">
+                                            <div class="post-comment-body">
+                                                <ul class="post-comment-list">
+                                                    <li class="layout-row">
+
+                                                        <div class="post-comment-body layout-column flex-90"> 
+
+                                                            <div class="post-comment-text">
+                                                                <i class="fa fa-question-circle" aria-hidden="true"></i>  <span>{{data.question}}</span>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="post-comment-footer">
+                                                <form>
+                                                    <div class="input-group">
+
+                                                        <input class="form-control" type="text"  placeholder="Type your answer">
+                                                        <span class="input-group-addon"><i class="fa fa-paper-plane-o"></i></span>
+
+                                                    </div>
+                                                </form>
+                                            </div>
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+                    <div class="tab-pane" id="journals">
+                        <div class="custom1-modal-header layout-row layout-align-space-between">
+                            <div class="h3 header-title layout-row layout-align-center-center">
+                                <span ng-bind="Heading" class="ng-binding">Journals</span> 
+                            </div>
+                            <div class="head-btn-block layout-row layout-align-start-center">
+                                <button (click)="addJournal()" class="btn btn-default" id="add-journal-btn" >Add Journal</button>
+                            </div>
+                        </div>
+                        <div class="tab-pane" >
+                            <div class="layout-row layout-wrap layout-align-space-between">
+                                <div *ngFor="#Journal of JournalByUserId" class="layout-column flex-32 flex-xs-45 layout-align-space-between layout-wrap ">
+                                    <div class="m-b-20">
+                                        <div class="link-block layout-row layout-align-space-between border whit-bg college-b border-radius-3px">
+                                            <div class="layout-column layout-align-center-center flex-20 abnk">
+                                                <i class="fa fa-link" aria-hidden="true"></i>
+
+                                            </div>
+                                            <div [routerLink]="['User.Journal',{journal_id:Journal._id}]" class="content-block-desc layout-column flex-80 layout-wrap layout-row" >
+
+                                                <div *ngIf="JournalByUserId" class="detaial flex-80 c-p" >
+                                                    <div  class="flex-100">
+                                                        <span  class="user-img" *ngIf="Journal.icon">
+                                                            <img  alt="" src="theme/files/Journal/{{Journal.icon}}" class="group-img-block" height="100px" width="100px">
+                                                        </span>
+                                                        <span  class="user-img" *ngIf="!Journal.icon">
+                                                            <img  alt="" src="theme/files/Group/group-registration-icon-26.png" class="group-img-block" height="100px" width="100px">
+                                                        </span>
+                                                    </div>
+                                                    <h3 class="content-block-desc-title" *ngIf="Journal" >{{Journal.title}}</h3>
+                                                    <h5 class="content-block-desc-sub-title"></h5>
+                                                    <!--                                                    <div class="content-block-desc-link">
+                                                                                                            <a class="link" >Description</a>
+                                                                                                        </div>-->
+                                                </div>
+
+                                            </div> 
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>    
+                        </div>
+                    </div>
+
+
+
+
+
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+    <section *ngIf="initialPageStatus">
+        <div class="default-profile-blocks" >
+            <!--            <div class="custom1-modal layout-column">
+                            <div class="custom1-modal-header layout-row layout-align-space-between">
+                                <div class="header-title-icon layout-row layout-align-center-center">
+                                    <i class="fa fa-book" aria-hidden="true"></i>
+                                    <div class="header-title">Subjects Joined<span class="value-badge">({{userData.subject_count}})</span>
+                                    </div>
+                                </div>
+                                <div class="header-options layout-row">
+                                    <div class="modal-option option1 layout-row layout-align-center-center">
+                                        <i class="fa fa-square-o c-orange-1" aria-hidden="true"></i>
+                                        <span class="btn-title">Current Subjects</span>
+                                    </div>
+                                    <div class="modal-option option2 layout-row layout-align-center-center">
+                                        <i class="fa fa-square-o c-semi-blue" aria-hidden="true"></i>
+                                        <span class="btn-title">Past Subjects</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="custom1-modal-body layout-row layout-wrap layout-align-start-start ">
+                                <div *ngFor="#sub of userData.current_subjects" class="content-block layout-row flex-25 layout-align-space-between">
+                                    <div class="content-block-img bg-math layout-column layout-align-center-center">
+                                        <i class="fa fa-calculator " aria-hidden="true"></i>
+                                    </div>
+                                    <div (click)="getSubjectWall(sub.subject_id)" class="c-p content-block-desc layout-column flex-70">
+                                        <h3 class="content-block-desc-title">{{sub.name}}</h3>
+                                        <h5 class="content-block-desc-sub-title">{{sub.from_date| amDateFormat:'LL'}}&nbsp; to &nbsp; {{sub.to_date| amDateFormat:'LL'}}</h5>
+                                        <div class="content-block-desc-link"> (Active Student)</div>
+                                    </div>
+                                </div>
+                                <div *ngFor="#sub of userData.past_subjects" class="content-block layout-row flex-25 layout-align-space-between">
+                                    <div class="content-block-img bg-math layout-column layout-align-center-center">
+                                        <i class="fa fa-calculator " aria-hidden="true"></i>
+                                    </div>
+                                    <div (click)="getSubjectWall(sub.subject_id)" class="c-p content-block-desc layout-column flex-70">
+                                        <h3 class="content-block-desc-title">{{sub.name}}</h3>
+                                        <h5 class="content-block-desc-sub-title">{{sub.from_date| amDateFormat:'LL'}}&nbsp; to &nbsp; {{sub.to_date| amDateFormat:'LL'}}</h5>
+                                        <div class="content-block-desc-link"> (Past Student)</div>
+                                    </div>
+                                </div>
+            
+                            </div>
+                        </div>-->
+
+
+
+
+
+
+            <div class="custom1-modal layout-column">
+                <div class="custom1-p-c-sbj layout-row layout-align-space-between">
+                    <div class="nav-tabs-custom flex-100">
+                        <div class="layout-row layout-align-space-between ul-b-c-p">
+                            <!--                            <ul class="nav nav-tabs  layout-row flex-70 flex-xs-100">
+                                                            <li class="flex-33 active flex-xs-50 flex-sm-50">
+                                                                <a data-toggle="tab" href="#currentsbj" class="layout-row layout-align-center-center">
+                            
+                                                                    <i class="fa fa-square-o c-orange-1 dis-n" aria-hidden="true"></i>
+                                                                    <span class="btn-title">Current Subjects</span>
+                                                                </a>
+                                                            </li>
+                                                            <li class="flex-33 flex-xs-50 flex-sm-50">
+                                                                <a data-toggle="tab" href="#Pastsb" class="layout-row layout-align-center-center">
+                                                                    <i class="fa fa-square-o c-semi-blue dis-n" aria-hidden="true"></i>
+                                                                    <span class="btn-title">Past Subjects</span>
+                                                                </a>
+                                                            </li>
+                            
+                                                        </ul>-->
+                            <div class="btn-group flex-100 layout-align-start-center layout-row hidden-flex-xs">
+                                <div class="header-title-icon layout-row layout-align-start-center p-10-15">
+                                    <i class="fa fa-book" aria-hidden="true"></i>
+                                    <div class="header-title">&nbsp;Subjects Joined<span class="value-badge">({{userData.subject_count}})</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-content">
+                            <!--                            <div class=" tab-pane active " id="currentsbj">-->
+                            <!--                                <div class="layout-row">
+                                                                <div *ngFor="#sub of userData.current_subjects" class="content-block layout-row flex-33 flex-sm-50 flex-xs-100 layout-align-space-between layout-align-xs-center-center">
+                                                                    <div class="content-block-img bg-math layout-column layout-align-center-center">
+                                                                        <i class="fa fa-calculator " aria-hidden="true"></i>
+                                                                    </div>
+                                                                    <div (click)="getSubjectWall(sub.subject_id)" class="c-p content-block-desc layout-column flex-70  pad-l">
+                                                                        <h3 class="content-block-desc-title">{{sub.name}}</h3>
+                                                                        <h5 class="content-block-desc-sub-title">{{sub.from_date| amDateFormat:'LL'}}&nbsp; to &nbsp; {{sub.to_date| amDateFormat:'LL'}}</h5>
+                                                                        <div class="content-block-desc-link"> (Active Student)</div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="no-count-section" *ngIf="cSubjectCount == 0">
+                                                                    <i class="fa fa-exclamation-circle" aria-hidden="true"></i>&nbsp; Current subject empty
+                                                                </div>
+                                                                                                    <div *ngFor="#sub of user.subjects" class="c-p content-block layout-row flex-25 layout-align-space-between">
+                                                                                                        <div class="content-block-img bg-math layout-column layout-align-center-center">
+                                                                                                            <i class="fa fa-calculator " aria-hidden="true"></i>
+                                                                                                        </div>
+                                                                                                        <div (click)="getSubjectWall(sub.subject_id)" class="content-block-desc layout-column flex-70">
+                                                                                                            <h3 class="content-block-desc-title">{{sub.name}}</h3>
+                                                                                                            <h5 class="content-block-desc-sub-title">{{sub.from_date| amDateFormat:'LL'}}&nbsp; to &nbsp; {{sub.to_date| amDateFormat:'LL'}}</h5>
+                                                                                                            <div class="content-block-desc-link"> (Active Student)</div>
+                                                                                                        </div>
+                                                                                                    </div>
+                            
+                                                            </div>-->
+                            <!--                            </div>
+                                                        <div class="tab-pane  " id="Pastsb">-->
+
+
+
+
+                            <div class="layout-row layout-xs-column layout-wrap">
+                                <div *ngFor="#sub of subjects" class="content-block layout-row flex-25 flex-sm-50 flex-xs-100 layout-align-space-between layout-align-xs-center-center">
+                                    <div class="content-block-img bg-math layout-column layout-align-center-center">
+                                        <i class="fa fa-calculator " aria-hidden="true"></i>
+                                    </div>
+                                    <div (click)="getSubjectWall(sub.subject_id)" class="c-p content-block-desc layout-column flex-70 pad-l">
+                                        <h3 class="content-block-desc-title">{{sub.name}}</h3>
+                                        <h5 class="content-block-desc-sub-title" *ngIf="sub.from_date">{{sub.from_date| amDateFormat:'LL'}}&nbsp; to &nbsp; {{sub.to_date| amDateFormat:'LL'}}</h5>
+                                        <div class="content-block-desc-link" *ngIf="sub.subjects_user_type==1"> (Currently Taking)</div>
+                                        <div class="content-block-desc-link" *ngIf="sub.subjects_user_type==2"> (Will Take in Future)</div>
+                                        <div class="content-block-desc-link" *ngIf="sub.subjects_user_type==3"> (Subject Expert)</div>
+                                        <div class="content-block-desc-link" *ngIf="sub.subjects_user_type==4"> (Teacher of Subject)</div>
+                                        <div class="content-block-desc-link" *ngIf="sub.subjects_user_type==5"> (Just Interested)</div>
+                                        <div class="content-block-desc-link" *ngIf="sub.subjects_user_type==6"> (Past Student)</div>
+                                    </div>
+                                </div>
+                                <div class="no-count-section" *ngIf="subjects.length == 0">
+                                    <i class="fa fa-exclamation-circle" aria-hidden="true"></i>&nbsp; Subjects empty
+                                </div>
+                            </div>
+                            <!--                            <div class="layout-row">
+                            <div *ngFor="#sub of user.subjects" class="c-p content-block layout-row flex-25 layout-align-space-between">
+                                                    <div class="content-block-img bg-math layout-column layout-align-center-center">
+                                                        <i class="fa fa-calculator " aria-hidden="true"></i>
+                                                    </div>
+                                                    <div (click)="getSubjectWall(sub.subject_id)" class="content-block-desc layout-column flex-70">
+                                                        <h3 class="content-block-desc-title">{{sub.name}}</h3>
+                                                        <h5 class="content-block-desc-sub-title">{{sub.from_date | amDateFormat:'LL'}}&nbsp; to &nbsp; {{sub.to_date | amDateFormat:'LL'}}</h5>
+                                                        <div class="content-block-desc-link"> (Active Student)</div>
+                                                    </div>
+                                                </div>
+                            
+                                                        </div>-->
+                            <!--</div>-->
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+
+
+
+
+        </div>
+        <div class="default-profile-blocks">
+            <div class="layout-row layout-align-space-between layout-sm-column layout-xs-column">
+                <div class="flex-70 flex-sm-100 flex-xs-100">
+                    <div class="visib-hiden">
+                        <div class="box box-warning  modal-border-box hide-xs">
+                            <div class="box-header">
+                                <h6 class="title w-53">College/ University</h6>
+                                <h6 class="title">Degree/ Program</h6>
+                                <div class="box-tools pull-right">
+                                    <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+
+                                </div><!-- /.box-tools -->
+                            </div><!-- /.box-header -->
+                            <div class="box-body padding-0">
+
+                                <div class="flex-inline padding-0-10-20-10">
+                                    <div class="inner-block">
+
+                                        <div *ngFor="#college of userData.current_colleges" class="sub-block bg-f5 flex-inline border padding-10 bg-warning-box">
+                                            <div class="inner-block-10 padding-0 line-height-17 flex-sm-20">
+
+                                                <i class="fa fa-university  degree-i-bg"></i>
+                                            </div>
+                                            <div class="inner-block-90 padding-0 c-p" (click)="getCollegeWall(college.college_id)">
+                                                <h6 class=" content-block-desc-title"> Current College:<span class="content-block-desc-sub-title"> {{college.from_date| amDateFormat:'LL'}}&nbsp; to &nbsp; {{college.to_date| amDateFormat:'LL'}} </span></h6>
+
+                                                <h6 class="  content-block-desc-title">{{college.name}}</h6>
+                                                <a href="#" class="content-block-desc-link ">(Current Student)</a>
+                                            </div>
+                                        </div>
+                                        <div *ngFor="#college of userData.future_colleges" class="sub-block bg-f5 flex-inline border padding-10 bg-warning-box">
+                                            <div class="inner-block-10 padding-0 line-height-17 flex-sm-20">
+
+                                                <i class="fa fa-university  degree-i-bg"></i>
+                                            </div>
+                                            <div class="inner-block-90 padding-0 c-p" (click)="getCollegeWall(college.college_id)">
+                                                <h6 class=" content-block-desc-title"> Future College:<span class="content-block-desc-sub-title"> {{college.from_date| amDateFormat:'LL'}}&nbsp; to &nbsp; {{college.to_date| amDateFormat:'LL'}} </span></h6>
+
+                                                <h6 class="  content-block-desc-title">{{college.name}}</h6>
+                                                <a href="#" class="content-block-desc-link ">(Future Student)</a>
+                                            </div>
+                                        </div>
+                                        <div *ngFor="#college of userData.past_colleges" class="sub-block bg-f5 flex-inline border padding-10 bg-warning-box">
+                                            <div class="inner-block-10 padding-0 line-height-17 flex-sm-20">
+
+                                                <i class="fa fa-university  degree-i-bg"></i>
+                                            </div>
+                                            <div class="inner-block-90 padding-0 c-p" (click)="getCollegeWall(college.college_id)">
+                                                <h6 class=" content-block-desc-title"> Past College:<span class="content-block-desc-sub-title"> {{college.from_date| amDateFormat:'LL'}}&nbsp; to &nbsp; {{college.to_date| amDateFormat:'LL'}} </span></h6>
+
+                                                <h6 class="  content-block-desc-title">{{college.name}}</h6>
+                                                <a href="#" class="content-block-desc-link ">(Past Student)</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="inner-block">
+
+                                        <div *ngFor="#degree of userData.degree" class="sub-block no-border flex-inline  padding-10">
+                                            <div class="inner-block-10 padding-0 line-height-17 flex-sm-20"><i class="fa fa-graduation-cap  degree-i-bg"></i></div>
+                                            <div class="inner-block-90 padding-0 c-p" (click)="getDegreeWall(degree.college_id)">
+                                                <h6 class=" content-block-desc-title"> Degree:<span class="content-block-desc-sub-title"> {{degree.from_date| amDateFormat:'LL'}}&nbsp; to &nbsp; {{degree.to_date| amDateFormat:'LL'}} </span></h6>
+
+                                                <h6 class="  content-block-desc-title">{{degree.name}}</h6>
+                                                <!--<a href="#" class="content-block-desc-link">(Current Student)</a>-->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div><!-- /.box-body -->
+
+                        </div>
+                        <div class="box box-warning  modal-border-box hide show-xs show-de-clg">
+                            <div class="box-header">
+                                <h6 class="title ">College/ University</h6>
+
+                                <div class="box-tools pull-right">
+                                    <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+
+                                </div><!-- /.box-tools -->
+                            </div><!-- /.box-header -->
+                            <div class="box-body padding-0">
+
+                                <div class="flex-inline padding-0-10-20-10">
+                                    <div class="inner-block">
+
+                                        <div *ngFor="#college of userData.current_colleges" class="sub-block bg-f5 flex-inline border padding-10 bg-warning-box layout-xs-column layout-align-xs-center-center">
+                                            <div class="inner-block-10 padding-0 line-height-17 flex-sm-20 layout-align-center-center layout-row flex-xs-100">
+
+                                                <i class="fa fa-university  degree-i-bg"></i>
+                                            </div>
+                                            <div class=" padding-0 c-p flex-xs-100 layout-align-xs-center-center layout-xs-column" (click)="getCollegeWall(college.college_id)">
+                                                <h6 class=" content-block-desc-title center-text"> Current College:<span class="content-block-desc-sub-title"> {{college.from_date| amDateFormat:'LL'}}&nbsp; to &nbsp; {{college.to_date| amDateFormat:'LL'}} </span></h6>
+
+                                                <h6 class="  content-block-desc-title center-text">{{college.name}}</h6>
+                                                <a href="#" class="content-block-desc-link center-text">(Current Student)</a>
+                                            </div>
+                                        </div>
+                                        <div *ngFor="#college of userData.past_colleges" class="sub-block bg-f5 flex-inline border padding-10 bg-warning-box layout-xs-column layout-align-xs-center-center">
+                                            <div class="inner-block-10 padding-0 line-height-17 flex-sm-20 layout-align-center-center layout-row flex-xs-100">
+
+                                                <i class="fa fa-university  degree-i-bg"></i>
+                                            </div>
+                                            <div class=" padding-0 c-p flex-xs-100 layout-align-xs-center-center layout-xs-column" (click)="getCollegeWall(college.college_id)">
+                                                <h6 class=" content-block-desc-title center-text"> Past College:<span class="content-block-desc-sub-title"> {{college.from_date| amDateFormat:'LL'}}&nbsp; to &nbsp; {{college.to_date| amDateFormat:'LL'}} </span></h6>
+
+                                                <h6 class="  content-block-desc-title center-text">{{college.name}}</h6>
+                                                <a href="#" class="content-block-desc-link center-text">(Past Student)</a>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="box-header">
+
+                                <h6 class="title">Degree/ Program</h6>
+                                <div class="box-tools pull-right">
+                                    <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+
+                                </div><!-- /.box-tools -->
+                            </div><!-- /.box-body -->
+                            <div class="box-body padding-0">
+
+                                <div class="flex-inline padding-0-10-20-10">
+
+                                    <div class="inner-block">
+
+                                        <div *ngFor="#degree of userData.degree" class="sub-block bg-f5 flex-inline border padding-10 bg-warning-box layout-xs-column layout-align-xs-center-center">
+                                            <div class="inner-block-10 padding-0 line-height-17 flex-sm-20 layout-align-center-center layout-row flex-xs-100"><i class="fa fa-graduation-cap  degree-i-bg"></i></div>
+                                            <div class=" padding-0 c-p flex-xs-100 layout-align-xs-center-center layout-xs-column" (click)="getDegreeWall(degree.college_id)">
+                                                <h6 class=" content-block-desc-title center-text"> Degree:<span class="content-block-desc-sub-title"> {{degree.from_date| amDateFormat:'LL'}}&nbsp; to &nbsp; {{degree.to_date| amDateFormat:'LL'}} </span></h6>
+
+                                                <h6 class="  content-block-desc-title center-text">{{degree.name}}</h6>
+                                                <!--<a href="#" class="content-block-desc-link">(Current Student)</a>-->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box box-warning  modal-border-box">
+                        <div class="box-header">
+
+                            <div class=" pull-left flex-inline padding-5 col-sm-10 flex-xs-80 layout-xs-column">
+                                <div class="col-sm-4 flex-xs-100">
+                                    <h3 class="title margin-0">Skill & Endorsements</h3>
+                                </div>
+                                <div class="col-sm-8 flex-xs-100">
+                                    <a class="c-p" data-widget="" [routerLink]="['../Settings',{addSkill:1}]" ><i class="fa fa-plus-square  degree-i-bg"></i><span class="add-skill margin-l-10 text-micro-sm text-dark-gray">Add Skill</span></a>
+                                </div>
+                            </div>
+                            <div class=" pull-right">
+                                <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+
+
+                            </div><!-- /.box-tools -->
+                        </div><!-- /.box-header -->
+                        <div class="box-body skill-box-body padding-10 p-b-20" *ngIf="userData.skills">
+
+                            <div class="layout-column skill-row" *ngFor="#skill of userData.skills" >
+                                 <div class="layout-row layout-align-space-between" *ngIf="skill.skill_id">
+                                    <div class="custom-bullet layout-row flex-40 flex-xs-80">
+                                        <div class="c-b-head layout-column layout-align-center-center">
+                                            <span class="">{{skill.endorse.length}}</span>
+                                        </div>
+                                        <div class="c-b-body layout-row layout-align-center-center">
+                                            <span class="">{{skill.skill_id.title}}</span>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="flex-45 layout-row  layout-align-end-center flex-xs-20">
+                                        <span *ngFor="#endorse of skill.listedusers" class="related-user" (click)="getProfileById(endorse.user_id._id)">
+                                            <img *ngIf="endorse.user_id.photo" class="c-p" src="theme/files/ProfilePicture/{{endorse.user_id.photo}}" alt="{{endorse.user_id.fname}}">
+                                            <img *ngIf="!endorse.user_id.photo" class="c-p" src="theme/files/ProfilePicture/no_image.png" alt="{{endorse.user_id.fname}}">
+                                        </span>
+                                        <i class="fa fa-caret-right" aria-hidden="true"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!-- /.box-body -->
+
+                    </div>
+                </div>
+
+                <!--##############################################-->
+
+                <div class="flex-25 flex-sm-100 flex-xs-100">
+                    <div class="box box-warning box-solid border">
+                        <div class="box-header with-border box-header-bg border-radius-3px">
+                            <h3 class="box-title semi-bold">Followers</h3>
+                            <div class="box-tools pull-right">
+                                <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+
+                            </div><!-- /.box-tools -->
+                        </div><!-- /.box-header -->
+                        <div class="box-body padding-0">
+                            <div class="">
+                                <ul class="users-list clearfix layout-row layout-align-sm-start-center layout-align-xs-start-center">
+                                    <li *ngFor="#follower of userData.followers" (click)="getProfileById(follower.follower_id)" class="flex-33 flex-sm-50" >
+                                        <a class="member-border display-full c-p" [class.is-friend]="follower.follower_friends_status == 1"> 
+                                            <span *ngIf="follower.photo "><img src="theme/files/ProfilePicture/{{follower.photo}}" alt="User Image" style="height:55px;width:67px"></span>
+                                            <span *ngIf="!follower.photo"><img src="theme/files/ProfilePicture/no_image.png" alt="User Image" style="height:55px;width:67px"></span>
+                                        </a>
+                                    </li>
+
+                                </ul>
+                            </div>
+
+                            <div class="box-footer text-center ">
+                                <a  class="uppercase" [routerLink]="['Dashboard.connection',{id:3}]">View more</a>
+                            </div>
+                        </div><!-- /.box-body -->
+                    </div><!-- /.box -->
+                    <div class="box box-warning box-solid border">
+                        <div class="box-header with-border box-header-bg border-radius-3px">
+                            <h3 class="box-title semi-bold">Following</h3>
+                            <div class="box-tools pull-right">
+                                <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+
+                            </div><!-- /.box-tools -->
+                        </div><!-- /.box-header -->
+                        <div class="box-body padding-0">
+                            <div class="">
+                                <ul class="users-list clearfix layout-row layout-align-sm-start-center layout-align-xs-start-center">
+                                    <li class="flex-33 flex-sm-50" *ngFor="#following of userData.followings" (click)="getProfileById(following.following_id)">
+                                        <a class="member-border display-full c-p" [class.is-friend]="following.following_friend_status == 1"> 
+                                            <span *ngIf="following.photo"><img src="theme/files/ProfilePicture/{{following.photo}}" alt="User Image" style="height:55px;width:67px"></span>
+                                            <span *ngIf="!following.photo"><img src="theme/files/ProfilePicture/no_image.png" alt="User Image" style="height:55px;width:67px"></span>
+                                        </a>
+                                    </li>
+
+                                </ul>
+                            </div>
+
+                            <div class="box-footer text-center ">
+                                <a  class="uppercase" [routerLink]="['Dashboard.connection',{id:2}]">View more</a>
+                            </div>
+                        </div><!-- /.box-body -->
+                    </div><!-- /.box -->
+                </div><!-- /.box hello -->
+            </div><!-- /.box hello -->
+        </div>
+    </section>
+</section>    
+
+<div class="modal fade " id = "videoModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Add </h4>
+            </div>
+            <div class="modal-body setting-page ">
+                <!--                <video width="100%" height="100%" controls >
+                                    <source src="theme/files/{{getFoldername(videoType)}}/Videos/{{videoCreated}}/{{videofileName}}" type="video/mp4">
+                                </video>-->
+            </div>
+
+
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+
+<div class="modal fade modal-align-fix" id = "add-journal-modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Add Journal </h4>
+            </div>
+
+            <div class="modal-body setting-page flex-100 layout-row">
+                <label class="flex-20 layout-row layout-align-center-center">Title</label>
+                <input class="flex-70 pad-5-10" [(ngModel)]="title.title"  placeholder="Journal Title.." type="text" />
+            </div>
+            <div class="modal-body">
+                <div class="layout-row uplod-pic">
+                    <div class="upload-area flex-60 layout-align-start-center layout-row">
+                        <label class="flex-20 layout-row layout-align-center-center">Upload Journal Icon</label>
+                        <input id="exampleInputFile" type="file" id="img_upload" (change)="photoChangeEvent($event)" >
+                    </div>
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="add-btn cancel-btn" data-dismiss="modal">Cancel</button>
+                <button class="add-btn" data-dismiss="modal" (click)="createJournal()" >Add</button>
+            </div>
+
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+
+<div class="modal fade modal-align-fix " id = "add-post-journal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Journal </h4>
+            </div>
+            <div class="modal-body setting-page flex-100 layout-row">
+                <label class="flex-20 layout-row layout-align-center-center">Descriptions</label>
+                <input id="exampleInputFile"  class="flex-50 pad-5-10" placeholder="Write" [(ngModel)]="description.description" />
+            </div>
+            <div class="modal-body setting-page flex-100 layout-row">
+                <label class="flex-20 layout-row layout-align-center-center">Journal</label>
+
+                <div class="dropdown flex-50">
+                    <button type="text" data-toggle="dropdown" placeholder="Select Journal" class="flex-50">{{select_journal}}
+                        <span class="caret"></span></button>
+                    <ul class="dropdown-menu" >
+                        <div *ngFor="#journals of JournalByUserId">
+                            <li *ngIf="journals"><a (click)="saveJournalId(journals._id,journals.title)">{{journals.title}}</a></li>    
+                        </div>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button class="add-btn cancel-btn" data-dismiss="modal">Cancel</button>
+                <button class="add-btn" data-dismiss="modal" (click)="addPostInJournal()">Update</button>
+            </div>
+
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+<div class="modal fade modal-align-fix " id = "add-journal-activity">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Journal </h4>
+            </div>
+            <div class="modal-body setting-page flex-100 layout-row">
+                <label class="flex-20 layout-row layout-align-center-center">Descriptions</label>
+                <input id="exampleInputFile"  class="flex-50 pad-5-10" placeholder="Write" [(ngModel)]="description.description" />
+            </div>
+            <div class="modal-body setting-page flex-100 layout-row">
+                <label class="flex-20 layout-row layout-align-center-center">Journal</label>
+
+                <div class="dropdown flex-50">
+                    <button type="text" data-toggle="dropdown" placeholder="Select Journal" class="flex-50">{{select_journal}}
+                        <span class="caret"></span></button>
+                    <ul class="dropdown-menu" >
+                        <div *ngFor="#journals of JournalByUserId">
+                            <li *ngIf="journals"><a (click)="saveJournalId(journals._id,journals.title)">{{journals.title}}</a></li>    
+                        </div>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button class="add-btn cancel-btn" data-dismiss="modal">Cancel</button>
+                <button class="add-btn" data-dismiss="modal" (click)="addPostInJournal()" >Update</button>
+            </div>
+
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+<div class="modal fade modal-align-fix " id = "eventModal2">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeEventModel()"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Add Event</h4>
+            </div>
+
+            <div class="modal-body setting-page flex-100 layout-row">
+                <div class="modal-body layout-column flex-100">
+
+
+
+                    <div class="form-group">
+                        <label for="albumTitle">Event Name</label>
+                        <input type="text" [(ngModel)]="eventsdata.title" class="form-control" placeholder="Event Name" name="eventName" id="eventName" required="required">
+                        <span style="color: red">{{errorEventMessage.errorTitle}}</span>
+                    </div>
+                    <div class="form-group ">
+                        <label for="albumTitle" >Event Tag Line</label>
+                        <input type="text" [(ngModel)]="eventsdata.tagline" class="form-control" placeholder="Event Tag Line" name="eventTagLine" id="eventTagLine" required="required">
+                        <span style="color: red">{{errorEventMessage.errorTagline}}</span>
+                    </div>
+                    <div class="form-group ">
+                        <label for="description" class="font-12px">Event Description</label>
+                        <textarea class="form-control " [(ngModel)]="eventsdata.description"  placeholder="write something..."  name="eventDescription"></textarea>
+                        <span style="color: red">{{errorEventMessage.errorDescription}}</span>
+                    </div>
+
+                    <div class="form-group " >
+                        <label for="albumTitle" >Where</label>
+
+                        <input type="text"  [(ngModel)]="eventsdata.location" id="eventStartDate" name="eventStartDate" placeholder="Location" class="form-control" >
+                        <span style="color: red">{{errorEventMessage.errorLocation}}</span>
+                    </div>
+                    <div class="layout-row layout-align-space-between">
+                        <div class="form-group flex-48">
+                            <label for="albumTitle" >Start Date</label>
+
+                            <input id='scheduleDate1' class="form-control " [(ngModel)]="eventdate.from"  name="sub-date-from-0" placeholder="Select Start Date" type="text">
+
+                        </div>
+                        <div class="form-group  flex-48">
+                            <label for="albumTitle">End Date</label>
+
+                            <input id='scheduleDate2' class="form-control " [(ngModel)]="eventdate.to" name="sub-date-from-0" placeholder="Select End Date"  type="text">
+
+                        </div>
+
+                    </div>
+                    <span style="color: red" *ngIf="errorEventMessage. errorDate!=''">{{errorEventMessage.errorDate}}</span>
+                    <span style="color: red" *ngIf="errorEventMessage.errorToDate!=''">{{errorEventMessage.errorToDate}}</span>
+                    <div class="modal-body">
+                        <div class="layout-column uplod-pic">
+                            <div class="layout-row"> 
+                                <div class="upload-area flex-60 layout-align-start-center layout-row">
+                                    <input id="exampleInputFile" type="file" id="img_upload"  (change)="photoChangeEvent($event)" >
+
+                                </div>
+                                <span style="color: red" *ngIf="errorEventMessage && errorEventMessage.errorIcon!=null">{{errorEventMessage.errorIcon}}</span>
+                            </div>
+                            <span class="p-5 text-muted"> Note : Upload only jpg/png/gif/tif files.</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+                <button class="add-btn cancel-btn" data-dismiss="modal"  (click)="closeEventModel()">Cancel</button>
+                <button class="add-btn"  (click)="createEvent()" >Save</button>
+            </div>
+
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>

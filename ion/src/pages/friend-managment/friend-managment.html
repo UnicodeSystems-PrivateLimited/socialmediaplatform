@@ -1,0 +1,230 @@
+<!--
+  Generated template for the MyFriend page.
+
+  See http://ionicframework.com/docs/v2/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header class="gradient">
+  <ion-navbar >
+    <!--<button ion-button menuToggle>
+        <ion-icon name="menu"></ion-icon>
+    </button>-->
+    <ion-title>
+      <h1 class="header-title" text-center>Friend Management</h1>
+    </ion-title>
+  </ion-navbar>
+  <ion-toolbar no-border-top>
+    <ion-segment [(ngModel)]="tab">
+      <ion-segment-button value="allFriends" (click)="friendMgmtTab(1,3)">
+        <i class="icomoon-all-friend font-size-24"></i>
+      </ion-segment-button>
+      <ion-segment-button value="frndpending" (click)="friendMgmtTab(2,2)">
+        <i class="icomoon-friend-request"></i>
+      </ion-segment-button>
+      <ion-segment-button value="mypending" (click)="friendMgmtTab(3,1)">
+        <i class="icomoon-my-pending"></i>
+      </ion-segment-button>
+      <ion-segment-button value="block" (click)="friendMgmtTab(4,4)">
+        <i class="icomoon-block-friend"></i>
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content>
+  <ion-spinner icon="spiral" *ngIf="loader"></ion-spinner>
+  <div [ngSwitch]="tab">
+    <ion-list *ngSwitchCase="'allFriends'">
+      <ion-item class="search-friend" *ngIf="friends && friends.current && friends.current.length > 0">
+        <ion-searchbar ion-text color="white" [(ngModel)]="userSearchField.name" (ionInput)="userSearch($event,searchUser)"></ion-searchbar>
+      </ion-item>
+      <ion-item class="friend-mngmt-title">All Friend</ion-item>
+      <div *ngIf="userSearchList">
+        <div *ngIf="userSearchCount > 0">
+          <ion-item text-wrap *ngFor="let user of userSearchList" (click)="getProfileById(user._id)">
+            <ion-avatar item-left>
+              <img *ngIf="user.photo" src="{{dataService.apiBaseUrl}}public/files/ProfilePicture/{{user.photo}}">
+              <img *ngIf="!user.photo" src="{{dataService.apiBaseUrl}}public/files/ProfilePicture/no_image.png">
+            </ion-avatar>
+            <h2>{{user.fname}}&nbsp;{{user.lname}}</h2>
+          </ion-item>
+        </div>
+        <div *ngIf="userSearchCount == 0">
+          <ion-item>
+            No search result found.
+          </ion-item>
+        </div>
+      </div>
+      <div *ngIf="!userSearchList && friends && friends.current">
+        <div *ngIf="friends.current.length > 0">
+          <ion-item text-wrap *ngFor="let current of friends.current">
+            <ion-avatar item-left (click)="getProfileById(current.friend_id)">
+              <img *ngIf="current.photo" src="{{dataService.apiBaseUrl}}public/files/ProfilePicture/{{current.photo}}">
+              <img *ngIf="!current.photo" src="{{dataService.apiBaseUrl}}public/files/ProfilePicture/no_image.png">
+            </ion-avatar>
+            <h2 (click)="getProfileById(current.friend_id)">{{ current.name }}</h2>
+            <span item-right *ngIf="current.status==3" (click)="onRemoveClick(current.friend_id,current)">
+				    <i class="fa fa-user-times" color="primary"></i>
+			      </span>
+            <span item-right *ngIf="current.status !==4" (click)="onBlockClick(current.friend_id,current)">
+				    <i class="fa fa-ban" aria-hidden="true" color="dark-blue"></i>
+			      </span>
+            <span item-right *ngIf="current.status ==4" (click)="onUnBlockClick(current.friend_id,current)">
+				    <i class="fa fa-user-plus" aria-hidden="true" color="primary"></i>
+			      </span>
+          </ion-item>
+        </div>
+        <div *ngIf="friends.current.length == 0">
+          <ion-item text-wrap>
+            You have not connected with any friends. Click <span class="color-orange" (click)="inviteFriends()">‘Invite Friends’</span> to start developing your circle.
+          </ion-item>
+        </div>
+      </div>
+    </ion-list>
+    <ion-list *ngSwitchCase="'frndpending'">
+      <ion-item class="search-friend">
+        <ion-searchbar ion-text color="white" [(ngModel)]="userSearchField.name" (ionInput)="userSearch($event,searchUser)"></ion-searchbar>
+      </ion-item>
+      <ion-item class="friend-mngmt-title">Pending Friend Request</ion-item>
+      <div *ngIf="userSearchList">
+        <div *ngIf="userSearchCount > 0">
+          <ion-item text-wrap *ngFor="let user of userSearchList" (click)="getProfileById(user._id)">
+            <ion-avatar item-left>
+              <img *ngIf="user.photo" src="{{dataService.apiBaseUrl}}public/files/ProfilePicture/{{user.photo}}">
+              <img *ngIf="!user.photo" src="{{dataService.apiBaseUrl}}public/files/ProfilePicture/no_image.png">
+            </ion-avatar>
+            <h2>{{user.fname}}&nbsp;{{user.lname}}</h2>
+          </ion-item>
+        </div>
+        <div *ngIf="userSearchCount == 0">
+          <ion-item>
+            No Pending Friend Request Found
+          </ion-item>
+        </div>
+      </div>
+      <div *ngIf="!userSearchList && friends && friends.pending">
+        <div *ngIf="friends.pending.length > 0">
+          <ion-item text-wrap *ngFor="let pending of friends.pending">
+            <ion-avatar item-left (click)="getProfileById(pending.friend_id)">
+              <img *ngIf="pending.photo" src="{{dataService.apiBaseUrl}}public/files/ProfilePicture/{{pending.photo}}">
+              <img *ngIf="!pending.photo" src="{{dataService.apiBaseUrl}}public/files/ProfilePicture/no_image.png">
+            </ion-avatar>
+            <h2 (click)="getProfileById(pending.friend_id)">{{ pending.name }}</h2>
+            <button ion-button item-right *ngIf="pending.status==2" (click)="acceptFriendRequest(pending.friend_id,pending)">
+            Accept
+			      </button>
+            <button ion-button item-right color="danger" *ngIf="pending.status==2" (click)="onRejectClick(pending.friend_id,pending)">
+            Reject
+			      </button>
+          </ion-item>
+        </div>
+        <div *ngIf="friends.pending.length == 0">
+          <ion-item>
+            No Pending Friend Request Found
+          </ion-item>
+        </div>
+      </div>
+    </ion-list>
+    <ion-list *ngSwitchCase="'mypending'">
+      <ion-item class="search-friend">
+        <ion-searchbar ion-text color="white" [(ngModel)]="userSearchField.name" (ionInput)="userSearch($event,searchUser)"></ion-searchbar>
+      </ion-item>
+      <ion-item class="friend-mngmt-title">My Pending Request</ion-item>
+      <div *ngIf="userSearchList">
+        <div *ngIf="userSearchCount > 0">
+          <ion-item text-wrap *ngFor="let user of userSearchList" (click)="getProfileById(user._id)">
+            <ion-avatar item-left>
+              <img *ngIf="user.photo" src="{{dataService.apiBaseUrl}}public/files/ProfilePicture/{{user.photo}}">
+              <img *ngIf="!user.photo" src="{{dataService.apiBaseUrl}}public/files/ProfilePicture/no_image.png">
+            </ion-avatar>
+            <h2>{{user.fname}}&nbsp;{{user.lname}}</h2>
+          </ion-item>
+        </div>
+        <div *ngIf="userSearchCount == 0">
+          <ion-item>
+            No Pending Request Found
+          </ion-item>
+        </div>
+      </div>
+      <div *ngIf="!userSearchList && friends && friends.request">
+        <div *ngIf="friends.request.length > 0">
+          <ion-item text-wrap *ngFor="let request of friends.request">
+            <ion-avatar item-left (click)="getProfileById(request.friend_id)">
+              <img *ngIf="request.photo" src="{{dataService.apiBaseUrl}}public/files/ProfilePicture/{{request.photo}}">
+              <img *ngIf="!request.photo" src="{{dataService.apiBaseUrl}}public/files/ProfilePicture/no_image.png">
+            </ion-avatar>
+            <h2 (click)="getProfileById(request.friend_id)">{{ request.name }}</h2>
+            <button item-right ion-button color="danger" *ngIf="request.status==1" (click)="onCancelClick(request.friend_id,request)">
+              Cancel Request
+            </button>
+          </ion-item>
+        </div>
+        <div *ngIf="friends.request.length == 0">
+          <ion-item>
+            No Pending Request Found
+          </ion-item>
+        </div>
+      </div>
+    </ion-list>
+    <ion-list *ngSwitchCase="'block'">
+      <ion-item class="search-friend">
+        <ion-searchbar ion-text color="white" [(ngModel)]="userSearchField.name" (ionInput)="userSearch($event,searchUser)"></ion-searchbar>
+      </ion-item>
+      <ion-item class="friend-mngmt-title">Blocked Users</ion-item>
+      <div *ngIf="userSearchList">
+        <div *ngIf="userSearchCount > 0">
+          <ion-item text-wrap *ngFor="let user of userSearchList" (click)="getProfileById(user._id)">
+            <ion-avatar item-left>
+              <img *ngIf="user.photo" src="{{dataService.apiBaseUrl}}public/files/ProfilePicture/{{user.photo}}">
+              <img *ngIf="!user.photo" src="{{dataService.apiBaseUrl}}public/files/ProfilePicture/no_image.png">
+            </ion-avatar>
+            <h2>{{user.fname}}&nbsp;{{user.lname}}</h2>
+          </ion-item>
+        </div>
+        <div *ngIf="userSearchCount == 0">
+          <ion-item>
+            No Blocked Users Found
+          </ion-item>
+        </div>
+      </div>
+      <div *ngIf="!userSearchList && friends && friends.blocked">
+        <div *ngIf="friends.blocked.length > 0">
+          <ion-item text-wrap *ngFor="let blocked of friends.blocked">
+            <ion-avatar item-left (click)="getProfileById(blocked.friend_id)">
+              <img *ngIf="blocked.photo" src="{{dataService.apiBaseUrl}}public/files/ProfilePicture/{{blocked.photo}}">
+              <img *ngIf="!blocked.photo" src="{{dataService.apiBaseUrl}}public/files/ProfilePicture/no_image.png">
+            </ion-avatar>
+            <h2 (click)="getProfileById(blocked.friend_id)">{{ blocked.name }}</h2>
+            <span item-right *ngIf="blocked.status==6" (click)="addAsFriend(blocked.friend_id._id)">
+				    <i class="fa fa-user-plus"></i> <!--Add Friend-->
+			      </span>
+            <span item-right *ngIf="blocked.status==2" (click)="acceptFriendRequest(blocked.friend_id,blocked)">
+				    <i class="fa fa-check-square" aria-hidden="true"></i> <!--Accept Request-->
+			      </span>
+            <span item-right *ngIf="blocked.status==2" (click)="onRejectClick(blocked.friend_id,blocked)">
+				    <i class="fa fa-user-times"></i> <!--Reject Request-->
+			      </span>
+            <span item-right *ngIf="blocked.status==3" (click)="onRemoveClick(blocked.friend_id,blocked)">
+				    <i class="fa fa-ban" aria-hidden="true" color="dark-blue"></i> <!--UnFriend-->
+			      </span>
+            <span item-right *ngIf="blocked.status == 4" (click)="onUnBlockClick(blocked.friend_id,blocked)">
+				    <i class="fa fa-user-times"></i> <!--Unblock-->
+			      </span>
+            <span item-right *ngIf="blocked.status==1" (click)="onCancleClick(blocked.friend_id,blocked)">
+				    <i class="fa fa-times" aria-hidden="true"></i>  <!--Cancel Request-->
+			      </span>
+            <span item-right *ngIf="blocked.status !==4" (click)="onBlockClick(blocked.friend_id,blocked)">
+				    <i class="fa fa-ban" color="dark-blue"></i>  <!--Block-->
+			      </span>
+          </ion-item>
+        </div>
+        <div *ngIf="friends.blocked.length == 0">
+          <ion-item>
+            No Blocked Users Found
+          </ion-item>
+        </div>
+      </div>
+    </ion-list>
+  </div>
+</ion-content>

@@ -1,0 +1,242 @@
+<!--
+  Generated template for the PostEdit page.
+
+  See http://ionicframework.com/docs/v2/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar class="gradient">
+    <ion-title>
+      <h1 class="header-title" text-center>Edit Post</h1>
+    </ion-title>
+    <ion-buttons start>
+      <button ion-button (click)="dismiss()">
+        <span ion-text color="primary" showWhen="ios">Cancel</span>
+        <ion-icon name="md-close" showWhen="android,windows"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-spinner icon="spiral" *ngIf="loader"></ion-spinner>
+  <ion-grid>
+    <ion-row class="share-thought">
+      <textarea *ngIf="singlePostData.origin_creator" [(ngModel)]="singlePostData.shared_title" type="text" placeholder="Say something about this..."></textarea>
+      <textarea *ngIf="!singlePostData.origin_creator && singlePostData.post_type == 1" [(ngModel)]="singlePostData.message" type="text"
+        placeholder="Share your thoughts..."></textarea>
+      <textarea *ngIf="!singlePostData.origin_creator && singlePostData.post_type == 2" [(ngModel)]="singlePostData.question" type="text"
+        placeholder="Share your questions?..."></textarea>
+      <span *ngIf="!singlePostData.origin_creator && singlePostData.post_type == 5">
+      <textarea [(ngModel)]="singlePostData.link[0].title" type="text" placeholder="Say something about link..." ></textarea>
+      <textarea [(ngModel)]="singlePostData.link[0].description" type="text" placeholder="Paste a link here..." ></textarea>
+    </span>
+      <textarea *ngIf="!singlePostData.origin_creator && (singlePostData.post_type == 3 || singlePostData.post_type == 4 || singlePostData.post_type == 6 || singlePostData.post_type == 7)"
+        [(ngModel)]="singlePostData.name" type="text" placeholder="Say something about this..."></textarea>
+    </ion-row>
+    <ion-row *ngIf="error.showError" class="error-msg">{{error.showError}}</ion-row>
+    <ion-row *ngIf="singlePostData">
+      <!--message-->
+      <ion-list *ngIf="singlePostData.origin_creator && singlePostData.message" class="p-5">
+        <ion-row class="share-thought">{{singlePostData.message}}</ion-row>
+      </ion-list>
+      <!--photo-->
+      <ion-list *ngIf="singlePostData.photo[0]" class="photo-edit-post">
+        <ion-row class="share-thought" *ngIf="singlePostData.origin_creator && singlePostData.name">{{singlePostData.name}}</ion-row>
+        <ion-item class="post-img">
+          <img *ngIf="imageSrc && !embedLink.photo" [src]="imageSrc"/> 
+          <img *ngIf="!imageSrc && !singlePostData.photo[0].title && !embedLink.photo" alt="Photo" src="{{dataService.apiBaseUrl}}public/files/{{getFoldername(singlePostData.types)}}/Photos/{{singlePostData.origin_creator?singlePostData.origin_creator._id:singlePostData.created_by._id}}/{{singlePostData.photo[0].file_name}}">
+          <img *ngIf="!imageSrc && singlePostData.photo[0].title && !embedLink.photo" src="{{singlePostData.photo[0].title}}" alt="Photo">
+          <span *ngIf="embedLink.photo" >{{embedLink.photo}}</span>                          
+        </ion-item>
+        <ion-row class="upload-container" padding-top *ngIf="!singlePostData.origin_creator && !singlePostData.photo[0].title">
+          <ion-col col-6 no-padding text-right padding-right>
+            <button ion-button color="light-gray" (click)="openGallery()"><ion-icon name="image"></ion-icon></button>
+          </ion-col>
+          <ion-col col-6 no-padding text-left padding-left>
+            <button ion-button color="light-gray" (click)="takePicture()"><ion-icon name="camera"></ion-icon></button>
+          </ion-col>
+          <ion-col col-12>
+            <p text-center>Note: upload only .jpg/.png/.gif/.jpeg/.bmp/</p>
+          </ion-col>
+        </ion-row>
+        <ion-row class="upload-container" *ngIf="!singlePostData.origin_creator && singlePostData.photo[0].title">
+          <ion-col col-12>
+            <ion-item>
+              <ion-label>
+                <ion-icon name="link"></ion-icon>
+              </ion-label>           
+              <ion-input type="text" value="" placeholder="Paste a link here ..." [(ngModel)]="embedLink.title"></ion-input>
+            </ion-item>
+          </ion-col>
+          <ion-col col-12 text-center>
+            <button ion-button color="light-gray" (click)="addPhotoEmbedLink()"> <ion-icon name="add"></ion-icon></button>
+          </ion-col>
+        </ion-row>
+        <ion-row *ngIf="error.photo" class="error-msg">{{error.photo}}</ion-row>
+      </ion-list>
+      <!--video-->
+      <ion-list *ngIf="singlePostData.video[0]">
+        <ion-row class="share-thought" *ngIf="singlePostData.origin_creator && singlePostData.name">{{singlePostData.name}}</ion-row>
+        <ion-row>
+          <video *ngIf="!singlePostData.video[0].title && !embedLink.video && videosToUpload.length<1" width="100%" height="100%" controls controlsList="nodownload">
+            <source src="{{dataService.apiBaseUrl}}public/files/{{getFoldername(singlePostData.types)}}/Videos/{{singlePostData.origin_creator?singlePostData.origin_creator._id:singlePostData.created_by._id}}/{{singlePostData.video[0].file_name}}"
+              type="video/mp4">
+          </video>
+          <iframe *ngIf="singlePostData.video[0].title && !embedLink.video" width="100%" height="320px" [src]="singlePostData.video[0].title | youtubeSafeUrl"
+            frameborder="0" allowfullscreen>
+          </iframe>
+          <span *ngIf="embedLink.video" class="upload-container embedVideo"  embed-directive embedVideo>https://www.youtube.com/watch?v={{embedLink.video}}</span>          
+        </ion-row>
+        <ion-row class="upload-container" padding-top *ngIf="!singlePostData.origin_creator && !singlePostData.video[0].title">
+          <ion-col col-12 *ngIf="videosToUpload[0] && videosToUpload[0].name != ''">
+            <span class="file-name">Video chosen successfully</span>
+          </ion-col>
+          <ion-col col-6 text-right padding-right>
+            <label class="fileContainer">
+              <ion-icon name="logo-youtube"></ion-icon>
+              <button ion-button color="light-gray" showWhen="ios" (click)="openGalleryVideo()"></button>
+              <input type="file" (change)="videoChangeEvent($event)" showWhen="android,windows" accept="video/mp4,video/x-m4v,video/*" />
+          </label>
+          </ion-col>
+          <ion-col col-6 padding-left text-left>
+          <button ion-button color="light-gray" (click)="takeVideo()"><ion-icon name="camera"></ion-icon></button>
+        </ion-col>
+          <ion-col col-12>
+            <p text-center>Note: Upload only .mp4/.webm/.ogg files.</p>
+          </ion-col>
+          <ion-col col-12 *ngIf="error.video" >
+            <p text-center class="error-msg">{{error.video}}</p>
+          </ion-col>
+          <ion-col col-12 *ngIf="error.videoSize">
+            <p text-center class="error-msg">{{error.videoSize}}</p>
+          </ion-col>
+        </ion-row>
+        <ion-row class="upload-container" *ngIf="!singlePostData.origin_creator && singlePostData.video[0].title">
+            <ion-col col-12>
+              <ion-item>
+                <ion-label>
+                  <ion-icon name="link"></ion-icon>
+                </ion-label>            
+                <ion-input type="text" value="" placeholder="Paste a youtube link here..." [(ngModel)]="embedLink.title"></ion-input>
+              </ion-item>
+            </ion-col>
+            <ion-col col-12 text-center>
+              <button ion-button color="light-gray"> <ion-icon name="add" (click)="addVideoEmbedLink()"></ion-icon></button>
+            </ion-col>
+        </ion-row>
+      </ion-list>
+      <!--audio-->
+      <ion-list *ngIf="singlePostData.audio[0]">
+        <ion-row class="share-thought" *ngIf="singlePostData.origin_creator && singlePostData.name">{{singlePostData.name}}</ion-row>
+        <ion-row>
+          <audio controls controlsList="nodownload" *ngIf="!singlePostData.audio[0].title && !embedLink.audio && audiosToUpload.length<1">
+            <source src="{{dataService.apiBaseUrl}}public/files/{{getFoldername(singlePostData.types)}}/Audios/{{singlePostData.origin_creator?singlePostData.origin_creator._id:singlePostData.created_by._id}}/{{singlePostData.audio[0].file_name}}">
+          </audio>
+          <audio controls controlsList="nodownload" *ngIf="singlePostData.audio[0].title && !embedLink.audio">
+            <source src="{{singlePostData.audio[0].title}}" >
+          </audio>
+          <span *ngIf="embedLink.audio" >{{embedLink.audio}}</span>                                    
+        </ion-row>
+        <ion-row class="upload-container" padding-top *ngIf="!singlePostData.origin_creator && !singlePostData.audio[0].title">
+          <ion-col col-12 *ngIf="audiosToUpload[0] && audiosToUpload[0].name != ''">
+            <span class="file-name">Audio chosen successfully</span>
+          </ion-col>
+          <ion-col col-12 no-padding text-center showWhen="android,windows">
+            <label class="fileContainer">
+              <ion-icon name="musical-notes"></ion-icon>
+              <input type="file" (change)="audioChangeEvent($event)" accept="audio/*" />
+          </label>
+          </ion-col>
+          <ion-col col-12 no-padding text-center showWhen="ios">
+          <button ion-button color="light-gray" (click)="recordAudio()"><ion-icon name="mic"></ion-icon></button>
+        </ion-col>
+          <ion-col col-12>
+            <p text-center> Note : Upload only mpeg/ogg/wav/mp3 files.</p>
+          </ion-col>
+          <ion-col col-12 *ngIf="error.audio">
+            <p text-center class="error-msg">{{error.audio}}</p>
+          </ion-col>
+          <ion-col col-12 *ngIf="error.audioSize">
+            <p text-center class="error-msg">{{error.audioSize}}</p>
+          </ion-col>
+        </ion-row>
+        <ion-row class="upload-container" *ngIf="!singlePostData.origin_creator && singlePostData.audio[0].title">
+          <ion-col col-12>
+            <ion-item>
+              <ion-label>
+                <ion-icon name="link"></ion-icon>
+              </ion-label>
+              <ion-input type="text" value="" placeholder="Paste a link here ..." [(ngModel)]="embedLink.title"></ion-input>
+            </ion-item>
+          </ion-col>
+          <ion-col col-12 text-center>
+            <button ion-button color="light-gray"> <ion-icon name="add" (click)="addAudioEmbedLink()"></ion-icon></button>
+          </ion-col>
+        </ion-row>
+      </ion-list>
+      <!--document-->
+      <ion-list *ngIf="singlePostData.document[0]" class="p-5">
+        <ion-row class="share-thought" *ngIf="singlePostData.origin_creator && singlePostData.name">{{singlePostData.name}}</ion-row>
+        <ion-row>
+          <h4 *ngIf="singlePostData.document[0].file_name && documentsToUpload.length<1">{{singlePostData.document[0].file_name | documentNameFilter}}</h4>
+          <a href="{{dataService.apiBaseUrl}}public/files/Subject/Documents/{{singlePostData.origin_creator?singlePostData.origin_creator._id:singlePostData.created_by._id}}/{{singlePostData.document[0].file_name}}">
+        </a>
+        </ion-row>
+        <ion-row class="upload-container" padding-top *ngIf="!singlePostData.origin_creator">
+          <ion-col col-12 *ngIf="documentsToUpload[0] && documentsToUpload[0].name != ''">
+            <span class="file-name">{{documentsToUpload[0].name}}</span>
+          </ion-col>
+          <ion-col col-12 no-padding text-center>
+            <label class="fileContainer">
+              <input type="file" (change)="documentChangeEvent($event)" />
+          </label>
+          </ion-col>
+          <ion-col col-12>
+            <p text-center>Note: Upload only .docx/.doc/.txt/.pdf/.xml/.xlsx/.ppt/.xls files.</p>
+          </ion-col>
+          <ion-col col-12 *ngIf="error.document">
+            <p text-center class="error-msg">{{error.document}}</p>
+          </ion-col>
+          <ion-col col-12 *ngIf="error.documentSize">
+            <p text-center class="error-msg">{{error.documentSize}}</p>
+          </ion-col>
+        </ion-row>
+      </ion-list>
+      <!--link-->
+      <ion-list *ngIf="singlePostData.origin_creator && singlePostData.link[0]" class="p-5">
+        <ion-item>
+          <span *ngIf="singlePostData.link[0].title">{{singlePostData.link[0].title}}</span>
+          <span *ngIf="singlePostData.link[0].description"><a href="{{singlePostData.link[0].description}}" target="_blank" >{{singlePostData.link[0].description}}</a></span>
+        </ion-item>
+      </ion-list>
+      <!--question-->
+      <ion-list *ngIf="singlePostData.origin_creator && singlePostData.question" class="p-5">
+        <ion-row class="share-post-text">{{singlePostData.question}}</ion-row>
+      </ion-list>
+    </ion-row>
+    <ion-row class="share-post-footer">
+      <ion-col col-12 no-padding>
+        <ion-label>Visibility</ion-label>
+        <ion-item>          
+          <ion-select (ngModelChange)="onChangeSharePrivacy($event)" [(ngModel)]="selectedPrivacyType" interface="action-sheet">
+            <ion-option value="1">Public</ion-option>
+            <ion-option value="2">Private(Only Me)</ion-option>
+            <ion-option value="3">All Friends</ion-option>
+            <ion-option value="4">All Followers</ion-option>
+            <ion-option value="5">Custom</ion-option>
+            <ion-option value="6">All Friends And Followers</ion-option>
+          </ion-select>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row margin-vertical class="share-btn">
+      <ion-col col-6 no-padding text-center>
+        <button ion-button text-uppercase color="dark-blue" (click)="dismiss()">Cancel</button>
+      </ion-col>
+      <ion-col col-6 no-padding text-center>
+        <button ion-button text-uppercase color="primary" [disabled]="loader" (click)="onEditPost()">Update</button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

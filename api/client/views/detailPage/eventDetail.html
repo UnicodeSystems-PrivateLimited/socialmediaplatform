@@ -1,0 +1,122 @@
+<div class="custom1-modal-header layout-row layout-align-space-between">
+    <div class="h3 header-title"><i class="fa fa-users m-r-10" aria-hidden="true"></i>Event Name</div>
+    <div class="header-options layout-row layout-align-end">
+        <div class="modal-option option1 layout-row layout-align-center-center">
+
+
+
+        </div>
+
+    </div>
+</div>
+<div *ngIf="events">
+    <div class="cover-img-section">
+
+        <span  class="user-img cover-img" *ngIf="events.icon">
+            <img  alt="" src="theme/files/Groupevents/{{events.icon}}" class="group-img-block" >
+        </span>
+        <span  class="user-img cover-img" *ngIf="!events.icon">
+            <span class="no-img-text">No Image Available</span>
+        </span>
+    </div>
+    <div class="d-event-nt layout-align-space-between">
+        <div class="d-event-name flex-30">
+            <!--            <label>Event Name:</label>-->
+            <span >{{events.title}}</span>
+        </div>
+        <div class="d-event-tag flex-60">
+            <!--            <label>Event Tag Line:</label>-->
+            <span >"{{events.tagline}}"</span>
+        </div>
+    </div>
+    <div class="d-event-dec-block layout-row">
+        <div class="d-event-dec-half flex-50">
+            <div class="d-event-dec layout-row">
+                <label class="flex-30">Event Description:</label>
+                <span class="flex-55">{{events.description}}</span>
+            </div>
+            <div class="d-event-loc layout-row">
+                <label class="flex-30">Where:</label>
+                <span class="flex-55">{{events.location}}</span>
+            </div>
+        </div>
+        <div class="d-event-dec-half flex-50">
+            <div class="d-event-date layout-column">
+                <div class="d-start-date layout-row">
+                    <label class="flex-25">Start Date:</label>
+                    <span>{{events.event_date_from | amDateFormat:'LL'}}</span>
+                </div>
+                <div class="d-end-date layout-row">
+                    <label class="flex-25">End Date:</label>
+                    <span>{{events.event_date_to | amDateFormat:'LL'}}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="d-member-section dd-ms">
+        <label>Event Member:</label>
+        <div class="dd-ms-member-block layout-row layout-wrap">
+            <div *ngFor="#member of events.members;#i=index" class="dd-ms-member">
+                <div class="dd-mm-block" (click)="getProfileById(member.user_id._id)">
+                    <div  class="flex-10 flex-xs-25">
+                        <span  class="">
+                            <span  class="user-img mem-wrap-section" *ngIf="member.user_id && member.user_id.photo!=null">
+                                <!--<img *ngIf="member.user_id.photo" alt="" src="theme/files/ProfilePicture/{{member.user_id.photo}}">-->
+                                <img alt="" src="theme/files/ProfilePicture/{{member.user_id.photo}}" height="50px" width="50px">
+                            </span>
+                            <span  class="user-img mem-wrap-section" *ngIf="!member.user_id || member.user_id.photo==null">
+                                <!--<img *ngIf="member.user_id.photo" alt="" src="theme/files/ProfilePicture/{{member.user_id.photo}}">-->
+                                <img alt="" src="theme/files/ProfilePicture/no_image.png" height="50px" width="50px">
+                            </span>
+                        </span>
+                    </div> 
+                    <div  class="content-block-desc layout-column flex-80 layout-wrap layout-row" >
+
+                        <div  class="detaial flex-80 c-p" >
+                            <h3 class="content-block-desc-title memb-name" >{{member.user_id.fname}}</h3>
+                            <!--<h5 class="content-block-desc-sub-title date-joing">4 days ago</h5>-->
+                        </div>
+                    </div> 
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="d-group-section dd-ms">
+        <label>Group Member:</label>
+        <div *ngFor="#group of events.groups;#j=index">
+            <div class="dd-mm-block">
+                <div class="layout-row layout-align-start-center layout-wrap layout-padding group-updates">  
+
+                    <div class="layout-row layout-wrap layout-align-space-between flex-30 m-r-10 m-b-10" *ngFor="#member of group.group_id.members;#i=index">
+                         <div  class="flex-100 link-block layout-row layout-align-space-between border whit-bg college-b border-radius-3px" (click)="getProfileById(member.user_id._id)">
+
+                            <div  class="flex-10 flex-xs-25">
+                                <span  class="user-img mem-wrap-section" *ngIf="member.user_id && member.user_id.photo!=null">
+                                    <!--<img *ngIf="member.user_id.photo" alt="" src="theme/files/ProfilePicture/{{member.user_id.photo}}">-->
+                                    <img alt="" src="theme/files/ProfilePicture/{{member.user_id.photo}}" height="50px" width="50px">
+                                </span>
+                                <span  class="user-img mem-wrap-section" *ngIf="!member.user_id || member.user_id.photo==null">
+                                    <!--<img *ngIf="member.user_id.photo" alt="" src="theme/files/ProfilePicture/{{member.user_id.photo}}">-->
+                                    <img alt="" src="theme/files/ProfilePicture/no_image.png" height="50px" width="50px">
+                                </span>
+                            </div>
+
+
+                            <div  class="content-block-desc layout-column flex-80 layout-wrap layout-row" >
+
+                                <div  class="detaial flex-80 c-p" >
+                                    <h3 class="content-block-desc-title" *ngIf="member.user_id">{{member.user_id.fname}}</h3>
+                                    <h5 class="content-block-desc-sub-title"></h5>
+                                    <div class="content-block-desc-link">
+
+                                    </div>
+                                </div>
+                            </div> 
+                        </div>
+                    </div>     
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

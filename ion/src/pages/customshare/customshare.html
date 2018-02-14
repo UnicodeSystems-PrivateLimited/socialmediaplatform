@@ -1,0 +1,37 @@
+<ion-header>
+  <ion-navbar class="gradient">
+    <ion-title>
+      <h1 class="header-title" text-center color="white">Select Members</h1>
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content class="customshare-list">
+  <ion-list>
+    <ion-item class="search-friend">
+      <ion-searchbar ion-text color="white"  [(ngModel)]="userSearchField.name"></ion-searchbar>
+    </ion-item>
+     <ion-spinner icon="spiral" *ngIf="loader"></ion-spinner> 
+    <div *ngIf="members">
+      <div *ngIf="members.length > 0">
+        <ion-item *ngFor="let member of (members | membersearchpipe : userSearchField.name)">
+          <ion-checkbox value="member._id" (click)="checkboxValue(member._id)"></ion-checkbox>
+          <ion-avatar item-left>
+            <img *ngIf="member.photo" src="{{dataService.apiBaseUrl}}public/files/ProfilePicture/{{member.photo}}">
+            <img *ngIf="!member.photo" src="{{dataService.apiBaseUrl}}public/files/ProfilePicture/no_image.png">
+          </ion-avatar>
+          <ion-label>
+            <h4 *ngIf="member.fname">{{member.fname}} &nbsp; {{member?.lname}}</h4>
+          </ion-label>
+        </ion-item>
+      </div>
+      <div  *ngIf="members.length == 0">                                   
+        <ion-item>
+          No Member Found
+        </ion-item>
+      </div>
+    </div>
+  </ion-list>
+  <button ion-button color="primary" (click)="closeVisibility()">Done</button>
+</ion-content>

@@ -1,0 +1,73 @@
+<style>
+
+
+    :host(.page1Container) {
+        display: inline-block;
+
+        width: 100%;
+        -webkit-transition: all cubic-bezier(0, 0, 0.39, 1.07) 0.2s;
+        transition: all cubic-bezier(0, 0, 0.39, 1.07) 0.2s;
+    }
+
+    :host(.page1Container.ng-enter) {
+        opacity: 0;
+        transform: translate3d(100%, 0, 0);
+    }
+
+    :host(.page1Container.ng-enter-active) {
+        opacity: 1;
+        transform: none;
+    }
+
+</style>
+<section class="content p-0">
+
+
+    <div class="custom1-modal layout-column">
+        <div class="custom1-modal-header layout-row layout-align-space-between">
+            <div class="h3 header-title">Profile</div>
+            <div class="header-options layout-row">
+                <div class="modal-option option1 layout-row layout-align-center-center">
+                    
+                    <span class="btn-title"></span>
+                </div>
+
+            </div>
+        </div>
+        <div class="custom1-modal-body layout-row layout-align-space-between ">
+            <div class="flex-55 flex-xs-30">
+                <div class=" modal-body-title">
+                    <h3>Jack Deo
+                        <span class="modal-sub-title" ></span>
+                    </h3>
+
+                </div>
+                <div class=" modal-body-content">
+                    <div class="ad-account-section-1 layout-column m-b-20 margin-l-30">
+                        <div class="center layout-row layout-align-center-center m-b-20" >
+
+                        </div>
+                        <div class="center layout-row layout-align-center-center m-b-20">
+                            <span class="flex-15 layout-align-end-center layout-row">Name</span>
+                            <input  class="form-control flex-60" id="inputName" placeholder="Jane Doe" type="email">
+                        </div>
+                        <div class="center layout-row layout-align-center-center m-b-20">
+                            <span class="flex-15 layout-align-end-center layout-row">Email</span>
+                            <input class="form-control flex-60" id="inputName" placeholder="jane.doe@gmail.com" type="email">
+                        </div>
+                        <div class="center layout-row layout-align-center-center m-b-20">
+                            <span class="flex-15 layout-align-end-center layout-row">Password</span>
+                            <input class="form-control flex-60" id="inputName" placeholder="Name" type="email">
+                        </div>
+                        <div class="center layout-row layout-align-center-center m-b-20">
+                            <span class="flex-15 layout-align-end-center layout-row">Profile Pic</span>
+                              <input id="exampleInputFile" class="form-control flex-60" type="file" id="img_upload">
+                        </div>
+                        <div class=""><button class="setting-btn" >Save Updates</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

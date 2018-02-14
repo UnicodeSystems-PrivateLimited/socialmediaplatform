@@ -1,0 +1,159 @@
+page-chat-desc {
+    .header {
+        .toolbar-background {
+            background-color: #f3843e;
+        }
+        .back-button {
+            color: #fff;
+            margin: 0;
+            position: relative; 
+            width: auto;
+        }
+        .toolbar-content {
+            .list {
+                margin: 0;
+                margin-left: 30px;
+            }
+            .item {
+                min-height: auto;
+                background-color: transparent;
+                padding-left: 0;
+                .label {
+                    margin: 0;
+                    h2 {
+                        color: #fff;
+                    }
+                    p {
+                        color: #f8f8f8;
+                        font-size: 12px;
+                    }
+                }
+            }
+        }
+        .toolbar-content-ios{
+        .list-ios{
+            .item-block{
+                border: none;
+            }
+         }
+        ion-col{
+            padding-top: 10px;
+        }
+    }
+    }
+    .content {
+        background-color: #efefef;
+        .direct-chat-msg {
+            background-color: transparent;
+            overflow: visible;
+            min-height: 3.4rem;
+            padding: 0 8px 0 16px;
+            margin-bottom: 8px;
+            .item-inner {
+                border: 0;
+                overflow: visible;
+                .label {
+                    overflow: visible;
+                    margin: 0;
+                }
+                .input-wrapper {
+                    overflow: visible;
+                }
+                .post-chat-text {
+                    text-align: right;
+                    .pre-msg {
+                        background-color: #0899d5;
+                        border-radius: 5px 0px 5px 5px;
+                        width: auto !important;
+                        position: relative;
+                        color: #fff;
+                        padding: 5px 10px;
+                        display: inline-block;
+                        max-width: 80%;
+                        white-space: pre-wrap;
+                        word-break: break-all;
+
+                        &:first-child:before {
+                            content: "";
+                            position: absolute;
+                            top: 0;
+                            right: -6px;
+                            width: 0;
+                            height: 0;
+                            border-style: solid;
+                            border-width: 7px 7px 0 0;
+                            border-color: #0899d5 transparent transparent transparent;
+                        }
+                        .msg-time {
+                            font-size: 10px;
+                            color: #f1f1f1;
+                            display: inline-block;
+                        }
+                    }
+                }
+                .pre-chat-text {
+                    text-align: left;
+                    .pre-msg {
+                        background-color: #d9dbe0;
+                        border-radius: 0px 5px 5px 5px;
+                        width: auto !important;
+                        position: relative;
+                        padding: 5px 10px;
+                        display: inline-block;
+                        color: #23333f;
+                        max-width: 80%;
+                        white-space: pre-wrap;
+                        word-break: break-all;
+                        &:first-child {
+                            &:before {
+                                content: "";
+                                position: absolute;
+                                top: 0;
+                                left: -6px;
+                                width: 0;
+                                height: 0;
+                                border-style: solid;
+                                border-width: 0 7px 7px 0;
+                                border-color: transparent #d9dbe0 transparent transparent;
+                            }
+                        }
+                    }
+                    .msg-time {
+                        font-size: 10px;
+                        color: #23333f;
+                        display: inline-block;
+                    }
+                }
+            }
+        }
+    }
+    .footer {
+        .toolbar {
+            min-height: 50px;
+            border-top: 1px solid #bababa;
+            padding: 0;
+            .toolbar-background {
+                background-color: #f6f6f6;
+            }
+            .user-img {
+                text-align: center;
+                padding: 11px 0 10px;
+                border-right: 1px solid #bababa;
+                max-width: 15%;
+                img {
+                    width: 20px;
+                    border: 1px solid #bababa;
+                }
+            }
+            .messageDraft {
+                width: 100%;
+                background-color: transparent;
+                border: none;
+                padding-left: 10px;
+            }
+            .button {
+                color: #6b757e;
+            }
+        }
+    }
+}

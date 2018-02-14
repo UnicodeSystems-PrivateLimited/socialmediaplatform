@@ -1,0 +1,1 @@
+export * from './globalSearchList.component';

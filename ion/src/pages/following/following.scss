@@ -1,0 +1,30 @@
+page-following {
+    .toolbar-background-ios {
+        border: none;
+    }
+    .header {
+        &::after {
+            background-image: none;
+            height: 0;
+        }
+        .header-title {
+            margin: 0;
+            color: white;
+        }
+    }
+    .content {
+        background-color: #dfdfdf;
+        .item {
+            padding-left: 10px;
+            background-color: transparent;
+            border-bottom: 1px solid rgba(177, 177, 177, 0.52);            
+            .item-inner {
+                margin-right: 8px;
+                border: none;
+            }
+            ion-avatar img {
+                border: 1px solid #b0b0b0;
+            }
+        }
+    }
+}

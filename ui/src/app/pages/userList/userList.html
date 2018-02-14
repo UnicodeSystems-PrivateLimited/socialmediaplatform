@@ -1,0 +1,74 @@
+<section class="content m-l-10 m-r-10" *ngIf="friends">
+    <div class="">
+        <div class="">
+            <div class="box">
+                <!--<div class="box-header">
+                                    <h3 class="box-title">Friends Requests</h3>
+                                </div>-->
+                <div class="">
+                    <div id="example2_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="table-responsive" *ngIf="friends.current">
+                                    <table class=" table-bordered table-hover text-center search-result-member connection-list " cellspacing="0" width="100%">
+                                        <tbody>
+                                            <!-- <tr *ngFor="let friend of friends.pending" class="user-list-table">
+                                                <td width="10%" class="c-p" (click)="getProfileById(friend.friend_id)">
+                                                    <img *ngIf="friend.photo" src="public/files/ProfilePicture/{{friend.photo}}" alt="{{friend.photo}}" />
+                                                    <img *ngIf="!friend.photo" src="public/files/ProfilePicture/no_image.png" alt="" />
+                                                </td>
+                                                <td width="30%" class="member-details">
+                                                    <p class="member-name" (click)="getProfileById(friend.friend_id)">{{friend.name }}</p>
+                                                </td>
+                                                <td width="60%">
+                                                    <ul class="list-inline">
+                                                        <li (click)="mytoggle()" class="c-p"><a><i class="fa fa-envelope">&nbsp;</i><span class="hide-xs">Send Message</span></a></li>
+                                                        <li *ngIf="friend.status==6" (click)="addAsFriend(friend.friend_id._id,friend)" class="c-p"><a><i class="fa fa-user-plus">&nbsp;</i> <span class="hide-xs">Add Friend</span></a></li>
+                                                        <li *ngIf="friend.status==1" (click)="cancelRequestedFriend(friend.friend_id,friend)" class="c-p"><a><i class="fa fa-user-times" aria-hidden="true"></i>&nbsp;<span class="hide-xs">Cancel Friend Request</span></a></li>
+                                                        <li *ngIf="friend.status==2" (click)="acceptFriendRequest(friend.friend_id,friend)" class="c-p"><a><i class="fa fa-user-plus" aria-hidden="true"></i>&nbsp;<span class="hide-xs">Accept Friend Request</span></a></li>
+                                                        <li *ngIf="friend.status==2" (click)="friendRequestReject(friend.friend_id,friend)" class="c-p"><a><i class="fa fa-user-times" aria-hidden="true"></i>&nbsp;<span class="hide-xs">Reject</span></a></li>
+                                                        <li *ngIf="friend.status==3" (click)="friendRemove(friend.friend_id,friend)" class="c-p"><a><i class="fa fa-user-plus" aria-hidden="true"></i>&nbsp;<span class="hide-xs">UnFriend</span></a></li>
+
+                                                        <li *ngIf="friend.status !==4" (click)="blockFriend(friend.friend_id,friend)" class="c-p"><a><i class="fa fa-ban" aria-hidden="true"></i>&nbsp;<span class="hide-xs">Block</span></a></li>
+                                                        <li *ngIf="friend.status == 4" (click)="unblockFriend(friend.friend_id,friend)" class="c-p"><a><i class="fa fa-unlock" aria-hidden="true"></i>&nbsp;<span class="hide-xs">Unblock</span></a></li>
+                                                    </ul>
+                                                </td>
+                                            </tr> -->
+                                            <tr *ngFor="let friend of friends.current" class="user-list-table">
+                                                <td width="10%" class="c-p" (click)="getProfileById(friend.friend_id)">
+                                                    <img *ngIf="friend.photo" src="public/files/ProfilePicture/{{friend.photo}}" alt="" />
+                                                    <img *ngIf="!friend.photo" src="public/files/ProfilePicture/no_image.png" alt="" />
+                                                </td>
+                                                <td width="30%" class="member-details">
+                                                    <p class="member-name c-p m-t-10 m-b-10" (click)="getProfileById(friend.friend_id)">{{friend.name }}</p>
+                                                    <!--<p class="member-points">140 points</p>-->
+                                                </td>
+                                                <td width="60%">
+                                                    <ul class="list-inline">
+                                                        <li (click)="mytoggle(friend.friend_id)" class="c-p"><a><i class="fa fa-envelope">&nbsp;</i><span class="hide-xs">Send Message</span></a></li>
+                                                        <li *ngIf="friend.status==3" (click)="friendRemove(friend.friend_id,friend)" class="c-p"><a><i class="fa fa-user-plus" aria-hidden="true"></i>&nbsp;<span class="hide-xs">UnFriend</span></a></li>
+                                                        <li *ngIf="friend.status !==4" (click)="blockFriend(friend.friend_id,friend)" class="c-p"><a><i class="fa fa-ban" aria-hidden="true"></i>&nbsp;<span class="hide-xs">Block</span></a></li>
+                                                        <li *ngIf="friend.status == 4" (click)="unblockFriend(friend.friend_id,friend)" class="c-p"><a><i class="fa fa-unlock" aria-hidden="true"></i>&nbsp;<span class="hide-xs">Unblock</span></a></li>
+                                                    </ul>
+                                                </td>
+                                            </tr>
+
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="no-count-section" *ngIf="friends.current==''">
+                                    <i class="fa fa-exclamation-circle" aria-hidden="true"></i>&nbsp; You have not connected with any friends. Click  <a class="text-orange c-p" (click)="inviteFriends()">‘Invite Friends’</a>  to start developing your circle.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- invite friends model  -->
+<div class="modal fade modal-align-fix dialog-like-wrapper " id="inviteFriendsModel4">
+    <invite-friends-model *ngIf="showinviteFriendsModel" [pageData]="page" (complete)="oninviteFriendsModelClose($event)"></invite-friends-model>
+</div>

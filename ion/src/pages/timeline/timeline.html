@@ -1,0 +1,478 @@
+<!--
+  Generated template for the Timeline page.
+
+  See http://ionicframework.com/docs/v2/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header class="header">
+    <ion-navbar class="gradient" hideBackButton="true">
+        <ion-grid>
+            <ion-row>
+                <ion-col col-12>
+                    <ion-item>
+                        <button ion-button menuToggle>
+                            <ion-icon name="menu"></ion-icon>
+                        </button>
+                        <button class="header-logo-sm"> <img width="26" height="26" src="{{dataService.apiBaseUrl}}public/files/logo/StribeIN-logo.png" /> </button>
+                        <button ion-button (click)="goToSearchPage()" class="header-search">
+                        <ion-icon name="search"></ion-icon>
+                    </button>
+                    </ion-item>
+                    <ion-item class="header-icon">
+                        <ion-icon (click)="onFriend()" ion-text ios="ios-people" md="md-people" color="white">
+                            <ion-badge *ngIf="pageService.friendRequestnotificationData && pageService.friendRequestnotificationData.length>0">{{pageService.friendRequestnotificationData.length}}</ion-badge>
+                        </ion-icon>
+                        <ion-icon ion-text ios="ios-chatbubbles" md="md-chatbubbles" color="white" (click)="gotochat()">
+                            <ion-badge item-right *ngIf="pageService.totPendUserMsg>0 || pageService.totPendGroupUserMsg>0">{{pageService.totPendUserMsg+pageService.totPendGroupUserMsg}}</ion-badge>
+                        </ion-icon>
+                        <ion-icon (click)="onNotification()" ion-text ios="ios-notifications" md="md-notifications" color="white">
+                            <ion-badge item-right *ngIf="pageService.notificationData && pageService.notificationData.length>0">{{pageService.notificationData.length}}</ion-badge>
+                        </ion-icon>
+                        <ion-icon (click)="goToProfile()"  ion-text ios="ios-person" md="md-person" color="white">
+                        </ion-icon>
+                    </ion-item>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+    </ion-navbar>
+    <ion-grid class="content-header">
+            <ion-row>
+                <ion-col col-6>
+                    <ion-item>
+                        <h1>My Timeline <span item-end style="padding-left: 3px;"><ion-icon (click)="onHelpClick()" name="help-circle"></ion-icon>
+                        </span></h1>
+                    </ion-item>
+                </ion-col>
+                <ion-col col-4 class="content-header-icon">
+                    <ion-item>
+                        <!--<i (click)="SubjecLlistPopover($event,1)" class="icomoon-book-icon" color="darkgray"></i>
+                        <i (click)="SubjecLlistPopover($event,3)" class="fa fa-university" color="darkgray"></i>
+                        <i (click)="SubjecLlistPopover($event,2)" class="fa fa-graduation-cap" color="darkgray"></i>-->
+                        <img height="25px" width="25px" src="{{dataService.apiBaseUrl}}public/files/logo/subject.png" (click)="SubjecLlistPopover($event,1)" />
+                        <img height="25px" width="25px" src="{{dataService.apiBaseUrl}}public/files/logo/college.png" (click)="SubjecLlistPopover($event,3)" />
+                        <img height="25px" width="25px" src="{{dataService.apiBaseUrl}}public/files/logo/degree.png" (click)="SubjecLlistPopover($event,2)" />
+                   
+                    </ion-item>
+                </ion-col>
+                <ion-col col-2 class="more-btn">
+                    <ion-item #popoverContent>
+                        <ion-buttons end>
+                            <button ion-button icon-only (click)="morepopup()">
+                                <ion-icon name="more"></ion-icon>
+                            </button>
+                        </ion-buttons>
+                    </ion-item>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+</ion-header>
+
+
+<ion-content>
+   
+    <ion-grid class="search-container">
+        <ion-row no-padding>
+            <ion-col col-12 no-padding (click)="advancesearch()">
+                <ion-item>
+                    <ion-icon name="search"></ion-icon> Search Posts
+                </ion-item>
+            </ion-col>
+        </ion-row>
+        <ion-row *ngIf="accordian" class="advance-search-item">
+            <ion-row class="search-input-container">
+                <ion-input placeholder="Search Subject..." (keyup)="subjectSearch($event)" (focus)="subjectSearch($event)" [(ngModel)]="searchData.subject_name"></ion-input>
+                <div *ngIf="searchedSubjectsList.length" class="search-list">
+                    <ul class="">
+                        <li *ngFor="let subject of searchedSubjectsList">
+                            <div class="college-block" (click)="selectSubject(subject._id,subject.name)">
+                                {{subject.name}}
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </ion-row>
+            <ion-row class="search-input-container">
+                <ion-input placeholder="Search College..." (keyup)="collegeSearch($event)" (focus)="collegeSearch($event)" [(ngModel)]="searchData.college_name"></ion-input>
+                <div *ngIf="searchedCollegesList.length" class="search-list">
+                    <ul class="">
+                        <li *ngFor="let college of searchedCollegesList">
+                            <div class="college-block" (click)="selectCollege(college._id,college.name)">
+                                {{college.name}}
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </ion-row>
+            <ion-row class="search-input-container">
+                <ion-input placeholder="Search Degree..." (keyup)="degreeSearch($event)" (focus)="degreeSearch($event)" [(ngModel)]="searchData.degree_name"></ion-input>
+                <div *ngIf="searchedDegreesList.length" class="search-list">
+                    <ul class="">
+                        <li *ngFor="let degree of searchedDegreesList">
+                            <div class="college-block" (click)="selectDegree(degree._id,degree.name)">
+                                {{degree.name}}
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </ion-row>
+            <ion-row class="search-btn-container">
+                <ion-col width-50 no-padding class="advancesearch-btn">
+                    <button ion-button color="dark-blue" (click)="searchReset()">Show All</button>
+                </ion-col>
+                <ion-col width-50 text-right no-padding class="advancesearch-btn">
+                    <button ion-button color="primary" [disabled]="searchStatus" (click)="searchPost()">Search</button>
+                </ion-col>
+            </ion-row>
+            <ion-row class="filter-data" padding-left *ngIf="showFilterText">
+                <span>Filter By :- {{showFilterText}}</span>
+            </ion-row>
+        </ion-row>
+    </ion-grid>
+    <ion-grid class="main-content">
+        <ion-label class="filter-post">Filter Posts By :- </ion-label>                              
+        <ion-row class="header-filter">
+            <ion-col class="arrow-slide" *ngIf="!viewTab" (click)="hidetab()">
+                <ion-item>
+                    <ion-icon name="arrow-dropleft"></ion-icon>
+                </ion-item>
+            </ion-col>
+            <ion-col width-15 *ngIf="viewTab" (click)="updateParameter(10,0)">
+                <ion-item [class.filter-active]="this.filteractive[0]">
+                    <ion-icon name="checkmark-circle-outline"></ion-icon>
+                    <span>All</span>
+                </ion-item>
+            </ion-col>
+            <ion-col width-15 *ngIf="viewTab" (click)="updateParameter(1,1)">
+                <ion-item [class.filter-active]="this.filteractive[1]">
+                    <i class="icomoon-status-icon"></i>
+                    <span>Status</span>
+                </ion-item>
+            </ion-col>
+            <ion-col width-15 *ngIf="viewTab" (click)="updateParameter(3,2)">
+                <ion-item [class.filter-active]="this.filteractive[2]">
+                    <i class="icomoon-camera-icon"></i>
+                    <span>Photo</span>
+                </ion-item>
+            </ion-col>
+            <ion-col width-15 *ngIf="viewTab" (click)="updateParameter(4,3)">
+                <ion-item [class.filter-active]="this.filteractive[3]">
+                    <i class="icomoon-video-icon"></i>
+                    <span>Video</span>
+                </ion-item>
+            </ion-col>
+            <ion-col width-15 (click)="updateParameter(5,4)">
+                <ion-item [class.filter-active]="this.filteractive[4]">
+                    <i class="icomoon-link-icon"></i>
+                    <span>Link</span>
+                </ion-item>
+            </ion-col>
+            <ion-col width-15 *ngIf="!viewTab" (click)="updateParameter(7,5)">
+                <ion-item [class.filter-active]="this.filteractive[5]">
+                    <i class="icomoon-document-icon"></i>
+                    <span>Document</span>
+                </ion-item>
+            </ion-col>
+            <ion-col width-15 *ngIf="!viewTab" (click)="updateParameter(6,6)">
+                <ion-item [class.filter-active]="this.filteractive[6]">
+                    <i class="icomoon-audio-icon"></i>
+                    <span>Audio</span>
+                </ion-item>
+            </ion-col>
+            <ion-col width-15 *ngIf="!viewTab" (click)="updateParameter(2,7)">
+                <ion-item [class.filter-active]="this.filteractive[7]">
+                    <ion-icon name="help-circle"></ion-icon>
+                    <span>Question</span>
+                </ion-item>
+            </ion-col>
+            <ion-col width-15 *ngIf="!viewTab" (click)="updateParameter(userId,8)">
+                <ion-item [class.filter-active]="this.filteractive[8]">
+                    <i class="icomoon-journal-icon"></i>
+                    <span>Journal</span>
+                </ion-item>
+            </ion-col>
+            <ion-col class="arrow-slide" *ngIf="viewTab" (click)="hidetab()">
+                <ion-item>
+                    <ion-icon name="arrow-dropright"></ion-icon>
+                </ion-item>
+            </ion-col>
+        </ion-row>
+        <ion-spinner icon="spiral" *ngIf="loader"></ion-spinner>
+
+        <ion-row class="no-data" *ngIf="this.filteractive[8] && !JournalByUserId.length">No Journal Found.</ion-row>
+        <ion-grid >
+            <ion-row  *ngIf="JournalByUserId">
+                <ion-col col-12 no-padding *ngFor="let Journal of JournalByUserId;let j=index">
+                    <ion-list class="journal-list">
+                        <ion-item text-wrap (click)="viewJournal(Journal)">
+                            <ion-thumbnail item-left>
+                                <img *ngIf="Journal.icon" src="{{dataService.apiBaseUrl}}public/files/Journal/{{Journal.icon}}">
+                                <img *ngIf="!Journal.icon" src="{{dataService.apiBaseUrl}}public/files/Group/group-registration-icon-26.png">
+                            </ion-thumbnail>
+                            <label *ngIf="Journal">{{Journal.title}}</label>
+                        </ion-item>
+                        <span class="journal-btn">
+                            <button ion-button clear item-right (click)="editJournal(Journal)"><ion-icon class="fa fa-edit"></ion-icon></button>
+                            <button ion-button clear item-right (click)="onJournalDeleteClick(Journal._id,j)"><ion-icon name="trash"></ion-icon></button>
+                        </span>
+                    </ion-list>  
+                </ion-col>              
+            </ion-row>
+        </ion-grid>
+        <ion-row class="no-data" *ngIf="!this.filteractive[8] && !timelinedata.length">No data found...</ion-row>
+        <ion-grid *ngIf="timelinedata" no-padding>
+            <ion-row *ngFor="let data of timelinedata;let j=index">
+                <ion-card *ngIf="data.friend_id">
+                    <ion-item class="post-header" *ngIf="data.friend_id">
+                        <h2 *ngIf="data.friend_id.fname"><span class="name" (click)="getProfileById(data.friend_id._id)">{{data.friend_id.fname + ' ' + data.friend_id.lname}}</span>
+                            <span color="white"> {{data.title}} of</span>
+                            <span *ngIf="data.created_by" class="name" (click)="getProfileById(data.created_by._id)">{{data.created_by.fname + ' ' + data.created_by.lname}}</span>
+                        </h2>
+                        <p>{{data.timestamp | datetimefilterpipe}}</p>
+                    </ion-item>
+                </ion-card>
+
+                <ion-card *ngIf="data.post_id">
+                        <ion-item class="post-header" *ngIf="data.post_id">
+                                <h2 *ngIf="data.created_by.fname"><span class="name" (click)="getProfileById(data.created_by._id)">{{data.created_by.fname + ' ' + data.created_by.lname}}</span>
+                                    <span color="white"> {{data.title}}</span>
+                                    <span color="white" *ngIf="data.post_id.origin_creator && data.post_id.origin_creator._id != data.post_id.created_by._id">&nbsp;of
+                                   <a class="color-red c-p" (click)="getProfileById(data.post_id.origin_creator._id)">{{data.post_id.origin_creator.fname + ' ' + data.post_id.origin_creator.lname}}</a>
+                                   </span>
+                                    <span *ngIf="data.post_id.degree_id" (click)="getDegreeWall(data.post_id.degree_id._id)"> <span color="white" *ngIf="(data.post_type != 8) || (data.post_type == 8 && data.post_id.origin_creator)">in</span>                                {{data.post_id.degree_id.name}}</span>
+                                    <span *ngIf="data.post_id.college_id" (click)="getCollegeWall(data.post_id.college_id._id)"><span color="white" *ngIf="(data.post_type != 8) || (data.post_type == 8 && data.post_id.origin_creator)">in</span>                                {{data.post_id.college_id.name}}</span>
+                                    <span *ngIf="data.post_id.subject_id" (click)="getSubjectWall(data.post_id.subject_id._id)"><span color="white" *ngIf="(data.post_type != 8) || (data.post_type == 8 && data.post_id.origin_creator)">in</span>                                {{data.post_id.subject_id.name}}</span>
+                                    <span  *ngIf="data.post_id.group_id"> <span color="white">in</span>
+                                        <span class="color-red c-p"  *ngIf="data.post_id.group_id.title" (click)="getGroupWall(data.post_id.group_id._id)">{{data.post_id.group_id.title}}</span><span color="white"> group under </span> 
+                                        <span class="color-red c-p" (click)="getSubjectWall(data.post_id.group_id.subject_id._id)" *ngIf="data.post_id.group_id.subject_id">{{data.post_id.group_id.subject_id.name}}</span>   
+                                        <span class="color-red c-p" (click)="getCollegeWall(data.post_id.group_id.college_id._id)" *ngIf="data.post_id.group_id.college_id">{{data.post_id.group_id.college_id.name}}</span>   
+                                        <span class="color-red c-p" (click)="getDegreeWall(data.post_id.group_id.degree_id._id)" *ngIf="data.post_id.group_id.degree_id">{{data.post_id.group_id.degree_id.name}}</span>   
+                                                                     </span>
+                                    <span class="follow-unfollow-btn">
+                                        <button ion-button *ngIf="(data.created_by._id!=userId)  && (data.created_by._id | followunfollowstatus)" (click)="myWallService.onClickUnFollow(data.created_by._id)" text-left>
+                                            Unfollow 
+                                        </button>
+                                        <button ion-button *ngIf="(data.created_by._id!=userId)  && !(data.created_by._id | followunfollowstatus)" (click)="myWallService.onClickFollow(data.created_by._id)" text-left>
+                                            Follow 
+                                        </button>
+                                    </span>                            
+                                </h2>
+    
+                                <p>
+                                    {{getCategory(data.post_id.catagory)}}
+                                    <span *ngIf="data.timestamp"> | {{data.timestamp | datetimefilterpipe}}</span>
+                                    <span *ngIf="data.post_id.privacy"> |
+                                        <span *ngIf="data.post_id.privacy == 1" >Public</span>
+                                    <span *ngIf="data.post_id.privacy  == 2">Private</span>
+                                    <span *ngIf="data.post_id.privacy  == 3">All Friends</span>
+                                    <span *ngIf="data.post_id.privacy  == 4">All Followers</span>
+                                    <span *ngIf="data.post_id.privacy  == 5">Custom</span>
+                                    <span *ngIf="data.post_id.privacy  == 6">All Friends And Followers</span>
+                                    </span>
+                             
+                                </p>
+                            </ion-item>
+                    <ion-card-content no-padding>
+                        
+                        <div class="post-edit-icon">
+                            <span item-right *ngIf="data.post_type != 8 && data.created_by._id==userId">
+                                <i class="fa fa-edit" aria-hidden="true" (click)="editPost(data.post_id, j)"></i>
+                            </span>
+                            <span item-right *ngIf="data.created_by._id==userId">
+                                <i class="fa fa-trash-o" aria-hidden="true" (click)="onDeleteClick(data.post_id, j,'user')"></i>
+                            </span>
+                            <span item-right *ngIf="data.created_by._id!=userId">
+                                <i class="fa fa-trash-o" aria-hidden="true" (click)="onDeleteClick(data.post_id, j,'otherUser')"></i>
+                            </span>
+                        </div>
+                        <div class="post-text-container row" *ngIf="data.post_id.shared_title" (click)="goToSinglePost(data, data.post_id._id)">
+                            <!--Post-shared title-->
+                            <span embed-directive>{{data.post_id.shared_title}}</span>
+                        </div>
+                        <div [class.share-post]="data.post_id?.origin_creator" [class.mt-10]="data.post_id?.origin_creator && !data.post_id?.shared_title">
+                            <div (click)="goToSinglePost(data, data.post_id._id)" embed-directive class="post-text-container row" *ngIf="data.post_id?.name && data.post_id?.name !=null ">
+                                <!--Post-title-->
+                               {{data.post_id.name}}
+                            </div>
+                            <!-- photo -->
+
+                            <div *ngIf="data.post_id!=null && data.post_id.photo[0]" (click)="goToSinglePost(data, data.post_id._id)" class="post-img">
+                                <img *ngIf="data.post_id.photo[0].title==null" src="{{dataService.apiBaseUrl}}public/files/{{getFoldername(data.type)}}/Photos/{{data.post_id.origin_creator?data.post_id.origin_creator._id:data.post_id.created_by._id}}/{{data.post_id.photo[0].file_name}}"
+                                    alt="Photo">
+                                <img *ngIf="data.post_id.photo[0].title!=null" src="{{data.post_id.photo[0].title}}" alt="Photo">
+                            </div>
+
+
+                            <!-- video -->
+
+                            <div *ngIf="data.post_id!=null && data.post_id.video[0]" (click)="goToSinglePost(data, data.post_id._id)">
+                                <!-- <h4 *ngIf="data.post_id.video[0].file_name">{{data.post_id.video[0].file_name | documentNameFilter}}</h4> -->
+                                <video *ngIf="data.post_id.video[0].title==null" width="100%" height="100%" controls controlsList="nodownload">
+                                    <source src="{{dataService.apiBaseUrl}}public/files/{{getFoldername(data.type)}}/Videos/{{data.post_id.origin_creator?data.post_id.origin_creator._id:data.post_id.created_by._id}}/{{data.post_id.video[0].file_name}}"
+                                        type="video/mp4">
+                                </video>
+                                <iframe *ngIf="data.post_id.video[0].title!=null" width="100%" height="320px" [src]="data.post_id.video[0]?.title | youtubeSafeUrl"
+                                    frameborder="0" allowfullscreen></iframe>
+                            </div>
+
+                            <!-- audio -->
+                            <div *ngIf="data.post_id!=null && data.post_id.audio[0]" (click)="goToSinglePost(data, data.post_id._id)">
+                                <!-- <h4 *ngIf="data.post_id.audio[0].file_name">{{data.post_id.audio[0].file_name | documentNameFilter}}</h4> -->
+                                <audio controls controlsList="nodownload" *ngIf="data.post_id.audio[0].title==null">
+                                  <source src="{{dataService.apiBaseUrl}}public/files/{{getFoldername(data.type)}}/Audios/{{data.post_id.origin_creator?data.post_id.origin_creator._id:data.post_id.created_by._id}}/{{data.post_id.audio[0].file_name}}">
+                                </audio>
+                                <audio controls controlsList="nodownload" *ngIf="data.post_id.audio[0].title!=null">
+                                    <source src="{{data.post_id.audio[0].title}}" >
+                                </audio>
+                            </div>
+
+
+                            <!-- link -->
+
+                            <div class="post-text-container row" *ngIf="data.post_id!=null && data.post_id.link[0]">
+                                <span *ngIf="data.post_id.link[0].title" embed-directive>{{data.post_id.link[0].title}}</span>
+                                <span *ngIf="data.post_id.link[0].description"><a href="{{data.post_id.link[0].description}}" target="_blank" embed-directive>{{data.post_id.link[0].description}}</a></span>
+                            </div>
+
+                            <!-- Documents -->
+
+                            <div class="post-text-container row" *ngIf="data.post_id!=null && data.post_id.document[0]">
+                                <h4 *ngIf="data.post_id.document[0].file_name">{{data.post_id.document[0].file_name | documentNameFilter}}</h4>
+                                <a href="{{dataService.apiBaseUrl}}public/files/{{getFoldername(data.type)}}/Documents/{{data.post_id.origin_creator?data.post_id.origin_creator._id:data.post_id.created_by._id}}/{{data.post_id.document[0].file_name}}">
+                                    <span *ngIf="data.post_id.document[0].file_name.split('.').pop() == 'txt' || data.post_id.document[0].file_name.split('.').pop() == 'text'">
+                                <i class="fa fa-file-text fa-4x">&nbsp;</i>Open/Download
+                            </span>
+                                    <span *ngIf="data.post_id.document[0].file_name.split('.').pop() == 'pdf'">
+                                <i class="fa fa-file-pdf-o fa-4x">&nbsp;</i>Open/Download
+                            </span>
+                                    <span *ngIf="data.post_id.document[0].file_name.split('.').pop() == 'doc' || data.post_id.document[0].file_name.split('.').pop() == 'dot' || data.post_id.document[0].file_name.split('.').pop() == 'word' || data.post_id.document[0].file_name.split('.').pop() == 'wiz' || data.post_id.document[0].file_name.split('.').pop() == 'w6w' || data.post_id.document[0].file_name.split('.').pop() == 'docx'">
+                                <i class="fa fa-file-word-o fa-4x">&nbsp;</i>Open/Download
+                            </span>
+                                    <span *ngIf="data.post_id.document[0].file_name.split('.').pop() == 'xls' || data.post_id.document[0].file_name.split('.').pop() == 'xlm' || data.post_id.document[0].file_name.split('.').pop() == 'xll' || data.post_id.document[0].file_name.split('.').pop() == 'xlc' || data.post_id.document[0].file_name.split('.').pop() == 'xlb' || data.post_id.document[0].file_name.split('.').pop() == 'xlw' || data.post_id.document[0].file_name.split('.').pop() == 'xlsx'">
+                                <i class="fa fa-file-excel-o fa-4x">&nbsp;</i>Open/Download
+                            </span>
+                                    <span *ngIf="data.post_id.document[0].file_name.split('.').pop() == 'ppt' || data.post_id.document[0].file_name.split('.').pop() == 'pot' || data.post_id.document[0].file_name.split('.').pop() == 'pps' || data.post_id.document[0].file_name.split('.').pop() == 'ppa' || data.post_id.document[0].file_name.split('.').pop() == 'pwz' ">
+                                <i class="fa fa-file-powerpoint-o fa-4x">&nbsp;</i>Open/Download
+                            </span>
+                                    <span *ngIf="data.post_id.document[0].file_name.split('.').pop() == 'xml'">
+                                <ion-icon name="document"></ion-icon>Open/Download
+                            </span>
+                                </a>
+                            </div>
+
+                            <!-- message -->
+                            <div class="post-text-container row" *ngIf="data.post_id!=null && data.post_id.message" embed-directive>
+                                {{data.post_id.message}}
+                            </div>
+
+                            <!-- question -->
+                            <div class="post-text-container row" *ngIf="data.post_id!=null && data.post_id.question" embed-directive>
+                                {{data.post_id.question}}
+                            </div>
+                        </div>
+                    </ion-card-content>
+
+                    <ion-row *ngIf="data.post_id" class="align-center card-row-footer" nowrap>
+                        <ion-col col-12 *ngIf="data.post_id">
+                            <button ion-button icon-left clear small class="pr-0" (click)="CommentModal(data.post_id._id,data.post_id.comments, data.post_id.likes.length)">
+                        <i class="{{data.post_id.comments|commentFilterPipe:data.post_id._id}}" aria-hidden="true"></i>        
+                        <div *ngIf="data.post_id.comments.length<=1">{{data.post_id.comments.length}}&nbsp;Comment</div>
+                        <div *ngIf="data.post_id.comments.length>1">{{data.post_id.comments.length}}&nbsp;Comments</div>
+                    </button>
+                            <button ion-button icon-left clear small class="pr-0" (click)="gotoJournal(data.post_id)">
+                        <i class="icomoon-journal-icon"></i>
+                        <div>Journal</div>
+                    </button>
+                            <button ion-button icon-left clear small class="pr-0" (click)="onShareClick(data.post_id)">
+                                    <ion-icon name='share-alt' [class.color-orange]="data.post_id?.origin_creator && data.post_id?.created_by?._id == userId"></ion-icon>                                
+                        Share
+                    </button>
+                     <!--<button *ngIf="(data.post_id?.created_by?._id != userId)  && (data.post_id?.created_by?._id  | followunfollowstatus)" (click)="myWallService.onClickUnFollow(data.post_id?.created_by?._id)" ion-button icon-left clear small class="pr-0" >
+                                <ion-icon class="color-orange" name='heart'></ion-icon>
+                                Unfollow 
+                   </button>
+                     <button *ngIf="(data.post_id?.created_by?._id != userId)  && !(data.post_id?.created_by?._id  | followunfollowstatus)" (click)="myWallService.onClickFollow(data.post_id?.created_by?._id)" ion-button icon-left clear small class="pr-0" >
+                      <ion-icon name='heart'></ion-icon>
+                      Follow 
+                     </button>-->
+                          <button ion-button icon-only class="pr-0 like-btn">
+                          <img class="pr-0" width="16" height="16" src="{{dataService.apiBaseUrl}}public/files/logo/{{data.post_id.likes|likeFilterPipe:data.post_id._id}}" (click)="like(data.post_id._id,data.post_id)"/> <div>{{data.post_id.likes.length}}</div>
+                         <div (click)="onViewLikeClick(data.post_id._id)" *ngIf="data.post_id.likes.length > 0"> &nbsp;View</div>
+                        </button>
+                        <button *ngIf="data.post_id?.created_by?._id != userId" ion-button icon-left clear small class="pr-0 flag-button" (click)="onFlagClick(data.post_id._id)">
+                            <ion-icon name='flag'></ion-icon>                                
+                        </button>
+                        </ion-col>
+                       
+                         <!--<ion-col col-1 class="more-btn align-right">
+                        <button ion-button icon-only (click)="onMorePopover(data.post_id)" class="text-right">
+                            <ion-icon name="more"></ion-icon>
+                        </button>
+                     </ion-col>-->
+                    </ion-row>
+                </ion-card>
+            </ion-row>
+        </ion-grid>
+
+    </ion-grid>
+    <ion-infinite-scroll *ngIf="!this.filteractive[8]" (ionInfinite)="doInfinite($event)">
+        <ion-infinite-scroll-content></ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+    <!-- <ion-spinner icon="spiral" *ngIf="loader"></ion-spinner> -->
+</ion-content>
+<ion-grid class="my-overlay" *ngIf="showOverlay">
+    <ion-row justify-content-center>
+        <ion-col (click)="onHideOverlay()">Don't Show Again</ion-col>
+    </ion-row> 
+    <ion-row class="bg-transparent">
+            <ion-col><img src="assets/imgs/myWall-guide.png"></ion-col>
+        </ion-row>
+ </ion-grid>
+<ion-footer>
+    <ion-row class="share-post">
+        <ion-col class="arrow-slide" *ngIf="!viewTabBottom" (click)="hideTabBottom()">
+            <ion-item>
+                <ion-icon name="arrow-dropleft"></ion-icon>
+            </ion-item>
+        </ion-col>
+        <ion-col width-15 *ngIf="viewTabBottom" (click)="newpost('Status',1)">
+            <ion-item>
+                <i class="icomoon-status-icon"></i>
+            </ion-item>
+        </ion-col>
+        <ion-col width-15 *ngIf="viewTabBottom" (click)="newpost('Photo',0)" class="camera-upload">
+            <ion-item>
+                <i class="icomoon-camera-icon"></i>
+            </ion-item>
+        </ion-col>
+        <ion-col width-15 (click)="newpost('Video',0)" class="video-upload">
+            <ion-item>
+                <i class="icomoon-video-icon"></i>
+            </ion-item>
+        </ion-col>
+        <ion-col width-15 (click)="newpost('Link',5)">
+            <ion-item>
+                <i class="icomoon-link-icon"></i>
+            </ion-item>
+        </ion-col>
+        <ion-col width-15 (click)="newpost('Document',0)">
+            <ion-item>
+                <i class="icomoon-document-icon"></i>
+            </ion-item>
+        </ion-col>
+        <ion-col width-15 *ngIf="!viewTabBottom" (click)="newpost('Audio',0)">
+            <ion-item>
+                <i class="icomoon-audio-icon"></i>
+            </ion-item>
+        </ion-col>
+        <ion-col width-15 *ngIf="!viewTabBottom" (click)="newpost('Question',2)" class="video-upload">
+            <ion-item>
+                <ion-icon name="help-circle"></ion-icon>
+            </ion-item>
+        </ion-col>
+        <ion-col class="arrow-slide" *ngIf="viewTabBottom" (click)="hideTabBottom()">
+            <ion-item>
+                <ion-icon name="arrow-dropright"></ion-icon>
+            </ion-item>
+        </ion-col>
+    </ion-row>
+</ion-footer>

@@ -1,0 +1,30 @@
+<div class="custom1-modal-header layout-row layout-align-space-between">
+    <div class="h3 header-title"><i class="fa fa-users m-r-10" aria-hidden="true"></i>Group Invites</div>
+    <div class="header-options layout-row layout-align-end">
+        <div class="modal-option option1 layout-row layout-align-center-center">
+        </div>
+    </div>
+</div>
+<div *ngIf="notificationList.length">
+    <div (window:scroll)="onScrollUserGroupNoti($event)">
+        <ul class="grp-invitation-list-container">
+            <li class="layout-row layout-align-space-between grp-invitation-list" *ngFor="let noti of notificationList;let i=index;">
+                <div class="layout-row layout-align-space-between-center flex-100">
+                   <div class="group_invition_noti"><span class="icon"> <i class="fa fa-users text-aqua grp-list-icon"></i> </span>
+                    <p>{{noti.from.fname+' '+noti.from.lname}} {{noti.title}}-&nbsp;"{{noti.groupId.title}}" in &nbsp;<span *ngIf="noti.groupId.subject_id">"{{noti.groupId.subject_id.name}}"</span> 
+                    <span *ngIf="noti.groupId.college_id">"{{noti.groupId.college_id.name}}"</span> <span *ngIf="noti.groupId.degree_id">"{{noti.groupId.degree_id.name}}"</span></p>
+                   </div>
+                    <div *ngIf="noti.post_type==8"  class="layout-row flex-30 grp-list-btn layout-align-end">
+                    <button  (click)="onAcceptClick(noti)" class="grp-invite-btn accept">Accept</button>
+                    <button *ngIf="noti.post_type==8" (click)="onRejectClick(noti)" class="grp-invite-btn reject">Reject</button>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
+<div *ngIf="!notificationList.length">
+    <div class="layout-row  layout-align-center-center flex-100 no_group-invites">
+    <span class="">No Group Invites.</span>
+    </div>
+</div>

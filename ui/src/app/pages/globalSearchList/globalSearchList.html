@@ -1,0 +1,33 @@
+
+
+<section class="content-header">
+    <h1 style="text-align: left" class="layout-row layout-align-start-center" *ngIf="heading"> {{heading}} Search List <span class=" c-p fx-bck" (click)="onBackClick()"><i class="fa fa-arrow-circle-o-left" aria-hidden="true"></i></span> </h1>
+</section>
+<section class="content">
+    <div class="" (window:scroll)="onScrollSearch($event)">
+        <ul class="global-search-list" *ngIf="dataList.length">
+            <li *ngFor="let item of dataList" class="layout-row layout-align-space-between search-li">
+                <div class="search-result-left layout-row">
+                    <div class="search-thumb" *ngIf="type == 1">
+                        <img alt="User Image" *ngIf="item.photo" class="" src="public/files/ProfilePicture/{{item.photo}}">
+                        <img alt="User Image" *ngIf="!item.photo" class="" src="public/files/ProfilePicture/no_image.png">
+                    </div>
+                    <div class="search-thumb" *ngIf="type == 5">
+                        <img alt="User Image" *ngIf="item.icon" class="" src="public/files/Group/{{item.icon}}">
+                        <img alt="User Image" *ngIf="!item.icon" class="" src="public/files/Group/group-registration-icon-26.png">
+                    </div>
+                    <div class="search-thumb" *ngIf="type == 6">
+                        <img alt="User Image" *ngIf="item.icon" class="" src="public/files/Groupevents/{{item.icon}}">
+                        <img alt="User Image" *ngIf="!item.icon" class="" src="public/files/Group/group-registration-icon-26.png">
+                    </div>
+                    <div class="result-title" *ngIf="item.fname && type == 1" (click)="onItemClick(item._id)">{{item.fname}} &nbsp; {{item.lname}}</div>
+                    <div class="result-title" *ngIf="item.name && type != 1" (click)="onItemClick(item._id)">{{item.name}}</div>
+                    <div class="result-title" *ngIf="item.title && (type == 5 || type == 6)" (click)="onItemClick(item._id)">{{item.title}}</div>
+                </div>
+            </li>
+        </ul>
+    </div>
+<div class="page-loader-section layout-row layout-align-center-center" *ngIf="loader">
+  <div class="page-loader ">Loading...</div>
+</div>
+</section>

@@ -1,0 +1,77 @@
+<!--
+  Generated template for the Externalshare page.
+
+  See http://ionicframework.com/docs/v2/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<div class="external-wrapper">
+  <ion-header class="external-header">
+  <ion-navbar>
+    <ion-title>externalshare</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content class="externalshare-list"> 
+<ion-row align-items-center>
+    <ion-col col-3>
+    <img src="img/facebook.png" (click)="shareViaFacebook()"/>
+    <span>Facebook</span>
+    </ion-col>
+    <ion-col col-3>
+<img src="img/linkedin.png" (click)="sharePicker()"/>
+    <span>Linked in</span>
+    </ion-col>
+    <ion-col col-3>
+<img src="img/twitter.png" (click)="shareViaTwitter()"/>
+    <span>Twitter</span>
+    </ion-col>
+    <ion-col col-3>
+     <img src="img/google-plus.png"/>
+    <span>Google+</span> 
+    </ion-col>
+  </ion-row>
+  
+  <ion-row align-items-center>
+    <ion-col col-3>
+    <img src="img/pinterest.png"/>
+    <span>Pinterest</span>
+    </ion-col>
+    <ion-col col-3>
+<img src="img/Instagram.png" (click)="shareViaInstagram()"/>
+    <span>Instagram</span>
+    </ion-col>
+    <ion-col col-3>
+<img src="img/Tumblr.png"/>
+    <span>Tumblr</span>
+    </ion-col>
+    <ion-col col-3>
+     <img src="img/email.png" (click)="shareViaEmail()" />
+    <span>Emails</span> 
+    </ion-col>
+  </ion-row>
+
+  <ion-row align-items-center>
+    <ion-col col-3>
+    <img src="img/whatsapp.png" (click)="shareViaWhatsApp()" />
+    <span>WhatsApp</span>
+    </ion-col>
+    <ion-col col-3>
+<img src="img/sms.png" (click) ="shareViaSMS()" />
+    <span>SMS</span>
+    </ion-col>
+    <ion-col col-3>
+<img src="img/Blog.png"/>
+    <span>Blog</span>
+    </ion-col>
+    <ion-col col-3>
+     <img src="img/Outlook.png"/>
+    <span>Outlook</span> 
+    </ion-col>
+  </ion-row>
+</ion-content>
+
+<ion-footer class="external-footer">  
+  <button ion-button color="dark" clear>cancel</button>
+</ion-footer>
+</div>

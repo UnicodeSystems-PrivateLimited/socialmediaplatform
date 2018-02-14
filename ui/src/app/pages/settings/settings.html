@@ -1,0 +1,844 @@
+<div class="setting-page setting-page-wrap">
+    <div class="custom1-modal-header layout-column layout-align-space-between m-b-20">
+        <div class="h3 header-title">
+            Settings
+        </div>
+        <div class="title-desc">Update your profile within the below sections. Make yourself discoverable by updating your profile.</div>
+    </div>
+    <div class="page-loader-section layout-row layout-align-center-center" *ngIf="showLoader">
+        <div class="page-loader">Loading...</div>
+    </div>
+    <section *ngIf="!showLoader">
+        <div class="col-md-12">
+            <div class="nav-tabs-custom setting-tab-container">
+                <ul class="nav nav-tabs  layout-row">
+                    <li [class.actives]="tAccount_settings" class="flex-15 flex-sm-20" (click)="settingTab(1)">
+                        <a title="Account Setting" data-toggle="tab" href="#Account_settings" class="layout-row layout-align-center-center">
+                            <span class="layout-row layout-align-center-center hide-xs"> Account Settings</span>
+                            <i class="fa fa-briefcase hide show-xs layout-align-center-center layout-row font-size-20" aria-hidden="true"></i>
+                        </a>
+                    </li>
+                    <li [class.actives]="tSocia_lLink" class="flex-15 flex-sm-20" (click)="settingTab(2)">
+                        <a title=" Social Links" data-toggle="tab" href="#Socia_lLink" class="layout-row layout-align-center-center">
+                            <span class="layout-row layout-align-center-center hide-xs">  Social Links</span>
+                            <i class="fa fa-stop-circle-o hide show-xs layout-align-center-center layout-row font-size-20" aria-hidden="true"></i>
+                        </a>
+                    </li>
+                    <li [class.actives]="tInvitation_mangement" class="flex-20 flex-sm-25" (click)="settingTab(3)">
+                        <a title="Friend Management" data-toggle="tab" href="#Invitation_mangement" class="layout-row layout-align-center-center">
+                            <span class="layout-row layout-align-center-center hide-xs">  Friend Management</span>
+                            <i class="fa fa-users hide show-xs layout-align-center-center layout-row font-size-20" aria-hidden="true"></i>
+                        </a>
+                    </li>
+                    <li [class.actives]="tPost_setting" class="flex-20 flex-sm-25" (click)="settingTab(4)">
+                        <a title="Post Setting" data-toggle="tab" href="#post_setting" class="layout-row layout-align-center-center">
+                            <span class="layout-row layout-align-center-center hide-xs">  Post Settings</span>
+                            <i class="fa fa-users hide show-xs layout-align-center-center layout-row font-size-20" aria-hidden="true"></i>
+                        </a>
+                    </li>
+                    <li [class.actives]="tskills" class="flex-20 flex-sm-25" (click)="settingTab(5)">
+                        <a title="Post Setting" data-toggle="tab" href="#skills" class="layout-row layout-align-center-center">
+                            <span class="layout-row layout-align-center-center hide-xs">  Skills</span>
+                            <i class="fa fa-users hide show-xs layout-align-center-center layout-row font-size-20" aria-hidden="true"></i>
+                        </a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div class=" tab-pane active " id="Account_settings" [class.showtab]="tAccount_settings" [class.hidetab]="!tAccount_settings">
+                        <div class="layout-row layout-align-space-between layout-wrap layout-xs-column" (click)="hideSearchResult()">
+                            <div class="account-info flex-65 flex-sm-70 flex-xs-100 layout-column ">
+                                <div class="account-section-1 layout-column m-b-20">
+                                    <div class="accoutn-title">
+                                        <h4>General Information</h4>
+                                    </div>
+                                    <div class="center layout-row layout-align-center-center m-b-20">
+                                        <span class="flex-15 layout-align-end-center layout-row f-w-b">Name</span>
+                                        <input [(ngModel)]="generalInformation.userName" class="form-control flex-60 flex-xs-80" id="inputName" placeholder="enter name " type="text">
+                                    </div>
+                                    <div class="center layout-row layout-align-center-center m-b-20">
+                                        <span class="flex-15 layout-align-end-center layout-row f-w-b">Email</span>
+                                        <input [(ngModel)]="generalInformation.userEmail" class="form-control flex-60 flex-xs-80" id="inputName" placeholder="enter email" type="email">
+                                    </div>
+                                    <div class="center layout-row layout-align-center-center m-b-20">
+                                        <span class="flex-15 layout-align-end-center layout-row f-w-b">Change Password</span>
+                                        <input [(ngModel)]="generalInformation.userPass" class="form-control flex-60 flex-xs-80" id="inputName" placeholder="password" type="password">
+                                    </div>
+                                    <div class="center layout-row layout-align-center-center m-b-20">
+                                        <span class="flex-15 layout-align-end-center layout-row f-w-b">Confirm Password</span>
+                                        <input [(ngModel)]="generalInformation.userConfirmPass" class="form-control flex-60 flex-xs-80" id="inputName" placeholder="password" type="password">
+                                    </div>
+                                    <div class="layout-align-center-center layout-row"><button class="setting-btn" (click)="saveUpdate()">Save Updates</button>
+                                    </div>
+                                </div>
+                                <div class="account-section-2 center m-l-15 layout-column">
+                                    <div class="layout-column">
+                                        <div class="accoutn-title">
+                                            <h4>Select Subjects to view posts and members</h4>
+                                        </div>
+                                        <div class="form-group layout-row layout-align-center-start m-b-20" id="main-subject">
+                                            <span class="flex-20 layout-align-end-center layout-row f-w-b">Select Subjects</span>
+                                            <div class="layout-column flex-60 sub-setting-block flex-xs-80">
+                                                <div class="input-group layout-column flex-97 flex-xs-100">
+                                                    <div class="tab-pane active m-b-10" id="choose_category">
+                                                        <div class="dropdown sub-reg-dropdown">
+                                                            <button class="btn cat-btn dropdown-toggle" type="button" data-toggle="dropdown">
+                                                        <span *ngIf="categoryValue"> {{categoryValue}}</span><span *ngIf="!categoryValue"> {{categoryValueDefault}}</span> &nbsp;<span class="caret">&nbsp;</span>
+                                                    </button>
+                                                            <ul class="dropdown-menu">
+                                                                <li><a (click)="catagories(0)">{{categoryValueDefault}}</a></li>
+                                                                <li><a (click)="catagories(1)">Currently Taking / Future / Past Student</a></li>
+                                                                <li><a (click)="catagories(3)">Subject Expert</a></li>
+                                                                <li><a (click)="catagories(4)">Teacher of Subject</a></li>
+                                                                <li><a (click)="catagories(5)">Just Interested</a></li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <input [(ngModel)]="subject.name" class="form-control serch-input " placeholder="Search Subject.." type="text" (keyup)="getSubject($event)">
+                                                    <div class="college-search-list-block setting-search-blk">
+                                                        <ul class="college-search-list bor-box" *ngIf="subjectList != null && !showAddNewSubject">
+                                                            <li *ngFor="let subject of subjectList">
+                                                                <div class="college-block" (click)="selectSubject(subject._id,subject.name)">
+                                                                    {{subject.name}}
+                                                                </div>
+                                                            </li>
+                                                        </ul>
+                                                        <ul class="college-search-list bor-box" *ngIf="showAddNewSubject">
+                                                            <li>
+                                                                <div class="college-block">
+                                                                    <button class="add-btn" style="cursor: pointer" (click)="openAddNewSubjectModel()">Add Subject</button>
+                                                                </div>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                                <div class="border flex-97 flex-xs-100">
+                                                    <div class="m-t-10 layout-row layout-align-center-center" *ngIf="subject.subjects_user_type==1 || subject.subjects_user_type==2">
+                                                        <div class="form-group flex-45">
+                                                            <label>From:</label>
+                                                            <div class="input-group date">
+                                                                <div class="input-group-addon">
+                                                                    <i class="fa fa-calendar" style="cursor:default!important"></i>
+                                                                </div>
+                                                                <input id='scheduleDate1' class="form-control pull-right" name="sub-date-from-0" type="text">
+                                                            </div>
+                                                            <!-- /.input group -->
+                                                        </div>
+                                                        <div class="form-group flex-45 margin-l-10">
+                                                            <label>To:</label>
+                                                            <div class="input-group date">
+                                                                <div class="input-group-addon">
+                                                                    <i class="fa fa-calendar" style="cursor:default!important"></i>
+                                                                </div>
+                                                                <input id='scheduleDate2' class="form-control pull-right" name="sub-date-to-0" type="text">
+                                                            </div>
+                                                            <!-- /.input group -->
+                                                        </div>
+                                                    </div>
+                                                    <div class="margin-l-10 m-t-10">
+                                                        <button class="add-btn" (click)="addSubject()">ADD</button>
+                                                    </div>
+                                                    <div class="margin-l-10 added-data m-t-10 margin-r-10">
+                                                        <ul class="layout-column">
+                                                            <li class="layout-column" *ngFor="let sub of subjectData">
+                                                                <div class="layout-row layout-align-space-between">
+                                                                    <span *ngIf="sub.subject_id">{{sub.subject_id.name}}</span>
+                                                                    <span><i class="fa fa-times c-p" aria-hidden="true" (click)="deleteSubjectModel(sub.subject_id._id)"></i></span>
+                                                                </div>
+                                                                <span *ngIf="sub.from">{{sub.from| date:'MMM y'}} to {{sub.to|date:'MMM y'}}</span>
+                                                                <div class="modal fade modal-align-fix " id="subjectDeleteModal">
+                                                                    <div class="modal-dialog">
+                                                                        <div class="modal-content">
+                                                                            <div class="modal-body setting-page flex-100 layout-row">
+                                                                                <div class="modal-body layout-column flex-100 ">
+                                                                                    <div class="modal-body">
+                                                                                        <div class="upload-area flex-60 layout-align-start-center layout-row">
+                                                                                            <h4>Are you sure you want to delete this subject?
+                                                                                            </h4>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="modal-footer">
+                                                                                <button class="btn cancel-btn" data-dismiss="modal">Cancel</button>
+                                                                                <button class="add-btn btn" data-dismiss="modal" (click)="deleteSubject()">Yes</button>
+                                                                            </div>
+                                                                        </div>
+                                                                        <!-- /.modal-content -->
+                                                                    </div>
+                                                                </div>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="layout-column">
+                                        <div class="accoutn-title">
+                                            <h4>Select College/ University to view posts and members</h4>
+                                        </div>
+                                        <div class="form-group layout-row layout-align-center-start m-b-20" id="main-subject2">
+                                            <span class="flex-20 layout-align-end-center layout-row f-w-b">Select College/ University</span>
+                                            <div class="layout-column flex-60 flex-xs-100">
+                                                <div class="input-group layout-row flex-97 flex-xs-100">
+                                                    <input [(ngModel)]="college.name" class="form-control serch-input " placeholder="Search College.." type="text" (keyup)="getCollege($event)">
+                                                    <div class="college-search-list-block setting-search-blk">
+                                                        <ul class="college-search-list bor-box" *ngIf="collegeList != null && !showAddNewCollege">
+                                                            <li *ngFor="let college of collegeList">
+                                                                <div class="college-block" (click)="selectCollege(college._id,college.name)">
+                                                                    {{college.name}}
+                                                                </div>
+                                                            </li>
+                                                        </ul>
+                                                        <ul class="college-search-list bor-box" *ngIf="showAddNewCollege">
+                                                            <li>
+                                                                <div class="college-block">
+                                                                <button class="add-btn" style="cursor: pointer" (click)="openAddNewCollegeModel()">Add College</button>
+                                                                </div>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                                <div class="border flex-97 flex-xs-100">
+                                                    <div class="m-t-10 layout-row layout-align-center-center">
+                                                        <div class="form-group flex-45">
+                                                            <label>From:</label>
+                                                            <div class="input-group date">
+                                                                <div class="input-group-addon">
+                                                                    <i class="fa fa-calendar" style="cursor:default!important"></i>
+                                                                </div>
+                                                                <input (click)="getCollegeStartDatePicker()" class="form-control pull-right" name="col-date-from-0" type="text">
+                                                            </div>
+                                                            <!-- /.input group -->
+                                                        </div>
+                                                        <div class="form-group flex-45 margin-l-10">
+                                                            <label>To:</label>
+                                                            <div class="input-group date">
+                                                                <div class="input-group-addon">
+                                                                    <i class="fa fa-calendar" style="cursor:default!important"></i>
+                                                                </div>
+                                                                <input (click)="getCollegeEndDatePicker()" class="form-control pull-right" name="col-date-to-0" type="text">
+                                                            </div>
+                                                            <!-- /.input group -->
+                                                        </div>
+                                                    </div>
+                                                    <div class="margin-l-10">
+                                                        <button class="add-btn" (click)="addCollege()">ADD</button>
+                                                    </div>
+                                                    <div class="margin-l-10 added-data m-t-10 margin-r-10">
+                                                        <ul class="layout-column">
+                                                            <li class="layout-column" *ngFor="let col of collegeData">
+                                                                <div class="layout-row layout-align-space-between">
+                                                                    <span *ngIf="col.college_id">{{col.college_id.name}}</span>
+                                                                    <span><i class="fa fa-times c-p" aria-hidden="true"  (click)="deleteCollegeModel(col.college_id._id)"></i></span>
+                                                                </div>
+                                                                <span>{{col.from | date:'MMM y'}} to {{col.to | date:'MMM y'}}</span>
+                                                                <div class="modal fade modal-align-fix " id="collegeDeleteModal">
+                                                                    <div class="modal-dialog">
+                                                                        <div class="modal-content">
+                                                                            <div class="modal-body setting-page flex-100 layout-row">
+                                                                                <div class="modal-body layout-column flex-100 ">
+                                                                                    <div class="modal-body">
+                                                                                        <div class="upload-area flex-60 layout-align-start-center layout-row">
+                                                                                            <h4>Are you sure you want to delete this college?
+                                                                                            </h4>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="modal-footer">
+                                                                                <button class="btn cancel-btn" data-dismiss="modal">Cancel</button>
+                                                                                <button class="add-btn btn" data-dismiss="modal" (click)="deleteCollege()">Yes</button>
+                                                                            </div>
+                                                                        </div>
+                                                                        <!-- /.modal-content -->
+                                                                    </div>
+                                                                </div>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="layout-column">
+                                        <div class="accoutn-title">
+                                            <h4>Select Degree Level to view posts and members</h4>
+                                        </div>
+                                        <div class="form-group layout-row layout-align-center-start m-b-20" id="main-subject3">
+                                            <span class="flex-20 layout-align-end-center layout-row f-w-b">Select Degree</span>
+                                            <div class="layout-column flex-60 flex-xs-80 ">
+                                                <div class="input-group layout-row flex-97 flex-xs-100">
+                                                    <input [(ngModel)]="degree.name" class="form-control serch-input " placeholder="Search Degree.." type="text" (keyup)="getDegree($event)">
+                                                    <div class="college-search-list-block setting-search-blk">
+                                                        <ul class="college-search-list bor-box" *ngIf="degreeList != null && !showAddNewDegree">
+                                                            <li *ngFor="let degree of degreeList">
+                                                                <div class="college-block" (click)="selectDegree(degree._id,degree.name)">
+                                                                    {{degree.name}}
+                                                                </div>
+                                                            </li>
+                                                        </ul>
+                                                        <ul class="college-search-list bor-box" *ngIf="showAddNewDegree">
+                                                            <li>
+                                                                <div class="college-block">
+                                                                        <button class="add-btn" style="cursor: pointer" (click)="openAddNewDegreeModel()">Add Degree</button>
+                                                                </div>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                                <div class="border flex-97 flex-xs-100">
+                                                    <div class="m-t-10 layout-row layout-align-center-center">
+                                                        <div class="form-group flex-45">
+                                                            <label>From:</label>
+                                                            <div class="input-group date">
+                                                                <div class="input-group-addon">
+                                                                    <i class="fa fa-calendar" style="cursor:default!important"></i>
+                                                                </div>
+                                                                <input (click)="getDegreeStartDatePicker()" class="form-control pull-right" name="deg-date-from-0" type="text">
+                                                            </div>
+                                                            <!-- /.input group -->
+                                                        </div>
+                                                        <div class="form-group flex-45 margin-l-10">
+                                                            <label>To:</label>
+                                                            <div class="input-group date">
+                                                                <div class="input-group-addon">
+                                                                    <i class="fa fa-calendar" style="cursor:default!important"></i>
+                                                                </div>
+                                                                <input (click)="getDegreeEndDatePicker()" class="form-control pull-right" name="deg-date-to-0" type="text">
+                                                            </div>
+                                                            <!-- /.input group -->
+                                                        </div>
+                                                    </div>
+                                                    <div class="margin-l-10">
+                                                        <button class="add-btn" (click)="addDegree()">ADD</button>
+                                                    </div>
+                                                    <div class="margin-l-10 added-data m-t-10 margin-r-10">
+                                                        <ul class="layout-column">
+                                                            <li class="layout-column" *ngFor="let deg of degreeData">
+                                                                <div class="layout-row layout-align-space-between">
+                                                                    <span *ngIf="deg.degree_id">{{deg.degree_id.name}}</span>
+                                                                    <span><i class="fa fa-times c-p" aria-hidden="true" (click)="deleteDegreeModel(deg.degree_id._id)"></i></span>
+                                                                </div>
+                                                                <span>{{deg.from |date:'MMM y'}} to {{deg.to|date:'MMM y'}}</span>
+                                                                <div class="modal fade modal-align-fix " id="degreeDeleteModal">
+                                                                    <div class="modal-dialog">
+                                                                        <div class="modal-content">
+                                                                            <div class="modal-body setting-page flex-100 layout-row">
+                                                                                <div class="modal-body layout-column flex-100 ">
+                                                                                    <div class="modal-body">
+                                                                                        <div class="upload-area flex-60 layout-align-start-center layout-row">
+                                                                                            <h4>Are you sure you want to delete this degree?
+                                                                                            </h4>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="modal-footer">
+                                                                                <button class="btn cancel-btn" data-dismiss="modal">Cancel</button>
+                                                                                <button class="add-btn btn" data-dismiss="modal" (click)="deleteDegree()">Yes</button>
+                                                                            </div>
+                                                                        </div>
+                                                                        <!-- /.modal-content -->
+                                                                    </div>
+                                                                </div>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="account-info2 flex-20 flex-xs-100 layout-align-xs-center-center layout-column margin-r-10 " *ngIf="login_details">
+                                <div>Total Login</div>
+                                <span class="count-account">{{login_details.total_login}}</span>
+                                <div>Last Login</div>
+                                <span class="count-account">{{login_details.last_login |amCalendar}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane " id="Socia_lLink" [class.showtab]="tSocia_lLink" [class.hidetab]="!tSocia_lLink">
+                        <div class="accoutn-title layout-row layout-align-space-between-center">
+                            <h4 class="flex-70">Social Profile</h4>
+                            <span (click)="openSociallinkModel()" class="flex-30 text-right"><i class="fa fa-pencil c-p" aria-hidden="true" data-toggle = "modal" ></i></span>
+                        </div>
+                        <div class="socil-icons layout-column">
+                            <div class="social-block layout-row">
+                                <div class="social-ic flex-5 flex-xs-20 layout-align-center-center layout-row">
+                                    <i class="fa fa-facebook" aria-hidden="true"></i>
+                                </div>
+                                <div class="social-detial layout-column flex-95">
+                                    <span>Facebook</span>
+                                    <a href="{{social_link.facebook}}" target="_blank">{{social_link.facebook}}</a>
+                                </div>
+                            </div>
+                            <div class="social-block layout-row">
+                                <div class="social-ic flex-5 flex-xs-20 layout-align-center-center layout-row">
+                                    <i class="fa fa-twitter" aria-hidden="true"></i>
+                                </div>
+                                <div class="social-detial layout-column flex-95">
+                                    <span>Twitter</span>
+                                    <a href="{{social_link.twitter}}" target="_blank">{{social_link.twitter}}</a>
+                                </div>
+                            </div>
+                            <div class="social-block layout-row">
+                                <div class="social-ic flex-5 flex-xs-20 layout-align-center-center layout-row">
+                                    <i class="fa fa-linkedin" aria-hidden="true"></i>
+                                </div>
+                                <div class="social-detial layout-column flex-95">
+                                    <span>Linkedin</span>
+                                    <a href="{{social_link.linkedin}}" target="_blank">{{social_link.linkedin}}</a>
+                                </div>
+                            </div>
+                            <div class="social-block layout-row">
+                                <div class="social-ic flex-5 flex-xs-20 layout-align-center-center layout-row">
+                                    <i class="fa fa-google-plus" aria-hidden="true"></i>
+                                </div>
+                                <div class="social-detial layout-column flex-95">
+                                    <span>Google Plus</span>
+                                    <a href="{{social_link.google_plus}}" target="_blank">{{social_link.google_plus}}</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane inviation-mgmnt" id="Invitation_mangement" [class.showtab]="tInvitation_mangement" [class.hidetab]="!tInvitation_mangement">
+                        <div class="accoutn-title">
+                            <h4>Friend Management</h4>
+                        </div>
+                        <div class="nav-tabs-custom ">
+                            <div class="layout-row layout-align-space-between tab-invi">
+                                <ul class="nav nav-tabs  layout-row flex-80 flex-xs-100">
+                                    <li [class.actives]="tAll" (click)="friendMgmtTab(1,3)">
+                                        <a data-toggle="tab" href="#All" class="layout-row layout-align-center-center flex-layout">
+                                            <span> All Friend</span>
+                                        </a>
+                                    </li>
+                                    <li [class.actives]="tPending" (click)="friendMgmtTab(2,2)">
+                                        <a data-toggle="tab" href="#Pending" class="layout-row layout-align-center-center flex-layout">
+                                            <span>Friends Request Pending</span>
+                                        </a>
+                                    </li>
+                                    <li [class.actives]="tAccepted" (click)="friendMgmtTab(3,1)">
+                                        <a data-toggle="tab" href="#Accepted" class="layout-row layout-align-center-center flex-layout">
+                                            <span>My Request Pending</span>
+                                        </a>
+                                    </li>
+                                    <li [class.actives]="tBlocked" (click)="friendMgmtTab(4,4)">
+                                        <a data-toggle="tab" href="#Blocked" class="layout-row layout-align-center-center flex-layout">
+                                            <span> Blocked User</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                                <div class="flex-18" style="position:relative;">
+                                    <form class="navbar-form navbar-left flex-100">
+                                        <div class="form-group nav-search input-left-icon layout-align-center-center layout-row">
+                                            <span class="fa fa-search">&nbsp;</span>
+                                            <input #obj [(ngModel)]="userSearchField.name" (keyup)="userSearch($event,searchUser)" (focus)="userSearch($event,searchUser)" type="text" class="form-control hello {{searchUser}}" id="navbar-search-input" placeholder="Search here" autocomplete="off">
+                                        </div>
+                                    </form>
+                                    <div *ngIf="userSearchList" class="user-search-list-wrap">
+                                        <ul class="user-search-list flex-100" *ngIf="userSearchCount > 0">
+                                            <li class="layout-row layout-align-space-between search-li" *ngFor="let user of userSearchList" (click)="getProfileById(user._id)">
+                                                <div class="search-result-left layout-row">
+                                                    <div class="search-thumb">
+                                                        <img *ngIf="user.photo" alt="User Image" class="" src="public/files/ProfilePicture/{{user.photo}}">
+                                                        <img *ngIf="!user.photo" alt="User Image" class="" src="public/files/ProfilePicture/no_image.png">
+                                                    </div>
+                                                    <div class="result-title">{{user.fname}}&nbsp;{{user.lname}}</div>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                        <ul class="user-search-list flex-100" *ngIf="userSearchCount == 0">
+                                            <li class="layout-row layout-align-space-between search-li">
+                                                <div class="search-result-left layout-row">
+                                                    <div class="result-title">No Result Found</div>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-content">
+                                <div class=" tab-pane active " id="All" [class.showtab]="tAll" [class.hidetab]="!tAll">
+                                    <div class="hide-xs ">
+                                        <ul class="message-ul layout-row layout-wrap layout-align-space-between" *ngIf="friends">
+                                            <li class="layout-row flex-100 layout-align-space-between-center m-t-10 frnd-mangment" *ngFor="let friend of friends.current">
+                                                <div class="flex-80 mail layout-align-start-center layout-row c-p"><a (click)="getProfileById(friend.friend_id)"><span *ngIf="friend.photo"><img src="public/files/ProfilePicture/{{friend.photo}}" alt="User Image" style="width: 50px"></span><span *ngIf="!friend.photo"><img src="public/files/ProfilePicture/no_image.png" alt="User Image" style="width: 50px"></span><span>{{friend.name }} </span></a>                                                    </div>
+                                                <div class="flex-10 layout-align-center-center layout-row" *ngIf="friend.status==3" (click)="friendRemove(friend.friend_id,friend)"><button class="btn-invi btn-unfriend">UnFriend</button></div>
+                                                <div class="flex-10 layout-align-center-center layout-row" *ngIf="friend.status == 4" (click)="unblockFriend(friend.friend_id,friend)"><button class="btn-invi btn-unblock">Unblock</button></div>
+                                                <div class="flex-10 layout-align-center-center layout-row" *ngIf="friend.status !==4" (click)="blockFriend(friend.friend_id,friend)"><button class="btn-invi btn-user-block">Block</button></div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="show-xs hide layout-column ">
+                                        <div class="border">
+                                            <ul class="message-ul layout-row layout-wrap layout-align-space-between" *ngIf="friends">
+                                                <li class="layout-row flex-60 layout-align-start-center m-t-10 frnd-mangment" *ngFor="let friend of friends.current">
+                                                    <div class="flex-50 mail layout-align-start-center layout-row c-p"><a (click)="getProfileById(friend.friend_id)"><span *ngIf="friend.photo"><img src="public/files/ProfilePicture/{{friend.photo}}" alt="User Image" style="width: 50px"></span><span *ngIf="!friend.photo"><img src="public/files/ProfilePicture/no_image.png" alt="User Image" style="width: 50px"></span><span>{{friend.name }} </span></a>                                                        </div>
+                                                    <div class="flex-20 layout-align-center-center layout-row" *ngIf="friend.status==3" (click)="friendRemove(friend.friend_id,friend)"><button class="btn-invi btn-unfriend">UnFriend</button></div>
+                                                    <div class="flex20 layout-align-center-center layout-row" *ngIf="friend.status == 4" (click)="unblockFriend(friend.friend_id,friend)"><button class="btn-invi btn-unblock">Unblock</button></div>
+                                                    <div class="flex-20 layout-align-center-center layout-row" *ngIf="friend.status !==4" (click)="blockFriend(friend.friend_id,friend)"><button class="btn-invi btn-user-block">Block</button></div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane " id="Pending" [class.showtab]="tPending" [class.hidetab]="!tPending">
+                                    <div class="hide-xs">
+                                        <ul class="message-ul layout-row layout-wrap layout-align-space-between" *ngIf="friends">
+                                            <li class="layout-row flex-60 layout-align-start-center m-t-10 frnd-mangment" *ngFor="let friend of friends.pending">
+                                                <div class="flex-40 mail layout-align-start-center layout-row c-p">
+                                                    <a (click)="getProfileById(friend.friend_id)">
+                                                        <span *ngIf="friend.photo">
+                                                        <img src="public/files/ProfilePicture/{{friend.photo}}" alt="User Image" style="width: 50px">
+                                                    </span>
+                                                        <span *ngIf="!friend.photo">
+                                                        <img src="public/files/ProfilePicture/no_image.png" alt="User Image" style="width: 50px">
+                                                    </span>
+                                                        <span>{{friend.name }} </span>
+                                                    </a>
+                                                </div>
+                                                <div class="flex-20 layout-align-center-center layout-row" *ngIf="friend.status==2" (click)="acceptFriendRequest(friend.friend_id,friend)"><button class="btn-invi btn-success">Accept Request</button></div>
+                                                <div class="flex-20 layout-align-center-center layout-row" *ngIf="friend.status==2" (click)="friendRequestReject(friend.friend_id,friend)"><button class="btn-invi btn-reject">Reject Request</button></div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="tab-pane" id="Accepted" [class.showtab]="tAccepted" [class.hidetab]="!tAccepted">
+                                    <div class="hide-xs">
+                                        <ul class="message-ul layout-row layout-wrap layout-align-space-between" *ngIf="friends">
+                                            <li class="layout-row flex-100 layout-align-start-center m-t-10 frnd-mangment" *ngFor="let friend of friends.request">
+                                                <div class="flex-50 mail layout-align-start-center layout-row c-p">
+                                                    <a (click)="getProfileById(friend.friend_id)">
+                                                        <span *ngIf="friend.photo">
+                                                        <img src="public/files/ProfilePicture/{{friend.photo}}" alt="User Image" style="width:50px">
+                                                    </span>
+                                                        <span *ngIf="!friend.photo">
+                                                        <img src="public/files/ProfilePicture/no_image.png" alt="User Image" style="width:50px">
+                                                    </span>
+                                                        <span>{{friend.name }} </span>
+                                                    </a>
+                                                </div>
+                                                <div class="flex-50 layout-align-end-center layout-row" *ngIf="friend.status==1" (click)="cancelRequestedFriend(friend.friend_id,friend)"><button class="btn-invi btn-cancel">Cancel Request</button></div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="tab-pane" id="Blocked" [class.showtab]="tBlocked" [class.hidetab]="!tBlocked">
+                                    <div class="hide-xs">
+                                        <ul class="message-ul layout-row layout-wrap layout-align-space-between" *ngIf="friends">
+                                            <li class="layout-row flex-100 layout-align-start-center m-t-10 frnd-mangment" *ngFor="let friend of friends.blocked">
+                                                <div class="flex-40 mail layout-align-start-center layout-row c-p"><a (click)="getProfileById(friend.friend_id)"><span *ngIf="friend.photo"><img src="public/files/ProfilePicture/{{friend.photo}}" alt="User Image" style="width:50px"></span><span *ngIf="!friend.photo"><img src="public/files/ProfilePicture/no_image.png" alt="User Image" style="width:50px"></span><span>{{friend.name }} </span></a>                                                    </div>
+                                                <div class="flex-25 layout-align-start-center layout-row date"> </div>
+                                                <div class="flex-25 layout-align-start-center layout-row"> </div>
+                                                <div class="flex-15 layout-align-center-center layout-row" *ngIf="friend.status==6" (click)="addAsFriend(friend.friend_id._id)"><button class="btn-invi pen">Add Friend</button></div>
+                                                <div class="flex-15 layout-align-center-center layout-row" *ngIf="friend.status==2" (click)="acceptFriendRequest(friend.friend_id,friend)"><button class="btn-invi btn-success">Accept Request</button></div>
+                                                <div class="flex-15 layout-align-center-center layout-row" *ngIf="friend.status==2" (click)="friendRequestReject(friend.friend_id,friend)"><button class="btn-invi btn-reject">Reject Request</button></div>
+                                                <div class="flex-15 layout-align-center-center layout-row" *ngIf="friend.status==3" (click)="friendRemove(friend.friend_id,friend)"><button class="btn-invi pen">UnFriend</button></div>
+                                                <div class="flex-15 layout-align-center-center layout-row" *ngIf="friend.status == 4" (click)="unblockFriend(friend.friend_id,friend)"><button class="btn-invi btn-unblock">Unblock</button></div>
+                                                <div class="flex-15 layout-align-center-center layout-row" *ngIf="friend.status==1" (click)="cancelRequestedFriend(friend.friend_id,friend)"><button class="btn-invi btn-cancel">Cancel Request</button></div>
+                                                <div class="flex-15 layout-align-center-center layout-row" *ngIf="friend.status !==4" (click)="blockFriend(friend.friend_id,friend)"><button class="btn-invi btn-user-block">Block</button></div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="post_setting" [class.showtab]="tPost_setting" [class.hidetab]="!tPost_setting">
+                        <div class="accoutn-title">
+                            <h4>Post Settings</h4>
+                        </div>
+                        <div class="layout-row layout-align-space-between layout-wrap layout-xs-column">
+                            <div class="account-info flex-55 flex-sm-70 flex-xs-100 layout-column ">
+                                <div class="account-section-1 layout-column m-b-20 margin-l-30">
+                                    <div class="center layout-row layout-align-center-start m-b-20">
+                                        <input *ngIf="postcheck == 1" style="    margin-right: 10px;" type="checkbox" checked="checked" (click)="checkPostStatus(1)" id="postCheck">
+                                        <input *ngIf="postcheck == 0" style="    margin-right: 10px;" type="checkbox" (click)="checkPostStatus(0)" id="postCheck">
+                                        <span class="flex-15 layout-align-start-center layout-row f-w-b">Show to me on my wall all posts of my friends and members I am following even if their subjects,
+                                        degrees and colleges does not match with my subject, degree or college (SCD).</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="skills" [class.showtab]="tskills" [class.hidetab]="!tskills">
+                        <div class="accoutn-title">
+                            <h4>Select Skills</h4>
+                        </div>
+                        <div class="form-group select-skills  m-b-20 layout-row layout-align-center-center layout-wrap layout-xs-column" id="main-subject4">
+                            <div class="layout-column flex-60 flex-xs-80 ">
+                                <div class="input-group layout-row flex-97 flex-xs-100">
+                                    <input [(ngModel)]="skill.name" class="form-control serch-input " placeholder="Search Skills.." type="text" (keyup)="getSkill($event)">
+                                    <div *ngIf="skillList!=null" class="college-search-list-block skill-search-list-block">
+                                        <ul class="college-search-list bor-box">
+                                            <li *ngFor="let skill of skillList">
+                                                <div class="college-block" *ngIf="skill" (click)="selectSkill(skill._id,skill.title)">
+                                                    {{skill.title}}
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="border flex-97 flex-xs-100">
+                                    <div class="margin-l-10 m-t-10">
+                                        <button class="add-btn " (click)="addSkill()">ADD</button>
+                                    </div>
+                                    <div class="margin-l-10 added-data m-t-10 margin-r-10">
+                                        <ul class="layout-column">
+                                            <li class="layout-column" *ngFor="let skl of skillData">
+                                                <div class="layout-row layout-align-space-between" *ngIf="skl.skill_id">
+                                                    <span class="skill-title">{{skl.skill_id.title}}</span>
+                                                    <span class="skill-remove"><i class="fa fa-times c-p" aria-hidden="true" (click)="deleteSkillModel(skl.skill_id._id)" ></i></span>
+                                                </div>
+                                                <div class="modal fade modal-align-fix " id="skillDeleteModal">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-body setting-page flex-100 layout-row">
+                                                                <div class="modal-body layout-column flex-100 ">
+                                                                    <div class="modal-body">
+                                                                        <div class="upload-area flex-60 layout-align-start-center layout-row">
+                                                                            <h4>Are you sure you want to delete this skill?
+                                                                            </h4>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button class="btn cancel-btn" data-dismiss="modal">Cancel</button>
+                                                                <button class="add-btn btn" data-dismiss="modal" (click)="deleteSkill()">Yes</button>
+                                                            </div>
+                                                        </div>
+                                                        <!-- /.modal-content -->
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class=" tab-pane  privacy-setng" id="Privavy_setting">
+                        <div class="accoutn-title">
+                            <h4>Privacy Settings</h4>
+                        </div>
+                        <div class="border">
+                            <div class="heading-tab layout-row pad-10">
+                                <div class="flex-80 flex-sm-60 layout-align-start-center">Privacy Type</div>
+                                <div class="flex-30 flex-sm-40 layout-align-center-center layout-row">Settings</div>
+                            </div>
+                            <ul class="privcy-ul">
+                                <li class="layout-row pad-10">
+                                    <div class="flex-80 flex-sm-60 flex-xs-30 layout-align-start-center">Email</div>
+                                    <div class="flex-30 flex-sm-40 flex-xs-70 layout-align-center-center layout-row">
+                                        <div class="btn-group flex-50 layout-row">
+                                            <button class="btn btn-default" type="button"><i class="fa fa-lock" aria-hidden="true"></i> Myself</button>
+                                            <button data-toggle="dropdown" class="btn btn-default dropdown-toggle" type="button">
+                                            <span class="caret"></span>
+                                        </button>
+                                            <ul role="menu" class="dropdown-menu">
+                                                <li>
+                                                    <a href="#"> <i class="fa fa-user" aria-hidden="true"></i>Public</a>
+                                                </li>
+                                                <li><a href="#"><i class="fa fa-user-times" aria-hidden="true"></i>Nobody </a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="layout-row pad-10">
+                                    <div class="flex-80 flex-sm-60 flex-xs-30 layout-align-start-center">DOB</div>
+                                    <div class="flex-30 flex-sm-40 flex-xs-70 layout-align-center-center layout-row">
+                                        <div class="btn-group flex-50 layout-row">
+                                            <button class="btn btn-default" type="button"><i class="fa fa-lock" aria-hidden="true"></i> Myself</button>
+                                            <button data-toggle="dropdown" class="btn btn-default dropdown-toggle" type="button">
+                                            <span class="caret"></span>
+                                        </button>
+                                            <ul role="menu" class="dropdown-menu">
+                                                <li>
+                                                    <a href="#"> <i class="fa fa-user" aria-hidden="true"></i>Public</a>
+                                                </li>
+                                                <li><a href="#"><i class="fa fa-user-times" aria-hidden="true"></i>Nobody </a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="layout-row pad-10">
+                                    <div class="flex-80 flex-sm-60 flex-xs-30 layout-align-start-center">AboutMe
+                                    </div>
+                                    <div class="flex-30 flex-sm-40 flex-xs-70 layout-align-center-center layout-row">
+                                        <div class="btn-group flex-50 layout-row">
+                                            <button class="btn btn-default" type="button"><i class="fa fa-lock" aria-hidden="true"></i> Myself</button>
+                                            <button data-toggle="dropdown" class="btn btn-default dropdown-toggle" type="button">
+                                            <span class="caret"></span>
+                                        </button>
+                                            <ul role="menu" class="dropdown-menu">
+                                                <li>
+                                                    <a href="#"> <i class="fa fa-user" aria-hidden="true"></i>Public</a>
+                                                </li>
+                                                <li><a href="#"><i class="fa fa-user-times" aria-hidden="true"></i>Nobody </a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<div class="modal fade " id="myModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Social Icons</h4>
+            </div>
+            <div class="modal-body setting-page ">
+                <form role="form">
+                    <div class="socil-icons layout-column">
+                        <div class="social-block layout-row">
+                            <div class="social-ic flex-5 layout-align-center-center layout-row">
+                                <i class="fa fa-facebook" aria-hidden="true"></i>
+                            </div>
+                            <div class="social-detial layout-row flex-95">
+                                <span class="flex-30 layout-align-center-center layout-row">Facebook</span>
+                                <input [(ngModel)]="update_social_link.facebook" class="form-control flex-70" id="inputName" placeholder="https://www.facebook.com/ssn">
+                            </div>
+                        </div>
+                        <div class="social-block layout-row">
+                            <div class="social-ic flex-5 layout-align-center-center layout-row">
+                                <i class="fa fa-twitter" aria-hidden="true"></i>
+                            </div>
+                            <div class="social-detial layout-row flex-95">
+                                <span class="flex-30 layout-align-center-center layout-row">Twitter</span>
+                                <input [(ngModel)]="update_social_link.twitter" class="form-control flex-70" id="inputName" placeholder="https://twitter.com/ssn">
+                            </div>
+                        </div>
+                        <div class="social-block layout-row">
+                            <div class="social-ic flex-5 layout-align-center-center layout-row">
+                                <i class="fa fa-linkedin" aria-hidden="true"></i>
+                            </div>
+                            <div class="social-detial layout-row flex-95">
+                                <span class="flex-30 layout-align-center-center layout-row">Linkedin</span>
+                                <input [(ngModel)]="update_social_link.linkedin" class="form-control flex-70" id="inputName" placeholder="https://www.linkedin.com/ssn">
+                            </div>
+                        </div>
+                        <div class="social-block layout-row">
+                            <div class="social-ic flex-5 layout-align-center-center layout-row">
+                                <i class="fa fa-google-plus" aria-hidden="true"></i>
+                            </div>
+                            <div class="social-detial layout-row flex-95">
+                                <span class="flex-30 layout-align-center-center layout-row">Google Plus</span>
+                                <input [(ngModel)]="update_social_link.google_plus" class="form-control flex-70" id="inputName" placeholder="https://plus.google.com/ssn">
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" (click)="formSubmit()" class="layout-align-center-center layout-row setting-btn"><span class="">Update</span></button>
+                </form>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- Add New Subject -->
+<div class="modal fade modal-align-fix single-post-dialog single-post-new-scd" id="addSubjectModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="clearAddNewSubject()"><span aria-hidden="true">&times;</span></button>
+            <div class="modal-body setting-page flex-100 layout-column">
+                <div class="modal-body setting-page  layout-column">
+                    <div class="layout-row layout-wrap">
+                        <label class="flex-20 layout-row layout-align-center-center">Icons</label>
+                        <input id="exampleInputFile" type="file" id="img_upload" class="flex-70" placeholder="Icons" (change)="photoChangeEvent($event)" accept="image/*">
+                        <span  class="flex-100" style="color: red">{{errorSubjectIcon}}</span>
+                    </div>
+                    <div class="layout-row p-l-10"> 
+                            <span class="p-5 text-muted text-note flex-100 text-muted"> Note : Upload only jpg/png/gif/tif files.</span>
+                   </div>
+                </div>
+                <div class="modal-body setting-page flex-100 layout-row layout-wrap">
+                    <label class="flex-20 layout-row layout-align-center-center">Subject</label>
+                    <input [(ngModel)]="message.name.name" class="flex-70 pad-5-10" placeholder="Subject" type="text" />
+                    <span class="error_file_message flex-100">{{errorAddSubject}}</span>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="add-btn cancel-btn" data-dismiss="modal" (click)="clearAddNewSubject()">Cancel</button>
+                <button class="add-btn" (click)="addNewSubject()">Add</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Add New College -->
+<div class="modal fade modal-align-fix single-post-dialog single-post-new-scd" id="addCollegeModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="clearAddNewCollege()"><span aria-hidden="true">&times;</span></button>
+            <div class="modal-body setting-page flex-100 layout-column">
+                <div class="modal-body setting-page layout-column">
+                  <div class="layout-row layout-wrap">
+                        <label class="flex-20 layout-row layout-align-center-center">Icons</label>
+                        <input id="exampleInputFile" type="file" id="img_upload" class="flex-70" placeholder="Icons" (change)="photoChangeEvent($event)" accept="image/*">
+                        <span class="flex-100"  style="color: red">{{errorCollegeIcon}}</span>
+                    </div>
+                    <div class="layout-row p-l-10"> 
+                            <span class="p-5 text-muted text-note flex-100 text-muted"> Note : Upload only jpg/png/gif/tif files.</span>
+                   </div>
+                </div>
+                <div class="modal-body setting-page flex-100 layout-row layout-wrap">
+                    <label class="flex-20 layout-row layout-align-center-center">College</label>
+                    <input class="flex-70 pad-5-10" placeholder="College" type="text" [(ngModel)]="message.name.name" />
+                    <span class="error_file_message flex-100">{{errorAddCollege}}</span>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="add-btn cancel-btn" data-dismiss="modal" (click)="clearAddNewCollege()">Cancel</button>
+                <button class="add-btn" (click)="addNewCollege()">Add</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Add New Degree -->
+<div class="modal fade modal-align-fix single-post-dialog single-post-new-scd" id="addDegreeModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="clearAddNewDegree()"><span aria-hidden="true">&times;</span></button>
+            <div class="modal-body setting-page flex-100 layout-column">
+                <div class="modal-body setting-page layout-row">
+                    <div class="layout-row layout-wrap">
+                    <label class="flex-20 layout-row layout-align-center-center">Icons</label>
+                    <input id="exampleInputFile" type="file" id="img_upload" class="flex-70" placeholder="Icons" (change)="photoChangeEvent($event)" accept="image/*">
+                    <span class="flex-100" style="color: red">{{error.degreeIcon}}</span>
+                    </div>
+                    <div class="layout-row p-l-10"> 
+                            <span class="p-5 text-muted text-note flex-100 text-muted"> Note : Upload only jpg/png/gif/tif files.</span>
+                   </div>
+                </div>
+                <div class="modal-body setting-page flex-100 layout-row layout-wrap">
+                    <label class="flex-20 layout-row layout-align-center-center">Degree</label>
+                    <input class="flex-70 pad-5-10" placeholder="Degree" type="text" [(ngModel)]="messageDegree.name.name" />
+                    <span class="flex-100" style="color: red">{{error.degreename}}</span>
+                </div>
+                <div class="modal-body setting-page flex-100 layout-row layout-wrap">
+                    <label class="flex-20 layout-row layout-align-center-center">Degree Type</label>
+                    <select class="flex-70 pad-5-10" [(ngModel)]="messageDegree.type.type">
+                        <option  *ngFor="let cat of types" value="{{cat.type}}" >{{cat.name}}</option>
+                    </select>
+                    <span class="flex-100" style="color: red">{{error.degreeOption}}</span>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="add-btn cancel-btn" data-dismiss="modal" (click)="clearAddNewDegree()">Cancel</button>
+                <button class="add-btn" (click)="addNewDegree()">Add</button>
+            </div>
+        </div>
+    </div>
+</div>

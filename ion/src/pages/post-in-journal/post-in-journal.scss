@@ -1,0 +1,51 @@
+page-post-in-journal {
+    .content{
+        background-color:rgba(223, 223, 223, 1); 
+    }
+    .header
+     {
+         &:after{background: none; height: 0;}  
+         .header-title {margin: 0;}      
+     }
+    .share-thought
+        {
+            padding-left: 0;
+            .input-wrapper
+            {
+                padding-left: 16px;
+                .label{margin: 13px 0;}
+            }
+            textarea{border:none; width: 100%;}
+        }
+        .btn-container{
+            width: 98%; margin: 16px auto;
+            .button{width: 95%;}
+        }
+           .overlay{pointer-events: none; opacity: 0.6;}
+
+        .add-journal-info{
+            background: rgba(255,255,255,1);
+            margin-bottom: 18px;
+        }   
+        .postarea{
+            margin: 0 8px 12px;
+            width: calc(100% - 16px);
+            .post-text-container{
+                width: 100%;
+                .title{
+                    font-size: 1.4rem;
+                    font-weight: 600;
+                }
+                .row{
+                    margin-bottom: 3px;
+                    border-bottom: 1px solid rgba(204, 204, 204, 0.25);
+                    padding: 5px 0px;
+
+                    &:last-child {
+                        border: none;
+                    }
+                }
+            }
+
+        }   
+}

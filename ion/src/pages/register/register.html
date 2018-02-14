@@ -1,0 +1,112 @@
+<ion-header >
+  <ion-navbar  class="gradient" >
+    <ion-title >
+      <h1  class="header-title" text-center color="white" ><button class="header-logo-sm"> <img width="40" height="40" src="{{dataService.apiBaseUrl}}public/files/logo/StribeIN-logo.png" /> </button>
+Create an Account</h1>
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content padding style="background-image: url('img/inner-bg.jpg');  background-size:cover"  >
+  <ion-row  margin-left margin-right>
+  
+  <form class="form-container" [formGroup]="registerForm" (ngSubmit)="userRegister()">
+  <ion-list  margin-top >
+  	
+  <ion-item>
+  <ion-icon name="person" item-left light></ion-icon>
+    <ion-input class="form-control" type="text" placeholder="Full Name*" [(ngModel)]="register.fname" formControlName="fname"></ion-input>
+  </ion-item>
+  <ion-row ion-text class="error-message-box"  *ngIf="!registerForm.controls.fname.valid  && registerForm.controls.fname.dirty">
+                <p color="red">Name is required</p>
+  </ion-row>
+  	
+  <ion-item>
+    <ion-icon name="mail" item-left light></ion-icon>
+    <ion-input class="form-control" type="text" placeholder="Email*" [(ngModel)]="register.email" formControlName="email"></ion-input>
+  </ion-item>
+  <ion-row ion-text class="error-message-box" *ngIf="!registerForm.controls.email.valid  && registerForm.controls.email.dirty">
+                <p color="red">Enter valid Email Id.</p>
+  </ion-row>
+  
+  <ion-item>
+    <ion-icon name="lock" item-left light></ion-icon>
+    <ion-input class="form-control" type="password" placeholder="Password*" [(ngModel)]="register.password" formControlName="password"></ion-input>
+  </ion-item>
+  <ion-row ion-text text-wrap class="error-message-box" *ngIf="!registerForm.controls.password.valid  && registerForm.controls.password.dirty">
+                <p color="red">Password must be atleast 5 characters long, contain atleast 1 number and 1 special character</p>
+  </ion-row>
+
+  <ion-item>
+  <ion-icon name="calendar" item-left light></ion-icon>
+  <ion-datetime placeholder="Date of birth" [(ngModel)]="register.dob" displayFormat=" DD MMM YYYY " formControlName="dob"></ion-datetime>
+  </ion-item>
+  <ion-row ion-text class="error-message-box" *ngIf="!registerForm.controls.dob.valid  && registerForm.controls.dob.dirty">
+                <p color="red">Date of birth is required.</p>
+  </ion-row>
+   <ion-item>
+  <ion-icon name="briefcase" item-left light></ion-icon>
+  <ion-input class="form-control" type="text" placeholder="Postal Code" formControlName="postalCode" [(ngModel)]="register.postalCode"></ion-input>
+  </ion-item>
+  <ion-row ion-text class="error-message-box"  *ngIf="!registerForm.controls.postalCode.valid  && registerForm.controls.postalCode.dirty">
+                <p color="red">Enter valid postal code.</p>
+  </ion-row>
+   <ion-item>
+  <ion-icon  item-left light><i class="fa fa-mobile"></i></ion-icon>
+  <ion-input class="form-control" type="text" placeholder="Mobile Number" formControlName="mobile_no" [(ngModel)]="register.mobile_no"></ion-input>
+  </ion-item>
+  <ion-row ion-text class="error-message-box" *ngIf="!registerForm.controls.mobile_no.valid  && registerForm.controls.mobile_no.dirty">
+                <p color="red">Enter valid mobile number.</p>
+  </ion-row>
+ <ion-list radio-group [(ngModel)]="register.gender" formControlName="gender" class="register-gender">
+   <ion-row>
+     <ion-col>
+  <ion-item>
+    <ion-label>Male</ion-label>
+    <ion-radio value="male"></ion-radio>
+  </ion-item>
+     </ion-col>
+     <ion-col>
+     
+  <ion-item>
+    <ion-label>Female</ion-label>
+    <ion-radio value="female"></ion-radio>
+  </ion-item>
+     </ion-col>  
+   </ion-row>
+</ion-list>
+<ion-item class="terms-and-services">
+  <ion-label>I agree to Terms & Conditions*</ion-label>
+  <ion-checkbox [(ngModel)]="term" color="dark" (ionChange)="updateTerm()" [ngModelOptions]="{standalone: true}"></ion-checkbox>
+</ion-item>
+<a (click)="goToTermPage()" class="view-terms-link">View Terms & Conditions</a>
+</ion-list>
+<button ion-button block margin-top margin-bottom ion-text color="primary" type="submit" [disabled]="!registerForm.valid || !term">REGISTER</button>
+</form>
+    <ion-spinner icon="spiral" *ngIf="loader"></ion-spinner>
+ 
+</ion-row>
+
+
+<ion-row class="other-login-social"> 
+  <ion-col col-12> <div class="border-design">OR</div> </ion-col> 
+  <ion-col col-12><div class="default-text" ion-text>Use one of your social account</div> </ion-col> 
+  
+<ion-col col-12>
+<button ion-button class="social-btn"  (click)="facebookSignIn()"  color="blue" ><i class="fa fa-facebook" aria-hidden="true"></i></button>
+
+<button ion-button class="social-btn" color="google-plus" (click)="googlePlusSignIn()"><ion-icon name="logo-google"></ion-icon></button>
+
+</ion-col>
+
+</ion-row>
+
+
+</ion-content>
+<!--
+<ion-footer >
+  <ion-toolbar  color="black">    
+    <h4 text-center class="register-text" > <span ion-text color="white">Do you have an account?</span> <span (click)="goToloign()" ion-text color="primary" >Login Here</span></h4>
+  </ion-toolbar>
+</ion-footer>-->
+
+

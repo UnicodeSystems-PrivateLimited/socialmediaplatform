@@ -1,0 +1,32 @@
+page-add-journal {
+.header
+    {
+        &:after{background: none;}
+    }
+    .content
+    {
+        .journal-imput
+        {
+            .item-inner{padding-left: 16px;}
+        }
+        .journal-image
+        {
+                width: 70%; height: 40%; padding-left: 0; margin: 10px auto 0; text-align: center; border: 3px solid #bdbdbd;
+                img{max-width: 100%; max-height: 100%;  }
+                .item-inner{padding-right: 0;}
+                .label{margin: 0;}
+        }
+        .upload-container
+        {
+            background-color: #fff; border-bottom: 1px solid #dedede; min-height: 80px;
+            .item-inner{border:none;}
+            .button
+            {
+                box-shadow: none; border-radius: 50%; border:2px solid #c6c6c6; width: 44px; height: 44px;
+                .icon{color: #707070; font-size: 20px;}
+                
+            }
+           
+        }
+    }    
+}

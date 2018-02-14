@@ -1,0 +1,1187 @@
+<style>
+
+    :host(.page1Container) {
+        display: inline-block;
+
+        width: 100%;
+        -webkit-transition: all cubic-bezier(0, 0, 0.39, 1.07) 0.2s;
+        transition: all cubic-bezier(0, 0, 0.39, 1.07) 0.2s;
+    }
+
+    :host(.page1Container.ng-enter) {
+        opacity: 0;
+        transform: translate3d(100%, 0, 0);
+    }
+
+    :host(.page1Container.ng-enter-active) {
+        opacity: 1;
+        transform: none;
+    }
+
+</style>
+<div class="setting-page">
+    <div class="custom1-modal-header layout-row layout-align-space-between m-b-20">
+        <div class="h3 header-title">Settings</div>
+        <div class="header-options layout-row">
+
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="nav-tabs-custom ">
+            <ul class="nav nav-tabs  layout-row">
+                <li class="flex-15 flex-sm-20 active">
+                    <a title="Account Setting" data-toggle="tab" href="#Account_settings" class="layout-row layout-align-center-center">
+
+                        <span class="layout-row layout-align-center-center hide-xs"> Account Settings</span> 
+                        <i class="fa fa-briefcase hide show-xs layout-align-center-center layout-row font-size-20" aria-hidden="true"></i>
+                    </a>
+                </li>
+                <!--                <li class="flex-15 flex-sm-15">
+                                    <a title="Notifications" data-toggle="tab" href="#Notification_setting" class="layout-row layout-align-center-center">
+                
+                                        <span class="layout-row layout-align-center-center hide-xs"> Notifications</span> 
+                                        <i class="fa fa-envelope-o hide show-xs layout-align-center-center layout-row font-size-20" aria-hidden="true"></i>
+                                    </a>
+                                </li>-->
+                <!--                <li class="flex-15 flex-sm-20">
+                                    <a title="Privacy Settings" data-toggle="tab" href="#Privavy_setting" class="layout-row layout-align-center-center">
+                
+                                        <span class="layout-row layout-align-center-center hide-xs"> Privacy Settings</span> 
+                                        <i class="fa fa-user-secret hide show-xs layout-align-center-center layout-row font-size-20" aria-hidden="true"></i>
+                                    </a>
+                                </li>-->
+                <li class="flex-15 flex-sm-20">
+                    <a title=" Social Links" data-toggle="tab" href="#Socia_lLink" class="layout-row layout-align-center-center">
+
+                        <span class="layout-row layout-align-center-center hide-xs">  Social Links</span> 
+                        <i class="fa fa-stop-circle-o hide show-xs layout-align-center-center layout-row font-size-20" aria-hidden="true"></i>
+                    </a>
+                </li>
+                <li class="flex-20 flex-sm-25">
+                    <a title="Friend Management" data-toggle="tab" href="#Invitation_mangement" class="layout-row layout-align-center-center">
+
+                        <span class="layout-row layout-align-center-center hide-xs">  Friend Management</span> 
+                        <i class="fa fa-users hide show-xs layout-align-center-center layout-row font-size-20" aria-hidden="true"></i>
+
+                    </a>
+                </li>
+
+
+            </ul>
+            <div class="tab-content">
+                <div class=" tab-pane active " id="Account_settings">
+                    <div class="accoutn-title">
+                        <h4>General Information</h4>
+                    </div>
+                    <div class="layout-row layout-align-space-between layout-wrap layout-xs-column" (click)="hideSearchResult()">
+                        <div class="account-info flex-55 flex-sm-70 flex-xs-100 layout-column ">
+                            <div class="account-section-1 layout-column m-b-20 margin-l-30" *ngIf="!(type=='Facebook' || type=='Google')">
+
+                                 <div class="center layout-row layout-align-center-center m-b-20">
+                                    <span class="flex-15 layout-align-end-center layout-row">Name</span>
+                                    <input [(ngModel)]="generalInformation.userName" class="form-control flex-60 flex-xs-80" id="inputName" placeholder="enter name " type="text">
+                                </div>
+                                <div class="center layout-row layout-align-center-center m-b-20">
+                                    <span class="flex-15 layout-align-end-center layout-row">Email</span>
+                                    <input [(ngModel)]="generalInformation.userEmail" class="form-control flex-60 flex-xs-80" id="inputName" placeholder="enter email" type="email">
+                                </div>
+                                <div class="center layout-row layout-align-center-center m-b-20">
+                                    <span class="flex-15 layout-align-end-center layout-row">Change Password</span>
+                                    <input [(ngModel)]="generalInformation.userPass" class="form-control flex-60 flex-xs-80" id="inputName" placeholder="password" type="password">
+                                </div>
+                                <div class="center layout-row layout-align-center-center m-b-20">
+                                    <span class="flex-15 layout-align-end-center layout-row">Confirm Password</span>
+                                    <input [(ngModel)]="generalInformation.userConfirmPass" class="form-control flex-60 flex-xs-80" id="inputName" placeholder="password" type="password">
+                                </div>
+                                <div class="layout-align-center-center layout-row"><button class="setting-btn" (click)="saveUpdate()">Save Updates</button>
+                                </div>
+                            </div>
+                            <div class="account-section-2 center m-l-15">
+                                <div class="form-group layout-row layout-align-center-start m-b-20" id="main-subject" >
+                                    <span class="flex-20 layout-align-end-center layout-row">Subjects</span>
+                                    <div class="layout-column flex-60 sub-setting-block flex-xs-80">
+                                        <div class="input-group layout-column flex-97 flex-xs-100">
+                                            <div class="tab-pane active m-b-10" id="choose_category">
+                                                <div class="dropdown sub-reg-dropdown">
+                                                    <button class="btn cat-btn dropdown-toggle" type="button" data-toggle="dropdown">
+                                                        <span *ngIf="categoryValue"> {{categoryValue}}</span><span *ngIf="!categoryValue"> {{categoryValueDefault}}</span> &nbsp;<span class="caret">&nbsp;</span>
+                                                    </button>
+                                                    <ul class="dropdown-menu">
+                                                        <li><a  (click)="catagories(0)">{{categoryValueDefault}}</a></li>
+                                                        <li><a  (click)="catagories(1)">Currently Taking</a></li>
+                                                        <li><a  (click)="catagories(2)">Will Take in Future</a></li>
+                                                        <li><a  (click)="catagories(3)">Subject Expert</a></li>
+                                                        <li><a  (click)="catagories(4)">Teacher of Subject</a></li>
+                                                        <li><a  (click)="catagories(5)">Just Interested</a></li>
+                                                        <li><a  (click)="catagories(6)">Past Student</a></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <input [(ngModel)]="subject.name" class="form-control serch-input " placeholder="Search Subject.." type="text" (keyup)="getSubject($event)">
+                                            <!--                                        <select class="form-control" name="subject" (change)="onChangeSubject($event.target.value,0)">
+                                                                                        <option value="">-Select-</option>
+                                                                                        <option *ngFor="#subject of subjects" value="{{subject._id}}">{{subject.name}}</option>
+                                                                                    </select>-->
+                                            <div *ngIf="subjectList != null" class="college-search-list-block setting-search-blk">
+                                                <ul class="college-search-list bor-box">
+
+                                                    <li *ngFor="#subject of subjectList">
+                                                        <div class="college-block" (click)="selectSubject(subject._id,subject.name)">
+                                                            {{subject.name}}
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </div>
+
+                                        </div>
+                                        <div class="border flex-97 flex-xs-100">
+                                            <div class="m-t-10 layout-row layout-align-center-center" *ngIf="subject.subjects_user_type==1 || subject.subjects_user_type==2">
+                                                <div class="form-group flex-45">
+                                                    <label>From:</label>
+
+                                                    <div class="input-group date">
+                                                        <div class="input-group-addon">
+                                                            <i class="fa fa-calendar"></i>
+                                                        </div>
+                                                        <input class="form-control pull-right"  name="sub-date-from-0"  type="text">
+                                                        <!--<input #df [(ngModel)]= "register.subjects_start_date[0]" class="form-control pull-right" name="date-from"  type="text">-->
+                                                    </div>
+                                                    <!-- /.input group -->
+                                                </div>
+                                                <div class="form-group flex-45 margin-l-10">
+                                                    <label>To:</label>
+
+                                                    <div class="input-group date">
+                                                        <div class="input-group-addon">
+                                                            <i class="fa fa-calendar"></i>
+                                                        </div>
+                                                        <input  class="form-control pull-right" name="sub-date-to-0"  type="text">
+                                                    </div>
+                                                    <!-- /.input group -->
+                                                </div>
+                                            </div>
+                                            <div class="margin-l-10 m-t-10">
+                                                <button class="add-btn" (click)="addSubject()">ADD</button>
+                                            </div>
+                                            <div class="margin-l-10 added-data m-t-10 margin-r-10">
+                                                <ul class="layout-column">
+                                                    <li class="layout-column" *ngFor="#sub of subjectData">
+                                                        <div class="layout-row layout-align-space-between">
+                                                            <span *ngIf="sub.subject_id">{{sub.subject_id.name}}</span>
+                                                            <span><i class="fa fa-times c-p" aria-hidden="true" (click)="deleteSubject(sub.subject_id._id)"></i></span>
+                                                        </div>
+                                                        <span *ngIf="sub.from" >{{sub.from| amDateFormat:'LL'}} to {{sub.to|amDateFormat:'LL'}}</span>
+                                                    </li>
+                                                </ul>
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                                <div class="form-group layout-row layout-align-center-start m-b-20" id="main-subject2" >
+                                    <span class="flex-20 layout-align-end-center layout-row">Select College / University</span>
+                                    <div class="layout-column flex-60 flex-xs-100">
+                                        <div class="input-group layout-row flex-97 flex-xs-100">
+                                            <input [(ngModel)]="college.name"   class="form-control serch-input " placeholder="Search College.." type="text" (keyup)="getCollege($event)">
+                                            <!--                                        <select class="form-control" name="subject" (change)="onChangeSubject($event.target.value,0)">
+                                                                                        <option value="">-Select-</option>
+                                                                                        <option *ngFor="#subject of subjects" value="{{subject._id}}">{{subject.name}}</option>
+                                                                                    </select>-->
+                                            <div *ngIf="collegeList!=null"  class="college-search-list-block setting-search-blk">
+                                                <ul class="college-search-list bor-box">
+
+                                                    <li *ngFor="#college of collegeList">
+                                                        <div class="college-block" (click)="selectCollege(college._id,college.name)">
+                                                            {{college.name}}
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </div>
+
+                                        </div>
+                                        <div class="border flex-97 flex-xs-100">
+                                            <div class="m-t-10 layout-row layout-align-center-center">
+                                                <div class="form-group flex-45">
+                                                    <label>From:</label>
+
+                                                    <div class="input-group date">
+                                                        <div class="input-group-addon">
+                                                            <i class="fa fa-calendar"></i>
+                                                        </div>
+                                                        <input  class="form-control pull-right"  name="col-date-from-0"  type="text">
+                                                        <!--<input #df [(ngModel)]= "register.subjects_start_date[0]" class="form-control pull-right" name="date-from"  type="text">-->
+                                                    </div>
+                                                    <!-- /.input group -->
+                                                </div>
+                                                <div class="form-group flex-45 margin-l-10">
+                                                    <label>To:</label>
+
+                                                    <div class="input-group date">
+                                                        <div class="input-group-addon">
+                                                            <i class="fa fa-calendar"></i>
+                                                        </div>
+                                                        <input  class="form-control pull-right" name="col-date-to-0"  type="text">
+                                                    </div>
+                                                    <!-- /.input group -->
+                                                </div>
+                                            </div>
+                                            <div class="margin-l-10">
+                                                <button class="add-btn" (click)="addCollege()">ADD</button>
+                                            </div>
+                                            <div class="margin-l-10 added-data m-t-10 margin-r-10">
+                                                <ul class="layout-column">
+
+                                                    <li class="layout-column" *ngFor="#col of collegeData">
+                                                        <div class="layout-row layout-align-space-between">
+                                                            <span *ngIf="col.college_id">{{col.college_id.name}}</span>
+                                                            <span><i class="fa fa-times c-p" aria-hidden="true" (click)="deleteCollege(col.college_id._id)"></i></span>
+                                                        </div>
+                                                        <span>{{col.from | amDateFormat:'LL'}} to {{col.to | amDateFormat:'LL'}}</span>
+                                                    </li>
+
+                                                </ul>
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                                <div class="form-group layout-row layout-align-center-start m-b-20" id="main-subject3" >
+                                    <span class="flex-20 layout-align-end-center layout-row">Degree Level</span>
+                                    <div class="layout-column flex-60 flex-xs-80 ">
+                                        <div class="input-group layout-row flex-97 flex-xs-100">
+                                            <input [(ngModel)]="degree.name"  class="form-control serch-input " placeholder="Search Degree.." type="text" (keyup)="getDegree($event)">
+                                            <!--                                        <select class="form-control" name="subject" (change)="onChangeSubject($event.target.value,0)">
+                                                                                        <option value="">-Select-</option>
+                                                                                        <option *ngFor="#subject of subjects" value="{{subject._id}}">{{subject.name}}</option>
+                                                                                    </select>-->
+                                            <div *ngIf="degreeList!=null"  class="college-search-list-block setting-search-blk">
+                                                <ul class="college-search-list bor-box">
+
+                                                    <li *ngFor="#degree of degreeList">
+                                                        <div class="college-block" (click)="selectDegree(degree._id,degree.name)">
+                                                            {{degree.name}}
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </div>
+
+                                        </div>
+                                        <div class="border flex-97 flex-xs-100">
+                                            <div class="m-t-10 layout-row layout-align-center-center">
+                                                <div class="form-group flex-45">
+                                                    <label>From:</label>
+
+                                                    <div class="input-group date">
+                                                        <div class="input-group-addon">
+                                                            <i class="fa fa-calendar"></i>
+                                                        </div>
+                                                        <input  class="form-control pull-right"  name="deg-date-from-0"  type="text">
+                                                        <!--<input #df [(ngModel)]= "register.subjects_start_date[0]" class="form-control pull-right" name="date-from"  type="text">-->
+                                                    </div>
+                                                    <!-- /.input group -->
+                                                </div>
+                                                <div class="form-group flex-45 margin-l-10">
+                                                    <label>To:</label>
+
+                                                    <div class="input-group date">
+                                                        <div class="input-group-addon">
+                                                            <i class="fa fa-calendar"></i>
+                                                        </div>
+                                                        <input  class="form-control pull-right" name="deg-date-to-0"  type="text">
+                                                    </div>
+                                                    <!-- /.input group -->
+                                                </div>
+                                            </div>
+                                            <div class="margin-l-10">
+                                                <button class="add-btn" (click)="addDegree()">ADD</button>
+                                            </div>
+                                            <div class="margin-l-10 added-data m-t-10 margin-r-10">
+                                                <ul class="layout-column">
+                                                    <li class="layout-column" *ngFor="#deg of degreeData">
+                                                        <div class="layout-row layout-align-space-between">
+                                                            <span *ngIf="deg.degree_id">{{deg.degree_id.name}}</span>
+                                                            <span><i class="fa fa-times c-p" aria-hidden="true" (click)="deleteDegree(deg.degree_id._id)"></i></span>
+                                                        </div>
+                                                        <span>{{deg.from |amDateFormat:'LL'}} to {{deg.to|amDateFormat:'LL'}}</span>
+                                                    </li>
+
+                                                </ul>
+
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+
+                                </div>
+                                <div class="form-group layout-row layout-align-center-start m-b-20" id="main-subject4" >
+                                    <span class="flex-20 layout-align-end-center layout-row">Skills</span>
+                                    <div class="layout-column flex-60 flex-xs-80 ">
+                                        <div class="input-group layout-row flex-97 flex-xs-100">
+                                            <input [(ngModel)]="skill.name"  class="form-control serch-input " placeholder="Search Skills.." type="text" (keyup)="getSkill($event)" >
+                                            <div *ngIf="skillList!=null"  class="college-search-list-block skill-search-list-block">
+                                                <ul class="college-search-list bor-box">                                                  
+                                                    <li *ngFor="#skill of skillList">
+                                                        <div class="college-block" *ngIf="skill" (click)="selectSkill(skill._id,skill.title)">
+                                                            {{skill.title}}
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="border flex-97 flex-xs-100">
+                                            <div class="margin-l-10 m-t-10">
+                                                <button class="add-btn " (click)="addSkill()" >ADD</button>
+                                            </div>
+                                            <div class="margin-l-10 added-data m-t-10 margin-r-10">
+                                                <ul class="layout-column">
+                                                    <li class="layout-column" *ngFor="#skl of skillData">
+                                                        <div class="layout-row layout-align-space-between" *ngIf="skl.skill_id">
+                                                            <span>{{skl.skill_id.title}}</span>
+                                                            <span><i class="fa fa-times c-p" aria-hidden="true" (click)="deleteSkill(skl.skill_id._id)" ></i></span>
+                                                        </div>
+                                                        <!--                                                        <span>{{deg.from |amDateFormat:'LL'}} to {{deg.to|amDateFormat:'LL'}}</span>-->
+                                                    </li>
+
+                                                </ul>
+
+                                            </div>
+                                        </div>
+                                        <!--      <div class=""><button class="setting-btn" (click)="saveUpdate()">Save Updates</button>
+                                                                                </div>-->
+                                    </div>
+
+                                </div>
+
+                            </div>                        </div>
+                        <div class="account-info2 flex-20 flex-xs-100 layout-align-xs-center-center layout-column margin-r-10 " *ngIf="login_details">
+                            <div class="count-account">{{login_details.total_login}}</div>
+                            <span>Total Login</span>
+                            <div>{{login_details.last_login |amTimeAgo}}</div>
+                            <span>Last Login</span>
+
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="tab-pane " id="Socia_lLink">
+                    <div class="accoutn-title layout-row layout-align-space-between-center">
+                        <h4 class="flex-70">Social Profile</h4>
+                        <span class="flex-30 text-right"><i class="fa fa-pencil" aria-hidden="true" data-toggle = "modal" id="myBtn2"></i></span>
+                    </div>
+                    <div class="socil-icons layout-column">
+                        <div class="social-block layout-row" >
+                            <div class="social-ic flex-5 flex-xs-20 layout-align-center-center layout-row">
+                                <i class="fa fa-facebook" aria-hidden="true"></i>
+
+
+                            </div>
+                            <div class="social-detial layout-column flex-95">
+                                <span>Facebook</span>
+                                <a href="{{social_link.facebook}}">{{social_link.facebook}}</a>
+                            </div>
+
+                        </div>
+                        <div class="social-block layout-row">
+                            <div class="social-ic flex-5 flex-xs-20 layout-align-center-center layout-row">
+                                <i class="fa fa-twitter" aria-hidden="true"></i>
+
+
+
+                            </div>
+                            <div class="social-detial layout-column flex-95">
+                                <span>Twitter</span>
+                                <a href="{{social_link.twitter}}">{{social_link.twitter}}</a>
+                            </div>
+
+                        </div>
+                        <div class="social-block layout-row">
+                            <div class="social-ic flex-5 flex-xs-20 layout-align-center-center layout-row">
+                                <i class="fa fa-linkedin" aria-hidden="true"></i>
+
+
+                            </div>
+                            <div class="social-detial layout-column flex-95">
+                                <span>Linkedin</span>
+                                <a href="{{social_link.linkedin}}">{{social_link.linkedin}}</a>
+                            </div>
+
+                        </div>
+                        <div class="social-block layout-row">
+                            <div class="social-ic flex-5 flex-xs-20 layout-align-center-center layout-row">
+                                <i class="fa fa-google-plus" aria-hidden="true"></i>
+
+
+
+                            </div>
+                            <div class="social-detial layout-column flex-95">
+                                <span>Google Plus</span>
+                                <a href="{{social_link.google_plus}}">{{social_link.google_plus}}</a>
+                            </div>
+
+                        </div>
+                        <!--                        <div class="social-block layout-row">
+                                                    <div class="social-ic flex-5 layout-align-center-center layout-row">
+                                                        <i class="fa fa-bitbucket" aria-hidden="true"></i>
+                        
+                        
+                        
+                                                    </div>
+                                                    <div class="social-detial layout-column flex-95">
+                                                        <span>BitBucket</span>
+                                                        <a href="{{social_link.bitbucket}}">{{social_link.bitbucket}}</a>
+                                                    </div>
+                        
+                                                </div>-->
+                        <!--                        <div class="social-block layout-row" >
+                                                    <div class="social-ic flex-5 layout-align-center-center layout-row">
+                                                        <i class="fa fa-youtube" aria-hidden="true"></i>
+                        
+                        
+                        
+                                                    </div>
+                                                    <div class="social-detial layout-column flex-95">
+                                                        <span>Youtube</span>
+                                                        <a href="{{social_link.youtube}}">{{social_link.youtube}}</a>
+                                                    </div>
+                        
+                                                </div>-->
+                        <!--                        <div class="social-block layout-row">
+                                                    <div class="social-ic flex-5 layout-align-center-center layout-row">
+                                                        <i class="fa fa-instagram" aria-hidden="true"></i>
+                        
+                        
+                                                    </div>
+                                                    <div class="social-detial layout-column">
+                                                        <span>Instagram</span>
+                                                        <a href="{{social_link.instagram}}">{{social_link.instagram}}</a>
+                                                    </div>
+                        
+                                                </div>-->
+                        <!--                        <div class="social-block layout-row" >
+                                                    <div class="social-ic flex-5 layout-align-center-center layout-row">
+                                                        <i class="fa fa-pinterest-p" aria-hidden="true"></i>
+                        
+                        
+                        
+                                                    </div>
+                                                    <div class="social-detial layout-column flex-95">
+                                                        <span>Pinterest</span>
+                                                        <a href="{{social_link.pinterest}}">{{social_link.pinterest}}</a>
+                                                    </div>
+                        
+                                                </div>-->
+
+                    </div>
+                </div>
+
+
+
+
+
+
+
+                <div class="tab-pane inviation-mgmnt" id="Invitation_mangement">
+                    <div class="accoutn-title">
+                        <h4>Friend Management</h4>
+                    </div>
+                    <div class="nav-tabs-custom ">
+                        <div class="layout-row layout-align-space-between tab-invi">
+                            <ul class="nav nav-tabs  layout-row flex-70 flex-xs-100">
+                                <li class="flex-25 active ">
+                                    <a data-toggle="tab" href="#All" class="layout-row layout-align-center-center">
+
+                                        <span> All Friend</span> 
+                                    </a>
+                                </li>
+                                <li class="flex-25">
+                                    <a data-toggle="tab" href="#Pending" class="layout-row layout-align-center-center">
+
+                                        <span> Pending Friend</span> 
+                                    </a>
+                                </li>
+                                <li class="flex-25">
+                                    <a data-toggle="tab" href="#Accepted" class="layout-row layout-align-center-center">
+
+                                        <!--<span> Accepted Friend</span>--> 
+                                        <span> Requested Friend</span> 
+                                    </a>
+                                </li>
+                                <li class="flex-25">
+                                    <a data-toggle="tab" href="#Blocked" class="layout-row layout-align-center-center">
+
+                                        <!--<span> Accepted Friend</span>--> 
+                                        <span> Blocked User</span> 
+                                    </a>
+                                </li>
+
+
+
+                            </ul>
+                        </div>
+                        <div class="tab-content">
+                            <div class=" tab-pane active " id="All">
+                                <div class="hide-xs ">
+                                    <div class="layout-row all-deisgn">
+                                        <div class="flex-5">
+                                            <div class="checkbox checkbox layout-align-center-center layout-row">
+                                                <label class="layout-align-center-center ">
+                                                    <!--<input type="checkbox">--> 
+                                                </label>
+                                            </div> 
+                                        </div>
+                                        <div class="flex-40 layout-align-start-center layout-row">Name </div>
+                                        <div class="flex-25 layout-align-start-center layout-row"></div>
+                                        <div class="flex-25 layout-align-start-center layout-row"> </div>
+                                        <div class="flex-15 layout-align-start-center layout-row">Status</div>
+                                    </div> 
+                                    <ul class="message-ul" *ngIf="friends">
+                                        <li class="layout-row list-inivi" *ngFor="#friend of friends.pending">
+                                            <div class="flex-5">
+                                                <div class="checkbox checkbox layout-align-start-center layout-row">
+                                                    <label class="layout-align-start-center ">
+                                                        <!--<input type="checkbox">--> 
+                                                    </label>
+                                                </div> 
+                                            </div> 
+
+                                            <div class="flex-40 mail  layout-align-start-center layout-row"><a>{{friend.name }} </a> </div>
+                                            <div class="flex-25 layout-align-start-center layout-row date"> </div>
+                                            <div class="flex-25 layout-align-start-center layout-row"> </div>
+                                            <div class="flex-15 layout-align-center-center layout-row" *ngIf="friend.status==6" (click)="addAsFriend(friend.friend_id._id)"><button   class="btn-invi pen">Add</button></div>
+                                            <div class="flex-15 layout-align-center-center layout-row" *ngIf="friend.status==1" (click)="cancelRequestedFriend(friend.friend_id,friend)" ><button class="btn-invi pen">Cancel</button></div>
+                                            <div class="flex-15 layout-align-center-center layout-row"  *ngIf="friend.status==3" (click)="friendRemove(friend.friend_id,friend)" ><button class="btn-invi pen">UnFriend</button></div>
+                                            <div class="flex-15 layout-align-center-center layout-row"  *ngIf="friend.status == 4" (click)="unblockFriend(friend.friend_id,friend)" ><button class="btn-invi pen">Unblock</button></div>
+                                            <div class="flex-15 layout-align-center-center layout-row" *ngIf="friend.status==2" (click)="acceptFriendRequest(friend.friend_id,friend)"><button  class="btn-invi pen">Accept</button></div>
+                                            <div class="flex-15 layout-align-center-center layout-row" *ngIf="friend.status==2" (click)="friendRequestReject(friend.friend_id,friend)" ><button class="btn-invi pen">Reject</button></div>
+                                            <div class="flex-15 layout-align-center-center layout-row" *ngIf="friend.status !==4" (click)="blockFriend(friend.friend_id,friend)" ><button class="btn-invi pen">Block</button></div>
+                                        </li>
+                                        <li class="layout-row list-inivi" *ngFor="#friend of friends.request">
+                                            <div class="flex-5">
+                                                <div class="checkbox checkbox layout-align-start-center layout-row">
+                                                    <label class="layout-align-start-center ">
+                                                        <!--<input type="checkbox">--> 
+                                                    </label>
+                                                </div> 
+                                            </div> 
+
+                                            <div class="flex-40 mail layout-align-start-center layout-row"><a>{{friend.name }}</a> </div>
+                                            <div class="flex-25 layout-align-start-center layout-row date"> </div>
+                                            <div class="flex-25 layout-align-start-center layout-row"> </div>
+                                            <div class="flex-15 layout-align-center-center layout-row" *ngIf="friend.status==6" (click)="addAsFriend(friend.friend_id._id)"><button   class="btn-invi pen">Add</button></div>
+                                            <div class="flex-15 layout-align-center-center layout-row"  *ngIf="friend.status==2" (click)="acceptFriendRequest(friend.friend_id,friend)"><button class="btn-invi pen">Accept</button></div>
+                                            <div class="flex-15 layout-align-center-center layout-row" *ngIf="friend.status==2" (click)="friendRequestReject(friend.friend_id,friend)" ><button class="btn-invi pen">Reject</button></div>
+                                            <div class="flex-15 layout-align-center-center layout-row"  *ngIf="friend.status==3" (click)="friendRemove(friend.friend_id,friend)" ><button class="btn-invi pen">UnFriend</button></div>
+                                            <div class="flex-15 layout-align-center-center layout-row" *ngIf="friend.status == 4" (click)="unblockFriend(friend.friend_id,friend)"><button  class="btn-invi pen">Unblock</button></div>
+                                            <div class="flex-15 layout-align-center-center layout-row" *ngIf="friend.status==1" (click)="cancelRequestedFriend(friend.friend_id,friend)" ><button class="btn-invi pen">Cancel</button></div>
+                                            <div class="flex-15 layout-align-center-center layout-row" *ngIf="friend.status !==4" (click)="blockFriend(friend.friend_id,friend)"><button  class="btn-invi pen">Block</button></div>
+                                        </li>
+                                        <li class="layout-row list-inivi" *ngFor="#friend of friends.current">
+                                            <div class="flex-5">
+                                                <div class="checkbox checkbox layout-align-start-center layout-row">
+                                                    <label class="layout-align-start-center ">
+                                                        <!--<input type="checkbox">--> 
+                                                    </label>
+                                                </div> 
+                                            </div> 
+
+                                            <div class="flex-40 mail layout-align-start-center layout-row"><a>{{friend.name }}</a> </div>
+                                            <div class="flex-25 layout-align-start-center layout-row date"> </div>
+                                            <div class="flex-25 layout-align-start-center layout-row"> </div>
+                                            <div class="flex-15 layout-align-center-center layout-row" *ngIf="friend.status==6" (click)="addAsFriend(friend.friend_id._id)"><button   class="btn-invi pen">Add</button></div>
+                                            <div class="flex-15 layout-align-center-center layout-row"  *ngIf="friend.status==2" (click)="acceptFriendRequest(friend.friend_id,friend)"><button class="btn-invi pen">Accept</button></div>
+                                            <div class="flex-15 layout-align-center-center layout-row" *ngIf="friend.status==2" (click)="friendRequestReject(friend.friend_id,friend)" ><button class="btn-invi pen">Reject</button></div>
+                                            <div class="flex-15 layout-align-center-center layout-row"  *ngIf="friend.status==3" (click)="friendRemove(friend.friend_id,friend)" ><button class="btn-invi pen">UnFriend</button></div>
+                                            <div class="flex-15 layout-align-center-center layout-row" *ngIf="friend.status == 4" (click)="unblockFriend(friend.friend_id,friend)"><button  class="btn-invi pen">Unblock</button></div>
+                                            <div class="flex-15 layout-align-center-center layout-row" *ngIf="friend.status==1" (click)="cancelRequestedFriend(friend.friend_id,friend)" ><button class="btn-invi pen">Cancel</button></div>
+                                            <div class="flex-15 layout-align-center-center layout-row" *ngIf="friend.status !==4" (click)="blockFriend(friend.friend_id,friend)"><button  class="btn-invi pen">Block</button></div>
+                                        </li>
+                                        <li class="layout-row list-inivi" *ngFor="#friend of friends.blocked">
+                                            <div class="flex-5">
+                                                <div class="checkbox checkbox layout-align-start-center layout-row">
+                                                    <label class="layout-align-start-center ">
+                                                        <!--<input type="checkbox">--> 
+                                                    </label>
+                                                </div> 
+                                            </div> 
+                                            <div class="flex-40 mail layout-align-start-center layout-row"><a>{{friend.name }}</a> </div>
+                                            <div class="flex-25 layout-align-start-center layout-row date"> </div>
+                                            <div class="flex-25 layout-align-start-center layout-row"> </div>
+                                            <div class="flex-15 layout-align-center-center layout-row" *ngIf="friend.status==6" (click)="addAsFriend(friend.friend_id._id)"><button   class="btn-invi pen">Add</button></div>
+                                            <div class="flex-15 layout-align-center-center layout-row"  *ngIf="friend.status==2" (click)="acceptFriendRequest(friend.friend_id,friend)"><button class="btn-invi pen">Accept</button></div>
+                                            <div class="flex-15 layout-align-center-center layout-row" *ngIf="friend.status==2" (click)="friendRequestReject(friend.friend_id,friend)" ><button class="btn-invi pen">Reject</button></div>
+                                            <div class="flex-15 layout-align-center-center layout-row"  *ngIf="friend.status==3" (click)="friendRemove(friend.friend_id,friend)" ><button class="btn-invi pen">UnFriend</button></div>
+                                            <div class="flex-15 layout-align-center-center layout-row" *ngIf="friend.status == 4" (click)="unblockFriend(friend.friend_id,friend)"><button  class="btn-invi pen">Unblock</button></div>
+                                            <div class="flex-15 layout-align-center-center layout-row" *ngIf="friend.status==1" (click)="cancelRequestedFriend(friend.friend_id,friend)" ><button class="btn-invi pen">Cancel</button></div>
+                                            <div class="flex-15 layout-align-center-center layout-row" *ngIf="friend.status !==4" (click)="blockFriend(friend.friend_id,friend)"><button  class="btn-invi pen">Block</button></div>
+                                        </li>
+                                        <li class="layout-row list-inivi" *ngFor="#friend of friends.unblocked">
+                                            <div class="flex-5">
+                                                <div class="checkbox checkbox layout-align-start-center layout-row">
+                                                    <label class="layout-align-start-center ">
+                                                        <!--<input type="checkbox">--> 
+                                                    </label>
+                                                </div> 
+                                            </div> 
+                                            <div class="flex-40 mail layout-align-start-center layout-row"><a>{{friend.name }}</a> </div>
+                                            <div class="flex-25 layout-align-start-center layout-row date"> </div>
+                                            <div class="flex-25 layout-align-start-center layout-row"> </div>
+                                            <div class="flex-15 layout-align-center-center layout-row" *ngIf="friend.status==6" (click)="addAsFriend(friend.friend_id._id)"><button   class="btn-invi pen">Add</button></div>
+                                            <div class="flex-15 layout-align-center-center layout-row"  *ngIf="friend.status==2" (click)="acceptFriendRequest(friend.friend_id,friend)"><button class="btn-invi pen">Accept</button></div>
+                                            <div class="flex-15 layout-align-center-center layout-row" *ngIf="friend.status==2" (click)="friendRequestReject(friend.friend_id,friend)" ><button class="btn-invi pen">Reject</button></div>
+                                            <div class="flex-15 layout-align-center-center layout-row"  *ngIf="friend.status==3" (click)="friendRemove(friend.friend_id,friend)" ><button class="btn-invi pen">UnFriend</button></div>
+                                            <div class="flex-15 layout-align-center-center layout-row" *ngIf="friend.status == 4" (click)="unblockFriend(friend.friend_id,friend)"><button  class="btn-invi pen">Unblock</button></div>
+                                            <div class="flex-15 layout-align-center-center layout-row" *ngIf="friend.status==1" (click)="cancelRequestedFriend(friend.friend_id,friend)" ><button class="btn-invi pen">Cancel</button></div>
+                                            <div class="flex-15 layout-align-center-center layout-row" *ngIf="friend.status !==4" (click)="blockFriend(friend.friend_id,friend)"><button  class="btn-invi pen">Block</button></div>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="show-xs hide layout-column ">
+                                    <div class="border">
+                                        <ul class="message-ul" *ngIf="friends">
+                                            <li class="layout-column list-inivi" *ngFor="#friend of friends.pending">
+
+                                                <div class="flex-40 mail  layout-align-center-center layout-row"><a>{{friend.name }} </a> </div>
+                                                <div class="flex-25 layout-align-start-center layout-row date"> </div>
+                                                <div class="flex-25 layout-align-start-center layout-row"> </div>
+                                                <div class="flex-15 layout-align-center-center layout-row" *ngIf="friend.status==6" (click)="addAsFriend(friend.friend_id._id)"><button   class="btn-invi pen">Add</button></div>
+                                                <div class="flex-15 layout-align-center-center layout-row" *ngIf="friend.status==1" (click)="cancelRequestedFriend(friend.friend_id,friend)" ><button class="btn-invi pen">Cancel</button></div>
+                                                <div class="flex-15 layout-align-center-center layout-row"  *ngIf="friend.status==3" (click)="friendRemove(friend.friend_id,friend)" ><button class="btn-invi pen">UnFriend</button></div>
+                                                <div class="flex-15 layout-align-center-center layout-row"  *ngIf="friend.status == 4" (click)="unblockFriend(friend.friend_id,friend)" ><button class="btn-invi pen">Unblock</button></div>
+                                                <div class="flex-15 layout-align-center-center layout-row" *ngIf="friend.status==2" (click)="acceptFriendRequest(friend.friend_id,friend)"><button  class="btn-invi pen">Accept</button></div>
+                                                <div class="flex-15 layout-align-center-center layout-row" *ngIf="friend.status==2" (click)="friendRequestReject(friend.friend_id,friend)" ><button class="btn-invi pen">Reject</button></div>
+                                                <div class="flex-15 layout-align-center-center layout-row" *ngIf="friend.status !==4" (click)="blockFriend(friend.friend_id,friend)" ><button class="btn-invi pen">Block</button></div>
+                                            </li>
+                                            <li class="layout-column list-inivi" *ngFor="#friend of friends.request">
+                                                <div class="flex-5">
+                                                    <div class="checkbox checkbox layout-align-start-center layout-row">
+                                                        <label class="layout-align-start-center ">
+                                                            <!--<input type="checkbox">--> 
+                                                        </label>
+                                                    </div> 
+                                                </div> 
+
+                                                <div class="flex-40 mail layout-align-center-center layout-row"><a>{{friend.name }}</a> </div>
+                                                <div class="flex-25 layout-align-start-center layout-row date"> </div>
+                                                <div class="flex-25 layout-align-start-center layout-row"> </div>
+                                                <div class="flex-15 layout-align-center-center layout-row" *ngIf="friend.status==6" (click)="addAsFriend(friend.friend_id._id)"><button   class="btn-invi pen">Add</button></div>
+                                                <div class="flex-15 layout-align-center-center layout-row"  *ngIf="friend.status==2" (click)="acceptFriendRequest(friend.friend_id,friend)"><button class="btn-invi pen">Accept</button></div>
+                                                <div class="flex-15 layout-align-center-center layout-row" *ngIf="friend.status==2" (click)="friendRequestReject(friend.friend_id,friend)" ><button class="btn-invi pen">Reject</button></div>
+                                                <div class="flex-15 layout-align-center-center layout-row"  *ngIf="friend.status==3" (click)="friendRemove(friend.friend_id,friend)" ><button class="btn-invi pen">UnFriend</button></div>
+                                                <div class="flex-15 layout-align-center-center layout-row" *ngIf="friend.status == 4" (click)="unblockFriend(friend.friend_id,friend)"><button  class="btn-invi pen">Unblock</button></div>
+                                                <div class="flex-15 layout-align-center-center layout-row" *ngIf="friend.status==1" (click)="cancelRequestedFriend(friend.friend_id,friend)" ><button class="btn-invi pen">Cancel</button></div>
+                                                <div class="flex-15 layout-align-center-center layout-row" *ngIf="friend.status !==4" (click)="blockFriend(friend.friend_id,friend)"><button  class="btn-invi pen">Block</button></div>
+                                            </li>
+                                            <li class="layout-column list-inivi" *ngFor="#friend of friends.current">
+
+                                                <div class="flex-40 mail layout-align-center-center layout-row"><a>{{friend.name }}</a> </div>
+                                                <div class="flex-25 layout-align-start-center layout-row date"> </div>
+                                                <div class="flex-25 layout-align-start-center layout-row"> </div>
+                                                <div class="flex-15 layout-align-center-center layout-row" *ngIf="friend.status==6" (click)="addAsFriend(friend.friend_id._id)"><button   class="btn-invi pen">Add</button></div>
+                                                <div class="flex-15 layout-align-center-center layout-row"  *ngIf="friend.status==2" (click)="acceptFriendRequest(friend.friend_id,friend)"><button class="btn-invi pen">Accept</button></div>
+                                                <div class="flex-15 layout-align-center-center layout-row" *ngIf="friend.status==2" (click)="friendRequestReject(friend.friend_id,friend)" ><button class="btn-invi pen">Reject</button></div>
+                                                <div class="flex-15 layout-align-center-center layout-row"  *ngIf="friend.status==3" (click)="friendRemove(friend.friend_id,friend)" ><button class="btn-invi pen">UnFriend</button></div>
+                                                <div class="flex-15 layout-align-center-center layout-row" *ngIf="friend.status == 4" (click)="unblockFriend(friend.friend_id,friend)"><button  class="btn-invi pen">Unblock</button></div>
+                                                <div class="flex-15 layout-align-center-center layout-row" *ngIf="friend.status==1" (click)="cancelRequestedFriend(friend.friend_id,friend)" ><button class="btn-invi pen">Cancel</button></div>
+                                                <div class="flex-15 layout-align-center-center layout-row" *ngIf="friend.status !==4" (click)="blockFriend(friend.friend_id,friend)"><button  class="btn-invi pen">Block</button></div>
+                                            </li>
+                                            <li class="layout-column list-inivi" *ngFor="#friend of friends.blocked">
+
+                                                <div class="flex-40 mail layout-align-center-center layout-row"><a>{{friend.name }}</a> </div>
+                                                <div class="flex-25 layout-align-start-center layout-row date"> </div>
+                                                <div class="flex-25 layout-align-start-center layout-row"> </div>
+                                                <div class="flex-15 layout-align-center-center layout-row" *ngIf="friend.status==6" (click)="addAsFriend(friend.friend_id._id)"><button   class="btn-invi pen">Add</button></div>
+                                                <div class="flex-15 layout-align-center-center layout-row"  *ngIf="friend.status==2" (click)="acceptFriendRequest(friend.friend_id,friend)"><button class="btn-invi pen">Accept</button></div>
+                                                <div class="flex-15 layout-align-center-center layout-row" *ngIf="friend.status==2" (click)="friendRequestReject(friend.friend_id,friend)" ><button class="btn-invi pen">Reject</button></div>
+                                                <div class="flex-15 layout-align-center-center layout-row"  *ngIf="friend.status==3" (click)="friendRemove(friend.friend_id,friend)" ><button class="btn-invi pen">UnFriend</button></div>
+                                                <div class="flex-15 layout-align-center-center layout-row" *ngIf="friend.status == 4" (click)="unblockFriend(friend.friend_id,friend)"><button  class="btn-invi pen">Unblock</button></div>
+                                                <div class="flex-15 layout-align-center-center layout-row" *ngIf="friend.status==1" (click)="cancelRequestedFriend(friend.friend_id,friend)" ><button class="btn-invi pen">Cancel</button></div>
+                                                <div class="flex-15 layout-align-center-center layout-row" *ngIf="friend.status !==4" (click)="blockFriend(friend.friend_id,friend)"><button  class="btn-invi pen">Block</button></div>
+                                            </li>
+                                            <li class="layout-column list-inivi" *ngFor="#friend of friends.unblocked">
+
+                                                <div class="flex-40 mail layout-align-center-center layout-row"><a>{{friend.name }}</a> </div>
+                                                <div class="flex-25 layout-align-start-center layout-row date"> </div>
+                                                <div class="flex-25 layout-align-start-center layout-row"> </div>
+                                                <div class="flex-15 layout-align-center-center layout-row" *ngIf="friend.status==6" (click)="addAsFriend(friend.friend_id._id)"><button   class="btn-invi pen">Add</button></div>
+                                                <div class="flex-15 layout-align-center-center layout-row"  *ngIf="friend.status==2" (click)="acceptFriendRequest(friend.friend_id,friend)"><button class="btn-invi pen">Accept</button></div>
+                                                <div class="flex-15 layout-align-center-center layout-row" *ngIf="friend.status==2" (click)="friendRequestReject(friend.friend_id,friend)" ><button class="btn-invi pen">Reject</button></div>
+                                                <div class="flex-15 layout-align-center-center layout-row"  *ngIf="friend.status==3" (click)="friendRemove(friend.friend_id,friend)" ><button class="btn-invi pen">UnFriend</button></div>
+                                                <div class="flex-15 layout-align-center-center layout-row" *ngIf="friend.status == 4" (click)="unblockFriend(friend.friend_id,friend)"><button  class="btn-invi pen">Unblock</button></div>
+                                                <div class="flex-15 layout-align-center-center layout-row" *ngIf="friend.status==1" (click)="cancelRequestedFriend(friend.friend_id,friend)" ><button class="btn-invi pen">Cancel</button></div>
+                                                <div class="flex-15 layout-align-center-center layout-row" *ngIf="friend.status !==4" (click)="blockFriend(friend.friend_id,friend)"><button  class="btn-invi pen">Block</button></div>
+                                            </li>
+                                        </ul>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="tab-pane " id="Pending">
+                                <div class="hide-xs">
+                                    <div class="layout-row all-deisgn">
+
+                                        <div class="flex-40 layout-align-start-center layout-row">Name </div>
+                                        <div class="flex-25 layout-align-start-center layout-row"></div>
+                                        <div class="flex-25 layout-align-start-center layout-row"> </div>
+                                        <div class="flex-15 layout-align-start-center layout-row">Status</div>
+                                    </div> 
+                                    <ul class="message-ul" *ngIf="friends">
+                                        <li class="layout-row list-inivi" *ngFor="#friend of friends.pending">
+
+
+                                            <div class="flex-40 mail layout-align-start-center layout-row"><a>{{friend.name }}</a> </div>
+                                            <div class="flex-25 layout-align-start-center layout-row date"> </div>
+                                            <div class="flex-25 layout-align-start-center layout-row"> </div>
+                                            <div class="flex-15 layout-align-center-center layout-row" *ngIf="friend.status==6" (click)="addAsFriend(friend.friend_id._id)"><button   class="btn-invi pen">Add</button></div>
+                                            <div class="flex-15 layout-align-center-center layout-row"  *ngIf="friend.status==2" (click)="acceptFriendRequest(friend.friend_id,friend)"><button class="btn-invi pen">Accept</button></div>
+                                            <div class="flex-15 layout-align-center-center layout-row" *ngIf="friend.status==2" (click)="friendRequestReject(friend.friend_id,friend)" ><button class="btn-invi pen">Reject</button></div>
+                                            <div class="flex-15 layout-align-center-center layout-row"  *ngIf="friend.status==3" (click)="friendRemove(friend.friend_id,friend)" ><button class="btn-invi pen">UnFriend</button></div>
+                                            <div class="flex-15 layout-align-center-center layout-row" *ngIf="friend.status == 4" (click)="unblockFriend(friend.friend_id,friend)"><button  class="btn-invi pen">Unblock</button></div>
+                                            <div class="flex-15 layout-align-center-center layout-row" *ngIf="friend.status==1" (click)="cancelRequestedFriend(friend.friend_id,friend)" ><button class="btn-invi pen">Cancel</button></div>
+                                            <div class="flex-15 layout-align-center-center layout-row" *ngIf="friend.status !==4" (click)="blockFriend(friend.friend_id,friend)"><button  class="btn-invi pen">Block</button></div>
+                                        </li>
+
+                                    </ul>
+                                </div>
+                                <div class="show-xs">
+                                    <ul class="message-ul" *ngIf="friends">
+                                        <li class="layout-column list-inivi" *ngFor="#friend of friends.pending">
+
+
+                                            <div class="flex-40 mail layout-align-center-center layout-row"><a>{{friend.name }}</a> </div>
+                                            <div class="flex-25 layout-align-start-center layout-row date"> </div>
+                                            <div class="flex-25 layout-align-start-center layout-row"> </div>
+                                            <div class="flex-15 layout-align-center-center layout-row" *ngIf="friend.status==6" (click)="addAsFriend(friend.friend_id._id)"><button   class="btn-invi pen">Add</button></div>
+                                            <div class="flex-15 layout-align-center-center layout-row"  *ngIf="friend.status==2" (click)="acceptFriendRequest(friend.friend_id,friend)"><button class="btn-invi pen">Accept</button></div>
+                                            <div class="flex-15 layout-align-center-center layout-row" *ngIf="friend.status==2" (click)="friendRequestReject(friend.friend_id,friend)" ><button class="btn-invi pen">Reject</button></div>
+                                            <div class="flex-15 layout-align-center-center layout-row"  *ngIf="friend.status==3" (click)="friendRemove(friend.friend_id,friend)" ><button class="btn-invi pen">UnFriend</button></div>
+                                            <div class="flex-15 layout-align-center-center layout-row" *ngIf="friend.status == 4" (click)="unblockFriend(friend.friend_id,friend)"><button  class="btn-invi pen">Unblock</button></div>
+                                            <div class="flex-15 layout-align-center-center layout-row" *ngIf="friend.status==1" (click)="cancelRequestedFriend(friend.friend_id,friend)" ><button class="btn-invi pen">Cancel</button></div>
+                                            <div class="flex-15 layout-align-center-center layout-row" *ngIf="friend.status !==4" (click)="blockFriend(friend.friend_id,friend)"><button  class="btn-invi pen">Block</button></div>
+                                        </li>
+
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="tab-pane" id="Accepted">
+                                <div class="hide-xs">
+                                    <div class="layout-row all-deisgn">
+
+                                        <div class="flex-40 layout-align-start-center layout-row">Name </div>
+                                        <div class="flex-25 layout-align-start-center layout-row"></div>
+                                        <div class="flex-25 layout-align-start-center layout-row"> </div>
+                                        <div class="flex-15 layout-align-start-center layout-row">Status</div>
+                                    </div> 
+                                    <ul class="message-ul" *ngIf="friends">
+                                        <li class="layout-row list-inivi" *ngFor="#friend of friends.request">
+
+                                            <div class="flex-40 mail layout-align-start-center layout-row"><a>{{friend.name }}</a> </div>
+                                            <div class="flex-25 layout-align-start-center layout-row date"> </div>
+                                            <div class="flex-25 layout-align-start-center layout-row"> </div>
+                                            <div class="flex-15 layout-align-center-center layout-row" *ngIf="friend.status==6" (click)="addAsFriend(friend.friend_id._id)"><button   class="btn-invi pen">Add</button></div>
+                                            <div class="flex-15 layout-align-center-center layout-row"  *ngIf="friend.status==2" (click)="acceptFriendRequest(friend.friend_id,friend)"><button class="btn-invi pen">Accept</button></div>
+                                            <div class="flex-15 layout-align-center-center layout-row" *ngIf="friend.status==2" (click)="friendRequestReject(friend.friend_id,friend)" ><button class="btn-invi pen">Reject</button></div>
+                                            <div class="flex-15 layout-align-center-center layout-row"  *ngIf="friend.status==3" (click)="friendRemove(friend.friend_id,friend)" ><button class="btn-invi pen">UnFriend</button></div>
+                                            <div class="flex-15 layout-align-center-center layout-row" *ngIf="friend.status == 4" (click)="unblockFriend(friend.friend_id,friend)"><button  class="btn-invi pen">Unblock</button></div>
+                                            <div class="flex-15 layout-align-center-center layout-row" *ngIf="friend.status==1" (click)="cancelRequestedFriend(friend.friend_id,friend)" ><button class="btn-invi pen">Cancel</button></div>
+                                            <div class="flex-15 layout-align-center-center layout-row" *ngIf="friend.status !==4" (click)="blockFriend(friend.friend_id,friend)"><button  class="btn-invi pen">Block</button></div>
+                                        </li>
+                                    </ul>               
+                                </div>
+                                <div class="show-xs">
+                                    <ul class="message-ul" *ngIf="friends">
+                                        <li class="layout-column list-inivi" *ngFor="#friend of friends.request">
+
+                                            <div class="flex-40 mail layout-align-center-center layout-row"><a>{{friend.name }}</a> </div>
+                                            <div class="flex-25 layout-align-start-center layout-row date"> </div>
+                                            <div class="flex-25 layout-align-start-center layout-row"> </div>
+                                            <div class="flex-15 layout-align-center-center layout-row" *ngIf="friend.status==6" (click)="addAsFriend(friend.friend_id._id)"><button   class="btn-invi pen">Add</button></div>
+                                            <div class="flex-15 layout-align-center-center layout-row"  *ngIf="friend.status==2" (click)="acceptFriendRequest(friend.friend_id,friend)"><button class="btn-invi pen">Accept</button></div>
+                                            <div class="flex-15 layout-align-center-center layout-row" *ngIf="friend.status==2" (click)="friendRequestReject(friend.friend_id,friend)" ><button class="btn-invi pen">Reject</button></div>
+                                            <div class="flex-15 layout-align-center-center layout-row"  *ngIf="friend.status==3" (click)="friendRemove(friend.friend_id,friend)" ><button class="btn-invi pen">UnFriend</button></div>
+                                            <div class="flex-15 layout-align-center-center layout-row" *ngIf="friend.status == 4" (click)="unblockFriend(friend.friend_id,friend)"><button  class="btn-invi pen">Unblock</button></div>
+                                            <div class="flex-15 layout-align-center-center layout-row" *ngIf="friend.status==1" (click)="cancelRequestedFriend(friend.friend_id,friend)" ><button class="btn-invi pen">Cancel</button></div>
+                                            <div class="flex-15 layout-align-center-center layout-row" *ngIf="friend.status !==4" (click)="blockFriend(friend.friend_id,friend)"><button  class="btn-invi pen">Block</button></div>
+                                        </li>
+                                    </ul>  
+                                </div>
+                            </div>
+                            <div class="tab-pane" id="Blocked">
+                                <div class="hide-xs">
+                                    <div class="layout-row all-deisgn">
+                                        <div class="flex-5">
+                                            <div class="checkbox checkbox layout-align-center-center layout-row">
+                                                <label class="layout-align-center-center ">
+                                                    <!--<input type="checkbox">--> 
+                                                </label>
+                                            </div> 
+                                        </div>
+                                        <div class="flex-40 layout-align-start-center layout-row">Name </div>
+                                        <div class="flex-25 layout-align-start-center layout-row"></div>
+                                        <div class="flex-25 layout-align-start-center layout-row"> </div>
+                                        <div class="flex-15 layout-align-start-center layout-row">Status</div>
+                                    </div> 
+                                    <ul class="message-ul" *ngIf="friends">
+                                        <li class="layout-row list-inivi" *ngFor="#friend of friends.blocked">
+                                            <div class="flex-5">
+                                                <div class="checkbox checkbox layout-align-start-center layout-row">
+                                                    <label class="layout-align-start-center ">
+                                                        <!--<input type="checkbox">--> 
+                                                    </label>
+                                                </div> 
+                                            </div> 
+
+                                            <div class="flex-40 mail layout-align-start-center layout-row"><a>{{friend.name }}</a> </div>
+                                            <div class="flex-25 layout-align-start-center layout-row date"> </div>
+                                            <div class="flex-25 layout-align-start-center layout-row"> </div>
+                                            <div class="flex-15 layout-align-center-center layout-row" *ngIf="friend.status==6" (click)="addAsFriend(friend.friend_id._id)"><button   class="btn-invi pen">Add</button></div>
+                                            <div class="flex-15 layout-align-center-center layout-row"  *ngIf="friend.status==2" (click)="acceptFriendRequest(friend.friend_id,friend)"><button class="btn-invi pen">Accept</button></div>
+                                            <div class="flex-15 layout-align-center-center layout-row" *ngIf="friend.status==2" (click)="friendRequestReject(friend.friend_id,friend)" ><button class="btn-invi pen">Reject</button></div>
+                                            <div class="flex-15 layout-align-center-center layout-row"  *ngIf="friend.status==3" (click)="friendRemove(friend.friend_id,friend)" ><button class="btn-invi pen">UnFriend</button></div>
+                                            <div class="flex-15 layout-align-center-center layout-row" *ngIf="friend.status == 4" (click)="unblockFriend(friend.friend_id,friend)"><button  class="btn-invi pen">Unblock</button></div>
+                                            <div class="flex-15 layout-align-center-center layout-row" *ngIf="friend.status==1" (click)="cancelRequestedFriend(friend.friend_id,friend)" ><button class="btn-invi pen">Cancel</button></div>
+                                            <div class="flex-15 layout-align-center-center layout-row" *ngIf="friend.status !==4" (click)="blockFriend(friend.friend_id,friend)"><button  class="btn-invi pen">Block</button></div>
+                                        </li>
+                                    </ul>               
+                                </div>
+                                <div class="show-xs layout-column">
+                                    <ul class="message-ul" *ngIf="friends">
+                                        <li class="layout-column list-inivi" *ngFor="#friend of friends.blocked">
+
+
+                                            <div class="flex-40 mail layout-align-center-center layout-row"><a>{{friend.name }}</a> </div>
+                                            <div class="flex-25 layout-align-start-center layout-row date"> </div>
+                                            <div class="flex-25 layout-align-start-center layout-row"> </div>
+                                            <div class="flex-15 layout-align-center-center layout-row" *ngIf="friend.status==6" (click)="addAsFriend(friend.friend_id._id)"><button   class="btn-invi pen">Add</button></div>
+                                            <div class="flex-15 layout-align-center-center layout-row"  *ngIf="friend.status==2" (click)="acceptFriendRequest(friend.friend_id,friend)"><button class="btn-invi pen">Accept</button></div>
+                                            <div class="flex-15 layout-align-center-center layout-row" *ngIf="friend.status==2" (click)="friendRequestReject(friend.friend_id,friend)" ><button class="btn-invi pen">Reject</button></div>
+                                            <div class="flex-15 layout-align-center-center layout-row"  *ngIf="friend.status==3" (click)="friendRemove(friend.friend_id,friend)" ><button class="btn-invi pen">UnFriend</button></div>
+                                            <div class="flex-15 layout-align-center-center layout-row" *ngIf="friend.status == 4" (click)="unblockFriend(friend.friend_id,friend)"><button  class="btn-invi pen">Unblock</button></div>
+                                            <div class="flex-15 layout-align-center-center layout-row" *ngIf="friend.status==1" (click)="cancelRequestedFriend(friend.friend_id,friend)" ><button class="btn-invi pen">Cancel</button></div>
+                                            <div class="flex-15 layout-align-center-center layout-row" *ngIf="friend.status !==4" (click)="blockFriend(friend.friend_id,friend)"><button  class="btn-invi pen">Block</button></div>
+                                        </li>
+                                    </ul> 
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class=" tab-pane  privacy-setng" id="Privavy_setting">
+                    <div class="accoutn-title">
+                        <h4>Privacy Settings</h4>
+                    </div>
+                    <div class="border">
+                        <div class="heading-tab layout-row pad-10">
+                            <div class="flex-80 flex-sm-60 layout-align-start-center">Privacy Type</div>   
+                            <div class="flex-30 flex-sm-40 layout-align-center-center layout-row">Settings</div>   
+                        </div>
+                        <ul class="privcy-ul">
+                            <li class="layout-row pad-10">
+                                <div class="flex-80 flex-sm-60 flex-xs-30 layout-align-start-center">Email</div>   
+                                <div class="flex-30 flex-sm-40 flex-xs-70 layout-align-center-center layout-row"> 
+                                    <div class="btn-group flex-50 layout-row">
+                                        <button class="btn btn-default" type="button"><i class="fa fa-lock" aria-hidden="true"></i> Myself</button>
+                                        <button data-toggle="dropdown" class="btn btn-default dropdown-toggle" type="button">
+                                            <span class="caret"></span>
+
+                                        </button>
+                                        <ul role="menu" class="dropdown-menu">
+                                            <li><a href="#"> <i class="fa fa-user" aria-hidden="true"></i>Public</a></li>
+
+                                            <li><a href="#"><i class="fa fa-user-times" aria-hidden="true"></i>Nobody </a></li>
+                                        </ul>
+                                    </div></div>   
+                            </li>
+                            <li class="layout-row pad-10">
+                                <div class="flex-80 flex-sm-60 flex-xs-30 layout-align-start-center">DOB</div>   
+                                <div class="flex-30 flex-sm-40 flex-xs-70 layout-align-center-center layout-row"> 
+                                    <div class="btn-group flex-50 layout-row">
+                                        <button class="btn btn-default" type="button"><i class="fa fa-lock" aria-hidden="true"></i> Myself</button>
+                                        <button data-toggle="dropdown" class="btn btn-default dropdown-toggle" type="button">
+                                            <span class="caret"></span>
+
+                                        </button>
+                                        <ul role="menu" class="dropdown-menu">
+                                            <li><a href="#"> <i class="fa fa-user" aria-hidden="true"></i>Public</a></li>
+
+                                            <li><a href="#"><i class="fa fa-user-times" aria-hidden="true"></i>Nobody </a></li>
+                                        </ul>
+                                    </div></div>   
+                            </li>
+                            <li class="layout-row pad-10">
+                                <div class="flex-80 flex-sm-60 flex-xs-30 layout-align-start-center">AboutMe 
+
+                                </div>   
+                                <div class="flex-30 flex-sm-40 flex-xs-70 layout-align-center-center layout-row"> 
+                                    <div class="btn-group flex-50 layout-row">
+                                        <button class="btn btn-default" type="button"><i class="fa fa-lock" aria-hidden="true"></i> Myself</button>
+                                        <button data-toggle="dropdown" class="btn btn-default dropdown-toggle" type="button">
+                                            <span class="caret"></span>
+
+                                        </button>
+                                        <ul role="menu" class="dropdown-menu">
+                                            <li><a href="#"> <i class="fa fa-user" aria-hidden="true"></i>Public</a></li>
+                                            <li><a href="#"><i class="fa fa-user-times" aria-hidden="true"></i>Nobody </a></li>
+                                        </ul>
+                                    </div></div>   
+                            </li>
+                        </ul> 
+                    </div>
+
+                </div>
+                <!--                <div class=" tab-pane  privacy-setng" id="Notification_setting">
+                                    <div class="accoutn-title">
+                                        <h4>Notification Settings</h4>
+                                    </div>
+                                    <div class="border">
+                                        <div class="heading-tab layout-row pad-10">
+                                            <div class="flex-80 flex-sm-60 layout-align-start-center">Notification Type</div>   
+                                            <div class="flex-15 flex-sm-20 layout-align-center-center layout-row">Email</div>   
+                                            <div class="flex-15 flex-sm-20 layout-align-center-center layout-row">Notification</div>   
+                                        </div>
+                                        <ul class="privcy-ul noti-ul">
+                                            <li class="layout-row pad-10">
+                                                <div class="flex-80 flex-sm-60 layout-align-start-center">Comment</div>   
+                                                <div class="flex-15 flex-sm-20 layout-align-center-center layout-row">
+                                                    <div class="slideThree">	
+                                                        <input type="checkbox" value="None" id="slideThree1" name="check" />
+                                                        <label for="slideThree1"></label>
+                                                    </div>
+                
+                                                </div>   
+                                                <div class="flex-15 flex-sm-20 layout-align-center-center layout-row">
+                                                    <div class="slideThree">	
+                                                        <input type="checkbox" value="None" id="slideThree" name="check" />
+                                                        <label for="slideThree"></label>
+                                                    </div>
+                                                </div>   
+                
+                                            </li>
+                                            <li class="layout-row pad-10">
+                                                <div class="flex-80 flex-sm-60 layout-align-start-center">Post</div>   
+                                                <div class="flex-15 flex-sm-20 layout-align-center-center layout-row">
+                                                    <div class="slideThree">	
+                                                        <input type="checkbox" value="None" id="slideThree21" name="check" />
+                                                        <label for="slideThree21"></label>
+                                                    </div>
+                
+                                                </div>   
+                                                <div class="flex-15 flex-sm-20 layout-align-center-center layout-row">
+                                                    <div class="slideThree">	
+                                                        <input type="checkbox" value="None" id="slideThree2" name="check" />
+                                                        <label for="slideThree2"></label>
+                                                    </div>
+                                                </div>   
+                
+                                            </li>
+                                            <li class="layout-row pad-10">
+                                                <div class="flex-80 flex-sm-60 layout-align-start-center">Awesome Post</div>   
+                                                <div class="flex-15 flex-sm-20 layout-align-center-center layout-row">
+                                                    <div class="slideThree">	
+                                                        <input type="checkbox" value="None" id="slideThree31" name="check" />
+                                                        <label for="slideThree31"></label>
+                                                    </div>
+                
+                                                </div>   
+                                                <div class="flex-15 flex-sm-20 layout-align-center-center layout-row">
+                                                    <div class="slideThree">	
+                                                        <input type="checkbox" value="None" id="slideThree3" name="check" />
+                                                        <label for="slideThree3"></label>
+                                                    </div>
+                                                </div>   
+                
+                                            </li>
+                                            <li class="layout-row pad-10">
+                                                <div class="flex-80 flex-sm-60 layout-align-start-center">Friend Request</div>   
+                                                <div class="flex-15 flex-sm-20 layout-align-center-center layout-row">
+                                                    <div class="slideThree">	
+                                                        <input type="checkbox" value="None" id="slideThree41" name="check" />
+                                                        <label for="slideThree41"></label>
+                                                    </div>
+                                                </div>   
+                                                <div class="flex-15 flex-sm-20 layout-align-center-center layout-row">
+                                                    <div class="slideThree">	
+                                                        <input type="checkbox" value="None" id="slideThree4" name="check" />
+                                                        <label for="slideThree4"></label>
+                                                    </div>
+                                                </div>   
+                
+                                            </li>
+                                            <li class="layout-row pad-10">
+                                                <div class="flex-80 flex-sm-60 layout-align-start-center">Subscribe</div>   
+                                                <div class="flex-15 flex-sm-20 layout-align-center-center layout-row">
+                                                    <div class="slideThree">	
+                                                        <input type="checkbox" value="None" id="slideThree51" name="check" />
+                                                        <label for="slideThree51"></label>
+                                                    </div>
+                
+                                                </div>   
+                                                <div class="flex-15 flex-sm-20 layout-align-center-center layout-row">
+                                                    <div class="slideThree">	
+                                                        <input type="checkbox" value="None" id="slideThree5" name="check" />
+                                                        <label for="slideThree5"></label>
+                                                    </div>
+                                                </div>   
+                
+                                            </li>
+                                            <li class="layout-row pad-10">
+                                                <div class="flex-80 flex-sm-60 layout-align-start-center">Follow</div>   
+                                                <div class="flex-15 flex-sm-20 layout-align-center-center layout-row">
+                                                    <div class="slideThree">	
+                                                        <input type="checkbox" value="None" id="slideThree61" name="check" />
+                                                        <label for="slideThree61"></label>
+                                                    </div>
+                
+                                                </div>   
+                                                <div class="flex-15 flex-sm-20 layout-align-center-center layout-row">
+                                                    <div class="slideThree">	
+                                                        <input type="checkbox" value="None" id="slideThree6" name="check" />
+                                                        <label for="slideThree6"></label>
+                                                    </div>
+                                                </div>   
+                
+                                            </li>
+                                        </ul>
+                                    </div>
+                
+                                </div>-->
+
+
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+<div class="modal fade " id = "myModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Social Icons</h4>
+            </div>
+            <div class="modal-body setting-page ">
+                <form method="post" role="form">
+                    <div class="socil-icons layout-column">
+                        <div class="social-block layout-row">
+                            <div class="social-ic flex-5 layout-align-center-center layout-row">
+                                <i class="fa fa-facebook" aria-hidden="true"></i>
+
+
+                            </div>
+                            <div class="social-detial layout-row flex-95">
+                                <span class="flex-30 layout-align-center-center layout-row">Facebook</span>
+                                <input [(ngModel)]="social_link.facebook" class="form-control flex-70" id="inputName" placeholder="https://www.facebook.com/ssn">
+                            </div>
+
+                        </div>
+                        <div class="social-block layout-row">
+                            <div class="social-ic flex-5 layout-align-center-center layout-row">
+                                <i class="fa fa-twitter" aria-hidden="true"></i>
+
+
+
+                            </div>
+                            <div class="social-detial layout-row flex-95">
+                                <span class="flex-30 layout-align-center-center layout-row">Twitter</span>
+                                <input [(ngModel)]="social_link.twitter" class="form-control flex-70" id="inputName" placeholder="https://twitter.com/ssn">
+                            </div>
+
+                        </div>
+                        <div class="social-block layout-row">
+                            <div class="social-ic flex-5 layout-align-center-center layout-row">
+                                <i class="fa fa-linkedin" aria-hidden="true"></i>
+
+
+                            </div>
+                            <div class="social-detial layout-row flex-95">
+                                <span class="flex-30 layout-align-center-center layout-row">Linkedin</span>
+                                <input [(ngModel)]="social_link.linkedin" class="form-control flex-70" id="inputName" placeholder="https://www.linkedin.com/ssn">
+                            </div>
+
+                        </div>
+                        <div class="social-block layout-row">
+                            <div class="social-ic flex-5 layout-align-center-center layout-row">
+                                <i class="fa fa-google-plus" aria-hidden="true"></i>
+
+
+
+                            </div>
+                            <div class="social-detial layout-row flex-95">
+                                <span class="flex-30 layout-align-center-center layout-row">Google Plus</span>
+                                <input [(ngModel)]="social_link.google_plus" class="form-control flex-70" id="inputName" placeholder="Name">
+                            </div>
+
+                        </div>
+                        <!--                        <div class="social-block layout-row">
+                                                    <div class="social-ic flex-5 layout-align-center-center layout-row">
+                                                        <i class="fa fa-bitbucket" aria-hidden="true"></i>
+                        
+                        
+                        
+                                                    </div>
+                                                    <div class="social-detial layout-row flex-95">
+                                                        <span class="flex-30 layout-align-center-center layout-row">Bitbucket</span>
+                                                        <input [(ngModel)]="social_link.bitbucket" class="form-control flex-70" id="inputName" placeholder="Name">
+                                                    </div>
+                        
+                                                </div>-->
+                        <!--                        <div class="social-block layout-row">
+                                                    <div class="social-ic flex-5 layout-align-center-center layout-row">
+                                                        <i class="fa fa-youtube" aria-hidden="true"></i>
+                        
+                        
+                        
+                                                    </div>
+                                                    <div class="social-detial layout-row flex-95">
+                                                        <span class="flex-30 layout-align-center-center layout-row">Youtube</span>
+                                                        <input [(ngModel)]="social_link.youtube" class="form-control flex-70" id="inputName" placeholder="Name">
+                        
+                                                    </div>
+                        
+                                                </div>
+                                                <div class="social-block layout-row">
+                                                    <div class="social-ic flex-5 layout-align-center-center layout-row">
+                                                        <i class="fa fa-instagram" aria-hidden="true"></i>
+                        
+                        
+                                                    </div>
+                                                    <div class="social-detial layout-row flex-95">
+                                                        <span class="flex-30 layout-align-center-center layout-row">Instagram</span>
+                                                        <input [(ngModel)]="social_link.instagram" class="form-control flex-70" id="inputName" placeholder="Name">
+                        
+                                                    </div>
+                        
+                                                </div>
+                                                <div class="social-block layout-row">
+                                                    <div class="social-ic flex-5 layout-align-center-center layout-row">
+                                                        <i class="fa fa-pinterest-p" aria-hidden="true"></i>
+                        
+                        
+                        
+                                                    </div>
+                                                    <div class="social-detial layout-row flex-95">
+                                                        <span class="flex-30 layout-align-center-center layout-row">Pinterest</span>
+                                                        <input [(ngModel)]="social_link.pinterest" class="form-control flex-70" id="inputName" placeholder="Name">
+                        
+                                                    </div>
+                        
+                                                </div>-->
+
+                    </div>
+                    <button data-dismiss="modal" type="button" (click)="formSubmit()" class="layout-align-center-center layout-row setting-btn"  ><span class="">Update</span></button>
+                </form>
+            </div>
+
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>

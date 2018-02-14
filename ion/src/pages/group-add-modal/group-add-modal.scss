@@ -1,0 +1,83 @@
+page-group-add-modal {
+    .header
+        {
+            &:after{background: none;}
+        }
+        .content
+        {
+            .group-image
+            {
+                    width: 70%; height: 40%; padding-left: 0; margin: 10px auto 0; text-align: center; border: 3px solid #bdbdbd;
+                    img{max-width: 100%; max-height: 180px;;  }
+                    .item-inner{padding-right: 0;}
+                    .label{margin: 0;}
+            }
+            .upload-container
+            {
+                background-color: #fff; border-bottom: 1px solid #dedede; min-height: 80px;
+                .item-inner{border:none;}
+                .button
+                {
+                    box-shadow: none; border-radius: 50%; border:2px solid #c6c6c6; width: 44px; height: 44px;
+                    .icon{color: #707070; font-size: 20px;}
+                    
+                }
+               
+            }
+            .overlay{pointer-events: none; opacity: 0.6;}         
+            
+            .item-md{
+                padding-right: 16px; 
+                .item-inner{
+                    padding-right:0px; 
+                    .radio-md{
+                        margin-right: 6px;
+                    }
+                }
+            }
+            .privacy{
+                margin: 14px 0px;
+                ion-row{
+                    margin: 0px 16px 4px;
+                   
+                    border-bottom: 1px solid #dedede; 
+                    .item-block{
+                        padding: 0px; 
+                        
+                        .item-inner{
+                            border-bottom: none;
+                        }
+                    } 
+                    span{
+                        font-size: 1.2rem;
+                        padding: 0px 0px 10px 0px;
+                        text-transform: lowercase;
+                    }
+                }
+            }
+            .search-list{
+                margin: -7px 8px 16px 8px;
+                box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+                border: 1px solid #dedede;
+
+                .item{
+                    padding: 0px;
+
+                    .item-inner{
+                        padding: 0px 10px;
+
+                        ion-label{
+                            text-overflow: inherit;
+                            white-space: normal;
+                            line-height: 1.2;
+                        }
+                    }
+                }
+            }
+            .group-image{
+                &.item-md{
+                    padding-right: 0px;                
+                }
+            }
+        }    
+    }

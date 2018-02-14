@@ -1,0 +1,144 @@
+<!--
+  Generated template for the Notification page.
+
+  See http://ionicframework.com/docs/v2/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar class="gradient">
+    <ion-title>
+      <h1 class="header-title" text-center color="white">Notification</h1>
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content>
+  <ion-item *ngIf="page.notificationData">You have {{page.notificationData.length}} unread notification<span *ngIf="page.notificationData.length>1">s</span></ion-item>
+  <ion-list>
+    <div *ngFor="let noti of notificationData;">
+      <!--<ion-item (click)="arriveNotification(noti)" *ngIf="noti?.post_type == 5  && noti?.userdata">
+        <ion-icon item-left ion-text ios="ios-notifications" color="primary" md="md-notifications"></ion-icon>
+        {{noti.userdata.fname+' '+noti.userdata.lname}} {{noti.title}}
+      </ion-item>-->
+      <ion-item text-wrap (click)="arriveNotification(noti)" *ngIf="noti?.post_type == 5 && noti?.from && noti.from._id!=null" [class.light-gray]="!noti.is_viewed">
+        <ion-icon item-left ion-text ios="ios-notifications" color="primary" md="md-notifications"></ion-icon>
+        {{noti.from.fname+' '+noti.from.lname}} {{noti.title}}
+       <p> {{noti.date | datetimefilterpipe}}</p>
+      </ion-item>
+      <!--<ion-item (click)="arriveNotification(noti)" *ngIf="noti?.post_type == 0 && noti?.userdata">
+        <ion-icon item-left ion-text ios="ios-notifications" color="primary" md="md-notifications"></ion-icon>
+        {{noti.userdata.fname+' '+noti.userdata.lname}} {{noti.title}}
+      </ion-item>-->
+      <ion-item text-wrap (click)="arriveNotification(noti)" *ngIf="noti?.post_type == 0 && noti?.from && noti.from._id!=null" [class.light-gray]="!noti.is_viewed">
+        <ion-icon item-left ion-text ios="ios-notifications" color="primary" md="md-notifications"></ion-icon>
+        {{noti.from.fname+' '+noti.from.lname}} {{noti.title}}
+       <p> {{noti.date | datetimefilterpipe}}</p>
+      </ion-item>
+      <!--<ion-item (click)="arriveNotification(noti)" *ngIf="noti?.post_type == 1 && noti?.userdata">
+        <ion-icon item-left ion-text ios="ios-notifications" color="primary" md="md-notifications"></ion-icon>
+        {{noti.userdata.fname+' '+noti.userdata.lname}} {{noti.title}}
+      </ion-item>-->
+      <ion-item text-wrap (click)="arriveNotification(noti)" *ngIf="noti?.post_type == 1 && noti?.from && noti.from._id!=null" [class.light-gray]="!noti.is_viewed">
+        <ion-icon item-left ion-text ios="ios-notifications" color="primary" md="md-notifications"></ion-icon>
+        {{noti.from.fname+' '+noti.from.lname}} {{noti.title}}
+       <p> {{noti.date | datetimefilterpipe}}</p>
+      </ion-item>
+      <!--<ion-item (click)="arriveNotification(noti)" *ngIf="noti?.post_type == 2 && noti?.userdata">
+        <ion-icon item-left ion-text ios="ios-notifications" color="primary" md="md-notifications"></ion-icon>
+        {{noti.userdata.fname+' '+noti.userdata.lname}} {{noti.title}}
+      </ion-item>-->
+      <ion-item text-wrap (click)="arriveNotification(noti)" *ngIf="noti?.post_type == 2 && noti?.from && noti?.from && noti.from._id!=null" [class.light-gray]="!noti.is_viewed">
+        <ion-icon item-left ion-text ios="ios-notifications" color="primary" md="md-notifications"></ion-icon>
+        {{noti.from.fname+' '+noti.from.lname}} {{noti.title}}
+       <p> {{noti.date | datetimefilterpipe}}</p>
+      </ion-item>
+      <!--<ion-item (click)="onFriendReqAccept(noti)" *ngIf="noti?.post_type == 3 && noti?.userdata">
+        <ion-icon item-left ion-text ios="ios-notifications" color="primary" md="md-notifications"></ion-icon>
+        {{noti.userdata.fname+' '+noti.userdata.lname}} {{noti.title}}
+      </ion-item>-->
+      <ion-item text-wrap (click)="onFriendReqAccept(noti)" *ngIf="noti?.post_type == 3 && noti?.from && noti.from._id!=null" [class.light-gray]="!noti.is_viewed">
+        <ion-icon item-left ion-text ios="ios-notifications" color="primary" md="md-notifications"></ion-icon>
+        {{noti.from.fname+' '+noti.from.lname}} {{noti.title}}
+       <p> {{noti.date | datetimefilterpipe}}</p>
+      </ion-item>
+      <!--<ion-item (click)="arriveNotification(noti)" *ngIf="noti?.post_type == 4 &&  noti?.userdata">
+        <ion-icon item-left ion-text ios="ios-notifications" color="primary" md="md-notifications"></ion-icon>
+        {{noti.userdata.fname+' '+noti.userdata.lname}} {{noti.title}}
+      </ion-item>-->
+      <ion-item text-wrap (click)="arriveNotification(noti)" *ngIf="noti?.post_type == 4 && noti?.from && noti.from._id!=null" [class.light-gray]="!noti.is_viewed">
+        <ion-icon item-left ion-text ios="ios-notifications" color="primary" md="md-notifications"></ion-icon>
+        {{noti.from.fname+' '+noti.from.lname}} {{noti.title}}
+       <p> {{noti.date | datetimefilterpipe}}</p>
+      </ion-item>
+      <!--<ion-item (click)="arriveNotification(noti)" *ngIf="noti?.post_type == 6 &&  noti?.userdata">
+        <ion-icon item-left ion-text ios="ios-notifications" color="primary" md="md-notifications"></ion-icon>
+        {{noti.title}}
+      </ion-item>-->
+      <ion-item text-wrap (click)="arriveNotification(noti)" *ngIf="noti?.post_type == 6 && noti?.from && noti.from._id!=null" [class.light-gray]="!noti.is_viewed">
+        <ion-icon item-left ion-text ios="ios-notifications" color="primary" md="md-notifications"></ion-icon>
+        {{noti.title}}
+       <p> {{noti.date | datetimefilterpipe}}</p>
+      </ion-item>
+      <!--<ion-item (click)="arriveNotification(noti)" *ngIf="noti?.post_type == 1 && noti?.userdata">
+        <ion-icon item-left ion-text ios="ios-notifications" color="primary" md="md-notifications"></ion-icon>
+        {{noti.userdata.fname+' '+noti.userdata.lname}} {{noti.title}}-&nbsp;"{{noti.groupId.title}}"
+      </ion-item>-->
+      <ion-item text-wrap (click)="arriveNotification(noti)" *ngIf="noti?.post_type == 1 && noti?.from && noti.from._id!=null" [class.light-gray]="!noti.is_viewed">
+        <ion-icon item-left ion-text ios="ios-notifications" color="primary" md="md-notifications"></ion-icon>
+        {{noti.from.fname+' '+noti.from.lname}} {{noti.title}}-&nbsp;"{{noti.groupId.title}}"
+       <p> {{noti.date | datetimefilterpipe}}</p>
+      </ion-item>
+      <!--<ion-item (click)="arriveNotification(noti)" *ngIf="noti?.post_type == 8 && noti?.userdata">
+        <ion-icon item-left ion-text ios="ios-notifications" color="primary" md="md-notifications"></ion-icon>
+        {{noti.userdata.fname+' '+noti.userdata.lname}} {{noti.title}}-&nbsp;"{{noti.groupId.title}}"
+      </ion-item>-->
+      <ion-item text-wrap (click)="arriveNotification(noti)" *ngIf="noti?.post_type == 8 && noti?.from && noti.from._id!=null" [class.light-gray]="!noti.is_viewed">
+        <ion-icon item-left ion-text ios="ios-notifications" color="primary" md="md-notifications"></ion-icon>
+        {{noti.from.fname+' '+noti.from.lname}} {{noti.title}}-&nbsp;"{{noti.groupId.title}}"
+       <p> {{noti.date | datetimefilterpipe}}</p>
+      </ion-item>
+      <!--<ion-item (click)="arriveNotification(noti)" *ngIf="noti?.post_type == 9 && noti?.userdata">
+        <ion-icon item-left ion-text ios="ios-notifications" color="primary" md="md-notifications"></ion-icon>
+        {{noti.userdata.fname+' '+noti.userdata.lname}} {{noti.title}}-&nbsp;"{{noti.subject_id.name}}"
+      </ion-item>-->
+      <ion-item text-wrap (click)="arriveNotification(noti)" *ngIf="noti?.post_type == 9 && noti?.from && noti.from._id!=null" [class.light-gray]="!noti.is_viewed">
+        <ion-icon item-left ion-text ios="ios-notifications" color="primary" md="md-notifications"></ion-icon>
+        {{noti.from.fname+' '+noti.from.lname}} {{noti.title}}-&nbsp;"{{noti.subject_id.name}}"
+       <p> {{noti.date | datetimefilterpipe}}</p>
+      </ion-item>
+      <!--<ion-item (click)="arriveNotification(noti)" *ngIf="noti?.post_type == 10 && noti?.userdata">
+        <ion-icon item-left ion-text ios="ios-notifications" color="primary" md="md-notifications"></ion-icon>
+        {{noti.userdata.fname+' '+noti.userdata.lname}} {{noti.title}}-&nbsp;"{{noti.college_id.name}}"
+      </ion-item>-->
+      <ion-item text-wrap (click)="arriveNotification(noti)" *ngIf="noti?.post_type == 10 && noti?.from && noti.from._id!=null" [class.light-gray]="!noti.is_viewed">
+        <ion-icon item-left ion-text ios="ios-notifications" color="primary" md="md-notifications"></ion-icon>
+        {{noti.from.fname+' '+noti.from.lname}} {{noti.title}}-&nbsp;"{{noti.college_id.name}}"
+       <p> {{noti.date | datetimefilterpipe}}</p>
+      </ion-item>
+      <!--<ion-item (click)="arriveNotification(noti)" *ngIf="noti?.post_type == 11 && noti?.userdata">
+        <ion-icon item-left ion-text ios="ios-notifications" color="primary" md="md-notifications"></ion-icon>
+        {{noti.userdata.fname+' '+noti.userdata.lname}} {{noti.title}}-&nbsp;"{{noti.degree_id.name}}"
+      </ion-item>-->
+      <ion-item text-wrap (click)="arriveNotification(noti)" *ngIf="noti?.post_type == 11 && noti?.from && noti.from._id!=null" [class.light-gray]="!noti.is_viewed">
+        <ion-icon item-left ion-text ios="ios-notifications" color="primary" md="md-notifications"></ion-icon>
+        {{noti.from.fname+' '+noti.from.lname}} {{noti.title}}-&nbsp;"{{noti.degree_id.name}}"
+       <p> {{noti.date | datetimefilterpipe}}</p>
+      </ion-item>
+      <!--<ion-item (click)="arriveNotification(noti)" *ngIf="noti?.post_type == 12 && noti?.userdata">
+        <ion-icon item-left ion-text ios="ios-notifications" color="primary" md="md-notifications"></ion-icon>
+        {{noti.userdata.fname+' '+noti.userdata.lname}} {{noti.title}}
+      </ion-item>-->
+      <ion-item text-wrap (click)="arriveNotification(noti)" *ngIf="noti?.post_type == 12 && noti?.from && noti.from._id!=null" [class.light-gray]="!noti.is_viewed">
+        <ion-icon item-left ion-text ios="ios-notifications" color="primary" md="md-notifications"></ion-icon>
+        {{noti.from.fname+' '+noti.from.lname}} {{noti.title}}
+       <p> {{noti.date | datetimefilterpipe}}</p>
+      </ion-item>
+    </div>
+  </ion-list>
+  <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+  <ion-spinner icon="spiral" *ngIf="loader"></ion-spinner>
+
+</ion-content>

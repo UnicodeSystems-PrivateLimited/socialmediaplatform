@@ -1,0 +1,177 @@
+<section class="global-search">
+    <section class="content-header">
+        <span style="text-align: left"> Search List
+            <span *ngIf="name">for {{name}}</span>
+        </span>
+    </section>
+    <section class="content">
+        <div class="">
+            <ul *ngIf="members.length" class="global-search-list">
+                <p class="layout-row layout-align-space-between-center m-b-20">
+                    <span class="flex-100 global-search-heading">
+                        <i class="fa fa-users" aria-hidden="true"></i> Members</span>
+                </p>
+                <li *ngFor="let member of members | slice:0:3;" class="layout-row layout-align-space-between search-li">
+                    <div class="search-result-left layout-row" *ngIf="member" (click)="getProfileById(member._id)">
+                        <div class="search-thumb">
+                            <img alt="User Image" *ngIf="member.photo" class="" src="public/files/ProfilePicture/{{member.photo}}">
+                            <img alt="User Image" *ngIf="!member.photo" class="" src="public/files/ProfilePicture/no_image.png">
+                        </div>
+                        <div class="result-title">{{member.fname}} &nbsp; {{member.lname}}</div>
+                    </div>
+                </li>
+                <li class="search-see-all" (click)="onSeeAllClick(1)">See All</li>
+            </ul>
+            <ul *ngIf="!members.length" class="global-search-list">
+                <p class="layout-row layout-align-space-between-center m-b-20">
+                    <span class="flex-100 global-search-heading">
+                        <i class="fa fa-users" aria-hidden="true"></i> Members</span>
+                </p>
+                <li class="layout-row layout-align-space-between search-li">
+                    <div class="search-result-left layout-row">
+                        No members found
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="">
+            <ul class="global-search-list" *ngIf="subjects.length">
+                <p class="layout-row layout-align-space-between-center m-b-20">
+                    <span class="flex-100 global-search-heading">
+                        <i class="fa fa-book" aria-hidden="true"></i> Subjects</span>
+                </p>
+                <li *ngFor="let subject of subjects | slice:0:3;" class="layout-row layout-align-space-between search-li">
+                    <div class="search-result-left layout-row">
+                        <div (click)="getSubjectWall(subject._id)" class="result-title">{{subject.name}}</div>
+                    </div>
+                </li>
+                <li class="search-see-all" (click)="onSeeAllClick(2)">See All</li>
+            </ul>
+            <ul *ngIf="!subjects.length" class="global-search-list">
+                <p class="layout-row layout-align-space-between-center m-b-20">
+                    <span class="flex-100 global-search-heading">
+                        <i class="fa fa-book" aria-hidden="true"></i> Subjects</span>
+                </p>
+                <li class="layout-row layout-align-space-between search-li">
+                    <div class="search-result-left layout-row">
+                        No subjects found
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="">
+            <ul class="global-search-list" *ngIf="colleges.length">
+                <p class="layout-row layout-align-space-between-center m-b-20">
+                    <span class="flex-100 global-search-heading">
+                        <i class="fa fa-university" aria-hidden="true"></i> College</span>
+                </p>
+                <li *ngFor="let college of colleges | slice:0:3;" class="layout-row layout-align-space-between search-li">
+                    <div class="search-result-left layout-row">
+                        <div (click)="getCollegeWall(college._id)" class="result-title">{{college.name}}</div>
+                    </div>
+                </li>
+                <li class="search-see-all" (click)="onSeeAllClick(3)">See All</li>
+            </ul>
+            <ul *ngIf="!colleges.length" class="global-search-list">
+                <p class="layout-row layout-align-space-between-center m-b-20">
+                    <span class="flex-100 global-search-heading">
+                        <i class="fa fa-university" aria-hidden="true"></i> College</span>
+                </p>
+                <li class="layout-row layout-align-space-between search-li">
+                    <div class="search-result-left layout-row">
+                        No colleges found
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="">
+            <ul class="global-search-list" *ngIf="degrees.length">
+                <p class="layout-row layout-align-space-between-center m-b-20">
+                    <span class="flex-100 global-search-heading">
+                        <i class="fa fa-book" aria-hidden="true"></i> Degree</span>
+                </p>
+                <li *ngFor="let degree of degrees | slice:0:3;" class="layout-row layout-align-space-between search-li">
+                    <div class="search-result-left layout-row">
+                        <div (click)="getDegreeWall(degree._id)" class="result-title">{{degree.name}}</div>
+                    </div>
+                </li>
+                <li class="search-see-all" (click)="onSeeAllClick(4)">See All</li>
+            </ul>
+            <ul *ngIf="!degrees.length" class="global-search-list">
+                <p class="layout-row layout-align-space-between-center m-b-20">
+                    <span class="flex-100 global-search-heading">
+                        <i class="fa fa-book" aria-hidden="true"></i> Degree</span>
+                </p>
+                <li class="layout-row layout-align-space-between search-li">
+                    <div class="search-result-left layout-row">
+                        No degrees found
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="">
+            <ul class="global-search-list" *ngIf="groups.length">
+                <p class="layout-row layout-align-space-between-center m-b-20">
+                    <span class="flex-100 global-search-heading">
+                        <i class="fa fa-users" aria-hidden="true"></i> Groups</span>
+                </p>
+                <li *ngFor="let group of groups | slice:0:3;" class="layout-row layout-align-space-between search-li">
+                    <!-- <div class="search-result-left layout-row">
+                    <div (click)="getGroupWall(group._id)" class="result-title">{{group.title}}</div>
+                </div> -->
+                    <div class="search-result-left layout-row" *ngIf="group"  (click)="getGroupWall(group._id)">
+                        <div class="search-thumb">
+                            <img alt="Group Image" *ngIf="group.icon" class="" src="public/files/Group/{{group.icon}}">
+                            <img alt="Group Image" *ngIf="!group.icon" class="" src="public/files/Group/group-registration-icon-26.png">
+                        </div>
+                        <div class="result-title">{{group.title}}</div>
+                    </div>
+                </li>
+                <li class="search-see-all" (click)="onSeeAllClick(5)">See All</li>
+            </ul>
+            <ul *ngIf="!groups.length" class="global-search-list">
+                <p class="layout-row layout-align-space-between-center m-b-20">
+                    <span class="flex-100 global-search-heading">
+                        <i class="fa fa-users" aria-hidden="true"></i> Group</span>
+                </p>
+                <li class="layout-row layout-align-space-between search-li">
+                    <div class="search-result-left layout-row">
+                        No groups found
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="">
+            <ul class="global-search-list" *ngIf="events.length">
+                <p class="layout-row layout-align-space-between-center m-b-20">
+                    <span class="flex-100 global-search-heading">
+                        <i class="fa fa-calendar" aria-hidden="true"></i> Events</span>
+                </p>
+                <li *ngFor="let event of events | slice:0:3;" class="layout-row layout-align-space-between search-li">
+                    <!-- <div class="search-result-left layout-row">
+                    <div (click)="getGroupWall(group._id)" class="result-title">{{group.title}}</div>
+                </div> -->
+                    <div class="search-result-left layout-row" *ngIf="event"  (click)="getEventWall(event._id)">
+                        <div class="search-thumb">
+                            <img alt="Event Image" *ngIf="event.icon" class="" src="public/files/Groupevents/{{event.icon}}">
+                            <img alt="Event Image" *ngIf="!event.icon" class="" src="public/files/Group/group-registration-icon-26.png">
+                        </div>
+                        <div class="result-title">{{event.title}}</div>
+                    </div>
+                </li>
+                <li class="search-see-all" (click)="onSeeAllClick(6)">See All</li>
+            </ul>
+            <ul *ngIf="!groups.length" class="global-search-list">
+                <p class="layout-row layout-align-space-between-center m-b-20">
+                    <span class="flex-100 global-search-heading">
+                        <i class="fa fa-calendar" aria-hidden="true"></i> Events</span>
+                </p>
+                <li class="layout-row layout-align-space-between search-li">
+                    <div class="search-result-left layout-row">
+                        No events found
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </section>
+</section>

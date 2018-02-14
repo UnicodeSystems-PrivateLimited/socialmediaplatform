@@ -1,0 +1,33 @@
+page-faq {
+    .toolbar-background-ios {
+        border: none;
+    }
+    .header {
+        &::after {
+            background-image: none;
+            height: 0;
+        }
+        .header-title {
+            margin: 0;
+        }
+        .toolbar {
+            min-height: 54px;
+        }
+    }
+    h4 {
+        font-size: 1.8rem;
+    }
+    .web-and-app {
+        b{
+            color:#000;
+        }
+        a{
+        color: #f3843e;        
+        }
+    }
+    ion-list{
+        ion-label.label-md{  margin: 13px 8px 3px 0;   font-size: 1.5rem;    font-weight: bold;  }
+
+        p{margin-top: 3px;}
+    }
+}

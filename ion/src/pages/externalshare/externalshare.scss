@@ -1,0 +1,45 @@
+page-externalshare {
+    .external-header{
+        border-bottom: 2px solid #ff7f5d;
+        position: static;
+        ion-title{
+            .toolbar-title{
+                color: #eb6440;
+                font-size: 15px;
+                text-transform: uppercase;
+                text-align: center;
+               font-family: lato;
+               font-weight: bold; 
+            }           
+        }
+        
+    }
+
+    .externalshare-list{
+        padding: 10px 0;
+
+        ion-rwo{
+            margin-bottom: 20px;
+        }
+
+    ion-col{
+        text-align: center;
+
+        span{
+                color: #323d45;
+               margin-top: 6px;
+               display: inline-block;
+        }
+    }
+}
+
+.external-footer{
+    position: static;
+    background: #f0f0f0;
+}
+
+.external-wrapper{    
+    text-align: center;
+}
+
+}

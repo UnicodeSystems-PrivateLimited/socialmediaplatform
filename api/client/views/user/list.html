@@ -1,0 +1,66 @@
+<section class="content" *ngIf="friends">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                                <div class="box-header">
+                                    <h3 class="box-title">Member List</h3>
+                                </div>
+                <div class="box-body">
+                    <div id="example2_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
+                        <div class="row">
+                            <div class="col-sm-12"> 
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-hover text-center search-result-member" cellspacing="0" width="100%">
+                                        <tbody>
+                                            <tr *ngFor="#friend of friends.current">
+                                                <td width="10%" class="c-p" (click)="getProfileById(friend.friend_id)" >
+                                                    <img *ngIf="friend.photo" src="theme/files/ProfilePicture/{{friend.photo}}" alt="" />
+                                                    <img *ngIf="!friend.photo" src="theme/files/ProfilePicture/no_image.png" alt="" />
+                                                </td>
+                                                <td width="30%" class="member-details" >
+                                                    <p class="member-name c-p" (click)="getProfileById(friend.friend_id)">{{friend.name }}</p>
+                                                    <!--<p class="member-points">140 points</p>-->
+                                                </td>
+                                                <td width="60%">
+                                                    <ul class="list-inline">
+                                                        <li (click)="mytoggle()" class="c-p"><a ><i class="fa fa-envelope">&nbsp;</i><span class="hide-xs">Send Message</span></a></li>
+                                                        <li *ngIf="friend.status==3" (click)="friendRemove(friend.friend_id,friend)" class="c-p"><a><i class="fa fa-user-plus" aria-hidden="true"></i>&nbsp;<span class="hide-xs">UnFriend</span></a></li>
+                                                        <li *ngIf="friend.status !==4" (click)="blockFriend(friend.friend_id,friend)" class="c-p"><a ><i class="fa fa-ban" aria-hidden="true"></i>&nbsp;<span class="hide-xs">Block</span></a></li>
+                                                        <li *ngIf="friend.status == 4" (click)="unblockFriend(friend.friend_id,friend)" class="c-p"><a ><i class="fa fa-unlock" aria-hidden="true"></i>&nbsp;<span class="hide-xs">Unblock</span></a></li>
+                                                    </ul>
+                                                </td>
+                                            </tr>  
+                                           
+                                            <tr *ngFor="#friend of friends.pending">
+                                                <td width="10%" class="c-p" (click)="getProfileById(friend.friend_id)" >
+                                                    <img *ngIf="friend.photo" src="theme/files/ProfilePicture/{{friend.photo}}" alt="{{friend.photo}}" />
+                                                    <img *ngIf="!friend.photo" src="theme/files/ProfilePicture/no_image.png" alt="" />
+                                                </td>
+                                                <td width="30%" class="member-details">
+                                                    <p class="member-name" (click)="getProfileById(friend.friend_id)" >{{friend.name }}</p>
+                                                </td>
+                                                <td width="60%">
+                                                    <ul class="list-inline">
+                                                        <li (click)="mytoggle()" class="c-p"><a ><i class="fa fa-envelope">&nbsp;</i><span class="hide-xs">Send Message</span></a></li>
+                                                        <li *ngIf="friend.status==6" (click)="addAsFriend(friend.friend_id._id,friend)" class="c-p"><a ><i class="fa fa-user-plus">&nbsp;</i> <span class="hide-xs">Add Friend</span></a></li>
+                                                        <li *ngIf="friend.status==1" (click)="cancelRequestedFriend(friend.friend_id,friend)" class="c-p"><a><i class="fa fa-user-times" aria-hidden="true"></i>&nbsp;<span class="hide-xs">Cancel Friend Request</span></a></li>
+                                                        <li *ngIf="friend.status==2" (click)="acceptFriendRequest(friend.friend_id,friend)" class="c-p"><a><i class="fa fa-user-plus" aria-hidden="true"></i>&nbsp;<span class="hide-xs">Accept Friend Request</span></a></li>
+                                                        <li *ngIf="friend.status==2" (click)="friendRequestReject(friend.friend_id,friend)" class="c-p"><a><i class="fa fa-user-plus" aria-hidden="true"></i>&nbsp;<span class="hide-xs">Reject</span></a></li>
+                                                        <li *ngIf="friend.status==3" (click)="friendRemove(friend.friend_id,friend)" class="c-p"><a><i class="fa fa-user-plus" aria-hidden="true"></i>&nbsp;<span class="hide-xs">UnFriend</span></a></li>
+
+                                                        <li *ngIf="friend.status !==4" (click)="blockFriend(friend.friend_id,friend)" class="c-p"><a ><i class="fa fa-ban" aria-hidden="true"></i>&nbsp;<span class="hide-xs">Block</span></a></li>
+                                                        <li *ngIf="friend.status == 4" (click)="unblockFriend(friend.friend_id,friend)" class="c-p"><a ><i class="fa fa-unlock" aria-hidden="true"></i>&nbsp;<span class="hide-xs">Unblock</span></a></li>
+                                                    </ul>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

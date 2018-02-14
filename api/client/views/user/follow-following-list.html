@@ -1,0 +1,120 @@
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header">
+                    <!--<h3 class="box-title"><span *ngIf=" !searchCount">No</span>{{searchCount}} Member found for your search</h3>-->
+                </div>
+
+                <div class="box-body">
+                    <div id="example2_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
+                        <div class="row">
+                            <div class="col-sm-12"> 
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-hover text-center search-result-member" cellspacing="0" width="100%">
+                                        <tbody>
+<!--                                               <tr *ngIf="searchCount == 0 || !searchCount">
+                                               
+                                                <td width="100%" class="member-details">
+                                                    <p class="member-name">No Member Found</p>
+                                                  
+                                                </td>
+                                             
+                                            </tr>-->
+<!--                                             <div *ngIf="friends && !followings && !followers">
+                                            <tr *ngFor="#user of friends">
+                                                <td width="10%" (click)="getProfileById(user.friend_id)">
+                                                    <img *ngIf="user.photo" src="theme/files/ProfilePicture/{{user.photo}}" alt="" />
+                                                    <img *ngIf="!user.photo" src="theme/files/ProfilePicture/no_image.png" alt="" />
+                                                </td>
+                                                <td width="45%" class="member-details">
+                                                    <p (click)="getProfileById(user.friend_id)" class="member-name c-p">{{user.name}}</p>
+                                                    <p class="member-points">140 points</p>
+                                                    <p class="member-address">lives in united states</p>
+                                                </td>
+                                                <td width="45%">
+                                                    <ul class="list-inline">
+                                                        <li *ngIf="user.status==6" (click)="addAsFriend(user._id)" class="c-p"><a ><i class="fa fa-user-plus">&nbsp;</i> Add Friend</a></li>
+                                                        <li *ngIf="user.status==1" (click)="cancelRequestedFriend(user._id,user)" class="c-p"><a><i class="fa fa-user-times" aria-hidden="true"></i>&nbsp;Cancel Friend Request</a></li>
+                                                        <li *ngIf="user.status==2" (click)="acceptFriendRequest(user._id,user)" class="c-p"><a><i class="fa fa-user-plus" aria-hidden="true"></i>&nbsp;Accept Friend Request</a></li>
+                                                        <li *ngIf="user.status==2" (click)="friendRequestReject(user._id,user)" class="c-p"><a><i class="fa fa-user-plus" aria-hidden="true"></i>&nbsp;Reject</a></li>
+                                                        <li *ngIf="user.status==3" (click)="friendRemove(user._id,user)" class="c-p"><a><i class="fa fa-user-plus" aria-hidden="true"></i>&nbsp;UnFriend</a></li>
+                                                  
+                                                        <li *ngIf="user.status !==4" (click)="blockFriend(user._id,user)" class="c-p"><a ><i class="fa fa-ban" aria-hidden="true"></i>&nbsp;Block</a></li>
+                                                        <li *ngIf="user.status == 4" (click)="unblockFriend(user._id,user)" class="c-p"><a ><i class="fa fa-unlock" aria-hidden="true"></i>&nbsp;Unblock</a></li>
+                                                        <li *ngIf="user.forgot_password_code == 6" (click)="setFollow(user._id,user)" class="c-p"><a >&nbsp;Follow</a></li>
+                                                        <li *ngIf="user.forgot_password_code == 3" (click)="setUnFollow(user._id,user)" class="c-p"><a >&nbsp;UnFollow</a></li>
+                                                        
+                                                    </ul>
+                                                </td>
+                                            </tr>  
+                                            </div>-->
+                                        <div *ngIf=" followings && !followers">
+                                            <tr *ngFor="# user of followings">
+                                                <td width="10%" (click)="getProfileById(user.following_id)">
+                                                    <img *ngIf="user.photo" src="theme/files/ProfilePicture/{{user.photo}}" alt="" />
+                                                    <img *ngIf="!user.photo" src="theme/files/ProfilePicture/no_image.png" alt="" />
+                                                </td>
+                                                <td width="45%" class="member-details">
+                                                    <p (click)="getProfileById(user.following_id)" class="member-name c-p">{{user.name}}</p>
+                                                    <!--<p class="member-points">140 points</p>-->
+                                                    <!--<p class="member-address">lives in united states</p>-->
+                                                </td>
+                                                <td width="45%">
+<!--                                                    <ul class="list-inline">
+                                                        <li *ngIf="user.status==6" (click)="addAsFriend(user._id)" class="c-p"><a ><i class="fa fa-user-plus">&nbsp;</i> Add Friend</a></li>
+                                                        <li *ngIf="user.status==1" (click)="cancelRequestedFriend(user._id,user)" class="c-p"><a><i class="fa fa-user-times" aria-hidden="true"></i>&nbsp;Cancel Friend Request</a></li>
+                                                        <li *ngIf="user.status==2" (click)="acceptFriendRequest(user._id,user)" class="c-p"><a><i class="fa fa-user-plus" aria-hidden="true"></i>&nbsp;Accept Friend Request</a></li>
+                                                        <li *ngIf="user.status==2" (click)="friendRequestReject(user._id,user)" class="c-p"><a><i class="fa fa-user-plus" aria-hidden="true"></i>&nbsp;Reject</a></li>
+                                                        <li *ngIf="user.status==3" (click)="friendRemove(user._id,user)" class="c-p"><a><i class="fa fa-user-plus" aria-hidden="true"></i>&nbsp;UnFriend</a></li>
+                                                  
+                                                        <li *ngIf="user.status !==4" (click)="blockFriend(user._id,user)" class="c-p"><a ><i class="fa fa-ban" aria-hidden="true"></i>&nbsp;Block</a></li>
+                                                        <li *ngIf="user.status == 4" (click)="unblockFriend(user._id,user)" class="c-p"><a ><i class="fa fa-unlock" aria-hidden="true"></i>&nbsp;Unblock</a></li>
+                                                        <li *ngIf="user.forgot_password_code == 6" (click)="setFollow(user._id,user)" class="c-p"><a >&nbsp;Follow</a></li>
+                                                        <li *ngIf="user.forgot_password_code == 3" (click)="setUnFollow(user._id,user)" class="c-p"><a >&nbsp;UnFollow</a></li>
+                                                        
+                                                    </ul>-->
+                                                </td>
+                                            </tr> 
+                                        </div>
+                                        <div *ngIf=" !followings && followers">
+                                            <tr *ngFor="# user of followers">
+                                                <td width="10%" (click)="getProfileById(user.follower_id)">
+                                                    <img *ngIf="user.photo" src="theme/files/ProfilePicture/{{user.photo}}" alt="" />
+                                                    <img *ngIf="!user.photo" src="theme/files/ProfilePicture/no_image.png" alt="" />
+                                                </td>
+                                                <td width="45%" class="member-details">
+                                                    <p (click)="getProfileById(user.follower_id)" class="member-name c-p">{{user.name}}</p>
+                                                    <!--<p class="member-points">140 points</p>-->
+                                                    <!--<p class="member-address">lives in united states</p>-->
+                                                </td>
+                                                <td width="45%">
+<!--                                                    <ul class="list-inline">
+                                                        <li *ngIf="user.status==6" (click)="addAsFriend(user._id)" class="c-p"><a ><i class="fa fa-user-plus">&nbsp;</i> Add Friend</a></li>
+                                                        <li *ngIf="user.status==1" (click)="cancelRequestedFriend(user._id,user)" class="c-p"><a><i class="fa fa-user-times" aria-hidden="true"></i>&nbsp;Cancel Friend Request</a></li>
+                                                        <li *ngIf="user.status==2" (click)="acceptFriendRequest(user._id,user)" class="c-p"><a><i class="fa fa-user-plus" aria-hidden="true"></i>&nbsp;Accept Friend Request</a></li>
+                                                        <li *ngIf="user.status==2" (click)="friendRequestReject(user._id,user)" class="c-p"><a><i class="fa fa-user-plus" aria-hidden="true"></i>&nbsp;Reject</a></li>
+                                                        <li *ngIf="user.status==3" (click)="friendRemove(user._id,user)" class="c-p"><a><i class="fa fa-user-plus" aria-hidden="true"></i>&nbsp;UnFriend</a></li>
+                                                  
+                                                        <li *ngIf="user.status !==4" (click)="blockFriend(user._id,user)" class="c-p"><a ><i class="fa fa-ban" aria-hidden="true"></i>&nbsp;Block</a></li>
+                                                        <li *ngIf="user.status == 4" (click)="unblockFriend(user._id,user)" class="c-p"><a ><i class="fa fa-unlock" aria-hidden="true"></i>&nbsp;Unblock</a></li>
+                                                        <li *ngIf="user.forgot_password_code == 6" (click)="setFollow(user._id,user)" class="c-p"><a >&nbsp;Follow</a></li>
+                                                        <li *ngIf="user.forgot_password_code == 3" (click)="setUnFollow(user._id,user)" class="c-p"><a >&nbsp;UnFollow</a></li>
+                                                        
+                                                    </ul>-->
+                                                </td>
+                                            </tr>   
+                                        </div>
+                                             
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

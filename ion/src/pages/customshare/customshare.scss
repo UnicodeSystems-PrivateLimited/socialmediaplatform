@@ -1,0 +1,44 @@
+page-customshare {
+    .gradient
+    {
+        .header-md::after{background-image: none;}
+    }
+    .content
+    {
+        background-color: #dfdfdf;
+        .scroll-content
+        {
+            background: #dfdfdf;
+            .item{background-color: transparent;}
+        }
+
+        ion-list-header{
+            border-bottom: 1px solid #e0dede !important;
+            background: #f0eced !important;
+        }
+    }
+    .customshare-list{
+        ion-item{
+            h4{ 
+                font-size: 13px;
+                color: #4a4f5c;
+                margin: 0;
+                }
+
+            p{ font-size: 10px;
+                color: #a0a6b4;
+                margin-top: 2px;
+
+                }
+        }
+ion-list-header .item-input ion-input{
+    color: #3a444b;
+}
+
+ion-list-header ion-icon{
+     color: #3a444b;
+}
+        
+    }
+
+}

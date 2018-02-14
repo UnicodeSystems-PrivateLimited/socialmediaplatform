@@ -1,0 +1,177 @@
+<!--
+  Generated template for the MyFriend page.
+
+  See http://ionicframework.com/docs/v2/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+
+<ion-header class="header gradient">
+  <ion-navbar>
+    <!--<button ion-button menuToggle>
+        <ion-icon name="menu"></ion-icon>
+    </button>-->
+    <ion-title>
+      <h1 class="header-title" text-center><span class="header-title" *ngIf="!friendOfFriend">My</span> Friends</h1>
+    </ion-title>
+  </ion-navbar>
+  <!--<ion-toolbar no-border-top *ngIf="!friendOfFriend">
+    <ion-segment [(ngModel)]="tab">
+      <ion-segment-button value="allFriends">
+        <ion-icon name="contacts"></ion-icon> All friends
+      </ion-segment-button>
+      <ion-segment-button value="list">
+        <ion-icon name="people"></ion-icon> Lists
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>-->
+</ion-header>
+
+
+<ion-content>
+  <ion-spinner icon="spiral" *ngIf="loader"></ion-spinner>    
+  <div *ngIf="friendOfFriend">
+    <div *ngIf="friendOfFriend.length > 0">
+      <ion-item text-wrap *ngFor="let friend of friendOfFriend" (click)="getfriendOfFriendProfileById(friend.friend_id)">
+        <ion-avatar item-left>
+          <img *ngIf="friend.photo" src="{{dataService.apiBaseUrl}}public/files/ProfilePicture/{{friend.photo}}">
+          <img *ngIf="!friend.photo" src="{{dataService.apiBaseUrl}}public/files/ProfilePicture/no_image.png">
+        </ion-avatar>
+        <ion-label>
+          <h2>{{ friend.name }}</h2>
+        </ion-label>
+      </ion-item>
+    </div>
+    <div *ngIf="friendOfFriend.length == 0">
+      <ion-item>
+        No Friends found.
+      </ion-item>
+    </div>
+  </div>
+  <div *ngIf="!friendOfFriend">
+    <ion-list>
+      <ion-item class="search-friend" *ngIf="friends && friends.current && friends.current.length > 0">
+        <ion-searchbar ion-text color="white" placeholder="Search Friend" [(ngModel)]="userSearchField.name" (ionInput)="userSearch($event)"></ion-searchbar>
+      </ion-item>
+      <div *ngIf="userSearchList">
+        <div *ngIf="userSearchCount > 0">
+          <ion-item text-wrap *ngFor="let user of userSearchList" (click)="getProfileById(user._id)">
+            <ion-avatar item-left>
+              <img *ngIf="user.photo" src="{{dataService.apiBaseUrl}}public/files/ProfilePicture/{{user.photo}}">
+              <img *ngIf="!user.photo" src="{{dataService.apiBaseUrl}}public/files/ProfilePicture/no_image.png">
+            </ion-avatar>
+            <ion-label>
+              <h2>{{user.fname}}&nbsp;{{user.lname}}</h2>
+            </ion-label>
+          </ion-item>
+        </div>
+        <div *ngIf="userSearchCount == 0">
+          <ion-item text-wrap>
+            No search result found.
+          </ion-item>
+        </div>
+      </div>
+      <!--<div *ngIf="!userSearchList && friends">
+        <div *ngIf="friends.length > 0">
+          <ion-item text-wrap *ngFor="let friend of friends" (click)="getProfileById(friend.friend_id)">
+            <ion-avatar item-left>
+              <img *ngIf="friend.photo" src="{{dataService.apiBaseUrl}}public/files/ProfilePicture/{{friend.photo}}">
+              <img *ngIf="!friend.photo" src="{{dataService.apiBaseUrl}}public/files/ProfilePicture/no_image.png">
+            </ion-avatar>
+            <ion-label>
+              <h2>{{ friend.name }}</h2>
+            </ion-label>
+          </ion-item>
+        </div>
+        <div *ngIf="friends.length == 0">
+          <ion-item>
+            You do not have any Friends.
+          </ion-item>
+        </div>
+      </div>-->
+       <div *ngIf="!userSearchList && friends && friends.current">
+        <div *ngIf="friends.current.length > 0">
+          <ion-item text-wrap *ngFor="let current of friends.current">
+            <ion-avatar item-left (click)="getProfileById(current.friend_id)">
+              <img *ngIf="current.photo" src="{{dataService.apiBaseUrl}}public/files/ProfilePicture/{{current.photo}}">
+              <img *ngIf="!current.photo" src="{{dataService.apiBaseUrl}}public/files/ProfilePicture/no_image.png">
+            </ion-avatar>
+            <h2 (click)="getProfileById(current.friend_id)">{{ current.name }}</h2>
+            <span item-right *ngIf="current.status==3" (click)="gotochat()">
+            <ion-icon name="mail"></ion-icon>            
+            </span>
+            <span item-right *ngIf="current.status==3" (click)="onRemoveClick(current.friend_id,current)">
+				    <i class="fa fa-user-times" color="primary"></i>
+			      </span>
+            <span item-right *ngIf="current.status !==4" (click)="onBlockClick(current.friend_id,current)">
+				    <i class="fa fa-ban" aria-hidden="true" color="dark-blue"></i>
+			      </span>
+            <span item-right *ngIf="current.status ==4" (click)="onUnBlockClick(current.friend_id,current)">
+				    <i class="fa fa-user-plus" aria-hidden="true" color="primary"></i>
+			      </span>
+          </ion-item>
+        </div>
+        <div *ngIf="friends.current.length == 0">
+        <ion-card>
+            <ion-card-content text-wrap>
+          <ion-row>
+            You have not connected with any friends. Click <span class="color-orange" (click)="inviteFriends()">‘Invite Friends’</span> to start developing your circle.
+          </ion-row>
+        </ion-card-content>
+      </ion-card>
+        </div>
+      </div>
+    </ion-list>
+    <!--<ion-list *ngSwitchCase="'list'">
+      <ion-item class="search-list">
+        <ion-searchbar ion-text color="white" [(ngModel)]="listSearchField.title" (ionInput)="listSearch($event)"></ion-searchbar>
+        <button ion-button (click)="CreateListModal()" class="add-list"><ion-icon name="add"></ion-icon></button>
+      </ion-item>
+      <div *ngIf="searchList" class="group-list">
+        <div *ngIf="searchListCount > 0">
+          <ion-item text-wrap *ngFor="let list of searchList">
+            <ion-avatar item-left>
+              <ion-icon name="ios-people"></ion-icon>
+            </ion-avatar>
+            <ion-label>
+              <h2 (click)="listMemberModal(list,list._id)">{{ list.title }}</h2>
+            </ion-label>
+            <span item-right (click)="listEditModal(list,list._id)">
+				    <i class="fa fa-edit"></i>
+			      </span>
+            <span item-right (click)="onDeleteClick(list._id)">
+				    <i class="fa fa-trash-o" aria-hidden="true"></i>
+			      </span>
+          </ion-item>
+        </div>
+        <div *ngIf="searchListCount == 0">
+          <ion-item>
+            No list Found
+          </ion-item>
+        </div>
+      </div>
+      <div *ngIf="!searchList && lists" class="group-list">
+        <div *ngIf="lists.length > 0">
+          <ion-item text-wrap *ngFor="let list of lists">
+            <ion-avatar item-left>
+              <ion-icon name="ios-people"></ion-icon>
+            </ion-avatar>
+            <ion-label>
+              <h2 (click)="listMemberModal(list,list._id)">{{ list.title }}</h2>
+            </ion-label>            
+            <span item-right (click)="listEditModal(list,list._id)">
+				    <i class="fa fa-edit"></i>
+			      </span>
+            <span item-right (click)="onDeleteClick(list._id)">
+				    <i class="fa fa-trash-o" aria-hidden="true"></i>
+			      </span>
+          </ion-item>
+        </div>
+        <div *ngIf="lists.length == 0">
+          <ion-item>
+            No list Found
+          </ion-item>
+        </div>
+      </div>
+    </ion-list>-->
+  </div>
+</ion-content>

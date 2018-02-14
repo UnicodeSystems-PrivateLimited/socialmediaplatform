@@ -1,0 +1,292 @@
+<div class="spin-wrap vision-spin" style="display: none">
+    <div class="sk-folding-cube">
+        <div class="sk-cube1 sk-cube"></div>
+        <div class="sk-cube2 sk-cube"></div>
+        <div class="sk-cube4 sk-cube"></div>
+        <div class="sk-cube3 sk-cube"></div>
+    </div>
+</div>
+<div class="page-loader-section layout-row layout-align-center-center" *ngIf="isLoader">
+    <div class="page-loader pl-dash">Loading...</div>
+</div>
+<div class="custom1-modal-header layout-row layout-align-space-between">
+    <div class="h3 header-title"><i class="fa fa-calendar m-r-10" aria-hidden="true"></i>Events List</div>
+    <div class="header-options layout-row layout-align-end">
+        <div class="modal-option option1 layout-row layout-align-center-center" (click)="openAddEventModel()">
+            <i class="fa fa-plus-square c-green" aria-hidden="true"></i>
+            <span class="btn-title c-p" id="event-modal" data-toggle="modal">Create New</span>
+        </div>
+
+    </div>
+</div>
+<div class="layout-column layout-xs-column layout-align-space-between layout-wrap layout-padding">
+    <div class="flex-48 added-event flex-xs-100 box-wrap-em" *ngFor="let event of events;let i=index">
+        <div>
+            <span *ngIf="loggedUserId==event.created_by._id" class="row-edit-btn r-e-btn" id="updateBtn" data-toggle="modal" (click)="updateId(event)"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></span>
+            <span *ngIf="loggedUserId==event.created_by._id" class="row-edit-btn r-e-btn del" data-toggle="modal" (click)="deleteModel(event._id)"><i class="fa fa-trash" aria-hidden="true"></i></span>
+            <div class="event-grp layout-row">
+                <div class="eventimage flex-45" *ngIf="event.icon">
+                    <img alt="" src="public/files/Groupevents/{{event.icon}}">
+                </div>
+                <div class="eventimage c-p flex-45" *ngIf="!event.icon" [routerLink]="['EventWallComponent',{eventId:event._id}]">
+                    <img alt="" src="public/files/ProfilePicture/{{event.created_by.photo}}">
+                </div>
+                <div class="layout-column event-detl c-p flex-45">
+                    <div class="evnet-headind comment-by-post" (click)="getProfileById(event.created_by._id)">
+                        <img *ngIf="event.created_by.photo" src="public/files/ProfilePicture/{{event.created_by.photo}}" style="height:42px ;width: 42px">
+                        <img *ngIf="!event.created_by.photo" src="public/files/ProfilePicture/no_image.png" style="height:42px ;width: 42px">
+                        <span class="span-head-user" *ngIf="event.created_by.fname">Posted by:&nbsp;<span class="comment-by-post">{{event.created_by.fname+' '+event.created_by.lname}}</span></span>
+                    </div>
+                    <div class="evnet-headind row-edit-btn r-e-btn join-btn-event" *ngIf="event.privacy==1 && event.created_by._id!=loggedUserId">
+                        <button *ngIf="!checkJoinUnjoin(event.members)" class="jj" (click)="joinMember(event._id,i)">Join</button>
+                        <button *ngIf="checkJoinUnjoin(event.members)" (click)="LeaveMember(event._id,i)">Leave</button>
+                    </div>
+                    <div class="evnet-headind" [routerLink]="['EventWallComponent',{eventId:event._id}]">
+                        <span *ngIf="event.title">{{event.title}}</span>
+                    </div>
+                    <div class="evnet-timing">
+                        <span *ngIf="event.privacy==2">Private /</span>
+                        <span *ngIf="event.privacy==1">Public / Event </span>
+                    </div>
+                    <div class="evnet-timing">
+                        <span *ngIf="event.event_date_from">Event Date:&nbsp;{{event.event_date_from | date:'shortDate'}}</span>                        to <span>{{event.event_date_to | date:'shortDate'}}</span>
+                    </div>
+                    <div class="evnet-location evnet-timing">
+                        <span *ngIf="event.location">Location:&nbsp;{{event.location}}</span>
+                    </div>
+                    <div class="evnet-describtn word-break">
+                        <span *ngIf="event.description">{{event.description | slice:0:sliceDescription[i]}}</span><br>
+                        <span *ngIf="isDescription[i]=='true'" (click)="viewMoreDescription(i)"><b>View More</b></span>
+                        <span *ngIf="isDescription[i]=='false'" (click)="viewLessDescription(i)"><b>View Less</b></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="no-g-e-block" *ngIf="events == ''">
+        <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
+        <span>No Event Created</span>
+    </div>
+</div>
+<div class="modal fade " id="eventModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeEventModel()"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Add Event</h4>
+            </div>
+
+            <div class="modal-body setting-page flex-100 layout-row">
+                <div class="modal-body layout-column flex-100">
+                    <div class="form-group">
+                        <label for="albumTitle">Event Name</label>
+                        <input type="text" [(ngModel)]="addEditEvent.title" class="form-control" placeholder="Event Name" name="eventName" id="eventName"
+                            required="required">
+                        <span style="color: red">{{errorEventMessage.errorTitle}}</span>
+                    </div>
+                    <div class="form-group ">
+                        <label for="albumTitle">Event Tag Line</label>
+                        <input type="text" [(ngModel)]="addEditEvent.tagline" class="form-control" placeholder="Event Tag Line" name="eventTagLine"
+                            id="eventTagLine" required="required">
+                        <span style="color: red">{{errorEventMessage.errorTagline}}</span>
+                    </div>
+                    <div class="form-group ">
+                        <label for="description" class="font-12px">Event Description</label>
+                        <textarea class="form-control " [(ngModel)]="addEditEvent.description" placeholder="write something..." name="eventDescription"></textarea>
+                        <span style="color: red">{{errorEventMessage.errorDescription}}</span>
+                    </div>
+
+                    <div class="form-group ">
+                        <label for="albumTitle">Enter Location</label>
+
+                        <input type="text" [(ngModel)]="addEditEvent.location" id="eventStartDate" name="eventStartDate" placeholder="Location" class="form-control">
+                        <span style="color: red">{{errorEventMessage. errorLocation}}</span>
+                    </div>
+                    <div class="layout-row layout-align-space-between">
+                        <div class="form-group flex-48">
+                            <label for="albumTitle">Start Date</label>
+                            <input id='scheduleDate1' class="form-control " name="sub-date-from-0" placeholder="Select Start Date" type="text">
+                        </div>
+                        <div class="bootstrap-timepicker flex-48">
+                            <div class="form-group">
+                                <label>Start Time</label>
+                                <input id='scheduleTime1' type="text" class="form-control timepicker">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layout-row layout-align-space-between">
+                        <div class="form-group  flex-48">
+                            <label for="albumTitle">End Date</label>
+
+                            <input id='scheduleDate2' class="form-control " name="sub-date-from-0" placeholder="Select End Date" type="text">
+                        </div>
+                        <div class="bootstrap-timepicker  flex-48">
+                            <div class="form-group">
+                                <label>End Time</label>
+                                <input id='scheduleTime2' type="text" class="form-control timepicker">
+                            </div>
+                        </div>
+                    </div>
+                    <span style="color: red" *ngIf="errorEventMessage. errorDate!=''">{{errorEventMessage. errorDate}}</span>
+                    <span style="color: red" *ngIf="errorEventMessage.errorToDate!=''">{{errorEventMessage. errorToDate}}</span>
+                    <span style="color: red" *ngIf="errorEventMessage.errorFromDate!=''">{{errorEventMessage. errorFromDate}}</span>
+                    <div class="layout-row layout-align-space-between">
+                        <div class="">
+                            <label>Privacy</label>
+                        </div>
+                    </div>
+                    <div class="layout-row layout-align-space-between">
+                        <div class="form-group">
+                            <label><input type="radio" name="addPrivacy" value="1" [checked]="true" (change)="onSelectionChange(1)"><i class="fa fa-globe m-l-10" aria-hidden="true"></i> Public </label><br>
+                            <span class="m-l-20">Anyone can see the group, members and their posts.</span>
+                        </div>
+                    </div>
+                    <div class="layout-row layout-align-space-between">
+                        <div class="form-group">
+                            <label> <input type="radio" name="addPrivacy" value="2" (change)="onSelectionChange(2)"><i class="fa fa-lock m-l-10" aria-hidden="true"></i> Private </label><br>
+                            <span class="m-l-20">Only invited members can join, search and see posts of the group.</span>
+                        </div>
+                    </div>
+                    <div class="">
+                        <div class="layout-column uplod-pic">
+                            <div class="layout-row">
+                                <!--<div class="upload-area flex-60 layout-align-start-center layout-row">-->
+                                    <!--<input id="exampleInputFile" type="file" data-buttonText="Your label here." id="img_upload" (change)="photoChangeEvent($event)"
+                                        accept="image/*" placeholder="choose image">-->
+                                       <thumbnail-file-reader (delete)="deleteThumbnail($event)" [btnText]="'Upload Image'" [defaultPicture]="thumbnail" (complete)="photoChangeEvent($event)"></thumbnail-file-reader>
+                                <!--</div>-->
+                                <span style="color: red" *ngIf="errorEventMessage && errorEventMessage.errorIcon!=null">{{errorEventMessage.errorIcon}}</span>
+                            </div>
+                            <span class="p-5 text-muted"> Note : Upload only jpg/png/gif/tif files.</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button class="add-btn cancel-btn" data-dismiss="modal" (click)="closeEventModel()">Cancel</button>
+                <button class="add-btn" (click)="createEvent()">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade modal-align-fix " id="eventDeleteModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body setting-page flex-100 layout-row">
+                <div class="modal-body layout-column flex-100 ">
+                    <div class="modal-body">
+
+                        <div class="upload-area flex-60 layout-align-start-center layout-row">
+                            <h4>Are you sure you want to delete this Event?</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="add-btn cancel-btn" data-dismiss="modal">Cancel</button>
+                <button class="add-btn" data-dismiss="modal" (click)="deleteEvent()">Yes</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade " id="eventEditModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeEventModel()"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Edit Event</h4>
+            </div>
+            <div class="modal-body setting-page flex-100 layout-row">
+                <div class="modal-body layout-column flex-100">
+                    <div class="form-group">
+                        <label for="albumTitle">Event Name</label>
+                        <input type="text" [(ngModel)]="addEditEvent.title" class="form-control" placeholder="Event Name" name="eventName" id="eventName"
+                            required="required">
+                        <span style="color: red">{{errorEventMessage.errorTitle}}</span>
+                    </div>
+                    <div class="form-group ">
+                        <label for="albumTitle">Event Tag Line</label>
+                        <input type="text" [(ngModel)]="addEditEvent.tagline" class="form-control" placeholder="Event Tag Line" name="eventTagLine"
+                            id="eventTagLine" required="required">
+                        <span style="color: red">{{errorEventMessage.errorTagline}}</span>
+                    </div>
+                    <div class="form-group ">
+                        <label for="description" class="font-12px">Event Description</label>
+                        <textarea class="form-control " [(ngModel)]="addEditEvent.description" placeholder="write something..." name="eventDescription"></textarea>
+                        <span style="color: red">{{errorEventMessage.errorDescription}}</span>
+                    </div>
+
+                    <div class="form-group ">
+                        <label for="albumTitle">Enter Location</label>
+
+                        <input type="text" [(ngModel)]="addEditEvent.location" id="eventStartDate" name="eventStartDate" placeholder="Location" class="form-control">
+                        <span style="color: red">{{errorEventMessage. errorLocation}}</span>
+                    </div>
+                    <div class="layout-row layout-align-space-between">
+                        <div class="form-group flex-48">
+                            <label for="albumTitle">Start Date</label>
+
+                            <input id='scheduleDate3' class="form-control " name="sub-date-from-0" placeholder="Select Start Date" type="text">
+                        </div>
+                        <div class="bootstrap-timepicker  flex-48">
+                            <div class="form-group">
+                                <label>Start Time</label>
+                                <input id='scheduleTime3' type="text" class="form-control timepicker">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layout-row layout-align-space-between">
+                        <div class="form-group  flex-48">
+                            <label for="albumTitle">End Date</label>
+                            <input id='scheduleDate4' class="form-control " name="sub-date-from-0" placeholder="Select End Date" type="text">
+                        </div>
+                        <div class="bootstrap-timepicker  flex-48">
+                            <div class="form-group">
+                                <label>End Time</label>
+                                <input id='scheduleTime4' type="text" class="form-control timepicker">
+                            </div>
+                        </div>
+                    </div>
+                    <span style="color: red" *ngIf="errorEventMessage. errorDate!=''">{{errorEventMessage. errorDate}}</span>
+                    <span style="color: red" *ngIf="errorEventMessage.errorToDate!=''">{{errorEventMessage. errorToDate}}</span>
+                    <div class="layout-row layout-align-space-between">
+                        <div class="form-group">
+                            <label>Privacy</label>
+                        </div>
+                    </div>
+                    <div class="layout-row layout-align-space-between">
+                        <div class="form-group">
+                            <label><input type="radio" name="privacy" value="1" [checked]="privacyType==1" (change)="onSelectionChange(1)"><i class="fa fa-globe m-l-10" aria-hidden="true"></i> Public </label><br>
+                            <span class="m-l-20">Anyone can see the group, members and their posts.</span>
+                        </div>
+                    </div>
+                    <div class="layout-row layout-align-space-between">
+                        <div class="form-group">
+                            <label> <input type="radio" name="privacy" value="2"  [checked]="privacyType==2" (change)="onSelectionChange(2)"><i class="fa fa-lock m-l-10" aria-hidden="true"></i> Private </label><br>
+                            <span class="m-l-20">Only invited members can join, search and see posts of the group.</span>
+                        </div>
+                    </div>
+                    <div class="modal-body">
+                        <div class="layout-column uplod-pic">
+                            <div class="layout-row">
+                                <!--<div class="upload-area flex-60 layout-align-start-center layout-row">
+                                    <input id="exampleInputFile" type="file" data-buttonText="Your label here." id="img_upload" (change)="photoChangeEvent($event)"
+                                        accept="image/*" placeholder="choose image">
+                                </div>-->
+                                <thumbnail-file-reader [btnText]="'Upload Image'" [defaultPicture]="thumbnail" (complete)="photoChangeEvent($event)"></thumbnail-file-reader>
+                                
+                                <span style="color: red" *ngIf="errorEventMessage && errorEventMessage.errorIcon!=null">{{errorEventMessage.errorIcon}}</span>
+                            </div>
+                            <span class="p-5 text-muted"> Note : Upload only jpg/png/gif/tif files.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="add-btn cancel-btn" data-dismiss="modal" (click)="closeEventModel()">Cancel</button>
+                <button class="add-btn" (click)="updateEvent()">Save</button>
+            </div>
+        </div>
+    </div>
+</div>

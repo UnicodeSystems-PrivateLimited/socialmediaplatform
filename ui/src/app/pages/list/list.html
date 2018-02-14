@@ -1,0 +1,120 @@
+<div class="spin-wrap vision-spin" style="display: none">
+    <div class="sk-folding-cube">
+        <div class="sk-cube1 sk-cube"></div>
+        <div class="sk-cube2 sk-cube"></div>
+        <div class="sk-cube4 sk-cube"></div>
+        <div class="sk-cube3 sk-cube"></div>
+    </div>
+</div>
+<div class="page-loader-section layout-row layout-align-center-center" *ngIf="showLoader">
+    <div class="page-loader pl-dash">Loading...</div>
+</div>
+<section *ngIf="!showLoader">
+    <div class="custom1-modal-header layout-row layout-align-space-between">
+        <div class="h3 header-title">
+            <i class="fa fa-users m-r-10" aria-hidden="true"></i>Lists
+        </div>
+        <div class="header-options layout-row layout-align-end">
+            <!-- <div class="modal-option option1 layout-row layout-align-center-center join-btn-event">
+                <i class="fa fa-trash" aria-hidden="true"></i>
+            </div> -->
+            <div class=" option1 layout-row layout-align-center-center">
+                <!-- <i class="fa fa-plus-square c-green" aria-hidden="true"></i> -->
+                <button class="btn-title c-p btn add-new-member" (click)="openAddNewListModal()"><i class="fa fa-plus-circle"></i> Add New List</button>
+            </div>
+        </div>
+    </div>
+    <!-- Searching-->
+    <div class="m-l-20 m-r-20 Searchbox-wrapper">
+        <div class="box box-warning search-box-fx modal-border-box ">
+            <div class="box-header lists-search-box">
+                <div class="c-p  input-left-icon">
+                    <span class="search-icon fa fa-search"></span>
+                    <input type="text" [(ngModel)]="searchTitle" placeholder="Search..." />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--Searching end -->
+    <!--group listing-->
+    <div (window:scroll)="onScrollList($event)" class="layout-column  layout-align-space-between layout-wrap layout-padding"
+        *ngIf="addedList.length">
+        <div class="lists-member-section">
+            <div class="lists-member box-wrap-em" *ngFor="let list of (addedList|listNameFilterPipe:searchTitle:1);let i=index">
+                <div class="layout-row layout-wrap layout-align-start-center">
+                    <div class="lists-img-with-title layout-row layout-wrap flex-85 layout-align-start-center">
+                        <span class="lists-img"><img src="public/files/logo/list-icon.png"></span>
+                        <span (click)="goToListMember(list._id)" class="lists-title m-l-10 c-p">{{list.title}}</span>
+                    </div>
+                    <div class="lists-edit-del layout-row layout-wrap layout-align-end flex-15">
+                        <span *ngIf="list.members.length" class="lists-member">{{list.members.length}}</span>
+                        <span class="c-p lists-edit m-l-10" (click)="onClickEdit(list)"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></span>
+                        <span class="c-p lists-del m-l-10" (click)="onClickDelete(list._id)"><i class="fa fa-trash" aria-hidden="true"></i></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="no-g-e-block layout-row layout-align-start-center" *ngIf="!addedList.length">
+        <div class=""><i class="fa fa-exclamation-circle" aria-hidden="true"></i></div>
+        <div class="layout-row layout-wrap"><span>No List have been created.</span>
+            <span>&nbsp;Be the first one to create a list. You can start by clicking Add New List. Thanks.</span>
+        </div>
+    </div>
+    <div class="spinner-lazy-block" *ngIf="showScrollLoader">
+        <div class="spinner-lazy">
+            <div class="bounce1"></div>
+            <div class="bounce2"></div>
+            <div class="bounce3"></div>
+        </div>
+    </div>
+</section>
+<div class="modal fade modal-align-fix " id="addListModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeAddList()"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">{{isAdd?'Add New List':'Edit List'}}</h4>
+            </div>
+            <div class="modal-body group-modal-page setting-page flex-100 layout-row">
+                <div class="modal-body layout-column flex-100 ">
+                    <div class="form-group add-list-name layout-column">
+                        <label for="albumTitle" class="m-b-10">List Name</label>
+                    <div class="box-header lists-search-box">
+                        <div class="c-p  input-left-icon">
+                               
+                            <input type="text" class="form-control" [(ngModel)]="listTitle" placeholder="Enter Name" name="groupName" id="groupName"
+                            required="required">
+                        </div>
+                    </div>
+                        <span class="error_file_message">{{listTitleError}}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="add-btn cancel-btn" data-dismiss="modal" (click)="closeAddList()">Cancel</button>
+                <button class="add-btn" (click)="createAddList()">{{isAdd?'Save':'Update'}}</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade modal-align-fix " id="listDeleteModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body setting-page flex-100 layout-row">
+                <div class="modal-body layout-column flex-100 ">
+                    <div class="modal-body">
+                        <div class="upload-area flex-60 layout-align-start-center layout-row">
+                            <h4>Are you sure you want to delete this List?</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="add-btn cancel-btn" data-dismiss="modal">Cancel</button>
+                <button class="add-btn" data-dismiss="modal" (click)="deleteList()">Yes</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,69 @@
+page-contact {
+   background:  rgba(204, 204, 204, 0.21);
+    .toolbar-background-ios{border:none;}
+    .header {
+        &::after {
+            background-image: none;            
+            height: 0;
+        }
+        .header-title {
+            margin: 0;
+        }
+        .toolbar {
+            min-height: 54px;
+        }
+    }
+    .card{
+        background: #fff;
+        border-radius: 3px;
+        margin-top: 40px;
+        &.contact-form{
+            margin-top:10px 
+        }
+        &.address-location{
+            text-align: center;
+        }
+
+        .card-content{
+            textarea{width: 100%; border:none;  font-size: 14px;}
+            .text-input{font-size: 15px;}
+            .button{ height: 36px; padding: 8px 3rem; font-size: 1.4rem;}
+            .label.contact-deatil{font-size: 1.4rem;  padding-left: 18px;}
+            .item-block{
+                margin-bottom: .6rem;
+                .item-inner{
+                    border-bottom: 1px solid rgba(222, 222, 222, 0.80);
+
+                    .ion-label{
+                        padding-left: 0;
+                    }
+                }
+                &.no-border{
+                    .item-inner{
+                        border-bottom: none;
+                    }
+                }
+            }  
+            .text-orange{color: #f3843e;}
+        }
+
+         .map-wrap.fix-map {
+         height: 36vh;
+         position: relative;
+         top: 0px;
+
+        #map {
+            width: 100%;
+            height:36vh;
+        }
+
+    }
+  
+   
+    }
+   
+     .contact-detail{
+        font-size: 1.8rem;
+        margin: 30px 10px 6px 10px;
+     }
+}

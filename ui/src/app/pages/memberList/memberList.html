@@ -1,0 +1,137 @@
+<div class="member-list-updates">
+    <div class="setting-page setting-page-wrap">
+        <div class="custom1-modal-header layout-row layout-align-space-between m-b-10">
+            <div class="h3 header-title">Member List</div>
+        </div>
+    </div>
+    <div class="page-loader-section layout-row layout-align-center-center" *ngIf="showLoader">
+        <div class="page-loader">Loading...</div>
+    </div>
+    <section *ngIf="!showLoader">
+        <div class="tab-content">
+            <div class="nav-tabs-custom ">
+                <div class="layout-row layout-align-space-between">
+                    <ul class="nav nav-tabs  layout-row flex-100 flex-xs-100">
+                        <li [class.actives]="tAll" (click)="onTabclick(1)">
+                            <a data-toggle="tab" href="#All" class="layout-row layout-align-center-center flex-layout">
+                        <span> Friends</span>
+                    </a>
+                        </li>
+                        <li [class.actives]="tPending" (click)="onTabclick(2)">
+                            <a data-toggle="tab" href="#Pending" class="layout-row layout-align-center-center flex-layout">
+                        <span>Friends Request Received</span>
+                    </a>
+                        </li>
+                        <li [class.actives]="tMembers" (click)="onTabclick(3)">
+                            <a data-toggle="tab" href="#tMembers" class="layout-row layout-align-center-center flex-layout">
+                        <span> Members</span>
+                    </a>
+                        </li>
+                    </ul>
+                    <div class="flex-30" style="position:relative;">
+                        <form class="navbar-form navbar-left" role="search">
+                            <div class="form-group nav-search input-left-icon layout-align-center-center layout-row">
+                                <span class="fa fa-search">&nbsp;</span>
+                                <input [(ngModel)]="memberSearch" type="text" class="form-control hello" id="navbar-search-input" placeholder="Search here"
+                                    autocomplete="off">
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+            <div class=" tab-pane active " id="All" [class.showtab]="tAll" [class.hidetab]="!tAll">
+                <div class="hide-xs memlist-frnd-management">
+                    <ul class="message-ul layout-row layout-wrap layout-align-space-between" *ngIf="friends && !currentFriendTab">
+                        <li class="layout-row flex-100 layout-align-space-between-center m-t-10 frnd-mangment" *ngFor="let friend of (friends.current| memberFilterPipe:memberSearch:1)">
+                            <div class="flex-80 mail layout-align-start-center layout-row c-p"><a (click)="getProfileById(friend.friend_id)"><span *ngIf="friend.photo"><img src="public/files/ProfilePicture/{{friend.photo}}" alt="User Image" style="width: 50px"></span><span *ngIf="!friend.photo"><img src="public/files/ProfilePicture/no_image.png" alt="User Image" style="width: 50px"></span><span>{{friend.name }} </span></a></div>
+                            <div class="flex-10 layout-align-center-center layout-row c-p unfollow-frnd" *ngIf="friend.status==3" (click)="friendRemove(friend.friend_id,friend)"><i class="fa fa-user-plus" aria-hidden="true"></i>&nbsp;UnFriend</div>
+                            <div class="flex-10 layout-align-center-center layout-row c-p unblock-frnd" *ngIf="friend.status == 4" (click)="unblockFriend(friend.friend_id,friend)"><i class="fa fa-unlock" aria-hidden="true"></i>&nbsp;Unblock</div>
+                            <div class="flex-10 layout-align-center-center layout-row c-p unblock-frnd" *ngIf="friend.status !==4" (click)="blockFriend(friend.friend_id,friend)"><i class="fa fa-ban" aria-hidden="true"></i>&nbsp;Block</div>
+                        </li>
+                    </ul>
+                    <div class="member-list-zerodata" *ngIf="currentFriendTab">
+                        <span>No friends found click here to <a class="c-p" (click)="inviteFriends()">Invite Friends</a></span>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane " id="Pending" [class.showtab]="tPending" [class.hidetab]="!tPending">
+                <div class="hide-xs">
+                    <ul class="message-ul layout-row layout-wrap layout-align-space-between" *ngIf="friends && !pendingFriendTab">
+                        <li class="layout-row flex-60 layout-align-start-center m-t-10 frnd-mangment" *ngFor="let friend of (friends.pending| memberFilterPipe:memberSearch:1)">
+                            <div class="flex-40 mail layout-align-start-center layout-row c-p">
+                                <a (click)="getProfileById(friend.friend_id)">
+                            <span *ngIf="friend.photo">
+                            <img src="public/files/ProfilePicture/{{friend.photo}}" alt="User Image" style="width: 50px">
+                            </span>
+                            <span *ngIf="!friend.photo">
+                            <img src="public/files/ProfilePicture/no_image.png" alt="User Image" style="width: 50px">
+                            </span>
+                            <span>{{friend.name }} </span>
+                        </a>
+                            </div>
+                            <div class="flex-20 layout-align-center-center layout-row" *ngIf="friend.status==2" (click)="acceptFriendRequest(friend.friend_id,friend)"><button class="btn-invi btn-success">Accept Request</button></div>
+                            <div class="flex-20 layout-align-center-center layout-row" *ngIf="friend.status==2" (click)="friendRequestReject(friend.friend_id,friend)"><button class="btn-invi btn-reject">Reject Request</button></div>
+                        </li>
+                    </ul>
+                    <div class="member-list-zerodata" *ngIf="pendingFriendTab">
+                        <span>No friends found click here to <a class="c-p" (click)="inviteFriends()">Invite Friends</a></span>
+                    </div>
+                </div>
+
+            </div>
+            <div class="tab-pane " id="Members" [class.showtab]="tMembers" [class.hidetab]="!tMembers">
+                <div  class="layout-row flex-100 layout-align-space-between-center m-b-10 filter-with-dropdown">
+                <h4 class="filter-wrap layout-align-start"><i class="fa fa-filter" aria-hidden="true"></i> &nbsp;Filter By:</h4>
+                <div class="tab-pane active layout-align-end choose-category" id="choose_category">
+                    <div class="dropdown">
+                        <button class="btn cat-btn dropdown-toggle" type="button" data-toggle="dropdown">
+                                          {{showMemberDropDown[selectedMemberType-1].label}} &nbsp;<span class="caret">&nbsp;</span>
+                                      </button>
+                        <ul class="dropdown-menu">
+                            <li *ngFor="let dp of showMemberDropDown;" [class.active]="selectedMemberType== dp.value">
+                                <a (click)="onChangeMember(dp)">{{dp.label}}</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                </div> 
+                <div class="hide-xs" (window:scroll)="onScroll($event)">
+                    <ul class="message-ul layout-row layout-wrap layout-align-space-between" *ngIf="members">
+                        <li class="layout-row flex-100 layout-align-start-center m-t-10 frnd-mangment" *ngFor="let member of (members | memberFilterPipe:memberSearch:2) ;let i = index">
+                            <div class="flex-75 mail layout-align-start-center layout-row c-p">
+                                <a (click)="getProfileById(member._id)">
+                            <span *ngIf="member.photo">
+                            <img src="public/files/ProfilePicture/{{member.photo}}" alt="User Image" style="width: 50px">
+                            </span>
+                            <span *ngIf="!member.photo">
+                            <img src="public/files/ProfilePicture/no_image.png" alt="User Image" style="width: 50px">
+                            </span>
+                            <span *ngIf="member.fname">{{member.fname}} </span> <span *ngIf="member.lname">{{ member.lname }} </span>
+                        </a>
+                            </div>
+                            <div class="flex-15 layout-align-center-center layout-row" *ngIf="member.status==6" (click)="addAsFriend(member._id,member,i)"><button class="btn-invi btn-success">Add as friend</button></div>
+                            <!--<div class="flex-20 layout-align-center-center layout-row" *ngIf="member.status==1" (click)="cancelRequestedFriend(member._id,member)"><button class="btn-invi btn-reject">Cancel Request</button></div>-->
+                            <div class="flex-10 layout-align-center-center layout-row">
+                                <button *ngIf="member.followingStatus == 6" (click)="setFollow(member,member._id)" type="button" class="btn-invi bg-orange btn-flat">Follow</button>
+                                <button *ngIf="member.followingStatus == 3" (click)="setUnFollow(member,member._id)" type="button" class="btn-invi bg-orange btn-flat">UnFollow</button>
+                            </div>
+
+                        </li>
+                    </ul>
+                    <div class="member-list-zerodata" *ngIf="!members.length">
+                        <span>No members found. </span>
+                    </div>
+                </div>
+               
+                <div class="page-loader-section layout-row layout-align-center-center" *ngIf="loader">
+                    <div class="page-loader ">Loading...</div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<!-- invite friends model  -->
+<div class="modal fade modal-align-fix dialog-like-wrapper " id="inviteFriendsModel1">
+    <invite-friends-model *ngIf="showinviteFriendsModel" [pageData]="page" (complete)="oninviteFriendsModelClose($event)"></invite-friends-model>
+</div>

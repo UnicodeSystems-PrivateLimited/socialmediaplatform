@@ -1,0 +1,48 @@
+page-add-group-chat-member-modal {
+    .header {
+        &:after {
+            background: none;
+        }
+        .toolbar {
+            align-items: flex-end;
+            -webkit-align-items: flex-end;
+            -ms-flex-align: flex-end;
+        }
+        .header-title {
+            margin: 8px 0;
+        }
+    }
+    .content {
+        .search-friend {
+            background-color: #f0eced !important;
+            position: relative;
+            border-bottom: 1px solid #c0c0c0;
+            box-shadow: 0 0 1px #d5d5d5;
+            .item-inner {
+                border: none;
+            }
+            .label {
+                margin: 0;
+            }
+            .searchbar {
+                padding: 0;
+                .searchbar-input-container {
+                    .searchbar-input {
+                        background-color: transparent;
+                        box-shadow: none;
+                        padding: 6px 30px;
+                    }
+                    .searchbar-search-icon{
+                        left:0;
+                    }
+                }
+            }
+        }
+        .add-btn {
+            .button {
+                width: 95%;
+                margin: 0
+            }
+        }
+    }
+}

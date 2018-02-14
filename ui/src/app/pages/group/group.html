@@ -1,0 +1,340 @@
+<div class="spin-wrap vision-spin" style="display: none">
+    <div class="sk-folding-cube">
+        <div class="sk-cube1 sk-cube"></div>
+        <div class="sk-cube2 sk-cube"></div>
+        <div class="sk-cube4 sk-cube"></div>
+        <div class="sk-cube3 sk-cube"></div>
+    </div>
+</div>
+<div class="page-loader-section layout-row layout-align-center-center" *ngIf="showLoader">
+    <div class="page-loader pl-dash">Loading...</div>
+</div>
+<section *ngIf="!showLoader">
+<div class="custom1-modal-header layout-row layout-align-space-between" >
+    <div *ngIf="!wallType || !scdId" class="h3 header-title"><i class="fa fa-users m-r-10" aria-hidden="true"></i>Groups in All Subjects/College/Degree</div>
+    <div *ngIf="wallType && scdId" class="h3 header-title">
+        <i class="fa fa-users m-r-10" aria-hidden="true"></i>Groups in 
+        <span *ngIf="pageService.wall_type != 'Group'">{{pageService.walldetails.name}}</span>
+        <span *ngIf="pageService.wall_type == 'Group'">
+            <span *ngIf="pageService.walldetails.subject_id">{{pageService.walldetails.subject_id.name}}</span>
+            <span *ngIf="pageService.walldetails.college_id">{{pageService.walldetails.college_id.name}}</span>
+            <span *ngIf="pageService.walldetails.degree_id">{{pageService.walldetails.degree_id.name}}</span>
+        </span>
+    </div>
+    <div class="header-options layout-row layout-align-end">
+        <div class="modal-option option1 layout-row layout-align-center-center join-btn-event">            
+            <button class="jj" (click)="gotoGroupInvitationPage()">Group Invites</button>
+        </div>
+        <div class="modal-option option1 layout-row layout-align-center-center">
+            <i class="fa fa-plus-square c-green" aria-hidden="true"></i>
+            <span class="btn-title c-p" (click)="openAddGroupModal()">Create New</span>
+        </div>
+    </div>
+</div>
+<!-- Searching-->
+<div class="m-l-20 m-r-20" *ngIf="groupsList.length || searchActive">
+    <div class="box box-warning search-box-fx modal-border-box">
+        <div class="box-header">
+            <div class="c-p" (click)="closeSearchBox()"><i class="fa fa-search"></i> <span>Search & Sort Filters</span></div>
+            <div class="box-tools pull-right">
+                <button class="btn btn-box-tool" id="toggleSearch" (click)="closeSearchBox()">  <i id="changeClass" class="fa fa-plus"></i></button>
+            </div>
+        </div>
+
+        <div class="box-body padding-0" id="togglingSearch" style="display:none">
+            <div class="layout-column pad-5-10 m-t-10">
+                <div class="form-group">
+                    <input type="text" [(ngModel)]="groupSearch.title" class="form-control layout-column flex-31" placeholder="Title">
+
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control layout-column flex-31" (keyup)="userSearch($event)" (focus)="userSearch($event)" placeholder="Search by Member..."
+                        [(ngModel)]="searchMember.name">
+                    <div *ngIf="searchedMemeberList.length" class="search-list">
+                        <ul class="global-search-list">
+                            <li class="layout-row layout-align-space-between search-li" *ngFor="let member of searchedMemeberList">
+                                <div class="" (click)="selectUser(member)">
+                                    <img *ngIf="member.photo" src="{{public/files/ProfilePicture/member.photo}}" style="width:50px; height:50px;" />
+                                    <img *ngIf="!member.photo" src="public/files/ProfilePicture/no_image.png" style="width:50px; height:50px;" />
+                                    <span> {{member.fname}}&nbsp;<span *ngIf="member.lname">{{member.lname}}</span></span>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="layout-row layout-align-start-center">
+                    <div class="search-wrap-cat layout-row layout-align-start-center m-r-20">
+                        <div class="dropdown">
+                            <button class="btn cat-btn dropdown-toggle" type="button" data-toggle="dropdown">
+                      <span *ngIf="groupValue"> {{groupValue==1?'My Created and Joined Groups':groupValue==2?'My Created Groups':groupValue==3?'My Private Joined':groupValue==4?'My Public Joined':groupValue==5?'All Public Groups':'My Left Groups'}}</span> &nbsp;<span class="caret">&nbsp;</span>
+                       </button>
+                            <ul class="dropdown-menu">
+                                <li *ngFor="let groupType of selectGroupType;let i=index;" [class.active]="groupType.value==groupValue">
+                                    <a (click)="onSelectingGroupType(groupType)">{{groupType.label}}</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="search-wrap-cat layout-row layout-align-start-center m-r-20">
+                        <div class="dropdown sort-order">
+                            <button class="btn cat-btn dropdown-toggle" type="button" data-toggle="dropdown">
+                      <span *ngIf="sortValue"> {{sortValue==1?'Sort By':sortValue==2?'Latest Posts':sortValue==3?'Group Names':'Latest Created Groups'}}</span> &nbsp;<span class="caret">&nbsp;</span>
+                       </button>
+                            <ul class="dropdown-menu">
+                                <li *ngFor="let sortType of selectSortType;let i=index;" [class.active]="sortType.value==sortValue">
+                                    <a (click)="onSelectingSortType(sortType)">{{sortType.label}}</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="search-wrap-cat layout-row layout-align-start-center">
+                        <div class="dropdown sort-order">
+                            <button class="btn cat-btn dropdown-toggle" type="button" data-toggle="dropdown">
+                      <span *ngIf="sortOrder"> {{sortOrder==1?'Sort Order':sortOrder==2?'Ascending':'Descending'}}</span> &nbsp;<span class="caret">&nbsp;</span>
+                       </button>
+                            <ul class="dropdown-menu">
+                                <li *ngFor="let order of selectSortOrder;let i=index;" [class.active]="order.value==sortOrder">
+                                    <a (click)="onSelectingSortOrder(order)">{{order.label}}</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="search-flter-detail-container" *ngIf="searchClick">
+                    <label>Search By :-</label>
+                    <ul class="search-flter-detail">
+                        <li *ngIf="groupSearch.title"> Title <span >{{groupSearch.title}}</span></li>
+                        <li *ngIf="searchMember.name"> Member <span >{{searchMember.name}}</span></li>
+                        <li *ngIf="groupValue"> Group Type <span >{{groupValue==1?'My Created and Joined Groups':groupValue==2?'My Created Groups':groupValue==3?'My Private Joined':groupValue==4?'My Public Joined':groupValue==5?'All Public Groups':'My Left Groups'}}</span></li>
+                        <li *ngIf="sortValue && sortValue != 1"> Sort By <span >{{sortValue==1?' ':sortValue==2?'Latest Posts':sortValue==3?'Group Names':'Latest Created Groups'}}</span></li>
+                        <li  *ngIf="sortOrder && sortOrder != 1"> Sort Order <span>{{sortOrder==1?' ':sortOrder==2?'Ascending':'Descending'}}</span></li>
+                    </ul>
+                </div>
+                <div class="layout-row layout-align-end">
+                    <button class="btn-wrap ser"  (click)="onClickSearch()">Search</button>
+                    <button class="btn-wrap rest" (click)="resetSearch()">Reset</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Searching end -->
+<!--group listing-->
+<div (window:scroll)="onScrollGroup($event)" class="layout-column layout-xs-column layout-align-space-between layout-wrap layout-padding"
+    *ngIf="groupsList.length">
+    <div class="flex-48 added-event flex-xs-100 box-wrap-em" *ngFor="let group of groupsList;let i=index">
+        <div>
+            <span *ngIf="pageService.userIdGlobal== group.created_by._id" class="row-edit-btn r-e-btn" tooltip="Edit group" tooltipPlacement="left"
+                id="updateBtn" data-toggle="modal" (click)="onEditClick(group)"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></span>
+            <span *ngIf="pageService.userIdGlobal== group.created_by._id" class="row-edit-btn r-e-btn del" tooltip="Delete group" tooltipPlacement="left"
+                id="deleteBtn" data-toggle="modal" (click)="onDeleteClick(group._id,i)"><i class="fa fa-trash" aria-hidden="true"></i></span>
+            <div class="event-grp layout-row">
+                <div (click)="goToGroupWall(group._id)" class="eventimage flex-30 layout-align-start-center layout-row m-l-10 c-p" *ngIf="group.icon">
+                    <img alt="" src="public/files/Group/{{group.icon}}">
+                </div>
+                <div (click)="goToGroupWall(group._id)" class="eventimage c-p flex-30 layout-align-start-center layout-row m-l-10 c-p" *ngIf="!group.icon">
+                    <img alt="" src="public/files/Group/group-registration-icon-26.png">
+                </div>
+                <div class="evnet-headind row-edit-btn r-e-btn join-btn-event" *ngIf="group.created_by._id!==pageService.userIdGlobal">
+                    <button *ngIf="!(group.members|isMemeber:pageService.userIdGlobal)" class="jj" (click)="joinToGroup(group._id,i)">Join</button>
+                    <button *ngIf="(group.members|isMemeber:pageService.userIdGlobal)" (click)="onClickleaveGroup(group._id,i)">Leave</button>
+                </div>
+                <div class="layout-column event-detl  flex-60">
+                    <div class="evnet-headind" (click)="goToGroupWall(group._id)">
+                        <span class="c-p" *ngIf="group.title">{{group.title}}</span>
+                    </div>
+
+                    <div class="evnet-timing">
+                        <span class="blue c-p" (click)="onMemberClick(group._id)">{{group.members.length}} Member</span>
+                        <span *ngIf="group.privacy == 1">| Public</span>
+                        <span *ngIf="group.privacy == 2">| Private</span>
+                    </div>
+                    <div class="evnet-timing">
+                        <span *ngIf="group?.created_on">Created Date {{group.created_on | datetime}} </span>
+                        <span *ngIf="group.created_by?.fname" (click)="getProfileById(group.created_by._id)">- by <span class="blue c-p">{{group.created_by.fname+' '+group.created_by.lname}} </span></span>
+                    </div>
+                    <div class="evnet-timing">
+                        <span (click)="getSubjectWall(group.subject_id._id)" *ngIf="group.subject_id">Created in Subject - <span class="blue c-p">{{group.subject_id.name}}</span></span>
+                        <span (click)="getCollegeWall(group.college_id._id)" *ngIf="group.college_id">Created in College - <span class="blue c-p">{{group.college_id.name}}</span></span>
+                        <span (click)="getDegreeWall(group.degree_id._id)" *ngIf="group.degree_id">Created in Degree -<span class="blue c-p">{{group.degree_id.name}}</span></span>
+                    </div>
+                    <div *ngIf="(group|recentPostCount:4:pageService.userIdGlobal)>0" class="evnet-timing relative">
+                        <span>New Post <span class="count-data">{{group|recentPostCount:4:pageService.userIdGlobal}}</span></span>
+                    </div>
+                    <div *ngIf="group.post.length" class="evnet-timing">
+                        <span>Last Post - {{group.post[0].post_id.created_on| datetime}}&nbsp;- by &nbsp;<span class="blue c-p" (click)="getProfileById(group.post[0].created_by._id)">{{group.post[0].created_by?.fname}}&nbsp;{{group.post[0].created_by?.lname}}</span></span>
+                    </div>
+                    <div class="evnet-timing">
+                        <span> {{group.description}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="no-g-e-block layout-row layout-align-start-center" *ngIf="!groupsList.length">
+   <div class=""><i class="fa fa-exclamation-circle" aria-hidden="true"></i></div>
+    <div class="layout-row layout-wrap"><span>No groups have been created for </span>
+    <span *ngIf="!wallType || !scdId">Subjects/College/Degree.</span>
+    <span *ngIf="wallType && scdId && pageService.wall_type != 'Group'">
+            {{pageService.walldetails.name}}
+    </span>
+    <span>&nbsp;Be the first one to create a group. You can start by clicking Create New. Thanks.</span>
+    </div>
+</div>
+</section>
+<div class="spinner-lazy-block" *ngIf="loader">
+    <div class="spinner-lazy">
+        <div class="bounce1"></div>
+        <div class="bounce2"></div>
+        <div class="bounce3"></div>
+    </div>
+</div>
+
+
+<div class="modal fade modal-align-fix " id="addGroupModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="clearResoures()"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">{{modalHeadertitle}}</h4>
+            </div>
+
+            <div class="modal-body group-modal-page setting-page flex-100 layout-row">
+                <div class="modal-body layout-column flex-100 ">
+                    <div class="form-group">
+                        <label for="albumTitle">Group Name</label>
+                        <input type="text" class="form-control" [(ngModel)]="addGroup.title" placeholder="Group Name" name="groupName" id="groupName"
+                            required="required">
+                        <span class="error_file_message">{{groupError.groupTitle}}</span>
+                    </div>
+                    <div class="form-group ">
+                        <label for="description" class="font-12px">Group Description</label>
+                        <textarea class="form-control " [(ngModel)]="addGroup.description" placeholder="Group Description" name="groupDescription"></textarea>
+                        <span class="error_file_message">{{groupError.groupDescription}}</span>
+                    </div>
+                    <div class="form-group" [class.overlay]="isEdit">
+                        <label><input type="radio" name="selectSCD" value="1" [checked]="scdType==1" (change)="onChangeSCD(1)"></label>
+                        <label for="scd" class="font-12px">Add To Subject</label>
+                        <input class="form-control" *ngIf="scdType==1" type="text" (keyup)="subjectSearch($event)" (focus)="subjectSearch($event)"
+                            placeholder="Search subject..." [(ngModel)]="searchData.subject_name" />
+                        <div *ngIf="searchedSubjectsList.length" class="search-list">
+                            <ul class="global-search-list">
+                                <li *ngFor="let subject of searchedSubjectsList">
+                                    <div class="college-block" (click)="selectSubject(subject._id,subject.name)">
+                                        {{subject.name}}
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="form-group " [class.overlay]="isEdit">
+                        <label><input type="radio" name="selectSCD" value="2" [checked]="scdType==2" (change)="onChangeSCD(2)"></label>
+                        <label for="scd" class="font-12px">Add To College</label>
+                        <input class="form-control" *ngIf="scdType==2" type="text" (keyup)="collegeSearch($event)" (focus)="collegeSearch($event)"
+                            placeholder="Search college..." [(ngModel)]="searchData.college_name" />
+                        <div *ngIf="searchedCollegesList.length" class="search-list">
+                            <ul class="global-search-list">
+                                <li *ngFor="let college of searchedCollegesList">
+                                    <div class="college-block" (click)="selectCollege(college._id,college.name)">
+                                        {{college.name}}
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="form-group " [class.overlay]="isEdit">
+                        <label><input type="radio" name="selectSCD" value="3" [checked]="scdType==3" (change)="onChangeSCD(3)"></label>
+                        <label for="scd" class="font-12px">Add To Degree</label>
+                        <input class="form-control" *ngIf="scdType==3" type="text" (keyup)="degreeSearch($event)" (focus)="degreeSearch($event)"
+                            [(ngModel)]="searchData.degree_name" placeholder="Search degree..." />
+                        <div *ngIf="searchedDegreesList.length" class="search-list">
+                            <ul class="global-search-list">
+                                <li *ngFor="let degree of searchedDegreesList">
+                                    <div class="college-block" (click)="selectDegree(degree._id,degree.name)">
+                                        {{degree.name}}
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <span class="error_file_message">{{groupError.groupSCD}}</span>
+                    <div class="layout-row form-group layout-align-space-between">
+                        <div class="">
+                            <label>Privacy</label>
+                        </div>
+                    </div>
+                    <div class="layout-row layout-align-space-between">
+                        <div class="form-group">
+                            <label><input type="radio" name="addPrivacy" value="1" [checked]="addGroup.privacy==1" (change)="onSelectionChange(1)"><i class="fa fa-globe m-l-10" aria-hidden="true"></i> Public </label><br>
+                            <span class="m-l-20">Anyone can see the group, members and their posts.</span>
+                        </div>
+                    </div>
+                    <div class="layout-row layout-align-space-between">
+                        <div class="form-group">
+                            <label> <input type="radio" name="addPrivacy" value="2" [checked]="addGroup.privacy==2" (change)="onSelectionChange(2)"><i class="fa fa-lock m-l-10" aria-hidden="true"></i> Private </label><br>
+                            <span class="m-l-20">Only invited members can join, search and see posts of the group.</span>
+                        </div>
+                    </div>
+                    <div class="">
+                        <div class="layout-column uplod-pic">
+                            <div class="layout-row">
+                                <thumbnail-file-reader (delete)="deleteThumbnail($event)" [btnText]="'Upload Image'" [defaultPicture]="thumbnail" (complete)="photoChangeEvent($event)"></thumbnail-file-reader>
+                                <span style="color: red">{{groupError.groupIcon}}</span>
+                            </div>
+                            <span class="p-5 text-muted"> Note : Upload only jpg/png/gif/tif files.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button class="add-btn cancel-btn" data-dismiss="modal" (click)="clearResoures()">Cancel</button>
+                <button class="add-btn" (click)="createGroup()">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Group Delete-->
+<div class="modal fade modal-align-fix " id="groupDeleteModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body setting-page flex-100 layout-row">
+                <div class="modal-body layout-column flex-100 ">
+                    <div class="modal-body">
+                        <div class="upload-area flex-60 layout-align-start-center layout-row">
+                            <h4>Are you sure you want to delete this Group?</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="add-btn cancel-btn" data-dismiss="modal">Cancel</button>
+                <button class="add-btn" data-dismiss="modal" (click)="deleteGroup()">Yes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade modal-align-fix " id="groupLeaveModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body setting-page flex-100 layout-row">
+                <div class="modal-body layout-column flex-100 ">
+                    <div class="modal-body">
+                        <div class="upload-area flex-60 layout-align-start-center layout-row">
+                            <h4>Are you sure you want to leave this Group?</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="add-btn cancel-btn" data-dismiss="modal">Cancel</button>
+                <button class="add-btn" data-dismiss="modal" (click)="leaveFromGroup()">Yes</button>
+            </div>
+        </div>
+    </div>
+</div>

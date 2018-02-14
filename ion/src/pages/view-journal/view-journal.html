@@ -1,0 +1,121 @@
+<!--
+  Generated template for the ViewJournal page.
+
+  See http://ionicframework.com/docs/v2/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+
+<ion-header>
+  <ion-navbar class="gradient">
+    <ion-row>
+      <ion-col>
+        <ion-title>Journal - {{journalData.title}}</ion-title>
+      </ion-col>
+      <!-- <ion-col width-20 text-right>
+        <button ion-button icon-only class="add-journal-btn" (click)="postInJournal()">
+          <ion-icon class="add-journal" color="white" name="add-circle"  ></ion-icon>
+        </button>
+      </ion-col> -->
+    </ion-row>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-item class="journal-filter">
+    <ion-label>Filter</ion-label>
+    <ion-select (ngModelChange)="onChangePostType($event)" [(ngModel)]="selectedPostType" interface="popover">
+      <ion-option value="0">All</ion-option>
+      <ion-option value="1">Posts</ion-option>
+      <ion-option value="2">Questions</ion-option>
+      <ion-option value="3">Photos</ion-option>
+      <ion-option value="4">Videos</ion-option>
+      <ion-option value="5">Links</ion-option>
+      <ion-option value="6">Audios</ion-option>
+      <ion-option value="7">Documents</ion-option>
+    </ion-select>
+  </ion-item>
+  <ion-spinner icon="spiral" *ngIf="loader"></ion-spinner>
+  <ion-grid *ngIf="JournalPost" no-padding>
+    <ion-row *ngIf="JournalPost.length == 0">There are no posts to display</ion-row>
+    <ion-card *ngFor="let journal of JournalPost; let i=index;">
+      <ion-card-content>
+        <div class="post">
+          <h3 *ngIf="journal.description" embed-directive>{{journal.description}}</h3>
+          <p *ngIf="journal.created_on" class="small">{{journal.created_on | datetimefilterpipe}}</p>
+          <span class="journal-btn">
+        <button ion-button clear item-right (click)="onDeleteClick(journal._id,i)"><ion-icon class="fa fa-trash-o"></ion-icon></button>
+        </span>
+        </div>
+        <div class="post-container">
+          <div class="post-text">
+            <h5 *ngIf="journal.post_id && journal.post_id.name!=null" (click)="goToSinglePost(journal?.post_id, journal?.post_id._id)" embed-directive>{{journal?.post_id.name}}</h5>
+            <h5 *ngIf="journal.post_id.link[0] && journal.post_id.link[0].title!=''" embed-directive>{{journal?.post_id.link[0].title}}</h5>
+          </div>
+          <div *ngIf="journal.post_id.post_type == 5">
+            <a *ngIf="journal.post_id.link[0].description" href="{{journal.post_id.link[0].description}}" embed-directive> {{journal.post_id.link[0].description}} </a>
+          </div>
+          <div *ngIf="journal.post_id.post_type == 1 || journal.post_id.post_type == 8">
+            <h6 embed-directive> {{journal.post_id.message}} </h6>
+          </div>
+          <div *ngIf="journal.post_id.post_type == 2">
+            <h6 embed-directive> {{journal.post_id.question}} </h6>
+          </div>
+          <div *ngIf="journal.post_id.post_type == 7">
+            <h6 *ngIf="journal.post_id.document[0].file_name"> {{journal.post_id.document[0].file_name | documentNameFilter}} </h6>
+            <a href="{{dataService.apiBaseUrl}}public/files/{{getFoldername(journal.post_id.types)}}/Documents/{{journal.post_id.origin_creator?journal.post_id.origin_creator._id:journal.post_id.created_by._id}}/{{journal.post_id.document[0].file_name}}"
+              target="_blank">
+              <span class="title" *ngIf="journal.post_id.document[0].file_name">
+                <span *ngIf="journal.post_id.document[0].file_name.split('.').pop() == 'txt' || journal.post_id.document[0].file_name.split('.').pop() == 'text'">
+                  <i class="fa fa-file-text fa-4x">&nbsp;</i>
+                </span>
+                <span *ngIf="journal.post_id.document[0].file_name.split('.').pop() == 'pdf'">
+                  <i class="fa fa-file-pdf-o fa-4x">&nbsp;</i>
+                </span>
+                <span *ngIf="journal.post_id.document[0].file_name.split('.').pop() == 'doc' || journal.post_id.document[0].file_name.split('.').pop() == 'dot' || journal.post_id.document[0].file_name.split('.').pop() == 'word' || journal.post_id.document[0].file_name.split('.').pop() == 'wiz' || journal.post_id.document[0].file_name.split('.').pop() == 'w6w' || journal.post_id.document[0].file_name.split('.').pop() == 'docx'">
+                  <i class="fa fa-file-word-o fa-4x">&nbsp;</i>
+                </span>
+                <span *ngIf="journal.post_id.document[0].file_name.split('.').pop() == 'xls' || journal.post_id.document[0].file_name.split('.').pop() == 'xlm' || journal.post_id.document[0].file_name.split('.').pop() == 'xll' || journal.post_id.document[0].file_name.split('.').pop() == 'xlc' || journal.post_id.document[0].file_name.split('.').pop() == 'xlb' || journal.post_id.document[0].file_name.split('.').pop() == 'xlw' || journal.post_id.document[0].file_name.split('.').pop() == 'xlsx'">
+                  <i class="fa fa-file-excel-o fa-4x">&nbsp;</i>
+                </span>
+                <span *ngIf="journal.post_id.document[0].file_name.split('.').pop() == 'ppt' || journal.post_id.document[0].file_name.split('.').pop() == 'pot' || journal.post_id.document[0].file_name.split('.').pop() == 'pps' || journal.post_id.document[0].file_name.split('.').pop() == 'ppa' || journal.post_id.document[0].file_name.split('.').pop() == 'pwz' ">
+                  <i class="fa fa-file-powerpoint-o fa-4x">&nbsp;</i>
+                </span>
+                <span *ngIf="journal.post_id.document[0].file_name.split('.').pop() == 'xml'">
+                  <i class="fa fa-file-o fa-4x">&nbsp;</i>
+                </span>
+              </span>
+            </a>
+          </div>
+          <div *ngIf="journal.post_id.post_type == 3" (click)="goToSinglePost(journal?.post_id, journal?.post_id._id)">
+            <img *ngIf="journal.post_id.photo[0].title==null" src="{{dataService.apiBaseUrl}}public/files/{{getFoldername(journal.post_id.types)}}/Photos/{{journal.post_id.origin_creator?journal.post_id.origin_creator._id:journal.post_id.created_by._id}}/{{journal.post_id.photo[0].file_name}}"
+              alt="{{journal.post_id.photo[0].file_name}}">
+            <img *ngIf="journal.post_id.photo[0].title!=null" src="{{journal.post_id.photo[0].title}}" alt="{{journal.post_id.photo[0].title}}">
+          </div>
+          <div *ngIf="journal.post_id.post_type == 4" class="content-block-desc-image" (click)="goToSinglePost(journal?.post_id, journal?.post_id._id)">
+            <h6 *ngIf="journal.post_id.video[0].file_name">{{journal.post_id.video[0].file_name | documentNameFilter}}</h6>
+            <video *ngIf="journal.post_id.video[0].title==null" width="100%" height="100%" controls controlsList="nodownload">
+              <source src="{{dataService.apiBaseUrl}}public/files/{{getFoldername(journal.post_id.types)}}/Videos/{{journal.post_id.origin_creator?journal.post_id.origin_creator._id:journal.post_id.created_by._id}}/{{journal?.post_id.video[0].file_name}}"
+                type="video/mp4">
+            </video>
+            <iframe *ngIf="journal.post_id.video[0].title!=null" width="100%" height="100%" border="0" [src]="journal.post_id.video[0].title | youtubeSafeUrl">
+            </iframe>
+          </div>
+          <div *ngIf="journal.post_id.post_type == 6" (click)="goToSinglePost(journal?.post_id, journal?.post_id._id)">
+            <h6 *ngIf="journal.post_id.audio[0].file_name">{{journal.post_id.audio[0].file_name | documentNameFilter}}</h6>
+            <audio controls controlsList="nodownload" *ngIf="journal.post_id.audio[0].title==null" width="100%">
+              <source src="{{dataService.apiBaseUrl}}public/files/{{getFoldername(journal.post_id.types)}}/Audios/{{journal.post_id.origin_creator?journal.post_id.origin_creator._id:journal.post_id.created_by._id}}/{{journal.post_id.audio[0].file_name}}"
+                type="audio/mpeg"> Your browser does not support the audio element.
+            </audio>
+            <audio controls controlsList="nodownload" *ngIf="journal.post_id.audio[0].title!=null" width="100%">
+              <source src="{{journal.post_id.audio[0].title}}" type="audio/mp4">
+            </audio>
+          </div>
+          <div class="post-time">
+            <h3 *ngIf="journal.post_id && journal.post_id.created_on!=null">{{journal?.post_id.created_on | datetimefilterpipe}}</h3>
+            <h5 *ngIf="journal.post_id && journal.post_id.created_by!=null" (click)="getProfileById(journal.post_id.created_by._id)">by {{journal?.post_id.created_by.fname + ' ' + journal?.post_id.created_by.lname}}</h5>
+          </div>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  </ion-grid>
+</ion-content>

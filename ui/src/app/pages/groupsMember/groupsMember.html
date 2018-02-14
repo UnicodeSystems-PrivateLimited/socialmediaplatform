@@ -1,0 +1,112 @@
+<div class="page-loader-section layout-row layout-align-center-center" *ngIf="showLoader">
+    <div class="page-loader">Loading...</div>
+</div>
+<div *ngIf="!showLoader">
+    <section class="global-search">
+        <div class="custom1-modal-header layout-row layout-align-space-between">
+            <div *ngIf="groupData" class="h3 header-title"><i aria-hidden="true" class="fa fa-users m-r-10"></i>Members in <span style="text-transform: capitalize;">{{groupData.title|trimname}}</span>&nbsp;(
+                <span class="c-p" *ngIf="groupData.subject_id" (click)="getSubjectWall(groupData.subject_id._id)">{{groupData.subject_id.name|trimname}}</span>
+                <span class="c-p" *ngIf="groupData.college_id" (click)="getCollegeWall(groupData.college_id._id)">{{groupData.college_id.name|trimname}}</span>
+                <span class="c-p" *ngIf="groupData.degree_id" (click)="getDegreeWall(groupData.degree_id._id)">{{groupData.degree_id.name|trimname}}</span>)</div>
+            <div class="layout-row layout-align-start-center">
+                <span *ngIf="groupData" class="search-group-member"> 
+        <form class="navbar-form navbar-left" role="search">
+            <div class="form-group nav-search input-left-icon layout-align-center-center layout-row grp-mem-grps">
+                <span class="fa fa-search">&nbsp;</span>
+                <input [(ngModel)]="memberSearch" type="text" class="form-control hello" id="member-search-input" placeholder="Search here"
+                    autocomplete="off">
+            </div>
+            </form>
+            </span>
+            <p class="member-name c-p fx-bck" (click)="goToPreviousPage()"><i class="fa fa-arrow-circle-o-left" aria-hidden="true"></i></p>
+        </div>
+</div>
+</section>
+<section class="content search-mem-grp" *ngIf="groupData && (groupData.created_by == page.userIdGlobal)">
+    <ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" href="#member" role="tab" data-toggle="tab">Members</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#pendingMember" role="tab" data-toggle="tab">Pending Members</a>
+        </li>
+    </ul>
+    <div role="tabpanel" class="tab-pane fade in active" id="member">
+        <div class="" *ngIf="groupData">
+            <div class="flex-100 layout-row layout-row-start-center layout-wrap">
+                <div (click)="getProfileById(member.user_id._id)" *ngFor="let member of (groupData.members | groupMemberFilterPipe:memberSearch)"
+                    class="flex-24 member-detail-container c-p">
+                    <div class="member-user-image">
+                        <img alt="User Image" *ngIf="member.user_id.photo" class="" src="public/files/ProfilePicture/{{member.user_id.photo}}">
+                        <img alt="User Image" *ngIf="!member.user_id.photo" class="" src="public/files/ProfilePicture/no_image.png">
+
+                    </div>
+                    <div *ngIf="member.user_id.fname" width="45%" class="member-details pc-tal">
+                        <p (click)="getProfileById(member.user_id._id)" class="member-name c-p">{{member.user_id.fname}}&nbsp;{{member?.user_id?.lname}}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="no-g-e-block layout-row layout-align-start-center" *ngIf="!groupData.members.length">
+                <div class=""><i class="fa fa-exclamation-circle" aria-hidden="true"></i></div>
+                <div class="layout-row layout-wrap">
+                    <span>&nbsp;No group member added</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div role="tabpanel" class="tab-pane fade" id="pendingMember">
+        <div class="">
+            <div class="flex-100 layout-row layout-row-space-between-center layout-wrap">
+                <ul class="grp-invitation-list-container flex-100 layout-column">
+                    <li class="layout-row layout-align-space-between grp-invitation-list" *ngFor="let member of (pendingMember | memberFilterPipe:memberSearch:2)">
+                        <div class="layout-row layout-align-space-between-center flex-100">
+                            <div class="group_invition_noti layout-row layout-align-start-center" (click)="getProfileById(member._id)">
+                                <div class="member-user-image c-p">
+                                    <img alt="User Image" *ngIf="member.photo" class="" src="public/files/ProfilePicture/{{member.photo}}" width="42" height="42">
+                                    <img alt="User Image" *ngIf="!member.photo" class="" src="public/files/ProfilePicture/no_image.png" width="42" height="42">
+                                </div>
+                                <div width="45%" class="member-details pc-tal c-p">
+                                    <p>{{member.fname+' '}}<span *ngIf="member.lname">{{member.lname}}</span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="layout-row flex-30 grp-list-btn layout-align-end">
+                                <button (click)="onClickReInvite(member)" class="grp-invite-btn accept">Re-invite</button>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="no-g-e-block layout-row layout-align-start-center" *ngIf="!pendingMember.length">
+                <div class=""><i class="fa fa-exclamation-circle" aria-hidden="true"></i></div>
+                <div class="layout-row layout-wrap">
+                    <span>&nbsp;No pending members</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="content search-mem-grp" *ngIf="groupData && (groupData.created_by != page.userIdGlobal)">
+    <div class="" *ngIf="groupData">
+        <div class="flex-100 layout-row layout-row-start-center layout-wrap">
+            <div (click)="getProfileById(member.user_id._id)" *ngFor="let member of (groupData.members | groupMemberFilterPipe:memberSearch)"
+                class="flex-24 member-detail-container c-p">
+                <div class="member-user-image">
+                    <img alt="User Image" *ngIf="member.user_id.photo" class="" src="public/files/ProfilePicture/{{member.user_id.photo}}">
+                    <img alt="User Image" *ngIf="!member.user_id.photo" class="" src="public/files/ProfilePicture/no_image.png">
+
+                </div>
+                <div *ngIf="member.user_id.fname" width="45%" class="member-details pc-tal">
+                    <p (click)="getProfileById(member.user_id._id)" class="member-name c-p">{{member.user_id.fname}}&nbsp;{{member?.user_id?.lname}}</p>
+                </div>
+            </div>
+        </div>
+        <div class="no-g-e-block layout-row layout-align-start-center" *ngIf="!groupData.members.length">
+            <div class=""><i class="fa fa-exclamation-circle" aria-hidden="true"></i></div>
+            <div class="layout-row layout-wrap">
+                <span>&nbsp;No group member added</span>
+            </div>
+        </div>
+    </div>
+</section>
+</div>

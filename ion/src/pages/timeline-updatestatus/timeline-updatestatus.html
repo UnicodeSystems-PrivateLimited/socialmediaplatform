@@ -1,0 +1,286 @@
+<!--
+  Generated template for the MywallUpdatestatusPage .
+
+  See http://ionicframework.com/docs/v2/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header class="gradient">
+  <ion-navbar>
+    <ion-title>
+      <h1 class="header-title" text-center color="white" *ngIf="pet">Upload {{pet}}</h1>
+    </ion-title>
+  </ion-navbar>
+
+  <ion-toolbar no-padding no-border-top>
+    <ion-segment [(ngModel)]="pet">
+      <ion-segment-button value="Status" (click)="setMsgLinkQuesType(1)">
+        <span class="icomoon-status-icon"></span>
+      </ion-segment-button>
+      <ion-segment-button value="Photo" (click)="setMsgLinkQuesType(0)">
+        <span class="icomoon-camera-icon"></span>
+      </ion-segment-button>
+      <ion-segment-button value="Video" (click)="setMsgLinkQuesType(0)">
+        <span class="icomoon-video-icon"></span>
+      </ion-segment-button>
+      <ion-segment-button value="Link" (click)="setMsgLinkQuesType(5)">
+        <span class="icomoon-link-icon"></span>
+      </ion-segment-button>
+      <ion-segment-button value="Document" (click)="setMsgLinkQuesType(0)">
+        <span class="icomoon-document-icon"></span>
+      </ion-segment-button>
+      <ion-segment-button value="Audio" (click)="setMsgLinkQuesType(0)">
+        <span class="icomoon-audio-icon"></span>
+      </ion-segment-button>
+      <ion-segment-button value="Question" (click)="setMsgLinkQuesType(2)">
+        <ion-icon name="help-circle"></ion-icon>
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+
+</ion-header>
+
+
+<ion-content class="share-post">
+  <ion-spinner icon="spiral" *ngIf="loader"></ion-spinner>
+  <ion-grid [ngSwitch]="pet" padding>
+    <ion-list *ngSwitchCase="'Status'">
+      <ion-item class="share-thought">
+        <textarea class="textarea" placeholder="Share your thought..." [(ngModel)]="message.message.message"></textarea>
+      </ion-item>
+    </ion-list>
+
+    <ion-list *ngSwitchCase="'Photo'">
+      <ion-item class="share-thought">
+        <textarea class="textarea" placeholder="Something about photo..." [(ngModel)]="message.name.name"></textarea>
+      </ion-item>
+      <ion-item class="post-img">
+        <img [src]="imageSrc" />
+      </ion-item>
+      <ion-row class="upload-container" padding-top *ngIf="photoembed">
+        <ion-col col-4 no-padding text-right padding-right>
+          <button ion-button color="light-gray" (click)="openGallery()"><ion-icon name="image"></ion-icon></button>
+        </ion-col>
+        <ion-col col-4 no-padding text-center>
+          <button ion-button color="light-gray" (click)="takePicture()"><ion-icon name="camera"></ion-icon></button>
+        </ion-col>
+        <ion-col col-4 no-padding text-left padding-left>
+          <button ion-button color="light-gray" (click)="pastephotoembed()"> <ion-icon name="link"></ion-icon></button>
+        </ion-col>
+        <ion-col col-12>
+          <p text-center>Note: upload only .jpg/.png/.gif/.jpeg/.bmp/</p>
+        </ion-col>
+      </ion-row>
+      <ion-row class="upload-container" *ngIf="!photoembed">
+        <ion-col col-12>
+          <ion-item>
+            <ion-label>
+              <ion-icon name="link"></ion-icon>
+            </ion-label>
+            <ion-input type="text" value="" placeholder="Paste a link here ..." [(ngModel)]="message.embedLink.title"></ion-input>
+          </ion-item>
+        </ion-col>
+        <ion-col *ngIf="message.embedLink.photo != ''">
+          <span>{{message.embedLink.photo}}</span>
+        </ion-col>
+        <ion-col col-12 text-center>
+          <button ion-button color="light-gray" (click)="addPhotoEmbedLink()"> <ion-icon name="add"></ion-icon></button>
+          <button ion-button color="light-gray" (click)="canclephotoembed()"> <ion-icon name="close"></ion-icon></button>
+        </ion-col>
+      </ion-row>
+    </ion-list>
+
+    <ion-list *ngSwitchCase="'Video'">
+      <ion-item class="share-thought">
+        <textarea class="textarea" placeholder="Something about video..." [(ngModel)]="message.name.name"></textarea>
+      </ion-item>
+      <ion-row class="upload-container" padding-top *ngIf="videoembed">
+        <ion-col col-12 *ngIf="videosToUpload[0] && videosToUpload[0].name != ''">
+          <span class="file-name">Video chosen successfully</span>
+        </ion-col>
+        <ion-col col-4 no-padding text-right padding-right>
+          <label class="fileContainer">
+              <ion-icon name="logo-youtube"></ion-icon>
+              <button ion-button color="light-gray" showWhen="ios" (click)="openGalleryVideo()"></button>
+              
+              <input type="file" (change)="videoChangeEvent($event)" showWhen="android,windows" accept="video/mp4,video/x-m4v,video/*" />
+          </label>
+        </ion-col>
+        <ion-col col-4 no-padding text-center>
+          <button ion-button color="light-gray" (click)="pastevideoembed()"> <ion-icon name="link"></ion-icon></button>
+        </ion-col>
+         <ion-col col-4 no-padding padding-left text-left>
+          <button ion-button color="light-gray" (click)="takeVideo()"><ion-icon name="camera"></ion-icon></button>
+        </ion-col>
+        <ion-col col-12>
+          <p text-center>Note: Upload only .mp4/.webm/.ogg files.</p>
+        </ion-col>
+      </ion-row>
+      <ion-row class="upload-container embedVideo" *ngIf="!videoembed">
+         <ion-col *ngIf="message.embedLink.video!=''">
+          <span embed-directive>https://www.youtube.com/watch?v={{message.embedLink.video}}</span>
+        </ion-col>
+        <ion-col col-12>
+          <ion-item>
+            <ion-label>
+              <ion-icon name="link"></ion-icon>
+            </ion-label>
+            <ion-input type="text" value="" placeholder="Paste a youtube link here..." [(ngModel)]="message.embedLink.title"></ion-input>
+          </ion-item>
+        </ion-col>
+        <ion-col col-12 text-center>
+          <button ion-button color="light-gray"> <ion-icon name="add" (click)="addVideoEmbedLink()"></ion-icon></button>
+          <button ion-button color="light-gray" (click)="canclevideoembed()"> <ion-icon name="close"></ion-icon></button>
+        </ion-col>
+      </ion-row>
+    </ion-list>
+    <ion-list *ngSwitchCase="'Link'">
+      <ion-item class="share-thought">
+        <textarea class="textarea" placeholder="Something about link..." [(ngModel)]="message.link.title"></textarea>
+      </ion-item>
+      <ion-row class="upload-container">
+        <ion-col col-12>
+          <ion-item>
+            <ion-label>
+              <ion-icon name="link"></ion-icon>
+            </ion-label>
+            <ion-input type="text" value="" placeholder="Paste a link here ..." [(ngModel)]="message.link.description"></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+    </ion-list>
+    <ion-list *ngSwitchCase="'Document'">
+      <ion-item class="share-thought">
+        <textarea class="textarea" placeholder="Something about document..." [(ngModel)]="message.name.name"></textarea>
+      </ion-item>
+      <ion-row class="upload-container" padding-top>
+        <ion-col col-12 *ngIf="documentsToUpload[0] && documentsToUpload[0].name != ''">
+          <span class="file-name">{{documentsToUpload[0].name}}</span>
+        </ion-col>
+        <ion-col col-12 no-padding text-center>
+          <label class="fileContainer">
+              <ion-icon name="document"></ion-icon>
+              <input type="file" (change)="documentChangeEvent($event)" />
+          </label>
+        </ion-col>
+        <ion-col col-12>
+          <p text-center>Note: Upload only .docx/.doc/.txt/.pdf/.xml/.xlsx/.ppt/.xls files.</p>
+        </ion-col>
+      </ion-row>
+    </ion-list>
+    <ion-list *ngSwitchCase="'Audio'">
+      <ion-item class="share-thought">
+        <textarea class="textarea" placeholder="Something about audio..." [(ngModel)]="message.name.name"></textarea>
+      </ion-item>
+      <ion-row class="upload-container" padding-top *ngIf="audioembed">
+        <ion-col col-12 *ngIf="audiosToUpload[0] && audiosToUpload[0].name != ''">
+          <span class="file-name">Audio chosen successfully</span>
+        </ion-col>
+        <ion-col col-6 no-padding text-right padding-right showWhen="android,windows" >
+          <label class="fileContainer">
+              <ion-icon name="musical-notes"></ion-icon>
+              <input type="file" (change)="audioChangeEvent($event)" accept="audio/*" />
+          </label>
+        </ion-col>
+          <ion-col col-6 no-padding text-right padding-right showWhen="ios">
+          <button ion-button color="light-gray" (click)="recordAudio()"><ion-icon name="mic"></ion-icon></button>
+        </ion-col>
+        <ion-col col-6 no-padding padding-left text-left>
+          <button ion-button color="light-gray" (click)="pasteaudioembed()"> <ion-icon name="link"></ion-icon></button>
+        </ion-col>
+      
+        <ion-col col-12>
+          <p text-center> Note : Upload only mpeg/ogg/wav/mp3 files.</p>
+        </ion-col>
+      </ion-row>
+      <ion-row class="upload-container" *ngIf="!audioembed">
+        <ion-col col-12>
+          <ion-item>
+            <ion-label>
+              <ion-icon name="link"></ion-icon>
+            </ion-label>
+            <ion-input type="text" value="" placeholder="Paste a link here ..." [(ngModel)]="message.embedLink.title"></ion-input>
+          </ion-item>
+        </ion-col>
+        <ion-col *ngIf="message.embedLink.audio!=''">
+          <span>{{message.embedLink.audio}}</span>
+        </ion-col>
+        <ion-col col-12 text-center>
+          <button ion-button color="light-gray"> <ion-icon name="add" (click)="addAudioEmbedLink()"></ion-icon></button>
+          <button ion-button color="light-gray" (click)="cancleaudioembed()"> <ion-icon name="close"></ion-icon></button>
+        </ion-col>
+      </ion-row>
+    </ion-list>
+    <ion-list *ngSwitchCase="'Question'">
+      <ion-item class="share-thought">
+        <textarea class="textarea" placeholder="Share your questions?..." [(ngModel)]="message.question.question"></textarea>
+      </ion-item>
+    </ion-list>
+    <ion-item col-12 class="select-category" style="margin:20px 0px;">
+      <ion-select col-12 (ngModelChange)="onChangeSCD($event)" [(ngModel)]="selectedSCD">
+        <ion-option value="0">Select Subject/College/Degree</ion-option>
+        <ion-option value="1">Subject</ion-option>
+        <ion-option value="2">College</ion-option>
+        <ion-option value="3">Degree</ion-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item *ngIf="selectedSCD==1">
+      <ion-searchbar placeholder="Search subject..." [(ngModel)]="searchData.subject_name" (ionInput)="subjectSearch($event)"></ion-searchbar>
+      <ion-list class="search-list" *ngIf="searchedSubjectsList.length">
+        <ion-item *ngFor="let subject of searchedSubjectsList">
+          <h2 (click)="selectSubject(subject._id,subject.name)">{{ subject.name }}</h2>
+        </ion-item>
+      </ion-list>
+    </ion-item>
+    <ion-item *ngIf="selectedSCD==2">
+      <ion-searchbar placeholder="Search college..." [(ngModel)]="searchData.college_name" (ionInput)="collegeSearch($event)"></ion-searchbar>
+      <ion-list class="search-list" *ngIf="searchedCollegesList.length">
+        <ion-item *ngFor="let college of searchedCollegesList">
+          <h2 (click)="selectCollege(college._id,college.name)">{{ college.name }}</h2>
+        </ion-item>
+      </ion-list>
+    </ion-item>
+    <ion-item *ngIf="selectedSCD==3">
+      <ion-searchbar placeholder="Search degree..." [(ngModel)]="searchData.degree_name" (ionInput)="degreeSearch($event)"></ion-searchbar>
+      <ion-list class="search-list" *ngIf="searchedDegreesList.length">
+        <ion-item *ngFor="let degree of searchedDegreesList">
+          <h2 (click)="selectDegree(degree._id,degree.name)">{{ degree.name }}</h2>
+        </ion-item>
+      </ion-list>
+    </ion-item>
+
+
+
+   <div> <ion-label class="p-0" style="margin-bottom:8px;">Select category</ion-label></div>
+    <ion-item class="select-category">
+
+      <ion-select col-12 (ngModelChange)="selectCatagory($event)" [(ngModel)]="catagory" interface="action-sheet">
+        <ion-option value="1">General</ion-option>
+        <ion-option value="2">Tip / Trick</ion-option>
+        <ion-option value="3">Joke / Humor</ion-option>
+        <ion-option value="4">Tutorial</ion-option>
+      </ion-select>
+    </ion-item>
+    <div> <ion-label  class="p-0" style="margin-bottom:8px;">Visibility</ion-label></div>
+    <ion-item class="select-category">
+      <ion-select col-12 (ngModelChange)="selectVisibility($event)" [(ngModel)]="selectedPostPrivacyType" interface="action-sheet">
+        <ion-option value="1">Public</ion-option>
+        <ion-option value="2">Private(Only Me)</ion-option>
+        <ion-option value="3">Friends Only</ion-option>
+        <ion-option value="4">Followers</ion-option>
+        <ion-option value="6">Friends And Followers</ion-option>
+        <ion-option (ionSelect)="customVisiblity(5)" value="5">Custom</ion-option>
+      </ion-select>
+    </ion-item>
+    <ion-item class="update-status-btn" margin-vertical>
+      <ion-row class="share-btn">
+        <ion-col col-6 no-padding text-center>
+          <button ion-button text-uppercase color="dark-blue" (click)="cancel()">Cancel</button>
+        </ion-col>
+        <ion-col col-6 no-padding text-center>
+          <button ion-button text-uppercase color="primary" [disabled]="loader" (click)="onPostAllTypeData()">Post</button>
+        </ion-col>
+      </ion-row>
+    </ion-item>
+  </ion-grid>
+</ion-content>

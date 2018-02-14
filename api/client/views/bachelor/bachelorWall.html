@@ -1,0 +1,579 @@
+<style>
+
+
+    :host(.page1Container) {
+        display: inline-block;
+
+        width: 100%;
+        -webkit-transition: all cubic-bezier(0, 0, 0.39, 1.07) 0.2s;
+        transition: all cubic-bezier(0, 0, 0.39, 1.07) 0.2s;
+    }
+
+    :host(.page1Container.ng-enter) {
+        opacity: 0;
+        transform: translate3d(100%, 0, 0);
+    }
+
+    :host(.page1Container.ng-enter-active) {
+        opacity: 1;
+        transform: none;
+    }
+
+</style>
+<div class="spin-wrap vision-spin" style="display: none">
+    <!--                                                <div class="spinners">  
+                                                        <div class="double-bounce1"></div>
+                                                        <div class="double-bounce2"></div>
+                                                    </div>  -->
+    <div class="sk-folding-cube">
+        <div class="sk-cube1 sk-cube"></div>
+        <div class="sk-cube2 sk-cube"></div>
+        <div class="sk-cube4 sk-cube"></div>
+        <div class="sk-cube3 sk-cube"></div>
+    </div>
+</div>
+<section class="content-header" *ngIf="sub">
+    <h1>{{sub.degreeDetails.name}} &nbsp;wall </h1>
+</section>
+<section class="content" >
+    <div class="row" (window:scroll)="onScrollList($event)">
+        <div class="col-md-8">
+            <div class="form-group">
+                <div class="search-btn">
+                    <div class="input-group">
+                        <div class="input-group-addon light-gray-bg">
+                            <i class="fa fa-search"></i>
+                            <span>search</span>
+                        </div>
+                        <div class="input-right-icon main-search">
+                            <input type="text" class="form-control" [(ngModel)]="postSearchField.name" (keyup)="postSearch($event)" >
+                            <!--<a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" class="fa fa-angle-down">&nbsp;</a>-->
+                        </div>
+                    </div>
+                </div>
+<!--                <div id="collapseOne" class="collapse advance-search" aria-expanded="false">
+                    <div class="box-body light-gray-bg">
+                        <div class="layout-column">
+                            <div class="layout-row form-group layout-align-start-center">
+                                <div class="flex-20"><label for="category">category :</label></div>
+                                <div class="flex-80"><input type="text" class="form-control btn-block" placeholder="Choose Category" /></div>
+                            </div>
+                            <div class="layout-row form-group layout-align-space-between">
+                                <div class="flex-50">
+                                    <div class="layout-row layout-align-start-center">
+                                        <div class="flex-40"><label for="category">Who Posted :</label></div>
+                                        <div class="flex-60">
+                                            <select class="form-control">
+                                                <option>option 1</option>
+                                                <option>option 2</option>
+                                                <option>option 3</option>
+                                                <option>option 4</option>
+                                                <option>option 5</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex-45">
+                                    <div class="layout-row layout-align-space-between-center">
+                                        <div class="flex-20"><label for="category">Time :</label></div>
+                                        <div class="flex-35">
+                                            <div class="layout-row layout-align-center-center">
+                                                <span style="margin-right: 10px;">From</span>
+                                                <input type="text" class="form-control btn-block" placeholder="Choose Category" />
+                                            </div>
+                                        </div>
+                                        <div class="flex-35">
+                                            <div class="layout-row layout-align-center-center">
+                                                <span style="margin-right: 10px;">To</span>
+                                                <input type="text" class="form-control btn-block" placeholder="Choose Category" />
+                                            </div>
+                                        </div>
+                                    </div>    
+                                </div>
+                            </div>
+                            <div class="layout-row form-group layout-align-space-between">
+                                <div class="flex-50">
+                                    <div class="layout-row layout-align-start-center">
+                                        <div class="flex-40"><label for="category">Tagged Friends :</label></div>
+                                        <div class="flex-60">
+                                            <select class="form-control">
+                                                <option>option 1</option>
+                                                <option>option 2</option>
+                                                <option>option 3</option>
+                                                <option>option 4</option>
+                                                <option>option 5</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex-45">
+                                    <div class="layout-row layout-align-start-center">
+                                        <div class="flex-40"><label for="category">Order by :</label></div>
+                                        <div class="flex-60">
+                                            <select class="form-control">
+                                                <option>option 1</option>
+                                                <option>option 2</option>
+                                                <option>option 3</option>
+                                                <option>option 4</option>
+                                                <option>option 5</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="layout-row layout-align-end-center inline-pd-left">
+                                <div><button class="btn btn-small post-btn">search</button></div>
+                                <div><button class="btn btn-danger btn-small">reset</button></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>-->
+            </div>
+            <div class="well all-status light-gray-bg">
+                <ul class="display-flex text-center">
+                    <li><a (click)="getAllTypeOfPost()"><i class="fa fa-check-circle-o">&nbsp;</i><p class="hide-xs">all</p></a></li>
+                    <li><a (click)="getPostTypeOfPost(1)"><i class="fa fa-commenting">&nbsp;</i><p class="hide-xs">Status</p></a></li>
+                    <li><a (click)="getPostTypeOfPost(3)"><i class="fa fa-camera">&nbsp;</i><p class="hide-xs">Photos</p></a></li>
+                    <li><a (click)="getPostTypeOfPost(4)"><i class="fa fa-video-camera">&nbsp;</i><p class="hide-xs">Videos</p></a></li>
+                    <li><a (click)="getPostTypeOfPost(5)"><i class="fa fa-paperclip">&nbsp;</i><p class="hide-xs">Links</p></a></li>
+                    <li><a (click)="getPostTypeOfPost(7)"><i class="fa fa-book">&nbsp;</i><p class="hide-xs">Document</p></a></li>
+                    <li><a (click)="getPostTypeOfPost(6)"><i class="fa fa-headphones">&nbsp;</i><p class="hide-xs">Audio</p></a></li>
+                </ul>
+            </div>
+
+            <div class="nav-tabs-custom layout-column">
+                <ul class="nav nav-tabs layout-row layout-align-space-between">
+                    <li class="active"><a href="#message" data-toggle="tab" aria-expanded="false" (click)="setMsgLinkQuesType(1)"><i class="fa fa-inbox">&nbsp;</i><span class="hide-xs">Message</span></a></li>
+                    <li class=""><a href="#photos" data-toggle="tab" aria-expanded="false" (click)="setMsgLinkQuesType(0)"><i class="fa fa-photo">&nbsp;</i><span class="hide-xs">Photos</span></a></li>
+                    <li class=""><a href="#videos" data-toggle="tab" aria-expanded="false" (click)="setMsgLinkQuesType(0)"><i class="fa fa-video-camera">&nbsp;</i><span class="hide-xs">Videos</span> </a></li>
+                    <li class=""><a href="#link" data-toggle="tab" aria-expanded="false" (click)="setMsgLinkQuesType(5)"><i class="fa fa-link">&nbsp;</i><span class="hide-xs">Link</span> </a></li>
+                    <li class=""><a href="#document" data-toggle="tab" aria-expanded="false" (click)="setMsgLinkQuesType(0)"><i class="fa fa-file">&nbsp;</i><span class="hide-xs">Document</span></a></li>
+                    <li class=""><a href="#audio" data-toggle="tab" aria-expanded="false" (click)="setMsgLinkQuesType(0)"><i class="fa fa-music">&nbsp;</i><span class="hide-xs">Audio</span></a></li>
+                    <li class=""><a href="#question" data-toggle="tab" aria-expanded="false" (click)="setMsgLinkQuesType(2)"><i class="fa fa-question-circle">&nbsp;</i><span class="hide-xs">Question</span></a></li>
+                </ul>
+                <div class="layout-column">
+                    <div class="tab-content status-content">
+                        <div class="tab-pane active" id="message">
+                            <div class="layout-row">
+                                <div class="flex-10 flex-xs-25"><span class="user-img"><img src="theme/dist/img/text-user.png" alt="" /></span></div>
+                                <div class="flex-90"><textarea [(ngModel)]="message.message.message" cols="5" placeholder="Share your thoughts..."></textarea></div>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="photos">
+                            <div class="layout-row p-15">
+                                <div class="flex-10 flex-xs-25"><span class="user-img"><img src="theme/dist/img/text-user.png" alt="" /></span></div>
+                                <div class="flex-90"><textarea [(ngModel)]="message.name.name" cols="5" placeholder="Somthing about photo..."></textarea></div>
+                            </div>
+                            <div class="layout-row two-pane" id="hide_photos">
+                                <div class="pane-left flex-50 layout-column layout-align-center-center flex-40">
+                                    <div class="info-value custom-upload">
+                                        <input #upImage type="file" (change)="photoChangeEvent($event)" accept="image/*" />
+                                        <div class="upload-sign">
+                                            <i class="fa fa-image">&nbsp;</i>
+                                            <span>Upload Photo</span>
+                                            <span class="photo-upload-name" *ngIf="upImage.value" >{{upImage.value}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+<!--                                <div class="flex-50 layout-column layout-align-center-center">
+                                    <div class="info-value"  onclick="$('#show_photos, #hide_photos').toggle();">
+                                        <i class="fa fa-link">&nbsp;</i>
+                                        <span>embed photo</span>
+                                    </div>
+                                </div>-->
+                            </div>
+                            <div class="layout-column"  id="show_photos" style="display: none;padding:15px;">
+                                <div class="layout-row">
+                                    <div class="flex-10 flex-xs-25"><span class="user-img"><img src="theme/dist/img/text-user.png" alt="" /></span></div>
+                                    <div class="flex-90"><textarea cols="5" placeholder="Share your thoughts..."></textarea></div>
+                                </div>
+                                <div class="layout-row layout-align-start inline-pd">
+                                    <div class="flex-50"><input placeholder="Paste a link here..." type="text" class="btn-block" /></div>
+                                    <div class=""><button class="btn btn-small post-btn">Add</button></div>
+                                    <div class=""><button class="btn btn-danger btn-small" onclick="$('#show_photos, #hide_photos').toggle();">Cancel</button></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="videos">
+                            <div class="layout-row p-15">
+                                <div class="flex-10 flex-xs-25"><span class="user-img"><img src="theme/dist/img/text-user.png" alt="" /></span></div>
+                                <div class="flex-90"><textarea [(ngModel)]="message.name.name" cols="5" placeholder="Somthing about video..."></textarea></div>
+                            </div>
+                            <div class="layout-row two-pane" id="hide_videos">
+                                <div class="pane-left flex-50 layout-column layout-align-center-center flex-40">
+                                    <div class="info-value custom-upload">
+                                        <input #upv type="file" (change)="videoChangeEvent($event)" accept="video/mp4,video/x-m4v,video/*" />
+                                        <div class="upload-sign">
+                                            <i class="fa fa-video-camera">&nbsp;</i>
+                                            <span>Upload video</span>
+                                            <span class="photo-upload-name" *ngIf="upv.value" >{{upv.value}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+<!--                                <div class="pane-right flex-50 layout-column layout-align-center-center flex-60">
+                                    <div class="info-value" onclick="$('#show_videos, #hide_videos').toggle();">
+                                        <i class="fa fa-link">&nbsp;</i>
+                                        <span>embed video</span>
+                                    </div>
+                                </div>     -->
+                            </div>
+                            <div class="layout-column"  id="show_videos" style="display: none;padding:15px;">
+                                <div class="layout-row">
+                                    <div class="flex-10 flex-xs-25"><span class="user-img"><img src="theme/dist/img/text-user.png" alt="" /></span></div>
+                                    <div class="flex-90"><textarea cols="5" placeholder="Share your thoughts..."></textarea></div>
+                                </div>
+                                <div class="layout-row layout-align-start inline-pd">
+                                    <div class="flex-50"><input placeholder="Paste a link here..." type="text" class="btn-block" /></div>
+                                    <div class=""><button class="btn btn-small post-btn">Add</button></div>
+                                    <div class=""><button class="btn btn-danger btn-small" onclick="$('#show_videos, #hide_videos').toggle();">Cancel</button></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="link">
+                            <div class="layout-column">
+                                <div class="layout-row">
+                                    <div class="flex-10 flex-xs-25"><span class="user-img"><img src="theme/dist/img/text-user.png" alt="" /></span></div>
+                                    <div class="flex-90"><textarea [(ngModel)]="message.link.title" cols="5" placeholder="Somthing about link..."></textarea></div>
+                                </div>
+                                <div class="layout-row layout-align-start inline-pd">
+                                    <div class="flex-50 flex-xs-60"><input [(ngModel)]="message.link.description" placeholder="Paste a link here..." type="text" class="btn-block" /></div>
+                                    <!--                                    <div class=""><button class="btn btn-small post-btn">Add</button></div>
+                                                                        <div class=""><button class="btn btn-danger btn-small">Cancel</button></div>-->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="document">
+                            <div class="layout-row p-15">
+                                <div class="flex-10 flex-xs-25"><span class="user-img"><img src="theme/dist/img/text-user.png" alt="" /></span></div>
+                                <div class="flex-90"><textarea [(ngModel)]="message.name.name" cols="5" placeholder="Somthing about document..."></textarea></div>
+                            </div>
+                            <div class="layout-column layout-align-center-center pane-left two-pane">
+                                <div class="info-value custom-upload">
+                                    <input #upd type="file" (change)="documentChangeEvent($event)" accept="application/msword, application/vnd.ms-excel, application/vnd.ms-powerpoint,
+                                        text/plain, application/pdf"/>
+                                    <div class="upload-sign">
+                                        <i class="fa fa-file-text">&nbsp;</i>
+                                        <span>Upload Document</span>
+                                        <span class="photo-upload-name" *ngIf="upd.value" >{{upd.value}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="audio">
+                            <div class="layout-row p-15">
+                                <div class="flex-10 flex-xs-25"><span class="user-img"><img src="theme/dist/img/text-user.png" alt="" /></span></div>
+                                <div class="flex-90"><textarea [(ngModel)]="message.name.name" cols="5" placeholder="Somthing about audio..."></textarea></div>
+                            </div>
+                            <div class="layout-row two-pane" id="hide_audio">
+                                <div class="pane-left flex-50 layout-column layout-align-center-center flex-40">
+                                    <div class="info-value custom-upload">
+                                        <input #upm type="file" (change)="audioChangeEvent($event)" accept="audio/*" />
+                                        <div class="upload-sign">
+                                            <i class="fa fa-music">&nbsp;</i>
+                                            <span>Upload music</span>
+                                            <span class="photo-upload-name" *ngIf="upm.value" >{{upm.value}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+<!--                                <div class="pane-right flex-50 layout-column layout-align-center-center flex-60">
+                                    <div class="info-value" onclick="$('#show_audio, #hide_audio').toggle();">
+                                        <i class="fa fa-link">&nbsp;</i>
+                                        <span>embed music</span>
+                                    </div>
+                                </div>     -->
+                            </div>
+                            <div class="layout-column"  id="show_audio" style="display: none;padding:15px;">
+                                <div class="layout-row">
+                                    <div class="flex-10 flex-xs-25"><span class="user-img"><img src="theme/dist/img/text-user.png" alt="" /></span></div>
+                                    <div class="flex-90"><textarea cols="5" placeholder="Share your thoughts..."></textarea></div>
+                                </div>
+                                <div class="layout-row layout-align-start inline-pd">
+                                    <div class="flex-50 hgh"><input placeholder="Paste a link here..." type="text" class="btn-block" /></div>
+                                    <div class=""><button class="btn btn-small post-btn">Add</button></div>
+                                    <div class=""><button class="btn btn-danger btn-small" onclick="$('#show_audio, #hide_audio').toggle();">Cancel</button></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="question">
+                            Question
+                            <div class="flex-90"><textarea [(ngModel)]="message.question.question"  cols="5" placeholder="Share your questions?..."></textarea></div>
+                        </div>
+                    </div>
+                    <!--                    <div class="category-add">check in</div>-->
+                    <div class="chooes-category tab-content">
+                        <div class="tab-pane active" id="choose_category">
+                            <div class="dropdown">
+                                <button class="btn cat-btn dropdown-toggle" type="button" data-toggle="dropdown">
+                                    {{categoryValue}} &nbsp;<span class="caret">&nbsp;</span>
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li><a  (click)="catagories(1)">General</a></li>
+                                    <li><a  (click)="catagories(2)">Tip / Trick</a></li>
+                                    <li><a  (click)="catagories(3)">Joke / Humor</a></li>
+                                    <li><a  (click)="catagories(4)">Tutorial</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- /.tab-pane -->
+                        <div class="tab-pane" id="enter_location">
+                            enter location
+                        </div>
+                        <!-- /.tab-pane -->
+                        <div class="tab-pane" id="tag_friends">
+                            tag friends
+                        </div>
+                        <div class="tab-pane" id="choose_journal">
+                            choose journal
+                        </div>
+                        <div class="tab-pane" id="enter_post">
+                            enter post destroy date
+                        </div>
+                    </div>
+                    <div class="chooes-option gray-gradient layout-row layout-align-space-between">
+                        <div class="option-set">
+                            <ul class="layout-row nav nav-tabs">
+                                <li class="active"><a href="#choose_category" data-toggle="tab" aria-expanded="true" title="choose category" class="fa fa-folder-open">&nbsp;</a></li>
+
+                            </ul>
+                        </div>
+                        <div class="layout-row option-btn">
+                            <div class="public-btn">
+                                <div class="dropdown">
+                                    <button class="btn dropdown-toggle" type="button" data-toggle="dropdown">
+                                        <span class="fa fa-users">&nbsp;</span>{{visibilityStatus}}<span class="caret">&nbsp;</span>
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li><a (click)="visibility(1)">Public</a></li>
+                                        <li><a  (click)="visibility(2)">Private</a></li>
+                                        <li><a  (click)="visibility(3)">Friends Only</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class=""><button class="btn post-btn btn-small" (click)="onPostAllTypeDegreeData()">Post</button></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="post layout-column margin-b" *ngFor="#posts of post_data; #j=index">
+                 <div class="user-block" >
+                     <span *ngIf="posts.created_by && posts.created_by._id!==null"> <a   class="c-p"(click)="getProfileById(posts.created_by._id)" > 
+                        <span *ngIf="posts.created_by  && posts.created_by.photo !==null"><img  class="img-circle" src="theme/files/ProfilePicture/{{posts.created_by.photo}}" alt="User Image" ></span>
+                        <span *ngIf="posts.created_by  && posts.created_by.photo ==null"> <img class="img-circle" src="theme/files/ProfilePicture/no_image.png" alt="User Image" ></span>
+                        <span class="username">
+                            <span class="color-red" *ngIf="posts.created_by && posts.created_by.fname!=null">{{posts.created_by.fname+''+posts.created_by.lname}}</span>
+                            <!--<a href="#" class="pull-right btn-box-tool"><i class="fa fa-times"></i></a>-->
+                        </span>
+                         </a></span>
+                    <span class="description">{{getCategory(posts.catagory)}}  |  <span *ngIf="posts.created_on">{{posts.created_on | amTimeAgo}}</span></span>
+                </div>
+                <div class="post-link" posts *ngIf="posts.link[0]">
+                     <div class="full-link">
+                        <span class="title" *ngIf="posts.link[0].title">{{posts.link[0].title}}</span><br>
+                        <span>Link:</span><span class="title" *ngIf="posts.link[0].description">{{posts.link[0].description}}</span>
+                    </div>
+                     <span class="rem-post-btn" (click)="deletePostById(posts._id)"><i class="fa fa-times"></i></span>
+                </div>
+                <div class="post-document" posts *ngIf="posts.document[0]">
+                     <div class="full-document">
+                        <span class="title" *ngIf="posts.name && posts.name !=null">{{posts.name}}</span><br>
+                        <span *ngIf="posts.created_by && posts.created_by._id!==null"><a href="theme/files/Degree/Documents/{{posts.created_by._id}}/{{posts.document[0].file_name}}" target="_blank" class="pdflink" ><span class="title" *ngIf="posts.document[0].title">{{posts.document[0].title}}</span><span class="title" *ngIf!="posts.document[0].title"><i class="fa fa-file-text fa-4x ">&nbsp;</i></span></a></span>
+                    </div>
+                     <span class="rem-post-btn" (click)="deletePostById(posts._id)"><i class="fa fa-times"></i></span>
+                </div>
+                <div class="post-question" posts *ngIf="posts.question">
+                     <div class="full-question">
+                        <span class="question" >{{posts.question}}</span>
+                    </div>
+                    <span class="rem-post-btn" (click)="deletePostById(posts._id)"><i class="fa fa-times"></i></span>
+                </div>
+                <div class="post-message" posts *ngIf="posts.message">
+                     <div class="full-message">
+
+                        <span class="message" >{{posts.message}}</span>
+                    </div>
+                     <span class="rem-post-btn" (click)="deletePostById(posts._id)"><i class="fa fa-times"></i></span>
+                </div>
+                <div class="post-audio"  *ngIf="posts.audio[0]">
+                    <div class="full-audio">
+                        <span class="title" *ngIf="posts.name && posts.name !=null">{{posts.name}}</span><br>
+                        <audio controls *ngIf="posts.created_by && posts.created_by._id!==null" >
+                            <source src="theme/files/Degree/Audios/{{posts.created_by._id}}/{{posts.audio[0].file_name}}" type="audio/ogg">
+                        </audio>
+
+                    </div>
+                    <span class="rem-post-btn" (click)="deletePostById(posts._id)"><i class="fa fa-times"></i></span>
+                </div>
+                <div class="post-video" posts *ngIf="posts.video[0]">
+                     <div class="full-video">
+                        <span class="title" *ngIf="posts.name && posts.name !=null">{{posts.name}}</span><br>
+                        <video width="100%" height="100%" controls  *ngIf="posts.created_by && posts.created_by._id!==null">
+                            <source src="theme/files/Degree/Videos/{{posts.created_by._id}}/{{posts.video[0].file_name}}" type="video/mp4">
+                        </video> 
+                    </div>
+                     <span class="rem-post-btn" (click)="deletePostById(posts._id)"><i class="fa fa-times"></i></span>
+                </div>
+                <div class="post-img" posts *ngIf="posts.photo[0]">
+                     <div class="full-img" >
+                        <span class="title" *ngIf="posts.name && posts.name !=null ">{{posts.name}}</span><br>
+                        <span *ngIf="posts.created_by && posts.created_by._id!==null"><img class="img-responsive" src="theme/files/Degree/Photos/{{posts.created_by._id}}/{{posts.photo[0].file_name}}" alt="Photo" ></span>
+                    </div>
+                     <span class="rem-post-btn" (click)="deletePostById(posts._id)"><i class="fa fa-times"></i></span>
+                </div>
+                <div class="post-btm layout-row layout-align-space-between-center layout-xs-column">
+                    <ul class="list-inline smile-dropdown">
+                        <li (click)="addLike(posts._id,posts)">
+                            <a class="link-black text-sm c-p">
+                                <img src="theme/dist/img/hand2.png" style="height: 20px ;width: 20px"/>
+                            </a><span> {{posts.likes.length}} </span>
+                        </li>
+                    </ul>
+                    <ul class="list-inline user-acitvity">
+                        <li (click)=toggleComment(!togComment,j) class="c-p"><a  class="link-black text-sm"><i class="fa fa-commenting margin-r-5 fa-1x"></i><span>{{posts.comments.length}}</span>comment</a></li>
+                        <!--<span >-->
+                            <li *ngIf="posts.created_by && posts.created_by._id!==null" (click)="jouneral3(posts.created_by._id,posts._id)" class="c-p">
+                                <a  class="link-black text-sm"><i class="fa fa-file-text margin-r-5 fa-1x"></i>journal</a>
+                            </li>
+                        <!--</span>-->
+                        <li class="">
+                            <a (click)="share(posts)" class="link-black text-sm c-p"><i class="fa  fa-share margin-r-5 fa-1x"></i> share
+                                <span *ngIf="posts.share"> ({{posts.share.length}})</span></a></li>
+                    </ul>
+                </div>
+                <div class="post-toggle-area" [class.display-comment]="togComment && j == thisElement">
+                     <div class="post-comment-section">
+                        <div class="post-comment-body">
+                            <ul class="post-comment-list">
+                                <li class="layout-row"   *ngFor="#comment of posts.comments">
+                                    <div *ngIf="comment.comment_by && comment.comment_by._id!=null" class="post-comment-img flex-10" (click)="getProfileById(comment.comment_by._id)" class="post-comment-img flex-10 c-p">
+                                        <img *ngIf="comment.comment_by.photo" class="img-circle" src="theme/files/ProfilePicture/{{comment.comment_by.photo}}">
+                                        <img *ngIf="!comment.comment_by.photo" class="img-circle" src="theme/files/ProfilePicture/no_image.png">
+                                    </div>
+                                    <div class="post-comment-body layout-column flex-90"> 
+                                        <div class="layout-row layout-align-space-between">
+                                            <div (click)="getProfileById(comment.comment_by._id)" class="flex-75 comment-by c-p">{{comment.comment_by.fname}}</div>
+                                            <span class="flex-25">{{comment.date | amTimeAgo}}</span>
+                                        </div>
+                                        <div class="post-comment-text">
+                                            {{comment.body}}
+                                        </div>
+                                    </div><span *ngIf="posts.created_by && posts.created_by._id!==null"><span *ngIf="comment.comment_by._id==isResult || posts.created_by._id==isResult" class="delete"(click)="deleteComment(posts._id,comment._id, posts)">delete</span></span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="post-comment-footer">
+                            <form (ngSubmit)="addComment(posts._id,posts)">
+                                <div class="input-group">
+                                    <input  [(ngModel)]="postComment.comment" class="form-control" type="text"  placeholder="Type a comment">
+                                    <span class="input-group-addon"  (click)="addComment(posts._id,posts)"><i class="fa fa-paper-plane-o"></i></span>
+                                </div>
+                            </form>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+            <div class="spinner-lazy-block" *ngIf="contentLoding">
+                <div class="spinner-lazy">
+                    <div class="bounce1"></div>
+                    <div class="bounce2"></div>
+                    <div class="bounce3"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="box box-danger box-orange">
+                <div class="box-header with-border ">
+                    <div class="box-title">current members</div>
+                </div>
+                <div class="box-body" *ngIf="current_member">
+                    <ul class="users-list clearfix" *ngFor="#current_members of current_member">
+                        <li class="active"  *ngIf="current_members">
+                            <!--<h3>{{current_members.fname}}</h3>-->
+                            <span *ngIf="current_members.photo && current_members._id!=null">
+                                <a class="member-border display-full c-p" (click)="getProfileById(current_members._id)"> 
+                                    <img src="theme/files/ProfilePicture/{{current_members.photo}}" alt="User Image">
+                                </a>
+                            </span>
+                            <span *ngIf="!current_members.photo && current_members._id!=null">
+                                <a class="member-border display-full c-p" (click)="getProfileById(current_members._id)">
+                                    <img src="theme/files/ProfilePicture/no_image.png" alt="User Image">
+                                </a>
+                            </span>
+                        </li>
+                    </ul>
+                    <div class="no-count-section" *ngIf="current_member=='' || currentMemberCount == 0">
+                        <i class="fa fa-exclamation-circle" aria-hidden="true"></i>&nbsp;  No Current member exist
+                    </div>
+                </div>
+                <div class="box-footer text-center" *ngIf="sub &&(current_member!='' && currentMemberCount != 0)">
+                     <a  class="uppercase" [routerLink]="['Degree.PastCurrentMembers',{degreeId:sub.degreeDetails._id,id:1}]">View more</a>
+                    <!--<a  class="uppercase" [routerLink]="['Degree.PastCurrentMembers',{degreeId:1,id:1}]">View more</a>-->
+                </div>
+            </div>
+            <div class="box box-danger box-orange">
+                <div class="box-header with-border ">
+                    <div class="box-title">past members</div>
+                </div>
+                <div class="box-body" *ngIf="past_member">
+                    <ul class="users-list clearfix" >
+                        <li *ngFor="#past_members of past_member">
+                            <span *ngIf="past_members && past_members.photo"> 
+                                <a *ngIf="past_members._id!=null" class="member-border display-full c-p" (click)="getProfileById(past_members._id)">
+                                    <img src="theme/files/ProfilePicture/{{past_members.photo}}" alt="User Image">
+                                </a>
+                            </span>
+                            <span *ngIf="past_members && !past_members.photo">
+                                <a *ngIf="past_members._id!=null" class="member-border display-full c-p" (click)="getProfileById(past_members._id)">
+                                    <img src="theme/files/ProfilePicture/no_image.png" alt="User Image">
+                                </a>
+                            </span>
+                        </li>
+                    </ul>
+                    <div class="no-count-section" *ngIf="past_member=='' || pastMemberCount == 0">
+                        <i class="fa fa-exclamation-circle" aria-hidden="true"></i>&nbsp;  No Past member exist
+                    </div>
+                </div>
+                <div class="box-footer text-center" *ngIf="sub && (past_member!='' && pastMemberCount != 0)">
+                     <a  class="uppercase" [routerLink]="['Degree.PastCurrentMembers',{degreeId:sub.degreeDetails._id,id:2}]">View more</a>
+                    <!--<a  class="uppercase" [routerLink]="['Degree.PastCurrentMembers',{degreeId:1,id:2}]">View more</a>-->
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</section>
+<div class="modal fade modal-align-fix " id = "jouneral3">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Journal </h4>
+            </div>
+            <div class="modal-body setting-page flex-100 layout-row">
+                <label class="flex-20 layout-row layout-align-center-center">Descriptions</label>
+                <input id="exampleInputFile"  class="flex-50 pad-5-10" placeholder="Write"/>
+            </div>
+            <div class="modal-body setting-page flex-100 layout-row">
+                <label class="flex-20 layout-row layout-align-center-center">Journal</label>
+
+                <div class="dropdown flex-50">
+                    <button type="text" data-toggle="dropdown" placeholder="Select Journal" class="flex-50">{{select_journal}}
+                        <span class="caret"></span></button>
+                    <ul class="dropdown-menu" *ngFor="#journals of JournalByUserId">
+                        <div *ngFor="#journals of JournalByUserId">
+                            <li *ngIf="journals && journals._id!=null"><a (click)="saveJournalId(journals._id,journals.title)">{{journals.title}}</a></li>    
+                        </div>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button class="add-btn cancel-btn" data-dismiss="modal">Cancel</button>
+                <button class="add-btn" data-dismiss="modal" (click)="addPostInJournal()">Update</button>
+            </div>
+
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>

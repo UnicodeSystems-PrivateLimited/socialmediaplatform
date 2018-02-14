@@ -1,0 +1,86 @@
+<!--
+  Generated template for the GroupChat page.
+
+  See http://ionicframework.com/docs/v2/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar class="gradient">
+    <ion-row>
+      <ion-col width-80>
+        <ion-list>
+          <ion-item (click)="onMemberList()">
+            <ion-avatar item-left>
+              <img *ngIf="chatGlobalService.chatGroupData.icon" src="{{dataService.apiBaseUrl}}public/files/Groupchat/{{chatGlobalService.chatGroupData.icon}}">
+              <img *ngIf="!chatGlobalService.chatGroupData.icon" src="{{dataService.apiBaseUrl}}public/files/Groupchat/no_image.png">
+            </ion-avatar>
+            <h2>{{chatGlobalService.chatGroupData.title}}</h2>
+            <p>tap here For Memberlist</p>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+      <ion-col width-20 text-right>
+        <button ion-button icon-only class="add-event-btn" (click)="onAddMember()">
+          <ion-icon class="add-event" color="white" name="add-circle"  ></ion-icon>
+        </button>
+      </ion-col>
+    </ion-row>
+
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content>
+  <!--<ion-row>    
+    <ion-col col-4 no-padding>
+      <button ion-button (click)="onDeleteClick()" *ngIf="profile && chatGroupData  && chatGroupData.created_by._id==profile.id ">
+          Delete      
+      </button>
+    </ion-col>
+  </ion-row>-->
+  <ion-spinner icon="spiral" *ngIf="loader"></ion-spinner>
+  <div *ngIf="!loader">
+  <div *ngIf="chatGlobalService.groupchatdefaulthistory && chatGlobalService.groupchatdefaulthistory!=null && chatGlobalService.groupchatdefaulthistory.length>0">
+    <ion-item *ngFor="let groupchatdefaulthistorys of chatGlobalService.groupchatdefaulthistory ;let j=index" class="direct-chat-msg">
+      <!--<ion-avatar item-left>
+        <img *ngIf="groupchatdefaulthistorys && groupchatdefaulthistorys?.from.photo!=''" src="{{dataService.apiBaseUrl}}public/files/ProfilePicture/{{groupchatdefaulthistorys.from.photo}}">
+        <img *ngIf="groupchatdefaulthistorys && groupchatdefaulthistorys?.from.photo=='' " src="{{dataService.apiBaseUrl}}public/files/ProfilePicture/no_image.png">
+      </ion-avatar>-->
+      <div *ngIf="groupchatdefaulthistorys">
+        <h2 [class.pre-chat-text]="groupchatdefaulthistorys?.from._id!=loggedInUserId" [class.post-chat-text]="groupchatdefaulthistorys?.from._id==loggedInUserId"><span class="pre-msg"><span class="massenger-name" *ngIf="groupchatdefaulthistorys?.from._id!=loggedInUserId">{{groupchatdefaulthistorys?.from.fname + ' ' + groupchatdefaulthistorys?.from?.lname}}</span>         <span text-left> {{groupchatdefaulthistorys.body}}</span> <span class="msg-time">{{groupchatdefaulthistorys?.cdate | datetimefilterpipe}}</span></span>
+        </h2>
+      </div>
+    </ion-item>
+    <div *ngIf="chatGlobalService.groupchathistory && chatGlobalService.groupchathistory!=null  && chatGlobalService.groupchathistory.length>0">
+      <ion-item *ngFor="let groupchathistorys  of chatGlobalService.groupchathistory ;let k=index" class="direct-chat-msg">
+        <!--<ion-avatar item-left>
+          <img *ngIf="groupchathistorys  && (groupchathistorys?.userdata.photo!=null && groupchathistorys?.userdata.photo!='')" src="{{dataService.apiBaseUrl}}public/files/ProfilePicture/{{groupchathistorys.userdata.photo}}">
+          <img *ngIf="groupchathistorys && (groupchathistorys?.userdata.photo==null || groupchathistorys?.userdata.photo=='')" src="{{dataService.apiBaseUrl}}public/files/ProfilePicture/no_image.png">
+        </ion-avatar>-->
+        <h2 [class.pre-chat-text]="groupchathistorys?.from!=loggedInUserId" [class.post-chat-text]="groupchathistorys?.from==loggedInUserId" *ngIf="groupchathistorys"><span class="pre-msg"> <span text-left>{{groupchathistorys.body}}</span> <span class="msg-time">{{groupchathistorys.cdate | datetimefilterpipe}} </span></span>
+        </h2>
+      </ion-item>
+    </div>
+  </div>
+  </div>
+</ion-content>
+
+
+<ion-footer>
+  <ion-toolbar>
+    <form>
+      <ion-row class="align-center">
+        <ion-col width-60>
+          <input class="messageDraft" [(ngModel)]="groupchattext.groupchatmsg" type="text" name="message" placeholder="Type a message">
+        </ion-col>
+        <ion-col width-20 center text-center>
+          <ion-buttons>
+            <button type="submit" (click)="sendGroupData()" ion-button icon-only>
+               <ion-icon  name="send"></ion-icon>
+            </button>
+          </ion-buttons>
+        </ion-col>
+      </ion-row>
+    </form>
+  </ion-toolbar>
+</ion-footer>

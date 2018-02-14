@@ -1,0 +1,124 @@
+<ion-header class="gradient">
+  <ion-navbar>
+    <ion-title>
+      <h1 class="header-title" text-center color="white">Share Post</h1>
+    </ion-title>
+  </ion-navbar>
+   <ion-toolbar no-border-top>
+    <ion-segment [(ngModel)]="tab">
+      <ion-segment-button value="internal">
+        INTERNAL
+      </ion-segment-button>
+      <ion-segment-button value="external">
+        EXTERNAL
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content class="social-icon-list">
+   <div [ngSwitch]="tab">
+  <ion-card *ngSwitchCase="'internal'"> 
+      <ion-card-content>
+        <ion-item-group>
+           <!--<ion-item-divider color="light">INTERNAL</ion-item-divider>-->
+    <ion-row padding>
+      <ion-label class="form-label">Select Post Type</ion-label>
+      <ion-item class="dropdown">
+        <ion-select (ngModelChange)="onChangeShareType($event)" [(ngModel)]="selectedPostType" interface="action-sheet">
+          <ion-option value="1">Share On Your Timeline</ion-option>
+          <ion-option value="2">Share On a Friend's Timeline</ion-option>
+        </ion-select>
+      </ion-item>
+      <ion-spinner icon="spiral" *ngIf="loader"></ion-spinner>
+    </ion-row>
+    <ion-row *ngIf="postData" padding>
+      <ion-item class="textarea">
+        <textarea [(ngModel)]="postSharedData.shared_title" type="text" name="text" placeholder="Say something about this..."></textarea>
+      </ion-item>
+      <div class="post-content"> 
+      <ion-item *ngIf="postData.message">
+        {{postData.message}}
+      </ion-item>
+      <ion-item *ngIf="postData.photo[0]" class="share-img">
+        <h4 *ngIf="postData.name">{{postData.name}}</h4>
+        <img *ngIf="!postData.photo[0].title" alt="Photo" src="{{dataService.apiBaseUrl}}public/files/{{getFoldername(postData.types)}}/Photos/{{postData.origin_creator?postData.origin_creator:postData.created_by._id}}/{{postData.photo[0].file_name}}">
+        <img *ngIf="postData.photo[0].title" src="{{postData.photo[0].title}}" alt="Photo">
+      </ion-item>
+      <ion-item *ngIf="postData.video[0]">
+        <h4 *ngIf="postData.name">{{postData.name}}</h4>
+        <video *ngIf="!postData.video[0].title" width="100%" height="100%" controls>
+          <source src="{{dataService.apiBaseUrl}}public/files/{{getFoldername(postData.types)}}/Videos/{{postData.origin_creator?postData.origin_creator:postData.created_by._id}}/{{postData.video[0].file_name}}"
+            type="video/mp4">
+        </video>
+        <iframe *ngIf="postData.video[0].title" width="100%" height="320px" [src]="postData.video[0].title | youtubeSafeUrl" frameborder="0"
+          allowfullscreen>
+        </iframe>
+      </ion-item>
+      <ion-item *ngIf="postData.audio[0]">
+        <h4 *ngIf="postData.name">{{postData.name}}</h4>
+        <h4>{{postData.audio[0].file_name}}</h4>
+        <audio controls *ngIf="!postData.audio[0].title">
+          <source src="{{dataService.apiBaseUrl}}public/files/{{getFoldername(postData.types)}}/Audios/{{postData.origin_creator?postData.origin_creator:postData.created_by._id}}/{{postData.audio[0].file_name}}"
+            type="audio/ogg">
+        </audio>
+        <audio controls *ngIf="postData.audio[0].title">
+          <source src="{{postData.audio[0].title}}" type="audio/mp4">
+        </audio>
+      </ion-item>
+      <ion-item *ngIf="postData.document[0]">
+        <h4 *ngIf="postData.name">{{postData.name}}</h4>
+        <h4 *ngIf="postData.document[0].file_name">{{postData.document[0].file_name}}</h4>
+        <a _target="blank" href="{{dataService.apiBaseUrl}}public/files/{{getFoldername(postData.types)}}/Documents/{{postData.origin_creator?postData.origin_creator:postData.created_by._id}}/{{postData.document[0].file_name}}"
+          class="pdflink"><span class="title" *ngIf="postData.document[0].title">{{postData.document[0].title}}</span>     </a>
+      </ion-item>
+      <ion-item *ngIf="postData.link[0]">
+        <h4 *ngIf="postData.link[0].title">{{postData.link[0].title}}</h4>
+        <span class="link-heading"><i _ngcontent-fbs-5="" aria-hidden="true" class="fa fa-link"></i></span>
+        <a class="link" href="{{postData.link[0].description}}" target="_blank" *ngIf="postData.link[0].description">{{postData.link[0].description}}</a>
+      </ion-item>
+      <ion-item *ngIf="postData.question" >
+        <h4 class="question text-formatting">{{postData.question}}</h4>
+      </ion-item>
+      </div>
+
+      <p *ngIf="selectedPostType==1">Select Privacy</p>
+      <ion-item *ngIf="selectedPostType==1" class="dropdown">
+        <ion-label>Select Privacy</ion-label>
+        <ion-select (ngModelChange)="onChangeSharePrivacy($event)" [(ngModel)]="selectedsharePrivacyType" interface="action-sheet">
+          <ion-option value="1">Public</ion-option>
+          <ion-option value="2">Private(Only Me)</ion-option>
+          <ion-option value="3">All Friends</ion-option>
+          <ion-option value="4">All Followers</ion-option>
+          <ion-option value="5">Custom</ion-option>
+          <ion-option value="6">All Friends And Followers</ion-option>
+          <!--<ion-option value="7">External</ion-option>-->
+        </ion-select>
+      </ion-item>
+      <ion-label class="form-label">
+        <button ion-button (click)="onSharePost()">Share</button>
+      </ion-label>
+    </ion-row>
+        </ion-item-group>
+      </ion-card-content>
+  </ion-card>
+    
+  <ion-card *ngSwitchCase="'external'"> 
+<ion-card-content class="external-card">    
+    <ion-item-group>
+        <!--<ion-item-divider color="light" class="external">EXTERNAL</ion-item-divider>-->
+      <ion-row padding>
+        <ion-item text-wrap>
+        <ion-label>Please click on below button to share this post via FB, Email, SMS, etc. Thanks.</ion-label>
+        </ion-item>
+        <ion-label  class="form-label">
+          <button ion-button  (click)="sharePicker()">Share</button>
+        </ion-label>
+    </ion-row>
+    </ion-item-group>
+
+</ion-card-content>
+</ion-card> 
+   </div>
+</ion-content>

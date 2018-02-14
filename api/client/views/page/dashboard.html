@@ -1,0 +1,460 @@
+<style>
+
+
+    :host(.page1Container) {
+        display: inline-block;
+
+        width: 100%;
+        -webkit-transition: all cubic-bezier(0, 0, 0.39, 1.07) 0.2s;
+        transition: all cubic-bezier(0, 0, 0.39, 1.07) 0.2s;
+    }
+
+    :host(.page1Container.ng-enter) {
+        opacity: 0;
+        transform: translate3d(100%, 0, 0);
+    }
+
+    :host(.page1Container.ng-enter-active) {
+        opacity: 1;
+        transform: none;
+    }
+
+</style>
+<section class="content p-0" *ngIf="user && userData ">
+
+
+         <div class="custom1-modal layout-column">
+        <div class="custom1-modal-header layout-row layout-align-space-between">
+            <div class="h3 header-title">Dashboard</div>
+            <div class="header-options layout-row layout-align-end">
+<!--                <div class="modal-option option1 layout-row layout-align-center-center">
+                    <i class="fa fa-plus-square c-green" aria-hidden="true"></i>
+                    <span class="btn-title">Create New</span>
+                </div>-->
+
+            </div>
+        </div>
+        <div class="custom1-modal-body layout-column layout-align-space-between my-profile-modal ">
+
+
+
+
+            <div class="flex layout-row flex-wrap layout-wrap layout-align-space-between">
+                <div class="layout-column flex-32 flex-xs-100 res-margin">
+                    <div class="layout-row trans-scale">
+                        <div class="flex-25 noti-icon layout-align-center-center layout-row"><i class="fa fa-envelope" aria-hidden="true"></i></div>
+                        <div class="flex-75 layout-row noti-detail layout-wrap">
+                            <div class="flex-80 flex-sm-80">
+                                <div class="title">Messages</div>
+                            </div>
+                            <div class="flex-20 text-right flex-sm-20">
+                                <div class="title" >{{page.totPendUserMsg}}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div  class="layout-row trans-scale">
+                        <div class="flex-25 noti-icon layout-align-center-center layout-row bell"><i class="fa fa-bell-o" aria-hidden="true"></i>
+                        </div>
+                        <div class="flex-75 layout-row noti-detail layout-wrap bell-column">
+                            <div class="flex-80 flex-sm-80">
+                                <div class="title">Notification</div>
+                            </div>
+                            <div class="flex-20 text-right flex-sm-20">
+                                <div class="title" >{{page.notificationData.length}}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div  class="layout-row trans-scale">
+                        <div class="flex-25 noti-icon layout-align-center-center layout-row"><i class="fa fa-user" aria-hidden="true"></i>
+                        </div>
+                        <div class="flex-75 layout-row noti-detail layout-wrap">
+                            <div class="flex-80 flex-sm-80">
+                                <div class="title">New Members</div>
+                            </div>
+                            <div class="flex-20 text-right flex-sm-20">
+                                <div class="title" >{{page.friendRequestnotificationData.length}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="layout-column flex-32 bar-section flex-xs-100 res-margin">
+                    <div class="layout-column height pad-10 layout-align-space-between m-h-132">
+
+                        <div class="bar-startus layout-row ">
+                            <div class="layout-column flex-50">
+                                <span>{{userData.loginDetails.lastLogin | amDateFormat:'LL'}}</span>
+                                <span>Last Login</span>
+                            </div>
+                            <div class=" layout-column flex-50 layout-align-sm-center-center">
+                                <span>{{userData.loginDetails.totalLogin}}</span>
+                                <span>Total Login</span>
+                            </div>
+                        </div>
+                        <div class="bar " id="bar">
+                            <div class="progress" id="progress">
+                                <div id="progress-bar" class="progress-bar progress-bar-yellow" [style.width.%]="profilepercent">
+                                    <div>{{profilepercent}}% Complete</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div [routerLink]="['../Settings']" class="layout-row layout-align-space-between pad-10 trans-scale c-p">
+                        <span *ngIf="profilepercent!=100">Complete Your Profile</span>
+                        <span *ngIf="profilepercent==100">Edit Your Profile</span>
+                        <span><i class="fa fa-arrow-circle-o-right" aria-hidden="true"></i></span>
+                    </div>
+
+
+                </div>
+                <div class="layout-column flex-32 follwer flex-xs-100 res-margin">
+                    <div class="layout-row follwer1 trans-scale">
+                        <div class="layout-row flex-50 layout-align-space-between-center pad-10">
+                            <div class="first">Friends</div>
+
+                        </div>
+                        <div class="layout-row flex-50 layout-align-end-center pad-10">
+                            <div class="first1">{{userData.friendsCount}}</div>
+
+                        </div>
+                    </div>
+                    <div class="layout-row follwer2 trans-scale">
+                        <div class="layout-row flex-50 layout-align-space-between-center pad-10">
+                            <div class="first">Followers</div>
+
+                        </div>
+                        <div class="layout-row flex-50 layout-align-end-center pad-10">
+                            <div class="first1">{{userData.followersCount}}</div>
+
+                        </div>
+                    </div>
+                    <div class="layout-row follwer3 trans-scale">
+                        <div class="layout-row flex-50 layout-align-space-between-center pad-10">
+                            <div class="first">Following</div>
+
+                        </div>
+                        <div class="layout-row flex-50 layout-align-end-center pad-10">
+                            <div class="first1">{{userData.followingsCount}}</div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="layout-row layout-wrap cuurent-subject m-t-20 m-b-20 layout-align-space-between">
+                <div class="layout-column flex-49 whit-bg  border margin-r-10 no-margin flex-xs-100 res-margin">
+                    <div class="custom1-modal layout-column">
+                        <div class="custom1-modal-header layout-row layout-align-space-between pad-10 ">
+                            <div class="layout-row layout-wrap flex-80">
+                                <div class="header-title-icon layout-row layout-align-center-center flex-10 flex-sm-20 flex-xs-20">
+                                    <i class="fa fa-book" aria-hidden="true"></i></div>
+                                <div class="header-title flex-80"> Current Subjects <span class="value-badge">({{userData.current_subjects.length}})</span>
+                                </div>
+                            </div>
+                            <div class="header-options layout-row flex-15 layout-align-end">
+
+                                <div class="modal-option option2 layout-row layout-align-center-center">
+                                    <i class="fa fa-pencil c-p" aria-hidden="true" [routerLink]="['../Settings']"></i>
+
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="custom1-modal-body layout-row layout-wrap layout-align-start-start c-m-b-w" >
+                            <div class="content-block layout-row flex-50 flex-sm-100 flex-xs-100 layout-align-space-between layout-align-xs-center-center" *ngFor="#current_subject of userData.current_subjects">
+                                 <div class="content-block-img bg-math layout-column layout-align-center-center">
+                                    <i class="fa fa-calculator" aria-hidden="true"></i>
+
+
+                                </div>
+                                <div class="content-block-desc layout-column flex-70 c-p layout-align-xs-center-center margin-l-10" *ngIf="current_subject" (click)="getSubjectWall(current_subject.subject_id)">
+                                    <h3 class="content-block-desc-title">{{current_subject.name}}</h3>
+                                </div>
+                            </div>
+                            <div class="no-count-section" *ngIf="userData.current_subjects.length == 0">
+                                <i class="fa fa-exclamation-circle" aria-hidden="true"></i>&nbsp; Current Subject Empty
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="layout-column flex-49 whit-bg  border flex-xs-100 res-margin">
+                    <div class="custom1-modal layout-column">
+                        <div class="custom1-modal-header layout-row layout-align-space-between pad-10 ">
+                            <div class="layout-row layout-wrap flex-80">
+                                <div class="header-title-icon layout-row layout-align-center-center flex-10 flex-sm-20 flex-xs-20">
+                                    <i class="fa fa-book" aria-hidden="true"></i></div>
+                                <div class="header-title flex-80"> Past Subjects <span class="value-badge">({{userData.past_subjects.length}})</span>
+                                </div>
+                            </div>
+                            <div class="header-options layout-row flex-15 layout-align-end">
+
+                                <div class="modal-option option2 layout-row layout-align-center-center">
+                                    <i class="fa fa-pencil c-p" aria-hidden="true" [routerLink]="['../Settings']"></i>
+
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="custom1-modal-body layout-row layout-wrap layout-align-start-start c-m-b-w">
+                            <div class="content-block layout-row flex-50 flex-sm-100 layout-align-space-between flex-xs-100 layout-align-xs-center-center" *ngFor="#past_subject of userData.past_subjects">
+                                 <div class="content-block-img bg-bio layout-column layout-align-center-center" >
+                                    <i class="fa fa-heartbeat" aria-hidden="true"></i>
+
+                                </div>
+                                <div class="content-block-desc layout-column flex-70 c-p layout-align-xs-center-center margin-l-10" *ngIf="past_subject" (click)="getSubjectWall(past_subject.subject_id)">
+                                    <h3 class="content-block-desc-title">{{past_subject.name}}</h3>
+                                </div>
+                            </div>
+                            <div class="no-count-section" *ngIf="userData.past_subjects.length == 0">
+                                <i class="fa fa-exclamation-circle" aria-hidden="true"></i>&nbsp; Past Subject Empty
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="layout-column layout-align-space-between">
+                <div class="box box-warning  modal-border-box">
+                    <!-- /.box-header -->
+                    <div class="box-body padding-0">
+                        <div class="layout-row  layout-align-space-between layout-wrap ">
+                            <div class="m-b-20 flex-49 flex-xs-100" *ngFor="#current_college of userData.current_colleges">
+                                 <div class="content-block layout-row layout-align-space-between border whit-bg college-b border-radius-3px trans-scale m-t-20">
+                                    <div class="layout-column layout-align-center-center flex-20 flex-sm-30 flex-xs-30 abnk">
+                                        <i class="fa fa-bank" aria-hidden="true"></i>
+
+                                    </div>
+                                    <div class="content-block-desc layout-column flex-80 layout-wrap layout-row margin-l-10">
+                                        <h3 class="content-block-desc-title flex-xs-80">Current College</h3>
+                                        <div class="detaial flex-80 c-p" (click)="getCollegeWall(current_college.college_id)">
+                                            <h5 class="content-block-desc-sub-title">{{current_college.name}}</h5>
+                                            <div class="content-block-desc-link"> (Current Student)</div>
+                                        </div>
+                                        <div class="icon-pencil-edit flex-10 layout-row text-right">
+
+                                            <div class="modal-option option1 layout-row layout-align-end-start flex-50">
+                                                <i class="fa fa-pencil c-p" aria-hidden="true" [routerLink]="['../Settings']"></i>
+
+
+                                            </div> 
+
+                                        </div>
+                                    </div> 
+                                </div>
+                            </div>
+                            <div class="m-b-20 flex-49 flex-xs-100"  *ngFor="#past_college of userData.past_colleges">
+                                 <div class="content-block layout-row layout-align-space-between border whit-bg college-b border-radius-3px trans-scale m-t-20">
+                                    <div class="layout-column layout-align-center-center flex-20 flex-sm-30 abnk flex-xs-30">
+                                        <i class="fa fa-bank" aria-hidden="true"></i>
+
+                                    </div>
+                                    <div class="content-block-desc layout-column flex-80 layout-wrap layout-row">
+                                        <h3 class="content-block-desc-title flex-xs-80">Past College</h3>
+                                        <div class="detaial flex-80 c-p" (click)="getCollegeWall(past_college.college_id)">
+                                            <h5 class="content-block-desc-sub-title">{{past_college.name}}</h5>
+                                            <div class="content-block-desc-link"> (Past Student)</div>
+                                        </div>
+                                        <div class="icon-pencil-edit flex-10 layout-row text-right">
+
+                                            <div class="modal-option option1 layout-row layout-align-end-start flex-50">
+                                                <i class="fa fa-pencil  c-p" aria-hidden="true" [routerLink]="['../Settings']"></i>
+
+
+                                            </div> 
+
+                                        </div>
+                                    </div> 
+                                </div>
+                            </div>
+                        </div>
+
+                    </div><!-- /.box-body -->
+
+                </div>
+
+                <!--                <div class="layout-column flex-49 layout-align-space-between layout-wrap m-b-20">
+                                    <div class="m-b-20"  *ngFor="#past_college of userData.past_colleges">
+                                         <div class="content-block layout-row layout-align-space-between border whit-bg college-b border-radius-3px trans-scale">
+                                            <div class="layout-column layout-align-center-center flex-20 abnk">
+                                                <i class="fa fa-bank" aria-hidden="true"></i>
+                
+                                            </div>
+                                            <div class="content-block-desc layout-column flex-80 layout-wrap layout-row">
+                                                <h3 class="content-block-desc-title">Past College</h3>
+                                                <div class="detaial flex-80 c-p" (click)="getCollegeWall(past_college.college_id)">
+                                                    <h5 class="content-block-desc-sub-title">{{past_college.name}}</h5>
+                                                    <div class="content-block-desc-link"> (Past Student)</div>
+                                                </div>
+                                                <div class="icon-pencil-edit flex-10 layout-row text-right">
+                                                    
+                                                    <div class="modal-option option1 layout-row layout-align-end-start flex-50">
+                                                        <i class="fa fa-pencil" aria-hidden="true"></i>
+                
+                
+                                                    </div> 
+                
+                                                </div>
+                                            </div> 
+                                        </div>
+                                    </div>
+                                </div>-->
+            </div>
+            <div class="layout-row layout-wrap photo-video-section layout-align-space-between m-b-20">
+                <div class="flex-49 whit-bg border border-radius-3px margin-r-10 no-margin flex-xs-100">
+                    <div class="box box-warning  modal-border-box">
+                        <div class="box-header">
+                            <h6 class="title w-53">Latest Photos</h6>
+
+                            <div class="box-tools pull-right">
+
+                                <!--                                <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus-square"></i></button>
+                                -->                                <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button><!--
+                                                                <button class="btn btn-box-tool" data-widget=""><i class="fa fa-arrows"></i></button>-->
+                            </div>
+                        </div>
+                        <div class="box-body layout-row layout-wrap layout-align-sm-space-center-center">
+                            <div class="flex-33 flex-sm-45  m-b-20 layout-align-sm-center-center layout-row flex-xs-50 layout-align-xs-center-center layout-align-center-center" *ngFor="#photos of photoData">
+                                 <div class="p-5" *ngIf="photos.photo[0] != null && photos.types==1">
+                                 <img class="img-thumb c-p" (click)="getDetailView(photos._id)" src="theme/files/Subject/Photos/{{photos.created_by}}/{{photos.photo[0].file_name}}" alt="Photo">
+                                </div>
+                                <div class="p-5" *ngIf="photos.photo[0] != null && photos.types==2">
+                                     <img class="img-thumb c-p" (click)="getDetailView(photos._id)" src="theme/files/College/Photos/{{photos.created_by}}/{{photos.photo[0].file_name}}" alt="Photo" >
+                                </div>
+                                <div class="p-5" *ngIf="photos.photo[0] != null && photos.types==3">
+                                     <img class="img-thumb c-p" (click)="getDetailView(photos._id)" src="theme/files/Degree/Photos/{{photos.created_by}}/{{photos.photo[0].file_name}}" alt="Photo" >
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex-49 whit-bg border border-radius-3px flex-xs-100 ">
+                    <div class="box box-warning  modal-border-box">
+                        <div class="box-header">
+                            <h6 class="title w-53">Latest Videos</h6>
+
+                            <div class="box-tools pull-right">
+
+                                <!--                                <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus-square"></i></button>
+                                -->                                <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button><!--
+                                                                <button class="btn btn-box-tool" data-widget=""><i class="fa fa-arrows"></i></button>-->
+                            </div>
+                        </div>
+                        <div class="box-body layout-row layout-wrap layout-align-space-between">
+                            <div class="flex-50 m-b-20 flex-xs-50" *ngFor="#videos of videoData">
+                                 <div class="p-5 video-wrap-play" *ngIf="videos.video[0] != null && videos.types==1">
+                                 <video (click)="getDetailView(videos._id)" width="100%" height="100%" >
+                                        <source src="theme/files/Subject/Videos/{{videos.created_by}}/{{videos.video[0].file_name}}" type="video/mp4">
+                                    </video> 
+                                      <div class="video-wrap-layer" (click)="getDetailView(videos._id)">
+                                          <i class="fa fa-play-circle" aria-hidden="true"></i>
+                                     </div>
+                                </div>
+                                <div class="p-5 video-wrap-play" *ngIf="videos.video[0] != null && videos.types==2">
+                                     <video (click)="getDetailView(videos._id)" width="100%" height="100%"  >
+                                        <source src="theme/files/College/Videos/{{videos.created_by}}/{{videos.video[0].file_name}}" type="video/mp4">
+                                    </video> 
+                                      <div class="video-wrap-layer" (click)="getDetailView(videos._id)">
+                                          <i class="fa fa-play-circle" aria-hidden="true"></i>
+                                     </div>
+                                </div>
+                                <div class="p-5 video-wrap-play" *ngIf="videos.video[0] != null && videos.types==3">
+                                     <video (click)="getDetailView(videos._id)" width="100%" height="100%" >
+                                        <source src="theme/files/Degree/Videos/{{videos.created_by}}/{{videos.video[0].file_name}}" type="video/mp4">
+                                    </video> 
+                                      <div class="video-wrap-layer" (click)="getDetailView(videos._id)">
+                                          <i class="fa fa-play-circle" aria-hidden="true"></i>
+                                     </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="">
+                <div class="layout-row layout-wrap layout-align-space-between fri-folblock">
+
+
+                    <!--##############################################-->
+
+
+                    <div class="box box-warning box-solid border flex-31 flex-xs-100">
+                        <div class="box-header with-border box-header-bg border-radius-3px">
+                            <h3 class="box-title semi-bold">Followers</h3>
+                            <div class="box-tools pull-right">
+
+
+                            </div>
+                        </div>
+                        <div class="box-body padding-0">
+                            <div class="m-b-40">
+                                <ul class="users-list clearfix f-custom-box">
+                                    <li  class="flex-xs-50 flex-33 felx-sm-50" *ngFor="#follower of userData.followers" (click)="getProfileById(follower.follower_id)">
+                                         <a class="member-border display-full c-p" [class.is-friend]="follower.follower_friends_status == 1" > 
+                                            <span *ngIf="follower.photo"><img src="theme/files/ProfilePicture/{{follower.photo}}" alt="User Image"></span>
+                                            <span *ngIf="!follower.photo"><img src="theme/files/ProfilePicture/no_image.png" alt="User Image"></span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div class="box-footer text-center ">
+                                <a href="javascript::" class="uppercase" [routerLink]="['Dashboard.connection',{id:3}]">View more</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box box-warning box-solid border flex-31 flex-xs-100">
+                        <div class="box-header with-border box-header-bg border-radius-3px">
+                            <h3 class="box-title semi-bold">Following</h3>
+                            <div class="box-tools pull-right">
+                            </div><!-- /.box-tools -->
+                        </div>
+                        <div class="box-body padding-0">
+                            <div class="m-b-40">
+                                <ul class="users-list clearfix f-custom-box" >
+                                    <li class="flex-xs-50 flex-33 felx-sm-50"  *ngFor="#following of userData.followings" (click)="getProfileById(following.following_id)" >
+                                        <a class="member-border display-full c-p" [class.is-friend]="following.following_friend_status == 1"> 
+                                            <span *ngIf="following.photo"><img src="theme/files/ProfilePicture/{{following.photo}}" alt="User Image"></span>
+                                            <span *ngIf="!following.photo"><img src="theme/files/ProfilePicture/no_image.png" alt="User Image"></span></a>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div class="box-footer text-center ">
+                                <a href="javascript::" class="uppercase" [routerLink]="['Dashboard.connection',{id:2}]">View more</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box box-warning box-solid border flex-31 flex-xs-100 ">
+                        <div class="box-header with-border box-header-bg border-radius-3px">
+                            <h3 class="box-title semi-bold">Friends</h3>
+                            <div class="box-tools pull-right">
+
+                            </div>
+                        </div>
+                        <div class="box-body padding-0">
+                            <div class="m-b-40">
+                                <ul class="users-list clearfix f-custom-box">
+                                    <li  class="flex-xs-50 flex-33 felx-sm-50" *ngFor="#friend of userData.friends" (click)="getProfileById(friend.friend_id)">
+                                         <a class="member-border display-full c-p"><span *ngIf="friend.photo"><img src="theme/files/ProfilePicture/{{friend.photo}}" alt="User Image"></span>
+                                            <span *ngIf="!friend.photo"><img src="theme/files/ProfilePicture/no_image.png" alt="User Image"></span></a>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div class="box-footer text-center ">
+                                <a href="javascript::" class="uppercase" [routerLink]="['Dashboard.connection',{id:1}]">View more</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+</section>      

@@ -1,0 +1,62 @@
+<div class="custom1-modal-header layout-row layout-align-space-between">
+    <div class="h3 header-title"><i class="fa fa-users m-r-10" aria-hidden="true"></i>Group Name</div>
+    <div class="header-options layout-row layout-align-end">
+        <div class="modal-option option1 layout-row layout-align-center-center">
+           
+            
+
+        </div>
+
+    </div>
+</div>
+<div *ngIf="group">
+    <div class="cover-img-section">
+        <!--        <label>Group Image:</label>-->
+        <span  class="user-img cover-img" *ngIf="group.icon">
+            <img  alt="" src="theme/files/Group/{{group.icon}}" class="group-img-block" >
+        </span>
+        <span  class="user-img cover-img" *ngIf="!group.icon">
+            <span class="no-img-text">No Image Available</span>
+        </span>
+    </div>
+    <div class="d-event-nt layout-align-space-between">
+        <div class="d-event-name flex-30">
+            <!--            <label>Event Name:</label>-->
+            <span >{{group.title}}</span>
+        </div>
+        <div class="d-event-tag flex-60">
+            <!--            <label>Event Tag Line:</label>-->
+            <span >{{group.description}}</span>
+        </div>
+    </div>
+
+    <div class="dd-ms">
+        <label>Group Member:</label>
+        <div class="dd-ms-member-block layout-row layout-wrap">
+            <div *ngFor="#member of group.members;#i=index" class="dd-ms-member">
+                 <div class="dd-mm-block" (click)="getProfileById(member.user_id._id)">
+                    <div  class="flex-10 flex-xs-25">
+                        <span  class="">
+                            <span  class="user-img mem-wrap-section" *ngIf="member.user_id && member.user_id.photo!=null">
+                                <!--<img *ngIf="member.user_id.photo" alt="" src="theme/files/ProfilePicture/{{member.user_id.photo}}">-->
+                                <img alt="" src="theme/files/ProfilePicture/{{member.user_id.photo}}" height="50px" width="50px">
+                            </span>
+                            <span  class="user-img mem-wrap-section" *ngIf="!member.user_id || member.user_id.photo==null">
+                                <!--<img *ngIf="member.user_id.photo" alt="" src="theme/files/ProfilePicture/{{member.user_id.photo}}">-->
+                                <img alt="" src="theme/files/ProfilePicture/no_image.png" height="50px" width="50px">
+                            </span>
+                        </span>
+                    </div> 
+                    <div  class="content-block-desc layout-column flex-80 layout-wrap layout-row" >
+
+                        <div  class="detaial flex-80 c-p" >
+                            <h3 class="content-block-desc-title memb-name" >{{member.user_id.fname}}</h3>
+                            <!--<h5 class="content-block-desc-sub-title date-joing">4 days ago</h5>-->
+                        </div>
+                    </div> 
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

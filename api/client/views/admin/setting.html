@@ -1,0 +1,149 @@
+<div class="master-setting-page seeting-admin">
+    <div class="custom1-modal-header layout-row layout-align-space-between m-b-20">
+        <div class="h3 header-title">Setting</div>
+        <div class="header-options layout-row">
+            <div class="spinner-lazy-block myload" *ngIf="contentLoding">
+                <div class="spinner-lazy">
+                    <div class="bounce1"></div>
+                    <div class="bounce2"></div>
+                    <div class="bounce3"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="table-body">
+
+        <div class="serch-area flex-100 layout-row layout-align-start-start" >
+            <div class="flex-80 flex-xs-60">
+                <form (ngSubmit)="getUser($event)">
+                    <div class="input-group flex-30 flex-xs-60">
+                        <input class="form-control" type="text" placeholder="Filter" [(ngModel)]="username.name"/>
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="submit" >Go!</button>
+                        </span>
+                    </div>
+                    <span class="error_file_message">{{errorSearch}}</span>
+                </form>
+
+            </div>
+            <div class="flex-20 layout-row layout-align-start-start">
+                <span class="title">User Management</span>
+            </div>
+        </div>
+
+        <div class="">
+
+
+            <table id="example2" class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+
+                        <th class="width-10">Password</th>
+                        <th  class="width-10">Activate</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+
+
+                    <tr *ngFor="#setting of settings">
+                        <td *ngIf="setting" ><span *ngIf="setting.fname">{{setting.fname}}</span> <span *ngIf="setting.lname">{{setting.lname}}</span></td>
+                        <!--<td>{{setting.name}}</td>-->
+                        <td *ngIf="setting.local">{{setting.local.email}}</td>
+                        <!--<td>{{setting.email}}</td>-->
+                        <td *ngIf="setting.local"><span class="row-edit-btn" id="detailupdate{{setting._id}}"  data-toggle="modal" (click)="updateUserID(setting._id)"><i class="fa fa-pencil-square-o fa-3x" aria-hidden="true"></i></span></td>
+                        <td><div class="flex-15 layout-align-center-center layout-row layout-align-xs-start-center">
+
+                                <button class="btn btn-default bg-theme-dark" name="check1" (click)="isActiveAccount(1,setting._id)"  *ngIf="setting.is_active==2"><span class="hide-xs">Activate User</span><span class="show-xs hide">A.U</span></button>
+                                <button class="btn btn-default " name="check2"  (click)="isActiveAccount(2,setting._id)"  *ngIf="setting.is_active==1"><span class="hide-xs">Deactivate User</span><span class="show-xs hide">D.A</span></button>
+
+
+
+                            </div> </td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+        <!--<pagination *ngIf="config.paging"
+                    class="pagination-sm"
+                    [(ngModel)]="page"
+                    [totalItems]="length"
+                    [itemsPerPage]="itemsPerPage"
+                    [maxSize]="maxSize"
+                    [boundaryLinks]="true"
+                    [rotate]="false"
+                    (pageChanged)="onChangeTable(config, $event)"
+                    (numPages)="numPages = $event">
+        </pagination>-->
+        <!--<pre *ngIf="config.paging" class="card card-block card-header">Page:  / </pre>-->
+
+
+        <nav *ngIf="settings" class="layout-row layout-align-center-center">
+            <ul class="pagination" >
+                <li class="page-item disabled">
+                    <a class="page-link"  aria-label="Previous" (click)="getAllUserPaginationPrevious()">
+                        <span aria-hidden="true">&laquo;&nbsp;Previous</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+
+                <!--    <li class="page-item active">
+                        <a class="page-link" >1 <span class="sr-only">(current)</span></a>
+                    </li>    
+                    <li class="page-item"><a class="page-link" (click)="getAllSubjectPagination(2)">2</a></li>
+                    <li class="page-item"><a class="page-link" (click)="getAllSubjectPagination(3)">3</a></li>
+                    <li class="page-item"><a class="page-link" >4</a></li>
+                    <li class="page-item"><a class="page-link" >5</a></li>-->
+                <li class="page-item" >
+                    <a class="page-link" aria-label="Next" (click)="getAllUserPaginationNext()">
+                        <span aria-hidden="true">Next&nbsp;&raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+
+    </div>
+</div>
+
+<div class="modal fade password" id = "EditdetailModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Password</h4>
+            </div>
+            <div class="modal-body setting-page flex-100 layout-column">
+                <form class="edit-form "  id="passwordForm" name="passwordForm" >
+
+                    <div class="form-group layout-row">
+                        <label for="fName" class="control-label flex-30">New Password</label>
+                        <div class="flex-70 layout-row">
+                            <input type="password" [(ngModel)]="message.newPassword.newPassword" class="flex-100 " >
+                        </div>
+                    </div>
+                    <div class="form-group layout-row">
+                        <label for="fName" class="control-label flex-30">Confirm Password</label>
+                        <div class="flex-70 layout-row">
+                            <input type="password" [(ngModel)]="message.confirmPassword.confirmPassword" class="flex-100"  >
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="add-btn" data-dismiss="modal" (click)="changePassword()">Update</button>
+                <!--<button class="add-btn" data-dismiss="modal" (click)="editBlog()">Update</button>-->
+                <button class="add-btn cancel-btn" data-dismiss="modal" >Cancel</button>
+            </div>
+
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>

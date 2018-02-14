@@ -1,0 +1,35 @@
+<!--
+  Generated template for the FriendRequestNotification page.
+
+  See http://ionicframework.com/docs/v2/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar class="gradient">
+    <ion-title>
+      <h1 class="header-title" text-center color="white">Friend Request</h1>
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-spinner icon="spiral" *ngIf="loader"></ion-spinner>
+  <ion-item *ngIf="page.friendRequestnotificationData">You have {{page.friendRequestnotificationData.length}} new friend request<span *ngIf="page.friendRequestnotificationData.length>1">s</span></ion-item>
+  <ion-list>
+    <div *ngFor="let notify of friendRequestnotificationData">
+      <!--<ion-item (click)="changeFriendNoficationStatus(notify.from)"  *ngIf="notify.userdata">
+        <ion-icon item-left ion-text ios="ios-notifications" md="md-notifications"></ion-icon>
+        {{notify.userdata.fname+' '+notify.userdata.lname}} {{notify.title}}
+      </ion-item>-->
+      <ion-item text-wrap (click)="changeFriendNoficationStatus(notify.from._id,notify._id)" *ngIf="notify.from && notify.from._id!=null"
+        [class.light-gray]="!notify.is_viewed">
+        <ion-icon style="color:#ea8d3b" item-left ion-text ios="ios-notifications" md="md-notifications"></ion-icon>
+        {{notify.from.fname+' '+notify?.from?.lname}} {{notify.title}}
+        <p>{{notify.date | datetimefilterpipe}}</p>
+      </ion-item>
+    </div>
+  </ion-list>
+  <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+</ion-content>

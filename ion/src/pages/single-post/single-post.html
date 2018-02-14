@@ -1,0 +1,177 @@
+<!--
+  Generated template for the SinglePost page.
+
+  See http://ionicframework.com/docs/v2/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar hideBackButton="true">
+    <ion-buttons start>
+      <button ion-button (click)="dismiss()">
+        <span ion-text color="primary" showWhen="ios" >Cancel</span>
+        <ion-icon name="md-close" showWhen="android,windows"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>
+      <ion-item class="header-name" *ngIf="post_data">
+        <ion-avatar item-left  (click)="getProfileById(post_data.created_by._id)">
+          <img *ngIf="post_data.created_by.photo" src="{{dataService.apiBaseUrl}}public/files/ProfilePicture/{{post_data.created_by.photo}}">
+          <img *ngIf="!post_data.created_by.photo" src="{{dataService.apiBaseUrl}}public/files/ProfilePicture/no_image.png">
+        </ion-avatar>
+        <h2 *ngIf="post_data.created_by.fname" (click)="getProfileById(post_data.created_by._id)">{{post_data.created_by.fname+' '+post_data.created_by.lname}}</h2>
+        <p>
+          {{getCategory(post_data.catagory)}} |
+          <span *ngIf="post_data.created_on">{{post_data.created_on | datetimefilterpipe}}</span>
+          <!--<span *ngIf="post_data.created_by._id==user.userID">
+                                <span *ngIf="post_data.privacy == 1" class="description"><i class="fa fa-globe" aria-hidden="true"></i></span>
+          <span *ngIf="post_data.privacy == 2" class="description"><i class="fa fa-lock" aria-hidden="true"></i></span>
+          <span *ngIf="post_data.privacy == 3" class="description"><i class="fa fa-user-circle" aria-hidden="true"></i></span>
+          </span>-->
+           <span *ngIf="post_data.created_by._id==user.userID"> |
+              <span *ngIf="post_data.privacy == 1" >Public</span>
+              <span *ngIf="post_data.privacy == 2">Private</span>
+              <span *ngIf="post_data.privacy == 3" >All Friends</span>
+              <span *ngIf="post_data.privacy == 4">All Followers</span>
+              <span *ngIf="post_data.privacy == 5" >Custom</span>
+            <span *ngIf="post_data.privacy == 6" >All Friends And Followers</span>
+           </span>
+        </p>
+      </ion-item>
+      <!--<ion-item class="header-more">
+        <ion-icon name="more"></ion-icon>
+      </ion-item>-->
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-spinner icon="spiral" *ngIf="loader"></ion-spinner>    
+  <ion-grid>
+    <ion-row *ngIf="post_data">
+      <ion-card>
+        <!--Post-shared_title-->
+        <div class="post-text-container row" *ngIf="post_data.shared_title ">
+          <span embed-directive>{{post_data.shared_title}}</span>
+        </div>
+        <!--Post-title-->
+        <div class="post-text-container row" *ngIf="post_data.name">
+          <span embed-directive>{{post_data.name}}</span>
+        </div>
+        <!-- photo -->
+        <span *ngIf="post_data!=null && post_data.photo[0]"> 
+          <img *ngIf="post_data.photo[0].title==null" src="{{dataService.apiBaseUrl}}public/files/{{getFoldername(post_data.types)}}/Photos/{{post_data.origin_creator?post_data.origin_creator._id:post_data.created_by._id}}/{{post_data.photo[0].file_name}}" alt="Photo" imageViewer>
+          <img *ngIf="post_data.photo[0].title!=null" src="{{post_data.photo[0].title}}" alt="Photo" imageViewer>                                        
+        </span>
+        <!-- video -->
+        <span *ngIf="post_data!=null && post_data.video[0]" style="display: flex;">
+          <video *ngIf="post_data.video[0].title==null" width="100%" height="100%" controls controlsList="nodownload">
+              <source src="{{dataService.apiBaseUrl}}public/files/{{getFoldername(post_data.types)}}/Videos/{{post_data.origin_creator?post_data.origin_creator._id:post_data.created_by._id}}/{{post_data.video[0].file_name}}" type="video/mp4">
+          </video>
+          <iframe *ngIf="post_data.video[0].title!=null" width="100%" height="320px" [src]="post_data.video[0]?.title | youtubeSafeUrl"
+                                  frameborder="0" allowfullscreen>
+          </iframe>
+        </span>
+        <!-- audio -->
+        <span *ngIf="post_data!=null && post_data.audio[0]">                                
+          <audio controls controlsList="nodownload" *ngIf="post_data.audio[0].title==null">
+            <source src="{{dataService.apiBaseUrl}}public/files/{{getFoldername(post_data.types)}}/Audios/{{post_data.origin_creator?post_data.origin_creator._id:post_data.created_by._id}}/{{post_data.audio[0].file_name}}" >
+          </audio>
+          <audio controls controlsList="nodownload" *ngIf="post_data.audio[0].title!=null">
+            <source src="{{post_data.audio[0].title}}" >
+          </audio>
+        </span>
+        <ion-card-content>
+          <!-- link -->
+          <span *ngIf="post_data!=null && post_data.link[0]">
+                <span  *ngIf="post_data.link[0].title" embed-directive>{{post_data.link[0].title}}</span><br/>
+          <span *ngIf="post_data.link[0].description"><a href="{{post_data.link[0].description}}" target="_blank" >{{post_data.link[0].description}}</a></span>
+          </span>
+          <!-- pdf -->
+          <span *ngIf="post_data!=null && post_data.document[0]">
+            <a href="{{dataService.apiBaseUrl}}public/files/{{getFoldername(post_data.types)}}/Documents/{{post_data.origin_creator?post_data.origin_creator._id:post_data.created_by._id}}/{{post_data.document[0].file_name}}">
+              <span  *ngIf="post_data.document[0].title">{{post_data.document[0].title}}</span>
+              <span *ngIf="!post_data.document[0].title"><i class="fa fa-file"></i> Open/Download                            
+              </span>
+            </a>
+          </span>
+          <!-- message -->
+          <span color="white" *ngIf="post_data.message" embed-directive>{{post_data.message}}</span>
+          <!-- question -->
+          <span color="white" *ngIf="post_data.question" embed-directive>{{post_data.question}}</span>
+          <ion-row class="card-content-footer">
+            <ion-col width-30>
+              <ion-item text-center> Like {{post_data.likes.length}}</ion-item>
+            </ion-col>
+            <ion-col width-30>
+              <ion-item> {{post_data.comments.length}}&nbsp;Comment<span *ngIf="post_data.comments.length>1">s</span></ion-item>
+            </ion-col>
+            <ion-col width-30>
+              <ion-item>Share</ion-item>
+            </ion-col>
+          </ion-row>
+        </ion-card-content>
+      </ion-card>
+    </ion-row>
+  </ion-grid>
+</ion-content>
+
+<ion-footer>
+  <ion-row *ngIf="!isEmbedPost" class="single-post-footer">
+    <ion-col col-3 class="like-btn" (click)="like(post_data._id,post_data)">
+      <button ion-button icon-left clear small *ngIf="post_data && post_data.likes.length>=1">
+          <!--<ion-icon class="like" name="thumbs-up"> {{post_data.likes.length}}</ion-icon>-->
+         <img class="pr-0" src="{{dataService.apiBaseUrl}}public/files/logo/like-select.png"/>  {{post_data.likes.length}}
+          <div>&nbsp;Like</div>
+      </button>
+      <button ion-button icon-left clear small *ngIf="post_data && post_data.likes.length<1">
+          <!--<ion-icon class="like" name="thumbs-up"> {{post_data.likes.length}}</ion-icon>-->
+         <img class="pr-0" src="{{dataService.apiBaseUrl}}public/files/logo/like.png"/>  {{post_data.likes.length}}
+         <div> &nbsp;Like</div>
+      </button>
+    </ion-col>
+    <ion-col col-3>
+      <button ion-button icon-left clear small (click)="CommentModal(postId,post_data.comments, post_data.likes.length)">
+          <i class="fa fa-commenting"></i> 
+          <div color="white"> Comment</div>
+      </button>
+    </ion-col>
+    <ion-col col-3 center text-center>
+      <button ion-button icon-left clear small class="pr-0" (click)="selectprivacy(post_data)">
+          <ion-icon name='share-alt'></ion-icon>
+          Share
+      </button>
+    </ion-col>
+    <ion-col col-3 center text-center>
+      <button ion-button icon-left clear small class="pr-0" (click)="downLoad()">
+          <ion-icon name='download'></ion-icon>
+          Save
+      </button>
+    </ion-col>
+  </ion-row>
+  <ion-row *ngIf="isEmbedPost" class="single-post-footer">
+    <ion-col col-4 class="like-btn" (click)="like(post_data._id,post_data)">
+      <button ion-button icon-left clear small *ngIf="post_data && post_data.likes.length>=1">
+          <!--<ion-icon class="like" name="thumbs-up"> {{post_data.likes.length}}</ion-icon>-->
+         <img class="pr-0" src="{{dataService.apiBaseUrl}}public/files/logo/like-select.png"/>  {{post_data.likes.length}}
+          <div>&nbsp;Like</div>
+      </button>
+      <button ion-button icon-left clear small *ngIf="post_data && post_data.likes.length<1">
+          <!--<ion-icon class="like" name="thumbs-up"> {{post_data.likes.length}}</ion-icon>-->
+         <img class="pr-0" src="{{dataService.apiBaseUrl}}public/files/logo/like.png"/>  {{post_data.likes.length}}
+         <div> &nbsp;Like</div>
+      </button>
+    </ion-col>
+    <ion-col col-4>
+      <button ion-button icon-left clear small (click)="CommentModal(postId,post_data.comments, post_data.likes.length)">
+          <i class="fa fa-commenting"></i> 
+          <div color="white"> Comment</div>
+      </button>
+    </ion-col>
+    <ion-col col-4 center text-center>
+      <button ion-button icon-left clear small class="pr-0" (click)="selectprivacy(post_data)">
+          <ion-icon name='share-alt'></ion-icon>
+          Share
+      </button>
+    </ion-col>
+  </ion-row>
+</ion-footer>

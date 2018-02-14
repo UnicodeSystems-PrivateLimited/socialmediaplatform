@@ -1,0 +1,156 @@
+<div class="custom1-modal-header layout-row layout-align-space-between notification-page-header">
+    <div class="h3 header-title"><i class="fa fa-users m-r-10" aria-hidden="true"></i>Notifications</div>
+    <div class="header-options layout-row layout-align-end">
+        <div class="modal-option option1 layout-row layout-align-center-center">
+        </div>
+    </div>
+</div>
+<div *ngIf="notificationData.length" class="notification-list">
+    <div (window:scroll)="onScrollNoti($event)" >
+        <ul>
+            <li *ngFor="let noti of notificationData;" [class.light-gray]="!noti.is_viewed">
+                <a *ngIf="noti?.post_type == 0" [routerLink]="['UserList',{noty:noti._id}]" (click)="arriveNotification(noti)">
+                    <div *ngIf="noti?.from && noti.from._id!=null" class="layout-row">
+                        <span class="icon-users"><i class="fa fa-users text-aqua"></i></span>
+                        <div class="layout-column notification-text"><span> {{noti.from.fname+' '+noti.from.lname}} {{noti.title}}</span>
+                            <span class="time-date">{{noti.date|datetime}}</span>
+                        </div>
+                    </div>
+                </a>
+                <a *ngIf="noti?.post_type == 1" [routerLink]="['GroupInvitation']" (click)="arriveNotification(noti)">
+                    <div *ngIf="noti?.from && noti.from._id!=null" class="layout-row">
+                        <span class="icon-users"><i class="fa fa-users text-aqua"></i></span>
+                        <div class="layout-column notification-text"><span>{{noti.from.fname+' '+noti.from.lname}} {{noti.title}}-&nbsp;"{{noti.groupId.title}}"</span>
+                            <span class="time-date">{{noti.date|datetime}}</span>
+                        </div>
+                    </div>
+                </a>
+                <a *ngIf="noti?.post_type == 8" [routerLink]="['GroupInvitation']" (click)="arriveNotification(noti)">
+                    <div *ngIf="noti?.from && noti.from._id!=null" class="layout-row">
+                        <span class="icon-users"><i class="fa fa-users text-aqua"></i></span>
+                        <div class="layout-column notification-text"><span> {{noti.from.fname+' '+noti.from.lname}} {{noti.title}}-&nbsp;"{{noti.groupId.title}}"</span>
+                            <span class="time-date">{{noti.date|datetime}}</span>
+                        </div>
+                    </div>
+                </a>
+                <a *ngIf="noti?.post_type == 9" (click)="arriveNotification(noti)">
+                    <div *ngIf="noti?.from && noti.from._id!=null" class="layout-row">
+                        <span class="icon-users"><i class="fa fa-users text-aqua"></i></span>
+                        <div class="layout-column notification-text"><span> {{noti.from.fname+' '+noti.from.lname}} {{noti.title}}-&nbsp;"{{noti.subject_id.name}}"</span>
+                            <span class="time-date">{{noti.date|datetime}}</span>
+                        </div>
+                    </div>
+                </a>
+                <a *ngIf="noti?.post_type == 10" (click)="arriveNotification(noti)">
+                    <div *ngIf="noti?.from && noti.from._id!=null" class="layout-row">
+                        <span class="icon-users"><i class="fa fa-users text-aqua"></i></span>
+                        <div class="layout-column notification-text"><span> {{noti.from.fname+' '+noti.from.lname}} {{noti.title}}-&nbsp;"{{noti.college_id.name}}"</span>
+                            <span class="time-date">{{noti.date|datetime}}</span>
+                        </div>
+                    </div>
+                </a>
+                <a *ngIf="noti?.post_type == 11" (click)="arriveNotification(noti)">
+                    <div *ngIf="noti?.from && noti.from._id!=null" class="layout-row">
+                        <span class="icon-users"><i class="fa fa-users text-aqua"></i></span>
+                        <div class="layout-column notification-text"><span>{{noti.from.fname+' '+noti.from.lname}} {{noti.title}}-&nbsp;"{{noti.degree_id.name}}"</span>
+                            <span class="time-date">{{noti.date|datetime}}</span>
+                        </div>
+                    </div>
+                </a>
+                <a *ngIf="noti?.post_type == 12" (click)="arriveNotification(noti)">
+                    <div *ngIf="noti?.from && noti.from._id!=null" class="layout-row">
+                        <span class="icon-users"><i class="fa fa-users text-aqua"></i></span>
+                        <div class="layout-column notification-text"><span>{{noti.from.fname+' '+noti.from.lname}} {{noti.title}}</span>
+                            <span class="time-date">{{noti.date|datetime}}</span>
+                        </div>
+                    </div>
+                </a>
+                <a *ngIf="noti?.post_type == 2" [routerLink]="['EventDetail',{eventId:noti.eventId}]" (click)="arriveNotification(noti)">
+                    <div *ngIf="noti?.from && noti.from._id!=null" class="layout-row">
+                        <span class="icon-users"><i class="fa fa-users text-aqua"></i></span>
+
+                        <div class="layout-column notification-text"><span>{{noti.from.fname+' '+noti.from.lname}} {{noti.title}}</span>
+                            <span class="time-date">{{noti.date|datetime}}</span>
+                        </div>
+                    </div>
+                </a>
+                <a *ngIf="noti?.post_type == 3" [routerLink]="['UserList',{noty:noti._id}]" (click)="arriveNotification(noti)">
+                    <div *ngIf="noti?.from && noti.from._id!=null" class="layout-row">
+                        <span class="icon-users"><i class="fa fa-users text-aqua"></i></span>
+                        <div class="layout-column notification-text"><span> {{noti.from.fname+' '+noti.from.lname}} {{noti.title}}</span>
+                            <span class="time-date">{{noti.date|datetime}}</span>
+                        </div>
+                    </div>
+                </a>
+                <a *ngIf="noti?.post_type == 4" [routerLink]="['UserProfile',{noty:noti._id}]" (click)="arriveNotification(noti)">
+                    <div *ngIf="noti?.from && noti.from._id!=null" class="layout-row">
+                        <span class="icon-users"><i class="fa fa-users text-aqua"></i></span>
+                        <div class="layout-column notification-text"><span> {{noti.from.fname+' '+noti.from.lname}} {{noti.title}}</span>
+                            <span class="time-date">{{noti.date|datetime}}</span>
+                        </div>
+                    </div>
+                </a>
+                <a *ngIf="noti?.post_type == 5" (click)="arriveNotification(noti)">
+                    <div *ngIf="noti?.from && noti.from._id!=null" class="layout-row">
+                        <span class="icon-users"><i class="fa fa-users text-aqua"></i></span>
+                        <div class="layout-column notification-text"><span> {{noti.from.fname+' '+noti.from.lname}} {{noti.title}}</span>
+                            <span class="time-date">{{noti.date|datetime}}</span>
+                        </div>
+                    </div>
+                </a>
+                <a *ngIf="noti?.post_type == 6" [routerLink]="['BlogPost',{id:noti.blogId}]" (click)="arriveNotification(noti)">
+                    <div *ngIf="noti?.from && noti.from._id!=null" class="layout-row">
+                        <span class="icon-users"><i class="fa fa-users text-aqua"></i></span>
+                        <div class="layout-column notification-text"><span>{{noti.title}}</span>
+                            <span class="time-date">{{noti.date|datetime}}</span>
+                        </div>
+                    </div>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+<div *ngIf="friendRequestnotificationData.length" class="notification-list">
+    <div (window:scroll)="onScrollFriendNoti($event)">
+        <ul>
+            <li *ngFor="let notify of friendRequestnotificationData" [class.light-gray]="!notify.is_viewed">
+                <a (click)="changeFriendNoficationStatus(notify.from._id,notify._id)" [routerLink]="['UserList']">
+                    <div *ngIf="notify.from && notify.from._id!=null" class="layout-row">
+                        <span class="icon-users"><i class="fa fa-users text-aqua"></i></span>
+                        <div class="layout-column notification-text"><span>{{notify.from.fname+' '+notify.from.lname}} {{notify.title}}</span>
+                            <span class="time-date">{{notify.date|datetime}}</span>
+                        </div>
+                    </div>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+<div *ngIf="!notificationData.length && !friendRequestnotificationData.length" class="notification-list">
+    <div class="layout-row  layout-align-center-center flex-100 no_group-invites">
+        <span class="">No Notifications.</span>
+    </div>
+</div>
+
+<!--single post model-->
+<div class="modal fade modal-align-fix single-post-dialog" id="singlePostNotiModel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeSinglePostDialog()"><span aria-hidden="true">&times;</span></button>
+            <div class="modal-body setting-page flex-100 layout-row">
+                <single-post-detail *ngIf="showSinglePostModel" [postId]="postId"></single-post-detail>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Post Detail View -->
+<div class="modal fade asset-detail-dialog " id="profile-page-Asset-detail-noti-Modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeImageDialog()"><span aria-hidden="true">&times;</span></button>
+            <div class="modal-body setting-page flex-100 layout-row">
+                <data-profile-Pic *ngIf="dialogState" [postId]="postId"></data-profile-Pic>
+            </div>
+        </div>
+    </div>
+</div>

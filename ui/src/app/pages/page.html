@@ -1,0 +1,1624 @@
+<div class="spin-wrap vision-spin" style="display: none">
+    <div class="sk-folding-cube">
+        <div class="sk-cube1 sk-cube"></div>
+        <div class="sk-cube2 sk-cube"></div>
+        <div class="sk-cube4 sk-cube"></div>
+        <div class="sk-cube3 sk-cube"></div>
+    </div>
+</div>
+<div class="wrapper" *ngIf="user" style="background-color:#e5e5e5;">
+    <header class="main-header">
+        <nav role="navigation" class="navbar navbar-static-top">
+            <div class="container" (click)="clearUserSearchDropDown()">
+                <div class="layout-row row">
+                    <div class="flex-20  hidden-xs account-header-logo" (click)="chatBoxClose()">
+                        <a class="logo layout-row layout-align-center-center" [routerLink]="['DashboardHome']">
+                            <!-- mini logo for sidebar mini 50x50 pixels -->
+                            <img src="public/files/logo/StribeIN-logo.png" height="42" width="42" />
+                            <span class="header-logo logo-mini"><b>S</b><span>N</span></span>
+                            <!-- logo for regular state and mobile devices -->
+                            <span class="header-logo logo-lg"><b>Stribe</b><span>IN</span></span>
+                        </a>
+                    </div>
+                    <div class="flex-10 layout-row layout-align-center-center nav-toggle-icon visible-flex-xs nav-toggle-icon" (click)="toggleNav()">
+                        <i class="fa" aria-hidden="true" [class.fa-times]="toggleState" [class.fa-bars]="!toggleState"></i>
+
+                    </div>
+                    <div class="flex-20 visible-xs account-header-logo">
+                        <a class="logo" [routerLink]="['DashboardHome']">
+                            <span class="header-logo logo-mini"><b>S</b><span>N</span></span>
+                            <span class="header-logo logo-lg"><b>Stribe</b><span>IN</span></span>
+                        </a>
+                    </div>
+                    <!-- Navbar Right Menu -->
+                    <div class="flex-80 hidden-flex-xs header-right-nav">
+                        <div class="layout-row flex-100 layout-align-space-between">
+                            <div class="collapse navbar-collapse" (click)="chatBoxClose()">
+                                <ul class="nav navbar-nav layout-row top-nav-pop">
+                                    <!--<li ><span [routerLink]="['MyWallComponent']" class="btn-title c-p"  >My Wall</span></li>-->
+                                    <li><span (click)="refreshMywall()" class="btn-title c-p">My Wall</span></li>
+                                    <li class="dropdown">
+                                        <span class="btn-title c-p" (click)="subjectModalopen()">Subject</span>
+                                        <div class="modal fade " id="subjectListsModal">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <button class=" add-new pull-right" type="button" (click)="openJoinAddModel('Subject')">Add New</button>
+                                                        <h4 class="modal-title">Subjects</h4>
+                                                    </div>
+                                                    <div class="modal-body setting-page flex-100 layout-row">
+                                                        <div class="layout-column flex-100">
+                                                            <form (ngSubmit)="subjectList()" class="navbar-form navbar-left" role="search">
+                                                                <div class="form-group nav-search input-left-icon">
+                                                                    <span class="fa fa-search">&nbsp;</span>
+                                                                    <input #obj [(ngModel)]="subjectSearchField.name" (keyup)="subjectSearch($event,page.userIdGlobal)" (focus)="subjectSearch($event)" type="text" class="form-control hello" id="navbar-search-input" placeholder="Search Subjects" autocomplete="off">
+                                                                    <span class="c-p" *ngIf="subjectSearchField.name" (click)="ClearSubjectSearch()"><i style="float: right;left: 96%;" class="fa fa-times"></i></span>
+                                                                </div>
+                                                                <div class="click-add-new" *ngIf="page.subject">Click the subjects you are enrolled in to take part in the conversation. If you want to enroll in a subject then click ‘Add New’ to enroll and join the conversation.</div>
+                                                            </form>
+                                                            <div *ngIf="subjectSearchList" class="user-search-list-wrap">
+                                                                <ul class="user-search-list" *ngIf="subjectSearchList.length > 0">
+                                                                    <li class="layout-row layout-align-space-between search-li" *ngFor="let subject of subjectSearchList">
+                                                                        <a class="c-p" *ngIf="subject" (click)="getSubjectWall(subject._id)">{{subject.name}}</a>
+                                                                        <span class="label-primary pull-right" *ngIf="subject.members|scdJoinStatus:page.userIdGlobal">{{subject.members|scdJoinStatus:page.userIdGlobal}}</span>
+                                                                    </li>
+                                                                    <li class="layout-row layout-align-space-between search-li" *ngIf="subjectSearchField.name" (click)="onSeeAllClick(2,subjectSearchField.name)">
+                                                                        View more for {{subjectSearchField.name}}</li>
+                                                                </ul>
+                                                                <ul class="user-search-list add-new-search-scd" *ngIf="subjectSearchList.length == 0">
+                                                                    <li class="layout-row layout-align-space-between search-li">
+                                                                        <!-- <span class="c-p result-title">No result found</span> -->
+                                                                        <span class="add-new flex-100" (click)="openAddNewSubjectModel()">Add Subject</span>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <ul class="scd-menu-list" role="menu">
+                                                                    <li *ngFor="let sub of page.subject" class="detail-wall">
+                                                                        <a class="c-p" (click)="getSubjectWall(sub.subject_id._id)" *ngIf="sub.subject_id" data-dismiss="modal">{{sub.subject_id.name}}</a>
+                                                                        <span>
+                                                                        <span class="count-data" *ngIf="(sub|recentPostCount:1:page.userIdGlobal)>0">{{sub|recentPostCount:1:page.userIdGlobal}}</span>
+                                                                        <span *ngIf="sub.subject_id.post.length" [style.color]="'#000'">{{sub.subject_id.post[0].post_id.created_on|date}}</span>
+                                                                        <span *ngIf="sub.subject_id.post.length" [style.color]="'#000'">{{sub.subject_id.post[0].post_id.created_on|date:'shortTime'}}</span>
+
+                                                                        </span>
+
+                                                                    </li>
+                                                                </ul>
+
+                                                            </div>
+                                                            <div *ngIf="!page.subject" class="not-any-data">
+                                                                <span>You have not added any subjects to your profile. Search for the subjects you are taking and add it to your profile so you can connect with others.</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--<div class="modal-footer">
+                                                        <button class="add-btn cancel-btn" data-dismiss="modal" (click)="closeSubjectListModal()">Cancel</button>
+                                                    </div>-->
+
+                                                </div>
+                                                <!-- /.modal-content -->
+                                            </div>
+                                            <!-- /.modal-dialog -->
+                                        </div>
+                                    </li>
+                                    <li class="dropdown">
+                                        <span class="btn-title c-p" (click)="collegeModalopen()">College / University</span>
+                                        <div class="modal fade " id="collegeListsModal">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <button class="add-new pull-right" type="button" (click)="openJoinAddModel('College')">Add New</button>
+                                                        <h4 class="modal-title">College / University</h4>
+                                                    </div>
+                                                    <div class="modal-body setting-page flex-100 layout-row">
+                                                        <div class="layout-column flex-100">
+                                                            <form (ngSubmit)="collegeList()" class="navbar-form navbar-left" role="search">
+                                                                <div class="form-group nav-search input-left-icon">
+                                                                    <span class="fa fa-search">&nbsp;</span>
+                                                                    <input [(ngModel)]="collegeSearchField.name" (keyup)="collegeSearch($event,page.userIdGlobal)" (focus)="collegeSearch($event)" type="text" class="form-control hello" id="navbar-search-input" placeholder="Search here" autocomplete="off">
+                                                                    <span class="c-p" *ngIf="collegeSearchField.name" (click)="ClearCollegeSearch()"><i style="float: right;left: 96%;" class="fa fa-times"></i></span>
+
+                                                                </div>
+                                                                <div class="click-add-new" *ngIf="page.college">Click the college / university you are enrolled in to take part in the conversation. If you want to enroll in a college / university then click ‘Add New’ to enroll and join the conversation.</div>
+                                                            </form>
+                                                            <div *ngIf="collegeSearchList" class="user-search-list-wrap">
+                                                                <ul class="user-search-list" *ngIf="collegeSearchList.length > 0">
+                                                                    <li class="layout-row layout-align-space-between search-li" *ngFor="let college of collegeSearchList">
+                                                                        <a class="c-p" *ngIf="college" (click)="getCollegeWall(college._id)">{{college.name}} </a>
+                                                                        <span class="label-primary pull-right" *ngIf="college.members|scdJoinStatus:page.userIdGlobal">{{college.members|scdJoinStatus:page.userIdGlobal}}</span>
+                                                                    </li>
+                                                                    <li class="layout-row layout-align-space-between search-li" *ngIf="collegeSearchField.name" (click)="onSeeAllClick(3,collegeSearchField.name)">
+                                                                        View more for {{collegeSearchField.name}}</li>
+
+                                                                </ul>
+                                                                <ul class="user-search-list add-new-search-scd" *ngIf="collegeSearchList.length == 0">
+                                                                    <li class="layout-row layout-align-space-between search-li">
+                                                                        <!-- <span class="c-p result-title">No result found</span> -->
+                                                                        <span class="add-new flex-100"  (click)="openAddNewCollegeModel()">Add College</span>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <ul class="" role="menu">
+                                                                    <li *ngFor="let coll of page.college" class="detail-wall">
+                                                                        <a class="c-p" (click)="getCollegeWall(coll.college_id._id)" data-dismiss="modal" *ngIf="coll.college_id">{{coll.college_id.name}}</a>
+                                                                        <span>
+                                                                            <span class="count-data" *ngIf="(coll |recentPostCount:2:page.userIdGlobal)>0" >{{coll |recentPostCount:2:page.userIdGlobal}}</span>
+                                                                        <span *ngIf="coll.college_id?.post && coll.college_id.post.length" [style.color]="'#000'">{{coll.college_id.post[0].post_id.created_on|date}}</span>
+                                                                        <span *ngIf="coll.college_id?.post && coll.college_id.post.length" [style.color]="'#000'">{{coll.college_id.post[0].post_id.created_on|date:'shortTime'}}</span>
+                                                                        </span>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                            <div *ngIf="!page.college" class="not-any-data">
+                                                                <span>You have not added a college to your profile. Search for the college and add it to your profile so you can connect with others.</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--<div class="modal-footer">
+                                                        <button class="add-btn cancel-btn" (click)="collegeList()" data-dismiss="modal">Cancel</button>
+                                                    </div>-->
+
+                                                </div>
+                                                <!-- /.modal-content -->
+                                            </div>
+                                            <!-- /.modal-dialog -->
+                                        </div>
+                                    </li>
+                                    <li class="dropdown">
+                                        <span class="btn-title c-p" (click)="degreeModalopen()">Degree</span>
+                                        <div class="modal fade " id="degreeListsModal">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <button class="add-new pull-right" type="button" (click)="openJoinAddModel('Degree')">Add New</button>
+                                                        <h4 class="modal-title">Degree</h4>
+                                                    </div>
+                                                    <div class="modal-body setting-page flex-100 layout-row">
+                                                        <div class=" layout-column flex-100">
+                                                            <form (ngSubmit)="degreeList()" class="navbar-form navbar-left" role="search">
+                                                                <div class="form-group nav-search input-left-icon">
+                                                                    <span class="fa fa-search">&nbsp;</span>
+                                                                    <input [(ngModel)]="degreeSearchField.name" (keyup)="degreeSearch($event,page.userIdGlobal)" (focus)="degreeSearch($event)" type="text" class="form-control hello" id="navbar-search-input" placeholder="Search here" autocomplete="off">
+                                                                    <span class="c-p" *ngIf="degreeSearchField.name" (click)="ClearDegreeSearch()"><i style="float: right;left: 96%;" class="fa fa-times"></i></span>
+
+                                                                </div>
+                                                                <div class="click-add-new" *ngIf="page.bachelors">Click the degree you are enrolled in to take part in the conversation. If you want to enroll in a degree then click ‘Add New’ to enroll and join the conversation.</div>
+                                                            </form>
+                                                            <div *ngIf="degreeSearchList" class="user-search-list-wrap">
+                                                                <ul class="user-search-list" *ngIf="degreeSearchList.length > 0">
+                                                                    <li class="layout-row layout-align-space-between search-li" *ngFor="let degree of degreeSearchList">
+                                                                        <!--<div class="search-result-left layout-row">-->
+                                                                        <!--<div class="result-title">{{subject.name}}</div>-->
+                                                                        <a class="c-p" *ngIf="degree" (click)="getDegreeWall(degree._id)">{{degree.name}} </a>
+                                                                        <span class="label-primary pull-right" *ngIf="degree.members|scdJoinStatus:page.userIdGlobal">{{degree.members|scdJoinStatus:page.userIdGlobal}}</span>
+                                                                        <!--</div>-->
+                                                                    </li>
+                                                                    <li class="layout-row layout-align-space-between search-li" *ngIf="degreeSearchField.name" (click)="onSeeAllClick(4,degreeSearchField.name)">
+                                                                        View more for {{degreeSearchField.name}}</li>
+
+                                                                </ul>
+                                                                <ul class="user-search-list add-new-search-scd" *ngIf="degreeSearchList.length == 0">
+                                                                    <li class="layout-row layout-align-space-between search-li">
+                                                                        <!--<div class="search-result-left layout-row">-->
+                                                                        <!--<div class="result-title">{{subject.name}}</div>-->
+                                                                        <!-- <span class="c-p result-title">No result found</span> -->
+                                                                        <span class="add-new flex-100"  (click)="openAddNewDegreeModel()">Add Degree/Diploma</span>
+                                                                        <!--</div>-->
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <ul class="" role="menu">
+                                                                    <li *ngFor="let deg of page.bachelors" class="detail-wall">
+                                                                        <a class="c-p" *ngIf="deg.degree_id && !degreeType(deg.degree_id.type)" data-dismiss="modal" (click)="getDegreeWall(deg.degree_id._id)">{{deg.degree_id.name}}</a>
+                                                                        <span>
+                                                                        <span class="count-data" *ngIf="(deg|recentPostCount:3:page.userIdGlobal)>0" >{{deg|recentPostCount:3:page.userIdGlobal}}</span>
+                                                                        <span *ngIf="deg.degree_id.post.length" [style.color]="'#000'">{{deg.degree_id.post[0].post_id.created_on|date}}</span>
+                                                                        <span *ngIf="deg.degree_id.post.length" [style.color]="'#000'">{{deg.degree_id.post[0].post_id.created_on|date:'shortTime'}}</span>
+
+                                                                        </span>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                            <div *ngIf="!page.bachelors" class="not-any-data">
+                                                                <span>You have not added a degree to your profile. Search for the degree and add it to your profile so you can connect with others.</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--<div class="modal-footer">
+                                                        <button class="add-btn cancel-btn" (click)="degreeList()" data-dismiss="modal">Cancel</button>
+                                                    </div>-->
+
+                                                </div>
+                                                <!-- /.modal-content -->
+                                            </div>
+                                            <!-- /.modal-dialog -->
+                                        </div>
+                                    </li>
+                                    <li class="dropdown" *ngIf="page.masters">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Degree<span class="caret"></span></a>
+                                        <ul class="dropdown-menu" role="menu">
+                                            <li *ngFor="let deg of page.masters"><a class="c-p" *ngIf="deg.degree_id && degreeType(deg.degree_id.type)" (click)="getDegreeWall(deg.degree_id._id)">{{deg.degree_id.name}}</a></li>
+                                        </ul>
+                                    </li>
+
+                                </ul>
+                            </div>
+
+                            <div class="navbar-custom-menu nav-options">
+                                <ul class="nav navbar-nav layout-row layout-align-space-between ">
+                                    <!-- Messages: style can be found in dropdown.less-->
+                                    <li class="layout-align-center-center search-input-block hide-sm" (click)="chatBoxClose()">
+                                        <form class="navbar-form navbar-left" role="search">
+                                            <div class="form-group nav-search input-left-icon">
+                                                <span class="fa fa-search">&nbsp;</span>
+                                                <input #obj [(ngModel)]="userSearchField.name" (keyup)="globalSearch($event)" (focus)="globalSearch($event)" type="text" class="form-control hello" id="navbar-search-input" placeholder="Search here" autocomplete="off">
+                                            </div>
+                                        </form>
+                                        <div class="user-search-list-wrap">
+                                            <ul class="user-search-list" *ngIf="usersSearchList.length">
+                                                <li class="layout-row layout-align-space-between search-li" *ngFor="let user of usersSearchList | slice:0:3;" (click)="getProfileById(user._id)">
+                                                    <div class="search-result-left layout-row">
+                                                        <div class="search-thumb">
+                                                            <img *ngIf="user.photo" alt="User Image" class="" src="public/files/ProfilePicture/{{user.photo}}">
+                                                            <img *ngIf="!user.photo" alt="User Image" class="" src="public/files/ProfilePicture/no_image.png">
+                                                        </div>
+                                                        <div class="result-title">{{user.fname}}&nbsp;{{user.lname}}</div>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                            <ul class="see-all-search-list c-p" *ngIf="userSearchField?.name">
+                                                <li class="layout-row layout-align-space-between search-li" [routerLink]="['./GlobalSearch',{name:userSearchField?.name}]" (click)="clearSearch()">See all results for {{userSearchField?.name}}
+                                                </li>
+                                            </ul>
+
+                                        </div>
+                                    </li>
+                                    <li class="dropdown messages-menu layout-align-center-center height-scroll" (click)="clickOnNoti('friendNoti')">
+                                        <a data-toggle="dropdown" class="dropdown-toggle" tooltipPlacement="bottom" tooltip="Friend Request">
+                                            <i class="fa fa-users c-p"></i>
+                                            <span class="label label-danger" *ngIf="page.friendRequestnotificationData && (page.friendRequestnotificationData.length)>0">{{page.friendRequestnotificationData.length}}</span>
+                                        </a>
+                                        <ul class="dropdown-menu div-scrolled">
+
+                                            <li class="header search-seeall-header" *ngIf="page.friendRequestnotificationData">You have {{page.friendRequestnotificationData.length}} new friend request
+                                                <span *ngIf="page.friendRequestnotificationData.length > 1">s</span>
+                                            </li>
+                                            <li *ngIf="friendRequestnotificationData.length">
+                                                <!--inner menu: contains the actual data-->
+                                                <div class="slimScrollDiv" style=" position: relative;overflow: hidden;width: auto;height: 342px;">
+                                                    <ul class="menu" style="overflow-y: auto; width: 100%; height: 308px; max-height:308px" infinite-scroll (scrolled)="recentActivity($event.value)">
+                                                        <li *ngFor="let notify of friendRequestnotificationData" [class.light-gray]="!notify.is_viewed">
+                                                            <!-- <a (click)="changeFriendNoficationStatus(notify.from)" [routerLink]="['./UserList']">
+                                                                <span *ngIf="notify.userdata"><i class="fa fa-users text-aqua"></i> {{notify.userdata.fname+' '+notify.userdata.lname}} {{notify.title}}</span>
+                                                            </a> -->
+                                                            <a (click)="changeFriendNoficationStatus(notify.from._id,notify._id)" [routerLink]="['./MemberListComponent',{tab:2}]">
+                                                                <div *ngIf="notify.from && notify.from._id!=null" class="layout-row">
+                                                                    <span class="icon-users"><i class="fa fa-users text-aqua"></i></span>
+                                                                    <div class="layout-column notification-text"><span>{{notify.from.fname+' '+notify.from.lname}} {{notify.title}}</span>
+                                                                        <span class="time-date">{{notify.date|datetime}}</span>
+                                                                    </div>
+                                                                </div>
+                                                            </a>
+                                                        </li>
+
+                                                    </ul>
+                                                    <div class="layout-row layout-align-center-center flex-100 pad-10 search-seeall-header c-p"><a [routerLink]="['NotificationList',{type:1}]">See all</a></div>
+                                                    <div class="slimScrollBar" style="background: rgb(0, 0, 0) none repeat scroll 0% 0%; width: 3px; position: absolute; top: 0px; opacity: 0.4; display: block; border-radius: 7px; z-index: 99; right: 1px;"></div>
+                                                    <div class="slimScrollRail" style="width: 3px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: rgb(51, 51, 51) none repeat scroll 0% 0%; opacity: 0.2; z-index: 90; right: 1px;"></div>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <!-- Notifications: style can be found in dropdown.less -->
+                                    <li class="dropdown notifications-menu layout-align-center-center" (click)="mytoggle();">
+                                        <a class="dropdown-toggle" tooltipPlacement="bottom" tooltip="Chat">
+                                            <i class="fa fa-wechat c-p"></i>
+                                            <span class="label label-danger" *ngIf="page.totPendUserMsg>0 || page.totPendGroupUserMsg>0">{{page.totPendUserMsg+page.totPendGroupUserMsg}}</span>
+                                        </a>
+
+                                    </li>
+                                    <!-- Tasks: style can be found in dropdown.less -->
+                                    <li class="dropdown tasks-menu layout-align-center-center height-scroll" (click)="clickOnNoti('normalNoti')">
+                                        <!--<a data-toggle="dropdown" class="dropdown-toggle"  >-->
+                                        <a data-toggle="dropdown" class="dropdown-toggle" tooltipPlacement="bottom" tooltip="Notifications">
+                                            <i class="fa fa-bell  c-p"></i>
+                                            <span class="label label-danger" *ngIf="page.notificationData && (page.notificationData.length)>0">{{page.notificationData.length}}</span>
+                                        </a>
+                                        <ul class="dropdown-menu div-scrolled">
+
+                                            <li class="header search-seeall-header" *ngIf="page.notificationData">You have {{page.notificationData.length}} unread notification<span *ngIf="page.notificationData.length > 1">s</span></li>
+                                            <li *ngIf="notificationData">
+                                                <!--inner menu: contains the actual data-->
+                                                <div class="slimScrollDiv" style=" position: relative;overflow: hidden;width: auto;height: 342px;">
+                                                    <ul class="menu" *ngIf="notificationData" style="overflow-y: scroll; width: 100%; height: 308px; max-height:308px;" infinite-scroll (scrolled)="recentActivity($event.value)">
+                                                        <li *ngFor="let noti of notificationData;" [class.light-gray]="!noti.is_viewed">
+                                                            <!-- <a *ngIf="noti?.post_type == 0" [routerLink]="['./UserList',{noty:noti.notifId}]" (click)="arriveNotification(noti)">
+                                                                <div *ngIf="noti?.userdata">
+                                                                    <span class="icon-users"><i class="fa fa-users text-aqua"></i></span>
+                                                                    <div class="row-column notification-text"><span>{{noti.userdata.fname+' '+noti.userdata.lname}} {{noti.title}}</span>
+                                                                        <span class="time-date">{{noti.date}}</span>
+                                                                    </div>
+                                                                </div>
+                                                            </a> -->
+                                                            <a *ngIf="noti?.post_type == 0" [routerLink]="['./UserList',{noty:noti._id}]" (click)="arriveNotification(noti)">
+                                                                <div *ngIf="noti?.from && noti.from._id!=null" class="layout-row">
+                                                                    <span class="icon-users"><i class="fa fa-users text-aqua"></i></span>
+                                                                    <div class="layout-column notification-text"><span> {{noti.from.fname+' '+noti.from.lname}} {{noti.title}}</span>
+                                                                        <span class="time-date">{{noti.date|datetime}}</span>
+                                                                    </div>
+                                                                </div>
+                                                            </a>
+                                                            <!-- <a *ngIf="noti?.post_type == 1" [routerLink]="['GroupInvitation']" (click)="arriveNotification(noti)">
+                                                                <div *ngIf="noti?.userdata" class="layout-row">
+                                                                    <span class="icon-users"><i class="fa fa-users text-aqua"></i></span>
+                                                                    <div class="layout-column notification-text"><span> {{noti.userdata.fname+' '+noti.userdata.lname}} {{noti.title}}-&nbsp;"{{noti.groupId.title}}"</span>
+                                                                        <span class="time-date">{{noti.date|datetime}}</span>
+                                                                    </div>
+                                                                </div>
+                                                            </a> -->
+                                                            <a *ngIf="noti?.post_type == 1" [routerLink]="['GroupInvitation']" (click)="arriveNotification(noti)">
+                                                                <div *ngIf="noti?.from && noti.from._id!=null" class="layout-row">
+                                                                    <span class="icon-users"><i class="fa fa-users text-aqua"></i></span>
+                                                                    <div class="layout-column notification-text"><span>{{noti.from.fname+' '+noti.from.lname}} {{noti.title}}-&nbsp;"{{noti.groupId.title}}"</span>
+                                                                        <span class="time-date">{{noti.date|datetime}}</span>
+                                                                    </div>
+                                                                </div>
+                                                            </a>
+                                                            <!-- <a *ngIf="noti?.post_type == 8" [routerLink]="['GroupInvitation']" (click)="arriveNotification(noti)">
+                                                                <div *ngIf="noti?.userdata" class="layout-row">
+                                                                    <span class="icon-users"><i class="fa fa-users text-aqua"></i></span>
+                                                                    <div class="layout-column notification-text"><span> {{noti.userdata.fname+' '+noti.userdata.lname}} {{noti.title}}-&nbsp;"{{noti.groupId.title}}"</span>
+                                                                        <span class="time-date">{{noti.date|datetime}}</span>
+                                                                    </div>
+                                                                </div>
+                                                            </a> -->
+                                                            <a *ngIf="noti?.post_type == 8" [routerLink]="['GroupInvitation']" (click)="arriveNotification(noti)">
+                                                                <div *ngIf="noti?.from && noti.from._id!=null" class="layout-row">
+                                                                    <span class="icon-users"><i class="fa fa-users text-aqua"></i></span>
+                                                                    <div class="layout-column notification-text"><span> {{noti.from.fname+' '+noti.from.lname}} {{noti.title}}-&nbsp;"{{noti.groupId.title}}"</span>
+                                                                        <span class="time-date">{{noti.date|datetime}}</span>
+                                                                    </div>
+                                                                </div>
+                                                            </a>
+
+                                                            <!-- <a *ngIf="noti?.post_type == 9" (click)="arriveNotification(noti)">
+                                                                <div *ngIf="noti?.userdata" class="layout-row">
+                                                                    <span class="icon-users"><i class="fa fa-users text-aqua"></i></span>
+                                                                    <div class="layout-column notification-text"><span>{{noti.userdata.fname+' '+noti.userdata.lname}} {{noti.title}}-&nbsp;"{{noti.subject_id.name}}"</span>
+                                                                        <span class="time-date">{{noti.date|datetime}}</span>
+                                                                    </div>
+                                                                </div>
+                                                            </a> -->
+                                                            <a *ngIf="noti?.post_type == 9" (click)="arriveNotification(noti)">
+                                                                <div *ngIf="noti?.from && noti.from._id!=null" class="layout-row">
+                                                                    <span class="icon-users"><i class="fa fa-users text-aqua"></i></span>
+                                                                    <div class="layout-column notification-text"><span> {{noti.from.fname+' '+noti.from.lname}} {{noti.title}}-&nbsp;"{{noti.subject_id.name}}"</span>
+                                                                        <span class="time-date">{{noti.date|datetime}}</span>
+                                                                    </div>
+                                                                </div>
+                                                            </a>
+                                                            <!-- <a *ngIf="noti?.post_type == 10" (click)="arriveNotification(noti)">
+                                                                <div *ngIf="noti?.userdata" class="layout-row">
+                                                                    <span class="icon-users"><i class="fa fa-users text-aqua"></i></span>
+                                                                    <div class="layout-column notification-text"><span>{{noti.userdata.fname+' '+noti.userdata.lname}} {{noti.title}}-&nbsp;"{{noti.college_id.name}}"</span>
+                                                                        <span class="time-date">{{noti.date|datetime}}</span>
+                                                                    </div>
+                                                                </div>
+                                                            </a> -->
+                                                            <a *ngIf="noti?.post_type == 10" (click)="arriveNotification(noti)">
+                                                                <div *ngIf="noti?.from && noti.from._id!=null" class="layout-row">
+                                                                    <span class="icon-users"><i class="fa fa-users text-aqua"></i></span>
+                                                                    <div class="layout-column notification-text"><span> {{noti.from.fname+' '+noti.from.lname}} {{noti.title}}-&nbsp;"{{noti.college_id.name}}"</span>
+                                                                        <span class="time-date">{{noti.date|datetime}}</span>
+                                                                    </div>
+                                                                </div>
+                                                            </a>
+                                                            <!-- <a *ngIf="noti?.post_type == 11" (click)="arriveNotification(noti)">
+                                                                <div *ngIf="noti?.userdata" class="layout-row">
+                                                                    <span class="icon-users"><i class="fa fa-users text-aqua"></i></span>
+                                                                    <div class="layout-column notification-text"><span> {{noti.userdata.fname+' '+noti.userdata.lname}} {{noti.title}}-&nbsp;"{{noti.degree_id.name}}"</span>
+                                                                        <span class="time-date">{{noti.date|datetime}}</span>
+                                                                    </div>
+                                                                </div>
+                                                            </a> -->
+                                                            <a *ngIf="noti?.post_type == 11" (click)="arriveNotification(noti)">
+                                                                <div *ngIf="noti?.from && noti.from._id!=null" class="layout-row">
+                                                                    <span class="icon-users"><i class="fa fa-users text-aqua"></i></span>
+                                                                    <div class="layout-column notification-text"><span>{{noti.from.fname+' '+noti.from.lname}} {{noti.title}}-&nbsp;"{{noti.degree_id.name}}"</span>
+                                                                        <span class="time-date">{{noti.date|datetime}}</span>
+                                                                    </div>
+                                                                </div>
+                                                            </a>
+
+                                                            <!-- <a *ngIf="noti?.post_type == 12" (click)="arriveNotification(noti)">
+                                                                <div *ngIf="noti?.userdata" class="layout-row">
+                                                                    <span class="icon-users"><i class="fa fa-users text-aqua"></i></span>
+                                                                    <div class="layout-column notification-text"><span>{{noti.userdata.fname+' '+noti.userdata.lname}} {{noti.title}}</span>
+                                                                        <span class="time-date">{{noti.date|datetime}}</span>
+                                                                    </div>
+                                                                </div>
+                                                            </a> -->
+                                                            <a *ngIf="noti?.post_type == 12" (click)="arriveNotification(noti)">
+                                                                <!-- <span *ngIf="noti?.from && noti.from._id!=null"> 
+                                                                    <i class="fa fa-users text-aqua"></i> {{noti.from.fname+' '+noti.from.lname}} {{noti.title}}</span> -->
+
+                                                                <div *ngIf="noti?.from && noti.from._id!=null" class="layout-row">
+                                                                    <span class="icon-users"><i class="fa fa-users text-aqua"></i></span>
+                                                                    <div class="layout-column notification-text"><span>{{noti.from.fname+' '+noti.from.lname}} {{noti.title}}</span>
+                                                                        <span class="time-date">{{noti.date|datetime}}</span>
+                                                                    </div>
+                                                                </div>
+                                                            </a>
+
+
+                                                            <!-- <a *ngIf="noti?.post_type == 2" [routerLink]="['EventDetail',{eventId:noti.eventId}]" (click)="arriveNotification(noti)">
+                                                                <div *ngIf="noti?.userdata" class="layout-row">
+                                                                    <span class="icon-users"><i class="fa fa-users text-aqua"></i></span>
+                                                                    <div class="layout-column notification-text"><span>{{noti.userdata.fname+' '+noti.userdata.lname}} {{noti.title}}</span>
+                                                                        <span class="time-date">{{noti.date|datetime}}</span>
+                                                                    </div>
+                                                                </div>
+                                                            </a> -->
+                                                            <a *ngIf="noti?.post_type == 2" [routerLink]="['EventDetail',{eventId:noti.eventId}]" (click)="arriveNotification(noti)">
+                                                                <div *ngIf="noti?.from && noti.from._id!=null" class="layout-row">
+                                                                    <span class="icon-users"><i class="fa fa-users text-aqua"></i></span>
+
+                                                                    <div class="layout-column notification-text"><span>{{noti.from.fname+' '+noti.from.lname}} {{noti.title}}</span>
+                                                                        <span class="time-date">{{noti.date|datetime}}</span>
+                                                                    </div>
+                                                                </div>
+                                                            </a>
+                                                            <!-- <a *ngIf="noti?.post_type == 3" [routerLink]="['./UserList',{noty:noti.notifId}]" (click)="arriveNotification(noti)">
+                                                                <div *ngIf="noti?.userdata" class="layout-row">
+                                                                    <span class="icon-users"><i class="fa fa-users text-aqua"></i></span>
+
+                                                                    <div class="layout-column notification-text"><span>{{noti.userdata.fname+' '+noti.userdata.lname}} {{noti.title}}</span>
+                                                                        <span class="time-date">{{noti.date|datetime}}</span>
+                                                                    </div>
+                                                                </div>
+                                                            </a> -->
+                                                            <a *ngIf="noti?.post_type == 3" [routerLink]="['./UserList',{noty:noti._id}]" (click)="arriveNotification(noti)">
+                                                                <div *ngIf="noti?.from && noti.from._id!=null" class="layout-row">
+                                                                    <span class="icon-users"><i class="fa fa-users text-aqua"></i></span>
+                                                                    <div class="layout-column notification-text"><span> {{noti.from.fname+' '+noti.from.lname}} {{noti.title}}</span>
+                                                                        <span class="time-date">{{noti.date|datetime}}</span>
+                                                                    </div>
+                                                                </div>
+                                                            </a>
+                                                            <!-- <a *ngIf="noti?.post_type == 4" [routerLink]="['./UserProfile',{noty:noti.notifId}]" (click)="arriveNotification(noti)">
+                                                                <div *ngIf="noti?.userdata" class="layout-row">
+                                                                    <span class="icon-users"><i class="fa fa-users text-aqua"></i></span>
+                                                                    <div class="layout-column notification-text"><span> {{noti.userdata.fname+' '+noti.userdata.lname}} {{noti.title}}</span>
+                                                                        <span class="time-date">{{noti.date|datetime}}</span>
+                                                                    </div>
+                                                                </div>
+                                                            </a> -->
+                                                            <a *ngIf="noti?.post_type == 4" [routerLink]="['./UserProfile',{noty:noti._id}]" (click)="arriveNotification(noti)">
+                                                                <div *ngIf="noti?.from && noti.from._id!=null" class="layout-row">
+                                                                    <span class="icon-users"><i class="fa fa-users text-aqua"></i></span>
+                                                                    <div class="layout-column notification-text"><span> {{noti.from.fname+' '+noti.from.lname}} {{noti.title}}</span>
+                                                                        <span class="time-date">{{noti.date|datetime}}</span>
+                                                                    </div>
+                                                                </div>
+                                                            </a>
+                                                            <!-- <a *ngIf="noti?.post_type == 5" (click)="arriveNotification(noti)">
+                                                                <div *ngIf="noti?.userdata" class="layout-row">
+                                                                    <span class="icon-users"><i class="fa fa-users text-aqua"></i></span>
+                                                                    <div class="layout-column notification-text"><span>{{noti.userdata.fname+' '+noti.userdata.lname}} {{noti.title}}</span>
+                                                                        <span class="time-date">{{noti.date|datetime}}</span>
+                                                                    </div>
+                                                                </div>
+                                                            </a> -->
+                                                            <a *ngIf="noti?.post_type == 5" (click)="arriveNotification(noti)">
+                                                                <div *ngIf="noti?.from && noti.from._id!=null" class="layout-row">
+                                                                    <span class="icon-users"><i class="fa fa-users text-aqua"></i></span>
+                                                                    <div class="layout-column notification-text"><span> {{noti.from.fname+' '+noti.from.lname}} {{noti.title}}</span>
+                                                                        <span class="time-date">{{noti.date|datetime}}</span>
+                                                                    </div>
+                                                                </div>
+                                                            </a>
+                                                            <!-- <a *ngIf="noti?.post_type == 6" [routerLink]="['BlogPost',{id:noti.blogId}]" (click)="arriveNotification(noti)">
+                                                                <div *ngIf="noti?.userdata" class="layout-row">
+                                                                    <span class="icon-users"><i class="fa fa-users text-aqua"></i></span>
+                                                                    <div class="layout-column notification-text"><span>{{noti.title}}</span>
+                                                                        <span class="time-date">{{noti.date|datetime}}</span>
+                                                                    </div>
+                                                                </div>
+                                                            </a> -->
+                                                            <a *ngIf="noti?.post_type == 6" [routerLink]="['BlogPost',{id:noti.blogId}]" (click)="arriveNotification(noti)">
+                                                                <div *ngIf="noti?.from && noti.from._id!=null" class="layout-row">
+                                                                    <span class="icon-users"><i class="fa fa-users text-aqua"></i></span>
+                                                                    <div class="layout-column notification-text"><span>{{noti.title}}</span>
+                                                                        <span class="time-date">{{noti.date|datetime}}</span>
+                                                                    </div>
+                                                                </div>
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                    <div class="layout-row layout-align-center-center flex-100 pad-10 search-seeall-header c-p"> <a [routerLink]="['NotificationList',{type:2}]">See all</a></div>
+                                                    <div class="slimScrollBar" style="background: rgb(0, 0, 0) none repeat scroll 0% 0%; width: 3px; position: absolute; top: 0px; opacity: 0.4; display: block; border-radius: 7px; z-index: 99; right: 1px;"></div>
+                                                    <div class="slimScrollRail" style="width: 3px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: rgb(51, 51, 51) none repeat scroll 0% 0%; opacity: 0.2; z-index: 90; right: 1px;"></div>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <!-- User Account: style can be found in dropdown.less -->
+                                    <li class="dropdown user user-menu img-full layout-align-center-center c-p" *ngIf="user" (click)="chatBoxClose()">
+                                        <a data-toggle="dropdown" class="dropdown-toggle nav-user" tooltipPlacement="bottom" tooltip="Profile">
+                                            <!--hello-->
+                                            <img *ngIf="user.photo" class="  nav-profile-img" src="public/files/ProfilePicture/{{user.photo}}" alt="{{user.photo}}">
+                                            <img *ngIf="!user.photo" class="  nav-profile-img" src="public/files/ProfilePicture/no_image.png" alt="no_image.png">
+                                        </a>
+                                        <ul class="dropdown-menu profile-menu-drop">
+                                            <!-- User image -->
+                                            <li class="user-header">
+                                                <img *ngIf="user.photo" class=" " src="public/files/ProfilePicture/{{user.photo}}" alt="{{user.photo}}">
+                                                <img *ngIf="!user.photo" class=" " src="public/files/ProfilePicture/no_image.png" alt="no_image.png">
+
+                                                <p>
+                                                    <span *ngIf="page.user.name">{{page.user.name}}</span>
+
+                                                </p>
+                                            </li>
+                                            <!-- Menu Body -->
+                                            <li class="user-body">
+                                                <div class="row">
+                                                    <div class="col-xs-4 text-center">
+                                                        <a [routerLink]="['Connection',{id:3}]">Followers</a>
+                                                    </div>
+                                                    <div class="col-xs-4 text-center">
+                                                        <!--<a >Sales</a>-->
+                                                    </div>
+                                                    <div class="col-xs-4 text-center">
+                                                        <a [routerLink]="['Connection',{id:1}]">Friends</a>
+                                                    </div>
+                                                </div>
+                                                <!-- /.row -->
+                                            </li>
+                                            <!-- Menu Footer-->
+                                            <li class="user-footer">
+                                                <div class="pull-left">
+                                                    <a class="btn btn-default btn-flat" [routerLink]="['Settings']">Profile</a>
+                                                </div>
+                                                <div class="pull-right">
+                                                    <span class="btn btn-default btn-flat" (click)="onLogout()">Sign out</span>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li><a [routerLink]="['Settings']"><i class="fa fa-cog" aria-hidden="true" tooltipPlacement="bottom" tooltip="Settings"></i></a></li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                    </div>
+                    <div class="flex-80 visible-flex-xs layout-row layout-align-end-center">
+                        <button type="button" class="navbar-toggle collapsed" (click)="toggleMobileMenu()" data-toggle="collapse" data-target="#navbar-collapse">
+                            <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="mobile-top-bar visible-flex-xs" [class.openMobMenu]="mobMenuState">
+                    <ul class="sidebar-menu top-nav-pop">
+                        <li class="treeview" *ngIf="page.subject">
+                            <a (click)="doToggleSubject()" class="c-p">
+                                <span>Subject</span>
+                                <i class="fa pull-right" [class.fa-angle-down]="!toggleSubject" [class.fa-angle-up]="toggleSubject"></i>
+                            </a>
+                            <ul class="treeview-menu" [class.toggleMenu]="toggleSubject">
+                                <li *ngFor="let sub of page.subject" (click)="subMenu(sub)" [class.activeitems]="sub==activeItem"><a class="c-p" (click)="getSubjectWall(sub.subject_id._id)" *ngIf="sub.subject_id">{{sub.subject_id.name}}</a></li>
+                            </ul>
+                        </li>
+                        <li class="treeview" *ngIf="page.college">
+                            <a (click)="doToggleCollege()" class="c-p">
+                                <span>College / University</span>
+                                <i class="fa pull-right" [class.fa-angle-down]="!toggleCollege" [class.fa-angle-up]="toggleCollege"></i>
+                            </a>
+                            <ul class="treeview-menu" [class.toggleMenu]="toggleCollege">
+                                <li *ngFor="let coll of page.college" (click)="subMenu(coll)" [class.activeitems]="coll==activeItem"><a class="c-p" (click)="getCollegeWall(coll.college_id._id)" *ngIf="coll.college_id">{{coll.college_id.name}}</a></li>
+                            </ul>
+                        </li>
+                        <li class="treeview" *ngIf="page.bachelors">
+                            <a (click)="doToggleBechlour()" class="c-p">
+                                <span>Bachelors Program</span>
+                                <i class="fa pull-right" [class.fa-angle-down]="!toggleBechlour" [class.fa-angle-up]="toggleBechlour"></i>
+                            </a>
+                            <ul class="treeview-menu" [class.toggleMenu]="toggleBechlour">
+                                <li *ngFor="let deg of page.bachelors" (click)="subMenu(deg)" [class.activeitems]="deg==activeItem"><a class="c-p" *ngIf="deg.degree_id && !degreeType(deg.degree_id.type)" (click)="getDegreeWall(deg.degree_id._id)">{{deg.degree_id.name}}</a></li>
+                            </ul>
+                        </li>
+                        <li class="treeview" *ngIf="page.masters">
+                            <a (click)="doToggleMaster()" class="c-p">
+                                <span>Degree</span>
+                                <i class="fa pull-right" [class.fa-angle-down]="!toggleMaster" [class.fa-angle-up]="toggleMaster"></i>
+                            </a>
+                            <ul class="treeview-menu" [class.toggleMenu]="toggleMaster">
+                                <li *ngFor="let deg of page.masters" (click)="subMenu(deg)" [class.activeitems]="deg==activeItem"><a class="c-p" *ngIf="deg.degree_id && degreeType(deg.degree_id.type)" (click)="getDegreeWall(deg.degree_id._id)">{{deg.degree_id.name}}</a></li>
+                            </ul>
+                        </li>
+                        <li class="search-input-block">
+                            <form (ngSubmit)="userList()" class="navbar-form navbar-left" role="search">
+                                <div class="form-group nav-search input-left-icon layout-align-center-center layout-row">
+                                    <span class="fa fa-search">&nbsp;</span>
+                                    <input #obj [(ngModel)]="userSearchField.name" (keyup)="userSearch($event)" (focus)="userSearch($event)" type="text" class="form-control hello" id="navbar-search-input" placeholder="Search here" autocomplete="off">
+                                </div>
+                            </form>
+                            <div *ngIf="userSearchList" class="user-search-list-wrap">
+                                <ul class="user-search-list">
+                                    <li class="layout-row layout-align-space-between search-li" *ngFor="let user of userSearchList" (click)="getProfileById(user._id);closeMobileMenu()">
+                                        <div class="search-result-left layout-row">
+                                            <div class="search-thumb">
+                                                <img *ngIf="user.photo" alt="User Image" class=" " src="public/files/ProfilePicture/{{user.photo}}">
+                                                <img *ngIf="!user.photo" alt="User Image" class=" " src="public/files/ProfilePicture/no_image.png">
+                                            </div>
+                                            <div class="result-title">{{user.fname}}&nbsp;{{user.lname}}</div>
+                                        </div>
+                                        <div class="search-result-right">
+                                            <div class="result-icon">
+                                                <i class="fa fa-user-plus" aria-hidden="true"></i>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li class="dropdown messages-menu layout-align-center-center  col-xs-4 display-inline-block ">
+                            <a (click)="togReq(1)" class="dropdown-toggle c-p " data-toggle="dropdown" aria-expanded="true">
+                                <i class="fa fa-users"></i>
+                                <span class="label label-danger" *ngIf="page.friendRequestnotificationData && page.friendRequestnotificationData.length>0">{{page.friendRequestnotificationData.length}}</span>
+                            </a>
+                        </li>
+                        <li class="dropdown notifications-menu layout-align-center-center  col-xs-4  display-inline-block " (click)="mytoggle();">
+                            <a class="dropdown-toggle " (click)="togReq(3);closeMobileMenu() ">
+                                <i class="fa fa-wechat c-p"></i>
+                                <span class="label label-danger" *ngIf="page.totPendUserMsg>0 || page.totPendGroupUserMsg>0">{{page.totPendUserMsg+page.totPendGroupUserMsg}}</span>
+                            </a>
+                        </li>
+                        <li class="dropdown tasks-menu layout-align-center-center display-inline-block col-xs-4">
+                            <a (click)="togReq(2) " class="dropdown-toggle">
+                                <i class="fa fa-bell  c-p"></i>
+                                <span class="label label-danger" *ngIf="page.notificationData && page.notificationData.length>0">{{page.notificationData.length}}</span>
+                            </a>
+                        </li>
+                        <li *ngIf="togFrndReq" class="mb-menu-block">
+                            <ul class="mbn-dropdown">
+                                <li class="header search-seeall-header" *ngIf="page.friendRequestnotificationData">You have {{page.friendRequestnotificationData.length}} new friend request</li>
+                                <li *ngIf="friendRequestnotificationData.length">
+                                    <!--inner menu: contains the actual data-->
+                                    <div class="slimScrollDiv" style=" position: relative;overflow: hidden;width: auto;height: 342px;">
+                                        <ul class="menu" style="overflow-y: auto; width: 100%; height: 308px;max-height: 308px;">
+                                            <li *ngFor="let notify of friendRequestnotificationData" (click)="closeMobileMenu()" [class.light-gray]="!notify.is_viewed">
+                                                <!-- <a (click)="changeFriendNoficationStatus(notify.from,notify._id)" [routerLink]="['./UserList']">
+                                                    <span *ngIf="notify.userdata"><i class="fa fa-users text-aqua"></i> {{notify.userdata.fname+' '+notify.userdata.lname}} {{notify.title}}</span>
+                                                </a>
+                                                <a (click)="changeFriendNoficationStatus(notify.from._id,notify._id)" [routerLink]="['./UserList']">
+                                                    <span *ngIf="notify.from && notify.from._id!=null"><i class="fa fa-users text-aqua"></i> {{notify.from.fname+' '+notify.from.lname}} {{notify.title}}</span>
+                                                </a> -->
+                                                <a (click)="changeFriendNoficationStatus(notify.from._id,notify._id)" [routerLink]="['./UserList']">
+                                                    <div *ngIf="notify.from && notify.from._id!=null" class="layout-row">
+                                                        <span class="icon-users"><i class="fa fa-users text-aqua"></i></span>
+                                                        <div class="layout-column notification-text"><span>{{notify.from.fname+' '+notify.from.lname}} {{notify.title}}</span>
+                                                            <span class="time-date">{{notify.date|datetime}}</span>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                        <div class="layout-row layout-align-center-center flex-100 pad-10 search-seeall-header c-p">See all</div>
+                                        <div class="slimScrollBar" style="background: rgb(0, 0, 0) none repeat scroll 0% 0%; width: 3px; position: absolute; top: 0px; opacity: 0.4; display: block; border-radius: 7px; z-index: 99; right: 1px;"></div>
+                                        <div class="slimScrollRail" style="width: 3px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: rgb(51, 51, 51) none repeat scroll 0% 0%; opacity: 0.2; z-index: 90; right: 1px;"></div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                        <li *ngIf="togNotiReq" class="mb-menu-block">
+                            <ul class="mbn-dropdown">
+
+                                <li class="header search-seeall-header" *ngIf="page.notificationData">You have {{page.notificationData.length}} unread notifications</li>
+                                <li *ngIf="notificationData.length">
+                                    <!--inner menu: contains the actual data-->
+                                    <div class="slimScrollDiv" style=" position: relative;overflow: hidden;width: auto;height: 342px;">
+                                        <ul class="menu" *ngIf="notificationData.length" style="overflow-y: auto; width: 100%; height: 308px; max-height: 308px;">
+                                            <li *ngFor="let noti of notificationData;" (click)="closeMobileMenu()">
+                                                <!-- <a *ngIf="noti?.post_type == 0" [routerLink]="['./UserList',{noty:noti.notifId}]" (click)="arriveNotification(noti)">
+                                                    <div *ngIf="noti?.userdata" class="layout-row">
+                                                        <span class="icon-users"><i class="fa fa-users text-aqua"></i></span>
+                                                        <div class="layout-column notification-text"><span>{{noti.userdata.fname+' '+noti.userdata.lname}} {{noti.title}}</span>
+                                                            <span class="time-date">{{noti.date}}</span>
+                                                        </div>
+
+                                                    </div>
+                                                </a> -->
+                                                <a *ngIf="noti?.post_type == 0" [routerLink]="['./UserList',{noty:noti._id}]" (click)="arriveNotification(noti)">
+                                                    <div *ngIf="noti?.from && noti.from._id!=null" class="layout-row">
+                                                        <span class="icon-users"><i class="fa fa-users text-aqua"></i></span>
+                                                        <div class="layout-column notification-text"><span>{{noti.from.fname+' '+noti.from.lname}} {{noti.title}}</span>
+                                                            <span class="time-date">{{noti.date}}</span>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                                <!-- <a *ngIf="noti?.post_type == 1" [routerLink]="['GroupInvitation']" (click)="arriveNotification(noti)">
+                                                    <div *ngIf="noti?.userdata" class="layout-row">
+                                                        <span class="icon-users"><i class="fa fa-users text-aqua"></i></span>
+                                                        <div class="layout-column notification-text"><span>{{noti.userdata.fname+' '+noti.userdata.lname}} {{noti.title}}-&nbsp;"{{noti.groupId.title}}"</span>
+                                                            <span class="time-date">{{noti.date}}</span>
+                                                        </div>
+                                                    </div>
+                                                </a> -->
+                                                <a *ngIf="noti?.post_type == 1" [routerLink]="['GroupInvitation']" (click)="arriveNotification(noti)">
+                                                    <div *ngIf="noti?.from && noti.from._id!=null" class="layout-row">
+                                                        <span class="icon-users"><i class="fa fa-users text-aqua"></i></span>
+                                                        <div class="layout-column notification-text"><span>{{noti.from.fname+' '+noti.from.lname}} {{noti.title}}-&nbsp;"{{noti.groupId.title}}"</span>
+                                                            <span class="time-date">{{noti.date}}</span>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                                <!-- <a *ngIf="noti?.post_type == 8" [routerLink]="['GroupInvitation']" (click)="arriveNotification(noti)">
+                                                    <div *ngIf="noti?.userdata" class="layout-row">
+                                                        <span class="icon-users"><i class="fa fa-users text-aqua"></i></span>
+                                                        <div class="layout-column notification-text"><span>{{noti.userdata.fname+' '+noti.userdata.lname}} {{noti.title}}-&nbsp;"{{noti.groupId.title}}"</span>
+                                                            <span class="time-date">{{noti.date}}</span>
+                                                        </div>
+                                                    </div>
+                                                </a> -->
+                                                <a *ngIf="noti?.post_type == 8" [routerLink]="['GroupInvitation']" (click)="arriveNotification(noti)">
+                                                    <div *ngIf="noti?.from && noti.from._id!=null" class="layout-row">
+                                                        <span class="icon-users"><i class="fa fa-users text-aqua"></i></span>
+                                                        <div class="layout-column notification-text"><span>{{noti.from.fname+' '+noti.from.lname}} {{noti.title}}-&nbsp;"{{noti.groupId.title}}"</span>
+                                                            <span class="time-date">{{noti.date}}</span>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                                <!-- <a *ngIf="noti?.post_type == 9" (click)="arriveNotification(noti)">
+                                                    <div *ngIf="noti?.userdata" class="layout-row">
+                                                        <span class="icon-users"><i class="fa fa-users text-aqua"></i></span>
+                                                        <div class="layout-column notification-text"><span>{{noti.userdata.fname+' '+noti.userdata.lname}} {{noti.title}}-&nbsp;"{{noti.subject_id.name}}"</span>
+                                                            <span class="time-date">{{noti.date}}</span>
+                                                        </div>
+                                                    </div>
+                                                </a> -->
+                                                <a *ngIf="noti?.post_type == 9" (click)="arriveNotification(noti)">
+                                                    <div *ngIf="noti?.from && noti.from._id!=null" class="layout-row">
+                                                        <span class="icon-users"><i class="fa fa-users text-aqua"></i></span>
+                                                        <div class="layout-column notification-text"><span>{{noti.from.fname+' '+noti.from.lname}} {{noti.title}}-&nbsp;"{{noti.subject_id.name}}"</span>
+                                                            <span class="time-date">{{noti.date}}</span>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                                <!-- <a *ngIf="noti?.post_type == 10" (click)="arriveNotification(noti)">
+                                                    <div *ngIf="noti?.userdata" class="layout-row">
+                                                        <span class="icon-users"><i class="fa fa-users text-aqua"></i></span>
+                                                        <div class="layout-column notification-text"><span>{{noti.userdata.fname+' '+noti.userdata.lname}} {{noti.title}}-&nbsp;"{{noti.college_id.name}}"</span>
+                                                            <span class="time-date">{{noti.date}}</span>
+                                                        </div>
+                                                    </div>
+                                                </a> -->
+                                                <a *ngIf="noti?.post_type == 10" (click)="arriveNotification(noti)">
+                                                    <div *ngIf="noti?.from && noti.from._id!=null" class="layout-row">
+                                                        <span class="icon-users"><i class="fa fa-users text-aqua"></i></span>
+                                                        <div class="layout-column notification-text"><span>{{noti.from.fname+' '+noti.from.lname}} {{noti.title}}-&nbsp;"{{noti.college_id.name}}"</span>
+                                                            <span class="time-date">{{noti.date}}</span>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                                <!-- <a *ngIf="noti?.post_type == 11" (click)="arriveNotification(noti)">
+                                                    <div *ngIf="noti?.userdata" class="layout-row">
+                                                        <span class="icon-users"><i class="fa fa-users text-aqua"></i></span>
+                                                        <div class="layout-column notification-text"><span>{{noti.userdata.fname+' '+noti.userdata.lname}} {{noti.title}}-&nbsp;"{{noti.degree_id.name}}"</span>
+                                                            <span class="time-date">{{noti.date}}</span>
+                                                        </div>
+                                                    </div>
+                                                </a> -->
+                                                <a *ngIf="noti?.post_type == 11" (click)="arriveNotification(noti)">
+                                                    <div *ngIf="noti?.from && noti.from._id!=null" class="layout-row">
+                                                        <span class="icon-users"><i class="fa fa-users text-aqua"></i></span>
+                                                        <div class="layout-column notification-text"><span>{{noti.from.fname+' '+noti.from.lname}} {{noti.title}}-&nbsp;"{{noti.degree_id.name}}"</span>
+                                                            <span class="time-date">{{noti.date}}</span>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                                <!-- <a *ngIf="noti?.post_type == 12" (click)="arriveNotification(noti)">
+                                                    <div *ngIf="noti?.userdata" class="layout-row">
+                                                        <span class="icon-users"><i class="fa fa-users text-aqua"></i></span>
+                                                        <div class="layout-column notification-text"><span>{noti.userdata.fname+' '+noti.userdata.lname}} {{noti.title}}</span>
+                                                            <span class="time-date">{{noti.date}}</span>
+                                                        </div>
+                                                    </div>
+                                                </a> -->
+                                                <a *ngIf="noti?.post_type == 12" (click)="arriveNotification(noti)">
+                                                    <div *ngIf="noti?.from && noti.from._id!=null" class="layout-row">
+                                                        <span class="icon-users"><i class="fa fa-users text-aqua"></i></span>
+                                                        <div class="layout-column notification-text"><span>{{noti.from.fname+' '+noti.from.lname}} {{noti.title}}</span>
+                                                            <span class="time-date">{{noti.date}}</span>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                                <!-- <a *ngIf="noti?.post_type == 2" [routerLink]="['EventDetail',{eventId:noti.eventId}]" (click)="arriveNotification(noti)">
+                                                    <div *ngIf="noti?.userdata" class="layout-row">
+                                                        <span class="icon-users"><i class="fa fa-users text-aqua"></i></span>
+                                                        <div class="layout-column notification-text"><span>{{noti.userdata.fname+' '+noti.userdata.lname}} {{noti.title}}</span>
+                                                            <span class="time-date">{{noti.date}}</span>
+                                                        </div>
+                                                    </div>
+                                                </a> -->
+                                                <a *ngIf="noti?.post_type == 2" [routerLink]="['EventDetail',{eventId:noti.eventId}]" (click)="arriveNotification(noti)">
+                                                    <div *ngIf="noti?.from && noti.from._id!=null" class="layout-row">
+                                                        <span class="icon-users"><i class="fa fa-users text-aqua"></i></span>
+                                                        <div class="layout-column notification-text"><span>{{noti.from.fname+' '+noti.from.lname}} {{noti.title}}</span>
+                                                            <span class="time-date">{{noti.date}}</span>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                                <!-- <a *ngIf="noti?.post_type == 3" [routerLink]="['./UserList',{noty:noti.notifId}]" (click)="arriveNotification(noti)">
+                                                    <div *ngIf="noti?.userdata" class="layout-row">
+                                                        <span class="icon-users"><i class="fa fa-users text-aqua"></i></span>
+                                                        <div class="row-column notification-text"><span>{{noti.userdata.fname+' '+noti.userdata.lname}} {{noti.title}}</span>
+                                                            <span class="time-date">{{noti.date}}</span>
+                                                        </div>
+                                                    </div>
+                                                </a> -->
+                                                <a *ngIf="noti?.post_type == 3" [routerLink]="['./UserList',{noty:noti._id}]" (click)="arriveNotification(noti)">
+                                                    <div *ngIf="noti?.from && noti.from._id!=null" class="layout-row">
+                                                        <span class="icon-users"><i class="fa fa-users text-aqua"></i></span>
+                                                        <div class="row-column notification-text"><span>{{noti.from.fname+' '+noti.from.lname}} {{noti.title}}</span>
+                                                            <span class="time-date">{{noti.date}}</span>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                                <!-- <a *ngIf="noti?.post_type == 4" [routerLink]="['./UserProfile',{noty:noti.notifId}]" (click)="arriveNotification(noti)">
+                                                    <div *ngIf="noti?.userdata" class="layout-row">
+                                                        <span class="icon-users"><i class="fa fa-users text-aqua"></i></span>
+                                                        <div class="row-column notification-text"><span>{noti.userdata.fname+' '+noti.userdata.lname}} {{noti.title}}</span>
+                                                            <span class="time-date">{{noti.date}}</span>
+                                                        </div>
+                                                    </div>
+                                                </a> -->
+                                                <a *ngIf="noti?.post_type == 4" [routerLink]="['./UserProfile',{noty:noti._id}]" (click)="arriveNotification(noti)">
+                                                    <div *ngIf="noti?.from && noti.from._id!=null" class="layout-row">
+                                                        <span class="icon-users"><i class="fa fa-users text-aqua"></i></span>
+                                                        <div class="row-column notification-text"><span>{{noti.from.fname+' '+noti.from.lname}} {{noti.title}}</span>
+                                                            <span class="time-date">{{noti.date}}</span>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                                <!-- <a *ngIf="noti?.post_type == 5" (click)="arriveNotification(noti)">
+                                                    <div *ngIf="noti?.userdata" class="layout-row">
+                                                        <span class="icon-users"><i class="fa fa-users text-aqua"></i></span>
+                                                        <div class="row-column notification-text"><span>{{noti.userdata.fname+' '+noti.userdata.lname}} {{noti.title}}</span>
+                                                            <span class="time-date">{{noti.date}}</span>
+                                                        </div>
+                                                    </div>
+                                                </a> -->
+                                                <a *ngIf="noti?.post_type == 5" (click)="arriveNotification(noti)">
+                                                    <div *ngIf="noti?.from && noti.from._id!=null" class="layout-row">
+                                                        <span class="icon-users"><i class="fa fa-users text-aqua"></i></span>
+                                                        <div class="row-column notification-text"><span>{{noti.from.fname+' '+noti.from.lname}} {{noti.title}}</span>
+                                                            <span class="time-date">{{noti.date}}</span>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                        <div class="layout-row layout-align-center-center flex-100 pad-10 search-seeall-header c-p">See all</div>
+                                        <div class="slimScrollBar" style="background: rgb(0, 0, 0) none repeat scroll 0% 0%; width: 3px; position: absolute; top: 0px; opacity: 0.4; display: block; border-radius: 7px; z-index: 99; right: 1px;"></div>
+                                        <div class="slimScrollRail" style="width: 3px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: rgb(51, 51, 51) none repeat scroll 0% 0%; opacity: 0.2; z-index: 90; right: 1px;"></div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="dropdown user mb-btm-menu user-menu img-full layout-align-center-center" *ngIf="user">
+                            <a [routerLink]="['./UserProfile']" class="display-inline-block dropdown-toggle nav-user" (click)="closeMobileMenu()">
+                                <img *ngIf="user.photo" class="  nav-profile-img" src="public/files/ProfilePicture/{{user.photo}}" alt="{{user.photo}}">
+                                <img *ngIf="!user.photo" class="  nav-profile-img" src="public/files/ProfilePicture/no_image.png" alt="no_image.png">
+                            </a>
+                            <p [routerLink]="['./UserProfile']" (click)="closeMobileMenu()" class="display-inline-block m-l-15">
+                                <span *ngIf="user.fname">{{user.fname}}</span> <span *ngIf="user.lname">{{user.lname}}</span>
+                            </p>
+                            <a class="mb-l-out btn btn-default btn-flat" (click)="onLogout()">Sign out</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+        </nav>
+        <div class="header-user-navigation">
+            <div class="container">
+                <div class="row">
+                    <div class="nav-tabs-custom user-profile-tab custom">
+                        <ul class="nav nav-tabs layout-row" (click)="chatBoxClose()">
+                            <li class="flex-11" [class.actives]="tTimeline">
+                                <a data-toggle="tab" [routerLink]="['DashboardHome',{tab: 1 }]" class="layout-row layout-align-center-center ripple">
+                                    <i class="fa fa-dashboard" aria-hidden="true"></i>
+                                    <span> Dashboard</span>
+                                </a>
+                            </li>
+
+                            <li class="flex-11" [class.actives]="tTimeline">
+                                <a data-toggle="tab" [routerLink]="['Settings']" class="layout-row layout-align-center-center">
+                                    <i class="fa fa-user" aria-hidden="true"></i>
+                                    <span> Profile</span>
+                                </a>
+                            </li>
+
+                            <li class="flex-11" [class.actives]="tActivity">
+                                <a data-toggle="tab" [routerLink]="['UserProfile',{tab: 2 }]" class="layout-row layout-align-center-center">
+                                    <i class="fa fa-clock-o" aria-hidden="true"></i>
+                                    <span> Timeline</span>
+                                </a>
+                            </li>
+                            <li class="flex-11" [class.actives]="tJournal">
+                                <a data-toggle="tab" [routerLink]="['UserProfile',{tab: 3 , status: user._id}]" class="layout-row layout-align-center-center">
+                                    <i class="fa fa-archive" aria-hidden="true"></i>
+                                    <span> Journals</span>
+                                </a>
+                            </li>
+                            <li class="flex-11" [class.actives]="tJournal">
+                                <a data-toggle="tab" [routerLink]="['MemberListComponent']" class="layout-row layout-align-center-center">
+                                    <i class="fa fa-users" aria-hidden="true"></i>
+                                    <span> Members</span>
+                                </a>
+                            </li>
+
+                            <li class="flex-11">
+                                <a class="layout-row layout-align-center-center" (click)="inviteFriends()">
+                                    <i class="fa fa-user-plus">&nbsp;</i>
+                                    <span>Invite Friends</span>
+                                </a>
+                            </li>
+                        </ul>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+
+    <!--    
+        <nav role="navigation" class="navbar-static-top navbar-secondry layout-row layout-align-start-center flex-100">
+            <div class="layout-row layout-align-space-between flex-100">
+                <ul class="navbar-secondry-links open-dropdown flex-70 layout-row m-b-0 layout-align-start-center">
+                    <li class="flex-20 layout-align-center-center layout-row"> <a [routerLink]="['UserProfile',{random: randomCounter }]"  (click)="randomCounterMethod()"><i aria-hidden="true" class="fa fa-clock-o m-r-10"></i>My Timeline</a></li>
+                    <li class="flex-20 layout-align-center-center layout-row"> <a [routerLink]="['UserProfile',{random: randomCounter }]"  (click)="randomCounterMethod()"><i class="fa fa-user m-r-10"></i>My Profile</a></li>
+                    <li class="flex-20 layout-align-center-center layout-row"><a [routerLink]="['DashboardHome']"><i class="fa fa-dashboard m-r-10"></i>My Dashboard</a></li>
+                    <li class="flex-20 layout-align-center-center layout-row"> <a [routerLink]="['UserProfile',{random: randomCounter }]"  (click)="randomCounterMethod()"><i aria-hidden="true" class="fa fa-archive m-r-10"></i>My Journal</a></li>
+                    <li class="flex-20 layout-align-center-center layout-row"><a [routerLink]="['UserList']"><i class="fa fa-users m-r-10"></i>Members</a></li>
+                </ul>
+                <div class="flex-30 layout-align-end-center layout-row m-r-10 invite-frnd-top">
+                    <a  href=""><i class="icon-unlock"></i> Invite Friends </a>
+                </div>
+            </div>
+        </nav>-->
+
+    <!-- Left side column. contains the logo and sidebar -->
+
+
+    <div class="container container-setting" (click)="clearUserSearchDropDown()">
+
+        <div class="layout-row flex-100">
+            <aside class="main-sidebar flex-20" [class.toggle-main-sidenav]="toggleState">
+                <!-- sidebar: style can be found in sidebar.less -->
+                <section class="sidebar" style="height: auto;">
+                    <!-- Sidebar user panel -->
+                    <div *ngIf="page.friendProfileId" (click)="closeSideMenu()">
+                        <div class="user-panel white-bg text-center " *ngIf="page.userdetails" [routerLink]="['ProfileByUserComponent',{userId: page.userdetails._id, random: randomCounter}]" (click)="randomCounterMethod()">
+                            <div class="image">
+                                <img *ngIf="page.userdetails.photo" class=" " src="public/files/ProfilePicture/{{page.userdetails.photo}}" alt="{{page.userdetails.photo}}">
+                                <img *ngIf="!page.userdetails.photo" class=" " src="public/files/ProfilePicture/no_image.png" alt="no_image.png" height="50px" width="50px">
+                            </div>
+                            <div class="info">
+                                <p><span *ngIf="page.userdetails.fname">{{page.userdetails.fname}}</span> <span *ngIf="page.userdetails.lname">{{page.userdetails.lname}}</span></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div *ngIf="(!page.friendProfileId && !page.wallId)" (click)="closeSideMenu()">
+                        <div class="user-panel text-center " *ngIf="user">
+                            <div class="image" id="profileModal" data-toggle="modal" (click)="updatePic()">
+                                <img *ngIf="user.photo" class=" " src="public/files/ProfilePicture/{{user.photo}}" alt="{{user.photo}}">
+                                <img *ngIf="!user.photo" class=" " src="public/files/ProfilePicture/no_image.png" alt="no_image.png" height="50px" width="50px">
+                                <!--<div class="dp-hover-edit" *ngIf="!(type=='Facebook' || type=='Google')">Add/Update Photo</div>-->
+                                <div class="dp-hover-edit"><i class="fa fa-camera"></i></div>
+                            </div>
+                            <div [routerLink]="['UserProfile',{random: randomCounter }]" (click)="randomCounterMethod()" class="info">
+                                <a class="h-txt">
+                                    <p><span *ngIf="page.user.name">{{page.user.name}}</span>
+                                    </p>
+                                </a>
+                                <!--<a class="h-txt"><i class="fa fa-circle text-success"></i> Online</a>-->
+                            </div>
+                        </div>
+                    </div>
+                    <div *ngIf="page.wallId" (click)="closeSideMenu()">
+                        <div class="user-panel white-bg text-center " *ngIf="page.walldetails">
+                            <div class="image">
+                                <img (click)="onSCDClick(page.wallId,page.wall_type)" *ngIf="page.walldetails.icon && page.wall_type != 'Group'" class="c-p" src="public/files/{{page.wall_type}}/Icon/{{page.walldetails.icon}}" alt="{{page.walldetails.icon}}">
+                                <img (click)="getGroupWall(page.wallId)" class="c-p" *ngIf="page.walldetails.icon && page.wall_type == 'Group'" src="public/files/{{page.wall_type}}/{{page.walldetails.icon}}" alt="{{page.walldetails.icon}}">
+                                <img (click)="getSubjectWall(page.wallId)" class="c-p" *ngIf="!page.walldetails.icon &&  page.wall_type == 'Subject'" src="public/files/WallPicture/subject.png" alt="no_image.png" height="50px" width="50px">
+                                <img (click)="getCollegeWall(page.wallId)" class="c-p" *ngIf="!page.walldetails.icon &&  page.wall_type == 'College'" src="public/files/WallPicture/college.png" alt="no_image.png" height="50px" width="50px">
+                                <img (click)="getDegreeWall(page.wallId)" class="c-p" *ngIf="!page.walldetails.icon &&  page.wall_type == 'Degree'" src="public/files/WallPicture/degree.png" alt="no_image.png" height="50px" width="50px">
+                                <img (click)="getGroupWall(page.wallId)" class="c-p" *ngIf="!page.walldetails.icon &&  page.wall_type == 'Group'" src="public/files/WallPicture/no_image.png" alt="no_image.png" height="50px" width="50px">
+                            </div>
+                            <div class="info">
+                                <p><span class="ag-side-wrap c-p" (click)="onSCDClick(page.wallId,page.wall_type)" *ngIf="page.walldetails.name" tooltipPlacement="bottom" tooltip="{{page.walldetails.name}}">{{page.walldetails.name}}</span></p>
+                                <p><span class="ag-side-wrap c-p" (click)="getGroupWall(page.wallId)" *ngIf="page.walldetails.title" tooltipPlacement="bottom" tooltip="{{page.walldetails.title}}">{{page.walldetails.title}}</span></p>
+                                <p><span class="ag-side-wrap c-p" (click)="onList(page.wallId,page.wall_type)" *ngIf="page.member_count">{{page.member_count}} Member<span *ngIf="page.member_count > 1">s</span></span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="invite-section">
+                        <a class="btn btn-default face invite-btn display-full" (click)="inviteFriends()">
+                            <i class="fa fa-user-plus">&nbsp;</i>
+                            <span>Invite Friends</span>
+                        </a>
+                        <!--<a class="btn btn-default  invite-btn googl display-full" (click)="GoogleInviteFriends()" data-toggle="modal"
+                            data-target="#invite-modal">
+                            <i class="fa fa-google-plus">&nbsp;</i>
+                            <span>Invite Friends</span>
+                        </a>-->
+                        <a *ngIf="(page.wallId && !page.is_member)&&(page.join==0) && page.wall_type != 'Group'" (click)="openSubjectAddModel()" class="btn btn-default display-full" id="join-modal-btn" data-toggle="modal">
+                            <i class="fa fa-plus">&nbsp;</i>
+                            <span>Join {{page.wall_type}}</span>
+                        </a>
+                        <a *ngIf="(page.wallId && page.is_member) &&(page.join==1) && page.wall_type != 'Group'" (click)="openSCDLeaveModel()" class="btn btn-default display-full leave" id="join-modal-btn" data-toggle="modal">
+                            <span>Leave {{page.wall_type}}</span>
+                        </a>
+                        <a *ngIf="(page.wallId && !page.is_member)&&(page.wall_type == 'Group') " (click)="joinGroup(page.wallId)" class="btn btn-default display-full join">
+                            <i class="fa fa-plus">&nbsp;</i>
+                            <span>Join {{page.wall_type}}</span>
+                        </a>
+                        <a *ngIf="(page.wallId && page.is_member)&&(page.wall_type == 'Group') && !isGroupAdmin()" (click)="leaveGroupModal()" class="btn btn-default display-full leave">
+                            <span>Leave {{page.wall_type}}</span>
+                        </a>
+                    </div>
+
+                    <!-- /.search form -->
+                    <!-- sidebar menu: : style can be found in sidebar.less -->
+                    <ul class="sidebar-menu">
+                        <!--<li class="treeview">
+                            <a [routerLink]="['DashboardHome',{tab: 1 }]">
+                                <i class="fa fa-dashboard"></i> <span>Dashboard</span>
+                            </a>
+                        </li>-->
+                        <!--<li class="treeview">
+                            
+                            <a [routerLink]="['Profile']"  (click)="randomCounterMethod()">
+                                <i class="fa fa-user"></i> <span>Profile</span>
+                            </a>
+                        </li>                        -->
+                        <li class="treeview" *ngIf="page.wallId && page.wall_type" (click)="onList(page.wallId,page.wall_type)">
+                            <a class="c-p">
+                                <i class="fa fa-users"></i>
+                                <span class="noselect">List</span>
+                            </a>
+                        </li>
+                        <li class="treeview" *ngIf="!page.wallId">
+                            <a [routerLink]="['UserList']">
+                                <i class="fa fa-users"></i>
+                                <span>Friends</span>
+                            </a>
+                        </li>
+                        <li class="treeview">
+                            <a class="c-p" [routerLink]="['GroupsComponent',onGroupClick(page.wallId,page.wall_type)]">
+                                <i class="fa fa-users"></i>
+                                <span class="noselect">Groups</span>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li><a><i class="fa fa-circle"></i>Group 1</a></li>
+                                <li><a><i class="fa fa-circle"></i>Group 2</a></li>
+                                <li><a><i class="fa fa-circle"></i>Group 3</a></li>
+                                <li><a><i class="fa fa-circle"></i>Group 4</a></li>
+                            </ul>
+                        </li>
+                        <li class="treeview">
+                            <a [routerLink]="['Event']">
+                                <i class="fa fa-calendar"></i>
+                                <span>Events</span>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li><a><i class="fa fa-circle-o"></i>Group 1</a></li>
+                                <li><a><i class="fa fa-circle-o"></i>Group 2</a></li>
+                                <li><a><i class="fa fa-circle-o"></i>Group 3</a></li>
+                                <li><a><i class="fa fa-circle-o"></i>Group 4</a></li>
+                            </ul>
+                        </li>
+                        <li class="treeview">
+                            <a [routerLink]="['List']">
+                                <img src="public/files/logo/list-icon-w.png">
+                                <span>Member Lists</span>
+                            </a>
+                        </li>
+
+                        <!--<li class="treeview"><a [routerLink]="['BlogHome',{id:null}]"><i class="fa fa-comment-o" aria-hidden="true"></i> <span>Blog</span></a></li>
+                        <li class="treeview"><a [routerLink]="['Settings']"><i class="fa fa-cog" aria-hidden="true"></i> <span>Setting</span></a></li>
+                        <li class="treeview"><a><i class="fa fa-shopping-bag"></i> <span>Sell Stuff</span></a></li>-->
+
+                    </ul>
+                    <div class="side_footer_links layout-row layout-align-center-center layout-wrap">
+                        <a [routerLink]="['TermOfUseComponent']">
+                            <span>Terms</span>
+                        </a>
+                        <a [routerLink]="['PrivacyPolicyComponent']">
+                            <span>Privacy</span>
+                        </a>
+                        <a [routerLink]="['FaqComponent']">
+                            <span>FAQ</span>
+                        </a>
+                        <a [routerLink]="['ContactUsComponent']">
+                            <span>Contact</span>
+                        </a>
+                        <a [routerLink]="['AboutComponent']">
+                            <span>About Us</span>
+                        </a>
+
+                    </div>
+                </section>
+                <!-- /.sidebar -->
+            </aside>
+            <!-- Content Wrapper. Contains page content -->
+            <div class="content-wrapper flex-80">
+                <!-- Content Header (Page header) -->
+                <router-outlet></router-outlet>
+                <!-- /.content -->
+            </div>
+            <!-- /.content-wrapper -->
+        </div>
+    </div>
+    <!-- Main Footer -->
+    <footer class="main-footer">
+        <!-- To the right -->
+        <div class="layout-row layout-align-space-between ">
+            <div class="footer-info flex-100 layout-row layout-align-start-center">@StribeIN Web, All Rights Reserved.</div>
+            <!--<div class="footer-info flex-100 layout-row layout-align-end-center"> <a [routerLink]="['TermOfUseComponent']"> Terms of Use</a>  <a [routerLink]="['PrivacyPolicyComponent']"> Privacy Policy</a>  <a [routerLink]="['FaqComponent']"> FAQ</a>  <a [routerLink]="['ContactUsComponent']">Contact Us</a></div>-->
+        </div>
+        <!-- Default to the left -->
+    </footer>
+    <!-- Control Sidebar -->
+    <aside [ngClass]="tChat()" class="control-sidebar control-sidebar-light {{page.chatToggleGlobal}}">
+        <!---------------- Tab panes ---------------->
+        <auto-boat [userStatus]="userStatus" [profilePic]="profilePic"></auto-boat>
+    </aside>
+    <div class="control-sidebar-bg"></div>
+</div>
+<!-- ./wrapper -->
+<div [class.bd-sidebar]="toggleState  || mobMenuState" (click)="closeSideMenu();mobMenuState = false;"></div>
+<div id="invite-modal1" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Google Invitation</h4>
+            </div>
+            <div class="modal-body">
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <ul class="products-list product-list-in-box">
+                        <li class="item">
+                            <div class="product-img">
+                                <img src="public/dist/img/user1-128x128.jpg" alt="Product Image">
+                            </div>
+                            <div class="product-info">
+                                <a href="javascript:void(0)" class="product-title">jhon macclene
+                                    <span class="label label-warning pull-right label-success">Invite</span>
+                                </a>
+                                <span class="product-description">
+                                    hello I am your Google Friend
+                                </span>
+                            </div>
+                        </li>
+                        <!-- /.item -->
+                        <li class="item">
+                            <div class="product-img">
+                                <img src="public/dist/img/user3-128x128.jpg" alt="Product Image">
+                            </div>
+                            <div class="product-info">
+                                <a href="javascript:void(0)" class="product-title">jack daniels
+                                    <span class="label label-warning pull-right">Invite</span></a>
+                                <span class="product-description">
+                                    hello I am your Google Friend
+                                </span>
+                            </div>
+                        </li>
+                        <!-- /.item -->
+                        <li class="item">
+                            <div class="product-img">
+                                <img src="public/dist/img/user4-128x128.jpg" alt="Product Image">
+                            </div>
+                            <div class="product-info">
+                                <a href="javascript:void(0)" class="product-title">hugh jackman<span class="label label-warning pull-right label-success">Invite</span></a>
+                                <span class="product-description">
+                                    hello I am your Google Friend
+                                </span>
+                            </div>
+                        </li>
+                        <!-- /.item -->
+                        <li class="item">
+                            <div class="product-img">
+                                <img src="public/dist/img/user5-128x128.jpg" alt="Product Image">
+                            </div>
+                            <div class="product-info">
+                                <a href="javascript:void(0)" class="product-title">jack nicholson
+                                    <span class="label label-warning pull-right">Invite</span></a>
+                                <span class="product-description">
+                                    hello I am your Google Friend
+                                </span>
+                            </div>
+                        </li>
+                        <!-- /.item -->
+                    </ul>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-default send-invitation-btn">send invitation</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+<div class="modal fade modal-align-fix dp-scroll-body" id="myModal1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeRefresh()"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Upload Profile Picture</h4>
+            </div>
+            <div class="modal-body">
+                <!--<div class="layout-row uplod-pic">
+                    <div class="upload-area flex-60 layout-align-start-center layout-row" *ngIf="user">
+                        <img *ngIf="user.photo" alt="User Image" class=" " src="public/files/ProfilePicture/{{user.photo}}" height="150px"
+                            width="150px">
+                        <img *ngIf="!user.photo" alt="User Image" class=" " src="public/files/ProfilePicture/no_image.png" height="150px"
+                            width="150px">
+                    </div>
+                </div>-->
+
+                <div class="layout-column uplod-pic profile-dec-block" *ngIf="user">
+                    <div class="">
+                        <div class="">
+                            <ng2-input-file (complete)="fileChangeListener($event)" [btnText]="'Choose your Profile Picture'"></ng2-input-file>
+                            <!--<input id="custom-input" type="file" (change)="fileChangeListener($event)">-->
+                        </div>
+                        <span style="color:red">{{errorIcon}}</span>
+                        <img-cropper #cropper [image]="data1" [settings]="cropperSettings1" (onCrop)="cropped($event)"></img-cropper>
+                        <!--<span class="result" *ngIf="data1.image">
+                            <img [src]="data1.image" >
+                        </span>-->
+
+                    </div>
+                    <!--<div class="upload-area flex-60 layout-align-start-center layout-row">
+                        <input id="exampleInputFile" type="file" id="img_upload" (change)="fileChangeEvent($event)">
+                        <span style="color:red">{{errorIcon}}</span>
+                    </div>-->
+                    <!--<span style="color:red">{{errorIcon}}</span>-->
+                    <span class="p-5 text-muted"> Note : Upload only jpg/png/gif/tif files.</span>
+                    <!--<div class="rem-btn-blk layout-row layout-align-end-center">
+                        <button *ngIf="user.photo" class="btn btn-sm" data-dismiss="modal" (click)="removeProfileImage()">Remove Picture</button>
+                    </div>-->
+                </div>
+                <div class="modal-footer">
+                    <button data-dismiss="modal" (click)="closeRefresh()">Cancel</button>
+                    <button [disabled]="valPhoto" (click)="upload(user._id,user)">Upload</button>
+                </div>
+            </div>
+
+
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+<div class="modal fade modal-align-fix" id="join-modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" (click)="closeAddScdModal()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Join {{page.wall_type}}</h4>
+            </div>
+            <div class="modal-body ">
+                <div class="tab-pane active m-b-10" id="choose_category" *ngIf="page.wall_type=='Subject'">
+                    <div class="dropdown sub-reg-dropdown">
+                        <button class="btn cat-btn dropdown-toggle" type="button" data-toggle="dropdown">
+                      <span *ngIf="categoryValue"> {{categoryValue==1?'Currently Taking / Future / Past Student':categoryValue==2?'Choose Category':categoryValue==3?'Subject Expert':categoryValue==4?'Teacher of Subject':'Just Interested'}}</span> &nbsp;<span class="caret">&nbsp;</span>
+                       </button>
+                        <ul class="dropdown-menu">
+                            <li *ngFor="let subType of selectSubjectType;let i=index;">
+                                <a (click)="changeCatagories(subType)">{{subType.label}}</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="border flex-97 layout-column" *ngIf="(page.wall_type=='Subject' && categoryValue==1 ) || page.wall_type!='Subject'">
+                    <div class="h5 duration-title">Enter Duration of the {{page.wall_type}}</div>
+                    <div class="m-t-10 layout-row layout-align-center-center">
+                        <div class="form-group flex-45">
+                            <label>From:</label>
+                            <div class="input-group date">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-calendar"></i>
+                                </div>
+                                <input class="form-control pull-right" id="date-from" name="date-from-sub" type="text">
+                            </div>
+                            <!-- /.input group -->
+                        </div>
+                        <div class="form-group flex-45 margin-l-10">
+                            <label>To:</label>
+                            <div class="input-group date">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-calendar"></i>
+                                </div>
+                                <input class="form-control pull-right" id="date-to" name="date-to-sub" type="text">
+                            </div>
+                            <!-- /.input group -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="add-btn" (click)="closeAddScdModal()">Cancel</button>
+                <button class="add-btn" (click)="joinSubject()">Add</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<div class="modal fade modal-align-fix" id="join-scd-modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" (click)="closeJoinAddModel()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" *ngIf="wallType">Join {{wallType}}</h4>
+            </div>
+            <div class="modal-body ">
+                <div class="tab-pane active m-b-10" id="choose_category" *ngIf="wallType=='Subject'">
+                    <div class="dropdown sub-reg-dropdown">
+                        <button class="btn cat-btn dropdown-toggle" type="button" data-toggle="dropdown">
+                      <span *ngIf="categoryValue"> {{categoryValue==1?'Currently Taking / Future / Past Student':categoryValue==2?'Choose Category':categoryValue==3?'Subject Expert':categoryValue==4?'Teacher of Subject':'Just Interested'}}</span> &nbsp;<span class="caret">&nbsp;</span>
+                       </button>
+                        <ul class="dropdown-menu">
+                            <li *ngFor="let subType of selectSubjectType;let i=index;">
+                                <a (click)="changeCatagories(subType)">{{subType.label}}</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="relative" *ngIf="(wallType=='Subject')">
+                    <input [(ngModel)]="joinData.name" class="form-control" placeholder="Search Subject.." type="text" (keyup)="getSubject($event)">
+                    <div *ngIf="subjectLists != null" class="join-search-list">
+                        <ul>
+                            <li *ngFor="let subject of subjectLists">
+                                <div class="college-block c-p" (click)="selectSubject(subject._id,subject.name)">
+                                    {{subject.name}}
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="relative" *ngIf="(wallType=='College')">
+                    <input [(ngModel)]="joinData.name" class="form-control" placeholder="Search College.." type="text" (keyup)="getCollege($event)">
+                    <div *ngIf="collegeLists != null" class="join-search-list">
+                        <ul>
+                            <li *ngFor="let college of collegeLists">
+                                <div class="college-block c-p" (click)="selectSubject(college._id,college.name)">
+                                    {{college.name}}
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="relative" *ngIf="(wallType=='Degree')">
+                    <input [(ngModel)]="joinData.name" class="form-control" placeholder="Search Degree.." type="text" (keyup)="getDegree($event)">
+                    <div *ngIf="degreeLists != null" class="join-search-list">
+                        <ul>
+                            <li *ngFor="let degree of degreeLists">
+                                <div class="college-block c-p" (click)="selectSubject(degree._id,degree.name)">
+                                    {{degree.name}}
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="border flex-97 layout-column" *ngIf="(wallType=='Subject' && categoryValue==1 ) || wallType!='Subject'">
+                    <div class="h5 duration-title">Enter Duration of the {{wallType}}</div>
+                    <div class="m-t-10 layout-row layout-align-center-center">
+                        <div class="form-group flex-45">
+                            <label>From:</label>
+                            <div class="input-group date">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-calendar" style="cursor:default!important"></i>
+                                </div>
+                                <input class="form-control pull-right" id="from-date" name="date-from-subject" type="text">
+                            </div>
+                            <!-- /.input group -->
+                        </div>
+                        <div class="form-group flex-45 margin-l-10">
+                            <label>To:</label>
+                            <div class="input-group date">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-calendar" style="cursor:default!important"></i>
+                                </div>
+                                <input class="form-control pull-right" id="to-date" name="date-to-subject" type="text">
+                            </div>
+                            <!-- /.input group -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="add-btn" (click)="closeJoinAddModel()">Cancel</button>
+                <button class="add-btn" (click)="addSCD()">Add</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+<!-- invite friends model  -->
+<div class="modal fade modal-align-fix dialog-like-wrapper " id="inviteFriendsModel">
+    <invite-friends-model *ngIf="showinviteFriendsModel" [pageData]="page" (complete)="oninviteFriendsModelClose($event)"></invite-friends-model>
+</div>
+<div class="modal fade modal-align-fix " id="groupLeaveModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body setting-page flex-100 layout-row">
+                <div class="modal-body layout-column flex-100 ">
+                    <div class="modal-body">
+                        <div class="upload-area flex-60 layout-align-start-center layout-row">
+                            <h4>Are you sure you want to leave this Group?</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="add-btn cancel-btn" data-dismiss="modal">Cancel</button>
+                <button class="add-btn" data-dismiss="modal" (click)="leaveFromGroup()">Yes</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade modal-align-fix " id="scdLeaveModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body setting-page flex-100 layout-row">
+                <div class="modal-body layout-column flex-100 ">
+                    <div class="modal-body">
+                        <div class="upload-area flex-60 layout-align-start-center layout-row">
+                            <h4>Are you sure you want to leave this {{page.wall_type=='Subject'?'Subject':page.wall_type=='College'?'College':'Degree'}}?</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="add-btn cancel-btn" data-dismiss="modal">Cancel</button>
+                <button class="add-btn" data-dismiss="modal" (click)="leaveFromSCD()">Yes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--single post model-->
+<div class="modal fade modal-align-fix single-post-dialog" id="singlePostModel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeSinglePostDialog()"><span aria-hidden="true">&times;</span></button>
+            <div class="modal-body setting-page flex-100 layout-row">
+                <single-post-detail *ngIf="showSinglePostModel" [postId]="postId"></single-post-detail>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Post Detail View -->
+<div class="modal fade asset-detail-dialog " id="profile-page-Asset-detail-Modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeImageDialog()"><span aria-hidden="true">&times;</span></button>
+            <div class="modal-body setting-page flex-100 layout-row">
+                <data-profile-Pic *ngIf="dialogState" [postId]="postId"></data-profile-Pic>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Add New Subject -->
+<div class="modal fade modal-align-fix single-post-new-scd single-post-dialog" id="addSubjectModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="clearAddNewSubject()"><span aria-hidden="true">&times;</span></button>
+            <div class="modal-body setting-page flex-100 layout-column">
+                <div class="modal-body setting-page flex-100 layout-column">
+                    <div class="layout-row layout-wrap">
+                        <label class="flex-20 layout-row layout-align-center-center">Icons</label>
+                        <input id="exampleInputFile" type="file" id="img_upload" class="flex-70" placeholder="Icons" (change)="photoChangeEvent($event)" accept="image/*">
+                        <span class="flex-100" style="color: red">{{errorSubjectIcon}}</span>
+                    </div>
+                    <div class="layout-row p-l-10">
+                        <span class="p-5 text-muted text-note text-left flex-100"> Note : Upload only jpg/png/gif/tif files.</span>
+                    </div>
+                </div>
+                <div class="modal-body setting-page flex-100 layout-row layout-wrap">
+                    <label class="flex-20 layout-row layout-align-center-center">Subject</label>
+                    <input [(ngModel)]="message.name.name" class="flex-70 pad-5-10" placeholder="Subject" type="text" />
+                    <span class="error_file_message flex-100">{{errorAddSubject}}</span>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="add-btn cancel-btn" data-dismiss="modal" (click)="clearAddNewSubject()">Cancel</button>
+                <button class="add-btn" (click)="addNewSubject()">Add</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Add New College -->
+<div class="modal fade modal-align-fix single-post-dialog single-post-new-scd" id="addCollegeModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="clearAddNewCollege()"><span aria-hidden="true">&times;</span></button>
+            <div class="modal-body setting-page flex-100 layout-column">
+                <div class="modal-body setting-page flex-100 layout-column">
+                    <div class="layout-row layout-wrap">
+                        <label class="flex-20 layout-row layout-align-center-center">Icons</label>
+                        <input id="exampleInputFile" type="file" id="img_upload" class="flex-70" placeholder="Icons" (change)="photoChangeEvent($event)" accept="image/*">
+                        <span class="flex-100" style="color: red">{{errorCollegeIcon}}</span>
+                    </div>   
+                    <div class="layout-row p-l-10"> 
+                    <span class="p-5 text-muted text-note text-left flex-100"> Note : Upload only jpg/png/gif/tif files.</span>
+                    </div>
+                </div>
+                <div class="modal-body setting-page flex-100 layout-row layout-wrap">
+                    <label class="flex-20 layout-row layout-align-center-center">College</label>
+                    <input class="flex-70 pad-5-10" placeholder="College" type="text" [(ngModel)]="message.name.name" />
+                    <span class="error_file_message flex-100">{{errorAddCollege}}</span>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="add-btn cancel-btn" data-dismiss="modal" (click)="clearAddNewCollege()">Cancel</button>
+                <button class="add-btn" (click)="addNewCollege()">Add</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Add New Degree -->
+<div class="modal fade modal-align-fix single-post-dialog single-post-new-scd" id="addDegreeModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="clearAddNewDegree()"><span aria-hidden="true">&times;</span></button>
+            <div class="modal-body setting-page flex-100 layout-column">
+                <div class="modal-body setting-page flex-100 layout-column">
+                    <div class="layout-row layout-wrap">
+                     <label class="flex-20 layout-row layout-align-center-center">Icons</label>
+                     <input id="exampleInputFile" type="file" id="img_upload" class="flex-70" placeholder="Icons" (change)="photoChangeEvent($event)" accept="image/*">
+                        <span class="flex-100" style="color: red">{{error.degreeIcon}}</span>
+                    </div>
+                    <div class="layout-row p-l-10"> 
+                        <span class="p-5 text-muted text-note text-left flex-100"> Note : Upload only jpg/png/gif/tif files.</span>
+                        </div>
+                </div>
+                <div class="modal-body setting-page flex-100 layout-row">
+                    <label class="flex-20 layout-row layout-align-center-center">Degree</label>
+                    <input class="flex-70 pad-5-10" placeholder="Degree" type="text" [(ngModel)]="messageDegree.name.name" />
+                    <span style="color: red">{{error.degreename}}</span>
+                </div>
+                <div class="modal-body setting-page flex-100 layout-row layout-wrap">
+                    <label class="flex-20 layout-row layout-align-center-center">Degree Type</label>
+                    <select class="flex-70 pad-5-10" [(ngModel)]="messageDegree.type.type">
+                        <option  *ngFor="let cat of types" value="{{cat.type}}" >{{cat.name}}</option>
+                    </select>
+                    <span class="flex-100" style="color: red">{{error.degreeOption}}</span>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="add-btn cancel-btn" data-dismiss="modal" (click)="clearAddNewDegree()">Cancel</button>
+                <button class="add-btn" (click)="addNewDegree()">Add</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,24 @@
+page-more-popover-post {
+ .color-orange{
+     color: #e7733b !important;
+ }
+ button {
+    padding: 6px 0px;
+    width: 100%;
+    background: transparent;
+    color: #828282;
+    text-align: left;
+    font-size: 1.6rem;
+    i, ion-icon{
+        margin-right: 4px;
+        width: 18px;
+        text-align: center;
+        display: inline-block;
+    } 
+    
+}
+.scroll-content {
+    overflow-y: auto;
+    padding: 4px 10px !important;
+}
+}

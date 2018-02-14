@@ -1,0 +1,111 @@
+page-friend-managment {
+    .header {
+        &::after {
+            background: none;
+            height: 0;
+        }
+        .header-title {
+            margin: 0;
+        }
+        .toolbar {
+            padding: 0;
+            min-height: 40px;
+            .toolbar-background {
+                border: none;
+            }
+        }
+        ion-navbar.toolbar {
+            min-height: 54px;
+        }
+        .segment {
+            .segment-button {
+                color: #fff;
+                border-bottom: 4px solid transparent;
+                opacity: 1;
+                height: 4.2rem;
+                i {
+                    font-size: 18px;
+                    line-height: 2rem;
+                    vertical-align: middle;
+                }
+            }
+            .segment-button.segment-activated {
+                border-bottom: 4px solid #feb101;
+            }
+        }
+        .toolbar-ios .segment-button {
+            max-width: initial !important;
+            line-height: 5.4rem;
+            height: 5.2rem;
+        }
+        .font-size-24 {
+            font-size: 24px !important;
+        }
+         .toolbar{
+            &.statusbar-padding{
+                ion-title{
+                    padding-top: 20px !important;
+                    height: calc(20px + 20px) !important;
+                    min-height: calc(20px + 20px) !important;
+                }
+            }
+            &.toolbar-ios{
+                ion-title{
+                    position: inherit;
+                     padding-top: 0px !important;
+                }
+            } 
+        } 
+        .back-button{
+            position: relative;
+        }
+    }
+    .content {
+        background-color: #dfdfdf;
+        .search-friend {
+            background-color: #f0eced !important;
+            position: relative;
+            border-bottom: 1px solid #c0c0c0;
+            box-shadow: 0 0 1px #d5d5d5;
+            .item-inner {
+                border: none;
+            }
+            .label {
+                margin: 0;
+            }
+            .searchbar {
+                padding: 0;
+                .searchbar-input-container {
+                    .searchbar-input {
+                        background-color: transparent;
+                        box-shadow: none;
+                    }
+                }
+            }
+        }
+        .item {
+            padding-left: 10px;
+            background-color: transparent;
+            border-bottom: 1px solid rgba(177, 177, 177, 0.52);                        
+            ion-avatar img {
+                border: 1px solid #b0b0b0;
+            }
+            .item-inner{
+                i{
+                &.fa{ padding: 4px;}
+                }
+            }
+        }
+        .friend-mngmt-title {
+            .label{
+                margin: 0;            
+                padding: 10px 0px;
+                font-weight: bold;
+            }
+        }
+    }
+    .color-orange {
+                    color: #e7733b !important;
+                }
+               
+}

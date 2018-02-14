@@ -1,0 +1,186 @@
+<div class="profile-asset-detail" *ngIf="post">
+    <div class="custom1-modal-header asset-detail-block">
+        <div class="h3 header-title layout-row layout-align-space-between">
+           <span>
+           <span *ngIf="post.post_type == 3">Photo posted by</span>
+           <span *ngIf="post.post_type == 4">Video posted by</span>
+           <span *ngIf="post.post_type == 6">Audio posted by</span>
+            <span class="img-auser-name c-p"  *ngIf="post.created_by.fname" (click)="getProfileById(post.created_by._id)">{{post.created_by | nameFilter}}</span>
+            <span  *ngIf="post.subject_id" (click)="getSubjectWall(post.subject_id._id)">in <a class="img-auser-name c-p">{{post.subject_id.name}}</a></span>
+            <span  *ngIf="post.college_id" (click)="getCollegeWall(post.college_id._id)"> in<a class="img-auser-name c-p"> {{post.college_id.name}}</a></span>
+            <span  *ngIf="post.degree_id" (click)="getDegreeWall(post.degree_id._id)">in <a class="img-auser-name c-p">{{post.degree_id.name}}</a></span>
+            <span *ngIf="post.group_id">
+           <span *ngIf="post.group_id" (click)="getGroupWall(post.group_id._id)">in <a  class="img-auser-name c-p">{{post.group_id.title}}</a> group under </span>
+       <a  class="img-auser-name c-p" *ngIf="post.group_id.subject_id" (click)="getSubjectWall(post.group_id.subject_id._id)"> {{post.group_id.subject_id.name}}</a>
+       <a class="img-auser-name c-p" *ngIf="post.group_id.college_id" (click)="getCollegeWall(post.group_id.college_id._id)"> {{post.group_id.college_id.name}}</a>
+       <a class="img-auser-name c-p" *ngIf="post.group_id.degree_id" (click)="getDegreeWall(post.group_id.degree_id._id)"> {{post.group_id.degree_id.name}}</a>
+       </span>
+            </span>
+           
+        </div>
+        <div class="header-options layout-row">
+            <div class="flex layout-row layout-align-space-between layout-xs-column flex-100">
+                <div class="profile-asset flex-60 layout-column flex-sm-50 flex-xs-100">
+                    <div class="bg-asset layout-row layout-align-start-start">
+                        <div class="asset-img" *ngIf="(post.photo[0] && post.photo[0].title==null)&& post.post_type == 3">
+                            <img src="public/files/{{getFoldername(post?.types)}}/Photos/{{post.origin_creator?post.origin_creator._id:post.created_by._id}}/{{post?.photo[0].file_name}}" alt="">
+                        </div>
+                        <div class="asset-img" *ngIf="(post.photo[0] && post.photo[0].title!=null) && post.post_type == 3">
+                            <img src="{{post?.photo[0].title}}" alt="">
+                        </div>
+                        <div *ngIf="post.post_type == 4" class="asset-img layout-row">
+                            <video #myVideo *ngIf="post.video[0].title==null" width="100%" height="100%" controls>
+                                <source src="public/files/{{getFoldername(post?.types)}}/Videos/{{post.origin_creator?post.origin_creator._id:post.created_by._id}}/{{post?.video[0].file_name}}"
+                                    type="video/mp4">
+                            </video>
+                            <iframe id="iframeVideo" *ngIf="post.video[0].title!=null " width="100%" height="100%" [src]="post.video[0].title | youtubeSafeUrl" frameborder="0" allowfullscreen>
+                            </iframe>
+                        </div>
+                        <div *ngIf="post.post_type == 6" class="asset-img">
+                            <audio controls *ngIf="post.audio[0].title==null">
+                                <source src="public/files/{{getFoldername(post?.types)}}/Audios/{{post.origin_creator?post.origin_creator._id:post.created_by._id}}/{{post?.audio[0].file_name}}"
+                                    type="audio/mpeg"> Your browser does not support the audio element.
+                            </audio>
+                            <audio controls *ngIf="post.audio[0].title!=null">
+                                <source src="{{post?.audio[0].title}}" type="audio/mp4"> Your browser does not support the audio element.
+                            </audio>
+                        </div>
+                    </div>
+                </div>
+                <div class="profile-asset-detl flex-35 layout-column flex-sm-50 flex-xs-100">
+                    <div class="asset-user layout-row">
+                        <div class="layout-row flex-70 layout-align-start-center">
+                            <div class="img-auser c-p" *ngIf="post.created_by" (click)="getProfileById(post.created_by._id)">
+                                <img *ngIf="post.created_by.photo" src="public/files/ProfilePicture/{{post.created_by.photo}}" style="height:s 31px ;width: 37px">
+                                <img *ngIf="!post.created_by.photo" src="public/files/ProfilePicture/no_image.png" style="height:s 31px ;width: 37px">
+                            </div>
+                            <div class="img-auser-detail layout-column">
+                                <div class="img-auser-name c-p" (click)="getProfileById(post.created_by._id)">{{post.created_by.fname}}&nbsp;{{post.created_by.lname}}</div>
+                                <div class="img-auser-date">{{post.created_on | datetime}}</div>
+                                <div class="message text-formatting" embedDirective>{{post.name}}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dtl-dtl"></div>
+                    <div class="layout-row asset-smiley">
+                        <div class="flex-100 smily-comment layout-align-end-center layout-row">
+                            <ul class="layout-row c-p">
+                                <li class="layout-column layout-align-start-center">
+                                    <i class="fa fa-commenting-o" aria-hidden="true"></i>
+                                    <span class="layout-row layout-align-start-center text-center">({{post.comments.length}})&nbsp;Comment<span *ngIf="post.comments.length>1">s</span></span>
+                                </li>
+                                <li class="layout-column layout-align-start-center c-p" (click)="openAddPostToJournalModal(post._id)">
+                                    <i class="fa fa-book" aria-hidden="true"></i>
+                                    <span class="layout-row layout-align-start-center text-center">Journal</span>
+                                </li>
+                                <li class="layout-column layout-align-start-center c-p" (click)="onShareClick(post._id)">
+                                    <i class="fa fa-share" aria-hidden="true"></i>
+                                    <span *ngIf="post.share" class="layout-row layout-align-start-center text-center">&nbsp;Share</span>
+                                </li>
+                                <li class="layout-column layout-align-start-center c-p" >
+                                    <img  (click)="addLike(post._id,post)" class="toggleImage" src="public/dist/img/{{post.likes|likeFilterPipe:post._id}}" style="height: 20px ;width: 20px" />
+                                    <span class="margin-l-10 bump-font layout-row layout-align-start-center text-center"> ({{post.likes.length}}) &nbsp; <span *ngIf="post.likes.length > 0" (click)="likesUserDetail(post._id,post)">View</span></span>
+                                    
+                                </li>
+                            </ul>
+                            <div class="post-share-toggle" [class.display-share]="sharing[post._id]">
+                                <ul>
+                                    <li (click)="share(post)">Internal Share</li>
+                                    <li (click)="externalShare(post)">External Share</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layout-column ">
+                        <div class="layout-column comment-section comment-body">
+                            <div class="comenter-like-day c-p prev-com" *ngIf="prevComment.length!=post.comments.length" (click)="loadPrevComment()">View Previous Messages</div>
+                            <ul class="comment-block" angular2-auto-scroll lock-y-offset="2000" observe-attributes>
+                                <li *ngFor="let comment of prevComment ;let j=index">
+                                    <div class="layout-row flex-100">
+                                        <div class="comenter-pic c-p" (click)="getProfileById(comment.comment_by._id)">
+                                            <img *ngIf="comment.comment_by.photo" src="public/files/ProfilePicture/{{comment.comment_by.photo}}" style="height:30px ;width: 30px">
+                                            <img *ngIf="!comment.comment_by.photo" src="public/files/ProfilePicture/no_image.png" style="height:30px ;width: 30px">
+                                        </div>
+                                        <div class="comenter-detail layout-column flex-90">
+                                            <div class="layout-column layout-align-space-between">
+                                                <div class="comenter-coment c-p layout-row layout-align-space-between">
+                                                    <div class="flex-80" (click)="getProfileById(comment.comment_by._id)">{{comment.comment_by.fname+' '+comment.comment_by.lname}}</div>
+                                                    <div class="flex-20 layout-align-end layout-row">
+                                                        <div *ngIf="comment.comment_by._id==page.userIdGlobal" title="Delete Comment" class="comenter-like-del c-p m-r-10" (click)="deleteCommentModel(post._id,comment._id,j,post)"><i class="fa fa-trash" aria-hidden="true"></i></div>
+                                                        <div *ngIf="comment.comment_by._id==page.userIdGlobal" title="Edit Comment" class="comenter-like-del c-p" id="updateBtn" data-toggle="modal" (click)="openCommentModal(comment,j)"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></div>
+                                                    </div>
+                                                </div>
+                                                <div class="comenter-like layout-row">
+                                                    <div class="comenter-like-day">{{comment.date | datetime}}</div>
+                                                </div>
+                                            </div>
+                                            <div *ngIf="postCollegeComments[j]">
+                                                <form (ngSubmit)="editComment(post._id,comment._id,post,j)" class="layout-row">
+                                                    <div class="input-group flex-90 layout-row">
+                                                        <div id="profile-edit-inline-editor" class="comment-editor-inline"></div>
+                                                        <span class="input-group-addon c-p" tooltip="Send" (click)="editComment(post._id,comment._id,post,j)"><i class="fa fa-paper-plane-o"></i></span>
+                                                    </div>
+                                                    <div class="flex-10 layout-align-center-center layout-row"><span class="c-p" (click)="closeCommentModal(j)"><i class="fa fa-close"></i></span></div>
+                                                </form>
+                                            </div>
+                                            <div class="comment text-formatting" *ngIf="postCollegeComment[j]" [innerHtml]="comment.body"> </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal fade modal-align-fix " id="commentDeleteModal">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-body setting-page flex-100 layout-row">
+                                                    <div class="modal-body layout-column flex-100 ">
+                                                        <div class="modal-body">
+                                                            <div class="upload-area flex-60 layout-align-start-center layout-row">
+                                                                <h4>Are you sure you want to delete this comment?</h4>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button class="add-btn cancel-btn" (click)="closeDeleteConfirmPopup()">Cancel</button>
+                                                    <button class="add-btn" (click)="deleteComment(post)">Yes</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                            <div class="comment-footer">
+                                <div class="layout-column">
+                                    <div class="layout-row">
+                                        <div class="new-user-pic">
+                                            <img src="public/dist/img/text-user.png" style="height: 25px ;width: 25px" />
+                                        </div>
+                                        <div class="flex-90">
+                                            <div id="profile-inline-editor" class="comment-editor-inline mb-5 mr-5"></div>
+                                            <div class="new-user-button layout-align-start layout-row">
+                                                <button class="add-btn" (click)="addComment(post._id,post)">Send</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade modal-align-fix dialog-like-wrapper " id="postLikesModalProfile">
+     <like-member-list *ngIf="likeMemberList" [postId]="post_id" (complete)="onLikeClose($event)"></like-member-list>
+</div>
+<!-- post share model  -->
+<div class="modal fade modal-align-fix dialog-like-wrapper " id="postShareModel">
+    <ba-post-share-model *ngIf="showPostShareModel" [postData]="sharePostData" (complete)="onPostShareModelClose($event)"></ba-post-share-model>
+</div>
+<!-- post external share model  -->
+<div class="modal fade modal-align-fix dialog-like-wrapper " id="postExternalShareModel">
+    <ba-post-external-share-model *ngIf="showPostExternalShareModel" [postData]="sharePostData" (complete)="onExternalShareModelClose($event)"></ba-post-external-share-model>
+</div>
+<!-- journal Model -->
+<div class="modal fade modal-align-fix " id="add-post-journal-modal">
+    <add-post-to-journal-modal *ngIf="addPostToJournal" [postId]="post_id" (complete)="onCloseAddPostToJournal($event)"></add-post-to-journal-modal>
+</div>

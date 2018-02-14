@@ -1,0 +1,178 @@
+<!--
+  Generated template for the Groups page.
+
+  See http://ionicframework.com/docs/v2/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header class="header gradient">
+  <ion-navbar>
+    <ion-row>
+      <ion-col col-8>
+        <ion-title>
+          <h1 class="header-title" text-center>Groups</h1>
+        </ion-title>
+      </ion-col>
+      <ion-col col-4 text-right no-padding class="display-flex">
+        <button ion-button icon-only class="add-event-btn" (click)="onGroupInvite()">
+          <ion-icon class="add-event" color="white" name="people" ></ion-icon>
+          <ion-icon class="add-event add-group" color="white" name="add" ></ion-icon>
+        </button>
+        <button ion-button icon-only class="add-event-btn" (click)="addGroup()">
+          <ion-icon class="add-event" color="white" name="add-circle" ></ion-icon>
+        </button>
+      </ion-col>
+    </ion-row>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="cards-bg">
+  <ion-grid *ngIf="groupsList.length || searchActive" class="search-container">
+    <ion-row no-padding>
+      <ion-col col-12 no-padding (click)="advancesearch()">
+        <ion-item>
+          <ion-icon name="search"></ion-icon> Search and Sort Filters
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="accordian" class="advance-search-item">
+      <ion-col col-12 no-padding>
+        <ion-item>
+          <ion-input [(ngModel)]="groupSearch.title" type="text" placeholder="Title"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-searchbar placeholder="Search by Member..." [(ngModel)]="searchMember.name" (ionInput)="userSearch($event)"></ion-searchbar>
+          <ion-list *ngIf="searchedMemberList.length">
+            <ion-item *ngFor="let member of searchedMemberList">
+              <ion-avatar item-left (click)="selectUser(member)">
+                <img *ngIf="member.photo" src="{{dataService.apiBaseUrl}}public/files/ProfilePicture/member.photo" />
+                <img *ngIf="!member.photo" src="{{dataService.apiBaseUrl}}public/files/ProfilePicture/no_image.png" />
+              </ion-avatar>
+              <h2 (click)="selectUser(member)">{{member.fname}}&nbsp;<span *ngIf="member.lname">{{member.lname}}</span></h2>
+            </ion-item>
+          </ion-list>
+        </ion-item>
+        <ion-label>Group Category</ion-label>  
+        <ion-item>
+                    
+          <ion-select (ngModelChange)="onSelectingGroupType($event)" [(ngModel)]="groupType">
+            <ion-option value="1">My Created and Joined Groups</ion-option>
+            <ion-option value="2">My Created Groups</ion-option>
+            <ion-option value="3">My Private Joined</ion-option>
+            <ion-option value="4">My Public Joined</ion-option>
+            <ion-option value="5">All Public Groups</ion-option>
+            <ion-option value="6">My Left Groups</ion-option>
+          </ion-select>
+        </ion-item>
+
+        <ion-label>Sort By</ion-label>                                
+        <ion-item>
+          <ion-select (ngModelChange)="onSelectingSortType($event)" [(ngModel)]="sortValue">
+            <ion-option value="1">Sort By</ion-option>
+            <ion-option value="2">Latest Posts</ion-option>
+            <ion-option value="3">Group Names</ion-option>
+            <ion-option value="4">Latest Created Groups</ion-option>
+          </ion-select>
+        </ion-item>
+        <ion-label>Sort Order</ion-label>                                    
+        <ion-item>
+          <ion-select (ngModelChange)="onSelectingSortOrder($event)" [(ngModel)]="sortOrder">
+            <ion-option value="1">Sort Order</ion-option>
+            <ion-option value="2">Ascending</ion-option>
+            <ion-option value="3">Descending</ion-option>
+          </ion-select>
+        </ion-item>
+       
+      </ion-col>
+      <ion-col width-50 class="advancesearch-btn">
+        <ion-item>
+          <button ion-text ion-button color="dark-blue" (click)="resetSearch()">Reset</button>
+        </ion-item>
+      </ion-col>
+      <ion-col width-50 text-right class="advancesearch-btn">
+        <ion-item>
+          <button ion-text ion-button color="primary" (click)="onClickSearch()">Search</button>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+     <ion-item text-wrap class="filter-data" *ngIf="searchText">
+          Filter By:-<span *ngIf="groupType == 1">My Created and Joined Groups</span>
+          <span *ngIf="groupType == 2">My Created Groups</span>
+          <span *ngIf="groupType == 3">My Private Joined</span>
+          <span *ngIf="groupType == 4">My Public Joined</span>
+          <span *ngIf="groupType == 5">All Public Groups</span>
+          <span *ngIf="groupType == 6">My Left Groups</span>
+        </ion-item>
+  </ion-grid>
+  <ion-grid class="main-content">
+    <ion-spinner icon="spiral" *ngIf="loader"></ion-spinner>
+    <ion-list *ngIf="groupsList.length">
+      <ion-card *ngFor="let group of groupsList;let i=index">
+        <img *ngIf="group.icon" src="{{dataService.apiBaseUrl}}public/files/Group/{{group.icon}}" alt="Photo" (click)="getGroupWall(group._id)">
+        <ion-card-content>
+          <ion-row>
+              <div class="post-text-container">
+                <ion-row class="post-text">
+                     <ion-card-title>
+                     <div *ngIf="group.title" class="name" (click)="getGroupWall(group._id)" embed-directive>{{group.title}}</div>
+                   </ion-card-title>
+                  <ion-col col-12 no-padding>
+                    <div>
+                      <ion-row>
+                        <ion-col col no-padding>
+                        <span class="count"  ion-text (click)="onMemberClick(group._id)"><span class="user-name">{{group.members.length}}</span> Members</span>
+                        <span *ngIf="group.privacy == 1">| Public</span>
+                        <span *ngIf="group.privacy == 2">| Private</span>
+                      </ion-col>
+                      <ion-col col text-right no-padding>
+                      <span class="new-post" no-padding  *ngIf="(group|recentGroupPostCountPipe:4:userData.userid)>0">
+                          <ion-badge item-end>{{group|recentGroupPostCountPipe:4:userData.userid}}</ion-badge>
+                      </span>
+                    </ion-col>
+                      </ion-row>
+                    </div>
+                  </ion-col>
+                  <ion-col col-12 no-padding>
+                    <span *ngIf="group.post.length"><span class="bold">Last Post:</span> {{group.post[0].post_id.created_on| datetimefilterpipe}}&nbsp;- by &nbsp;<span class="user-name"
+                        (click)="getProfileById(group.created_by._id)">{{group.post[0].created_by?.fname}}&nbsp;{{group.post[0].created_by?.lname}}</span></span>
+                  </ion-col>
+                  <ion-col col-12 no-padding>
+                    <span *ngIf="group.subject_id" (click)="getSubjectWall(group.subject_id._id)">Created in <span class="bold">Subject</span> - <span class="user-name">{{group.subject_id.name}}</span></span>
+                    <span *ngIf="group.college_id" (click)="getCollegeWall(group.college_id._id)">Created in <span class="bold">College</span> - <span class="user-name">{{group.college_id.name}}</span></span>
+                    <span *ngIf="group.degree_id" (click)="getDegreeWall(group.degree_id._id)">Created in <span class="bold">Degree</span> -<span class="user-name">{{group.degree_id.name}}</span></span>
+                  </ion-col>                  
+                  <ion-col col-12 no-padding>
+                    <i class="fa fa-clock-o" aria-hidden="true"></i>
+                    <span *ngIf="group?.created_on">{{group.created_on | datetimefilterpipe}} </span>
+                    <span *ngIf="group.created_by?.fname">- by 
+                          <span class="user-name" (click)="getProfileById(group.created_by._id)">{{group.created_by.fname+' '+group.created_by.lname}}</span>
+                    </span>
+                  </ion-col>                 
+                </ion-row>
+              </div>    
+          </ion-row>         
+          <ion-row>
+            <ion-item text-wrap class="description">
+              <p embed-directive>{{group.description}}</p>
+            </ion-item>
+            <ion-col col-12 text-right>
+              <div class="edit-del" *ngIf="group.created_by._id==userData.userid">
+                <button ion-button color="light" (click)="onEditClick(group)"><ion-icon class="fa fa-edit"></ion-icon></button>
+                <button ion-button color="light" (click)="onDeleteClick(group._id,i)"><ion-icon class="fa fa-trash-o"></ion-icon></button>
+              </div>
+              <div *ngIf="group.created_by._id!==userData.userid">
+                <button *ngIf="!(group.members|isMember:userData.userid)" ion-button color="secondary" (click)="joinToGroup(group._id,i)">Join</button>
+                <button *ngIf="(group.members|isMember:userData.userid)" ion-button color="danger" (click)="onClickleaveGroup(group._id,i)">Leave</button>
+              </div>
+            </ion-col>
+          </ion-row>
+        </ion-card-content>
+      </ion-card>
+    </ion-list>
+    <ion-list *ngIf="!groupsList.length">
+      <ion-item text-wrap>No groups have been created for <span *ngIf="currentWallName">{{currentWallName}}.</span> Be the first one to create a group. You can start by clicking the + sign. Thanks.</ion-item>
+    </ion-list>
+  </ion-grid>
+  <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+</ion-content>

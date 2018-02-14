@@ -1,0 +1,67 @@
+<div class="master-setting-page newslet-sub">
+    <div class="custom1-modal-header layout-row layout-align-space-between m-b-20">
+        <div class="h3 header-title">Newsletter Subscription</div>
+        <div class="header-options layout-row">
+
+        </div>
+    </div>
+    <div class="table-body">
+
+        <div class="">
+
+
+            <table id="example2" class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>S.No</th>
+                        <th>Email</th>
+
+<!--                        <th class="width-10">Approve</th>-->
+                        
+                    </tr>
+                </thead>
+                <tbody>
+
+
+
+                    <tr *ngFor="let newsup of subscribers;let i=index">
+                        <td>{{i+1}}</td>
+                        <td>{{newsup.email}}</td>                        
+                        <td>
+                            <div class="flex-15 layout-align-center-center layout-row">
+                                <button *ngIf="newsup.status==1" class="btn btn-default bg-theme-dark" id="slideThree1" name="check" (click)="aprove(newsup,2)"><span class="hide-xs">Subscribe</span><span class="show-xs hide">Sub</span></button>
+                                <button *ngIf="newsup.status==2" class="btn btn-default" id="slideThree1" name="check" (click)="aprove(newsup,1)"><span class="hide-xs">Unsubscribe</span><span class="show-xs hide">Usub</span></button>
+                            </div>
+                        </td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+  
+
+
+        <nav class="layout-row layout-align-center-center">
+            <ul class="pagination" >
+                <li class="page-item disabled">
+                    <a class="page-link"  aria-label="Previous" (click)="getSubscribers('pre')">
+                        <span aria-hidden="true">&laquo;&nbsp;Previous</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+
+
+                <li class="page-item" >
+                    <a class="page-link" aria-label="Next" (click)="getSubscribers('next')">
+                         <span aria-hidden="true">Next&nbsp;&raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+
+    </div>
+</div>

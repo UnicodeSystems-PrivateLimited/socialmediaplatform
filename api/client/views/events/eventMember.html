@@ -1,0 +1,231 @@
+<div class="custom1-modal-header layout-row layout-align-space-between layout-xs-column">
+    <div class="h3 header-title"><i class="fa fa-users m-r-10" aria-hidden="true"></i>Event Member</div>
+    <div class="header-options layout-row layout-align-end">
+        <div class="modal-option option1 layout-row layout-align-center-center">
+            <i class="fa fa-plus-square c-green" aria-hidden="true"></i>
+            <span class="btn-title c-p" id="event-add-mem" data-toggle="modal" >Add Members</span>
+
+        </div>
+
+    </div>
+</div>
+
+<div class="layout-row layout-align-start-center layout-wrap layout-padding group-updates" *ngIf="events">
+
+    <div  class="box-wrap-em layout-row layout-wrap layout-align-space-between flex-30 m-r-10 m-b-10 flex-sm-45 flex-xs-45" *ngFor="#member of events.members;#i=index">
+        <span *ngIf="member &&(member.user_id && member.user_id._id!=null)" data-toggle="modal" class="g-e-del-btn" (click)="deleteEventMemberModal(events._id,member.user_id._id)"><i class="fa fa-times-circle"></i></span>
+        <div  *ngIf="member && member!=null" class="flex-100 link-block layout-xs-column layout-row layout-align-space-between border whit-bg college-b border-radius-3px" (click)="getProfileById(member.user_id._id)">
+
+            <div  class="flex-10 flex-xs-25 flex-md-30 flex-sm-30 flex-xs-100" >
+                <span  class="user-img mem-wrap-section" *ngIf="member.user_id && member.user_id.photo!=null">
+                       <!--<img *ngIf="member.user_id.photo" alt="" src="theme/files/ProfilePicture/{{member.user_id.photo}}">-->
+                       <img alt="" src="theme/files/ProfilePicture/{{member.user_id.photo}}" height="50px" width="50px">
+                </span>
+                <span  class="user-img mem-wrap-section" *ngIf="!member.user_id || member.user_id.photo==null">
+                    <!--<img *ngIf="member.user_id.photo" alt="" src="theme/files/ProfilePicture/{{member.user_id.photo}}">-->
+                    <img alt="" src="theme/files/ProfilePicture/no_image.png" height="50px" width="50px">
+                </span>
+            </div>
+
+
+            <div  class="content-block-desc layout-column flex-80 layout-wrap layout-row flex-xs-100" *ngIf="member">
+
+                <div  class="detaial flex-80 c-p" >
+                    <h3 class="content-block-desc-title" *ngIf="member.user_id">{{member.user_id.fname}}</h3>
+                    <h5 class="content-block-desc-sub-title"></h5>
+                    <div class="content-block-desc-link">
+
+                    </div>
+                </div>
+            </div> 
+        </div>
+    </div> 
+    <div class="no-g-e-block e-m layout-row flex-60" *ngIf="events.members == '' || events.members==null">
+        <i class="fa fa-exclamation-circle flex-5" aria-hidden="true"></i>
+        <span class="flex-60">Event Member Not Added</span>
+    </div>
+</div>
+<div *ngIf="events">
+    <div class="Group-event m-l-15">Group Members</div>
+    <div *ngIf="events.groups && events.groups!=null" *ngFor="#group of events.groups;#j=index">
+        <div *ngIf="group && group.group_id!=null" class="layout-row layout-align-start-center layout-wrap layout-padding group-updates">  
+
+            <div *ngIf="group.group_id.members && group.group_id.members!=null" class="layout-row layout-wrap layout-align-space-between flex-30 m-r-10 m-b-10 flex-sm-45 flex-xs-45" *ngFor="#member of group.group_id.members;#i=index">
+                <div  *ngIf="member && member!=null" class="flex-100 layout-xs-column link-block layout-row layout-align-space-between border whit-bg college-b border-radius-3px" (click)="getProfileById(member.user_id._id)">
+
+                    <div  class="flex-10 flex-xs-25 flex-md-30 flex-sm-30 flex-xs-100" *ngIf="member">
+                        <span  class="user-img mem-wrap-section" *ngIf="member.user_id && member.user_id.photo!=null">
+                               <!--<img *ngIf="member.user_id.photo" alt="" src="theme/files/ProfilePicture/{{member.user_id.photo}}">-->
+                               <img alt="" src="theme/files/ProfilePicture/{{member.user_id.photo}}" height="50px" width="50px">
+                        </span>
+                        <span  class="user-img mem-wrap-section" *ngIf="!member.user_id || member.user_id.photo==null">
+                            <!--<img *ngIf="member.user_id.photo" alt="" src="theme/files/ProfilePicture/{{member.user_id.photo}}">-->
+                            <img alt="" src="theme/files/ProfilePicture/no_image.png" height="50px" width="50px">
+                        </span>
+                    </div>
+
+
+                    <div  class="content-block-desc layout-column flex-80 layout-wrap layout-row flex-xs-100" *ngIf="member">
+
+                        <div  class="detaial flex-80 c-p" >
+                            <h3 class="content-block-desc-title" *ngIf="member.user_id">{{member.user_id.fname}}</h3>
+                            <h5 class="content-block-desc-sub-title"></h5>
+                            <div class="content-block-desc-link">
+
+                            </div>
+                        </div>
+                    </div> 
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="no-g-e-block e-m-g layout-row flex-60" *ngIf="events.groups == '' || events.groups==null">
+        <i class="fa fa-exclamation-circle flex-5" aria-hidden="true"></i>
+        <span class="flex-60">No Group Added</span>
+    </div>
+</div>
+
+<div class="modal fade modal-align-fix" id = "addEventMember" (click)="clearEventMember()">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeEventMemberModel()"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Add Member</h4>
+            </div>
+
+            <div class="modal-body setting-page flex-100 layout-row">
+                <div class="modal-body layout-column flex-100">
+
+
+
+                    <!--<h5>Choose Member</h5>-->
+
+                    <!--                    <div class="form-group add-m-check">
+                                            <input type="checkbox">
+                                            <label for="description" class="font-12px">Friends</label>
+                                            <input type="checkbox">
+                                            <label for="description" class="font-12px">Followers</label>
+                                            <input type="checkbox">
+                                            <label for="description" class="font-12px">Following</label>
+                    
+                                        </div>-->
+                    <div class="form-group">
+                        <label for="albumTitle">Select Member</label>
+                        <input type="text" [(ngModel)]="userSearchField.name" (keyup)="friendSearch($event)" (focus)="friendSearch($event)" class="form-control" placeholder=""  required="required">
+                        <span class="error_file_message">{{error.eventMember}}</span>
+                        <ul class="user-search-list abso  box-bor" *ngIf="userSearchList" >
+                            <li class="layout-row layout-align-space-between search-li" *ngFor="#user of userSearchList" (click)="addToGroup(user._id,user)" >
+                                <div class="search-result-left layout-row">
+                                    <div class="search-thumb">
+                                        <img *ngIf="user.photo" alt="User Image" class="img-circle" src="theme/files/ProfilePicture/{{user.photo}}">
+                                        <img *ngIf="!user.photo" alt="User Image" class="img-circle" src="theme/files/ProfilePicture/no_image.png">
+                                    </div>
+                                    <div class="result-title">{{user.fname}}</div>
+                                </div>
+                                <div class="search-result-right">
+                                    <div class="result-icon">
+                                        <i aria-hidden="true" class="fa fa-user-plus"></i>
+                                    </div>
+                                </div>
+                            </li>                                                
+                        </ul>
+                    </div>
+                    <div class="">
+                        <ul class="group-mem-list layout-row layout-align-start-center layout-wrap" >
+                            <li class="layout-row layout-align-space-between search-li flex-30 m-r-10 m-b-10" *ngFor="#user of tmpMembers" >
+                                <div class="search-result-left layout-row">
+                                    <div class="search-thumb">
+                                        <img *ngIf="user.photo" alt="User Image" class="img-circle" src="theme/files/ProfilePicture/{{user.photo}}">
+                                        <img *ngIf="!user.photo" alt="User Image" class="img-circle" src="theme/files/ProfilePicture/no_image.png">
+                                    </div>
+                                    <div class="result-title layout-align-center-center layout-row">{{user.fname}}</div>
+                                </div>
+                            </li>                                                
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="modal-body setting-page flex-100 layout-row">
+                <div class="modal-body layout-column flex-100">
+
+
+
+                    <!--<h5>Choose Member</h5>-->
+                    <div class="form-group">
+                        <label for="albumTitle">Select Group</label>
+                        <input type="text" [(ngModel)]="userSearchField1.name" (keyup)="groupSearch($event)" (focus)="groupSearch($event)" class="form-control" placeholder=""  required="required">
+                        <span class="error_file_message">{{error.groupMember}}</span>
+                        <ul class="user-search-list abso box-bor" *ngIf="userSearchList1" >
+                            <li class="layout-row layout-align-space-between search-li" *ngFor="#user of userSearchList1" (click)="addGrToGroup(user._id,user)" >
+                                <div class="search-result-left layout-row">
+                                    <div class="search-thumb">
+                                        <img alt="User Image" class="img-circle" src="theme/files/ProfilePicture/no_image.png">
+                                    </div>
+                                    <div class="result-title">{{user.title}}</div>
+                                </div>
+                                <div class="search-result-right">
+                                    <div class="result-icon">
+                                        <i aria-hidden="true" class="fa fa-user-plus"></i>
+                                    </div>
+                                </div>
+                            </li>                                                
+                        </ul>
+                    </div>
+                    <div class="">
+                        <ul class="group-mem-list layout-row layout-align-space-between layout-wrap">
+                            <li class="layout-row layout-align-space-between search-li flex-32" *ngFor="#user of tmpGroup" >
+                                <div class="search-result-left layout-row">
+                                    <div class="search-thumb">
+                                        <img alt="User Image" class="img-circle" src="theme/files/ProfilePicture/no_image.png">
+                                    </div>
+                                    <div class="result-title layout-align-center-center layout-row">{{user.title}}</div>
+                                </div>
+                            </li>                                                
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button class="add-btn cancel-btn" data-dismiss="modal" (click)="closeEventMemberModel()">Cancel</button>
+                <button class="add-btn"  (click)="addMembers()" >Save</button>
+            </div>
+
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+<div class="modal fade modal-align-fix " id = "eventMemberRemoveModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+
+            <div class="modal-body setting-page flex-100 layout-row">
+                <div class="modal-body layout-column flex-100 ">
+
+
+
+
+
+                    <div class="modal-body">
+
+                        <div class="upload-area flex-60 layout-align-start-center layout-row">
+                            <h4>Do you really want to remove this member?</h4> 
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+                <button class="add-btn cancel-btn" data-dismiss="modal">Cancel</button>
+                <button class="add-btn" data-dismiss="modal" (click)="deleteEventMember()" >Yes</button>
+            </div>
+
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>

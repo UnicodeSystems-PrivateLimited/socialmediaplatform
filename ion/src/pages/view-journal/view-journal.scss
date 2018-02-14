@@ -1,0 +1,87 @@
+page-view-journal {
+    .header {
+        &:after {
+            background: none;
+            height: 0;
+        }
+        .add-journal {
+            font-size: 28px;
+            text-shadow: 0px 1px 0px #777;
+        }
+        .add-journal-btn {
+            background-color: transparent;
+            box-shadow: none;
+        }
+        .title {
+            padding: 10px 18px;
+        }
+    }
+    .header-md::after {
+        background: none !important;
+    }
+    .content {
+        .journal-filter {
+            background: #f0eced;
+            .item-inner {
+                border-bottom: 0;
+            }
+        }
+        .card {
+            background: #f2f2f2;
+            .card-content {
+                padding: 13px 8px 13px 8px;
+                .small {
+                    font-size: 10px;
+                    color: #80746e;
+                }
+                .post {
+                    position: relative;
+                    .journal-btn {
+                        position: absolute;
+                        right: 0px;
+                        top: -10px;
+                        z-index: 10;
+                        .button {
+                            margin: 0;
+                            padding: 8px 8px 0 0;
+                            color: #b8b8b8;
+                            font-size: 18px;
+                            height: auto;
+                        }
+                    }
+                }
+                .post-container {
+                    background: #fff;
+                    border: 1px solid #ddd;
+                    padding: 8px;
+                    .post-text {
+                        font-size: 13px;
+                    }
+                    .post-time {
+                        margin-top: 10px;
+                        h5 {
+                            color: #e7783b;
+                            font-size: 12px;
+                        }
+                        h3 {
+                            font-size: 10px;
+                            color: #80746e;
+                        }
+                    }
+                    .content-block-desc-image {
+                        h6 {
+                            margin-top: 10px;
+                            font-size: 11px;
+                            text-align: left;
+                            margin-bottom: 5px;
+                            padding-left: 10px;
+                        }
+                    }
+                }
+            }
+        }
+        audio {
+            width: 100%;
+        }
+    }
+}

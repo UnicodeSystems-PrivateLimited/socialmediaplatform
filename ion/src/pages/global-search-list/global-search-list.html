@@ -1,0 +1,108 @@
+<!--
+  Generated template for the GlobalSearchList page.
+
+  See http://ionicframework.com/docs/v2/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+
+<ion-header class="header ">
+  <ion-navbar class="gradient">
+    <ion-title>
+      <h1 class="header-title" text-center>Search List <span *ngIf="name" color="white">for {{name}}</span></h1>
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content>
+  <ion-spinner icon="spiral" *ngIf="loader"></ion-spinner>    
+  <ion-list *ngIf="members.length">
+    <span class="search-title"> <ion-icon name="people"></ion-icon>Members</span>
+    <ion-item *ngFor="let member of members | slice:0:3;" (click)="getProfileById(member._id)">
+      <ion-avatar item-left>
+        <img alt="User Image" *ngIf="member.photo" class="" src="{{dataService.apiBaseUrl}}public/files/ProfilePicture/{{member.photo}}">
+        <img alt="User Image" *ngIf="!member.photo" class="" src="{{dataService.apiBaseUrl}}public/files/ProfilePicture/no_image.png">
+      </ion-avatar>
+      <h2>{{member.fname}} &nbsp; {{member?.lname}}</h2>
+    </ion-item>
+    <button ion-button color="primary" (click)="onSeeAllClick(1)">See All</button>
+
+    <ion-item *ngIf="!members.length">
+      <span class="search-title"> <ion-icon name="people"></ion-icon> Members</span>
+      <p>No members found</p>
+    </ion-item>
+  </ion-list>
+
+  <ion-list *ngIf="subjects.length">
+    <span class="search-title"> <img height="25px" width="25px" src="{{dataService.apiBaseUrl}}public/files/logo/subject.png" />Subjects</span>
+    <ion-item *ngFor="let subject of subjects | slice:0:3;" (click)="goTosubject(subject._id)">
+      <h2>{{subject.name}}</h2>
+    </ion-item>
+    <button ion-button color="primary" (click)="onSeeAllClick(2)">See All</button>
+
+    <ion-item *ngIf="!subjects.length">
+      <span class="search-title"> <img height="25px" width="25px" src="{{dataService.apiBaseUrl}}public/files/logo/subject.png" />Subjects</span>
+      <p>No subjects found</p>
+    </ion-item>
+  </ion-list>
+
+  <ion-list *ngIf="colleges.length">
+    <span class="search-title"> <img height="25px" width="25px" src="{{dataService.apiBaseUrl}}public/files/logo/college.png" />Colleges</span>
+    <ion-item *ngFor="let college of colleges | slice:0:3;" (click)="goTocollege(college._id)">
+      <h2>{{college.name}}</h2>
+    </ion-item>
+    <button ion-button color="primary" (click)="onSeeAllClick(3)">See All</button>
+
+    <ion-item *ngIf="!colleges.length">
+      <span class="search-title"> <img height="25px" width="25px" src="{{dataService.apiBaseUrl}}public/files/logo/college.png" />Colleges</span>
+      <p>No colleges found</p>
+    </ion-item>
+  </ion-list>
+
+  <ion-list *ngIf="degrees.length">
+    <span class="search-title"> <img height="25px" width="25px" src="{{dataService.apiBaseUrl}}public/files/logo/degree.png" />Degrees</span>
+    <ion-item *ngFor="let degree of degrees | slice:0:3;" (click)="goTodegree(degree._id)">
+      <h2>{{degree.name}}</h2>
+    </ion-item>
+    <button ion-button color="primary" (click)="onSeeAllClick(4)">See All</button>
+
+    <ion-item *ngIf="!degrees.length">
+      <span class="search-title"> <img height="25px" width="25px" src="{{dataService.apiBaseUrl}}public/files/logo/degree.png" />Degrees</span>
+      <p>No degrees found</p>
+    </ion-item>
+  </ion-list> 
+
+   <ion-list *ngIf="groups.length">
+    <span class="search-title"> <ion-icon name="people"></ion-icon>Groups</span>
+    <ion-item *ngFor="let group of groups | slice:0:3;" (click)="getGroupWall(group._id)">
+      <ion-avatar item-left>
+        <img alt="User Image" *ngIf="group.icon" class="" src="{{dataService.apiBaseUrl}}public/files/Group/{{group.icon}}">
+        <img alt="User Image" *ngIf="!group.icon" class="" src="{{dataService.apiBaseUrl}}public/files/Group/group-registration-icon-26.png">
+      </ion-avatar>
+      <h2>{{group.title}}</h2>
+    </ion-item>
+    <button ion-button color="primary" (click)="onSeeAllClick(5)">See All</button>
+
+    <ion-item *ngIf="!groups.length">
+      <span class="search-title"> <ion-icon name="people"></ion-icon> Groups</span>
+      <p>No groups found</p>
+    </ion-item>
+  </ion-list>
+
+   <ion-list *ngIf="events.length">
+    <span class="search-title"> <ion-icon name="people"></ion-icon>Events</span>
+    <ion-item *ngFor="let event of events | slice:0:3;">
+      <ion-avatar item-left>
+        <img alt="User Image" *ngIf="event.icon" class="" src="{{dataService.apiBaseUrl}}public/files/Groupevents/{{event.icon}}">
+        <img alt="User Image" *ngIf="!event.icon" class="" src="{{dataService.apiBaseUrl}}public/files/Group/group-registration-icon-26.png">
+      </ion-avatar>
+      <h2>{{event.title}}</h2>
+    </ion-item>
+    <button ion-button color="primary" (click)="onSeeAllClick(6)">See All</button>
+
+    <ion-item *ngIf="!events.length">
+      <span class="search-title"> <ion-icon name="people"></ion-icon> Events</span>
+      <p>No events found</p>
+    </ion-item>
+  </ion-list>
+</ion-content>

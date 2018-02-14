@@ -1,0 +1,69 @@
+<p class="member-name c-p fx-bck" (click)="getProfileById(userId)"><i class="fa fa-arrow-circle-o-left" aria-hidden="true"></i></p>
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title"><span *ngIf="connectionId == 1">Friend's List</span></h3>
+                    <h3 class="box-title"><span *ngIf="connectionId == 2"><span *ngIf="currentProfileData"><span *ngIf="currentProfileData.fname">{{currentProfileData.fname+' '+currentProfileData.lname+"'s"}}</span></span> Followers</span></h3>
+                    <h3 class="box-title"><span *ngIf="connectionId == 3"><span *ngIf="currentProfileData"> <span *ngIf="currentProfileData.fname">{{currentProfileData.fname+' '+currentProfileData.lname}} is Following</span></span></span></h3>
+                </div>
+                <div class="box-body">
+                    <div id="example2_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
+                        <div class="row">
+                            <div class="col-sm-12"> 
+                                <div class="table-responsive">
+                                    <table class="connection-list  table table-bordered table-hover text-center search-result-member" cellspacing="0" width="100%">
+                                        <tbody>
+
+                                        <div *ngIf=" friends && !followings && !followers">
+                                            <tr *ngFor="let  user of friends">
+                                                <td width="10%" (click)="getProfileById(user.friend_id)">
+                                                    <img *ngIf="user.photo" src="public/files/ProfilePicture/{{user.photo}}" alt="" />
+                                                    <img *ngIf="!user.photo" src="public/files/ProfilePicture/no_image.png" alt="" />
+                                                </td>
+                                                <td width="45%" class="member-details pc-tal">
+                                                    <p (click)="getProfileById(user.friend_id)" class="member-name c-p">{{user.name}}</p>
+                                                </td>
+                                                <td width="45%">
+                                                </td>
+                                            </tr> 
+                                        </div>
+                                        <div *ngIf=" followings && !followers  && !friends">
+                                            <tr *ngFor="let  user of followings">
+                                                <td width="10%" (click)="getProfileById(user.following_id)">
+                                                    <img *ngIf="user.photo" src="public/files/ProfilePicture/{{user.photo}}" alt="" />
+                                                    <img *ngIf="!user.photo" src="public/files/ProfilePicture/no_image.png" alt="" />
+                                                </td>
+                                                <td width="45%" class="member-details pc-tal">
+                                                    <p (click)="getProfileById(user.following_id)" class="member-name c-p">{{user.name}}</p>
+                                                </td>
+                                                <td width="45%">
+                                                </td>
+                                            </tr> 
+                                        </div>
+                                        <div *ngIf=" followers && !followings && !friends">
+                                            <tr *ngFor="let  user of followers">
+                                                <td width="10%" (click)="getProfileById(user.follower_id)">
+                                                    <img *ngIf="user.photo" src="public/files/ProfilePicture/{{user.photo}}" alt="" />
+                                                    <img *ngIf="!user.photo" src="public/files/ProfilePicture/no_image.png" alt="" />
+                                                </td>
+                                                <td width="45%" class="member-details pc-tal">
+                                                    <p (click)="getProfileById(user.follower_id)" class="member-name c-p">{{user.name}}</p>
+                                                </td>
+                                                <td width="45%">
+                                                </td>
+                                            </tr>   
+                                        </div>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

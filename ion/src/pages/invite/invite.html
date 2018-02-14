@@ -1,0 +1,116 @@
+<!--
+  Generated template for the Invite page.
+
+  See http://ionicframework.com/docs/v2/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header  class="gradient">
+  <ion-navbar>
+    <ion-title>
+      <h1 class="header-title" text-center>{{modalTitle}}</h1>
+    </ion-title>
+  </ion-navbar>
+  <ion-toolbar no-border-top>
+    <ion-segment [(ngModel)]="tab">
+      <ion-segment-button value="internal" *ngIf="!isRegister">
+        INTERNAL
+      </ion-segment-button>
+      <ion-segment-button value="external">
+        EXTERNAL
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content padding>
+    <div [ngSwitch]="tab">
+  <ion-card *ngSwitchCase="'internal'"> 
+      <ion-card-content>
+        <ion-item-group>
+          <!--<ion-item-divider color="light">INTERNAL</ion-item-divider>-->
+          <ion-item>
+            <ion-label> Choose Member(s) From</ion-label>
+          </ion-item>
+          <ion-row class="member-list">
+            <ion-col col-6>
+                <ion-item>
+                    <ion-label>Friends</ion-label>
+                    <ion-checkbox [disabled]="currentWall == 0" [(ngModel)]="searchUserType.friends" color="dark"></ion-checkbox>
+                </ion-item>
+            </ion-col>
+            <ion-col col-6>
+              <ion-item>
+                <ion-label>Followers</ion-label>
+                <ion-checkbox [disabled]="currentWall == 0" [(ngModel)]="searchUserType.followers" color="dark"></ion-checkbox>
+            </ion-item>
+            </ion-col>
+            <ion-col col-6>
+              <ion-item>
+                <ion-label>Following</ion-label>
+                <ion-checkbox [disabled]="currentWall == 0" [(ngModel)]="searchUserType.followings" color="dark"></ion-checkbox>
+            </ion-item>
+            </ion-col>
+            <ion-col col-6>
+              <ion-item>
+                <ion-label>Site Members</ion-label>
+                <ion-checkbox [(ngModel)]="searchUserType.allMembers" color="dark"></ion-checkbox>
+            </ion-item>
+            </ion-col>
+          </ion-row>
+          <ion-item class="title-label">
+            <ion-label>Please Select Member</ion-label>
+          </ion-item>
+          <ion-item>
+            <ion-searchbar [(ngModel)]="searchUserType.name" (ionInput)="searchMembers($event)" placeholder="Search members..."></ion-searchbar>
+          </ion-item>
+
+          <ion-list *ngIf="searchedMemeberList.length">
+            <ion-item *ngFor="let member of searchedMemeberList" [class.hideli]="selectedMemberIds.indexOf(member._id)>=0" (click)="selectUser(member)">
+              <ion-avatar item-left>
+                <img *ngIf="member.photo" src="{{dataService.apiBaseUrl}}public/files/ProfilePicture/{{member.photo}}">
+                <img *ngIf="!member.photo" src="{{dataService.apiBaseUrl}}public/files/ProfilePicture/no_image.png">
+              </ion-avatar>
+              <span> {{member.fname}}&nbsp;<span *ngIf="member.lname">{{member.lname}}</span></span>
+            </ion-item>
+          </ion-list>
+
+          <ion-list *ngIf="selectedMemberlist.length">
+            <ion-item *ngFor="let member of selectedMemberlist">
+              <ion-avatar item-left>
+                <img *ngIf="member.photo" src="{{dataService.apiBaseUrl}}public/files/ProfilePicture/{{member.photo}}">
+                <img *ngIf="!member.photo" src="{{dataService.apiBaseUrl}}public/files/ProfilePicture/no_image.png">
+              </ion-avatar>
+              <h2>{{member.fname}}&nbsp;{{member?.lname}}</h2>
+              <button clear ion-button (click)="deleteSelectedMember(member._id)" item-right >
+              <ion-icon name="close"></ion-icon>
+            </button>
+
+            </ion-item>
+          </ion-list>
+          <ion-item>
+            
+              <button ion-button (click)="onInviteFriend()">Invite</button>
+              
+          </ion-item>
+
+        </ion-item-group>
+    </ion-card-content>
+  </ion-card> 
+
+<ion-card *ngSwitchCase="'external'"> 
+<ion-card-content class="external-card">    
+    <ion-item-group>
+      <!--<ion-item-divider color="light" class="external">EXTERNAL</ion-item-divider>-->
+      <ion-item>
+       <ion-label>Please click on below button to invite your friends via FB, Email, SMS, etc to join StribeIN. Thanks.</ion-label>
+      </ion-item>
+      <ion-item>
+        <button ion-button (click)="onExternalInvite($event)">Invite</button>
+      </ion-item>
+    </ion-item-group>
+
+</ion-card-content>
+</ion-card> 
+    </div>
+</ion-content>

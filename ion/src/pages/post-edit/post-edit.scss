@@ -1,0 +1,168 @@
+page-post-edit {
+    .header {
+        &::after {
+            background-image: none;
+            height: 0;
+        }
+        .header-title {
+            margin: 0;
+        }
+        .toolbar {
+            padding: 0;
+            min-height: 40px;
+            .toolbar-background {
+                border: none;
+            }
+        }
+        ion-navbar.toolbar {
+            min-height: 54px;
+        }
+    }
+    .content {
+        background: #dfdfdf;
+        textarea {
+            min-height: 70px;
+            background-color: #fff;
+            font-size: 14px;
+            width: 100%;
+            border: none;
+            padding: 10px;
+            border-bottom: 2px solid #ccc;
+        }
+        .error-msg{color: #ff0000;     padding: 10px;}
+        .p-5 {
+            padding: 5px;
+        }
+        .share-btn {
+            .button {
+                width: 95%;
+            }
+        }
+        .item-select {
+            background: #f5f5f5;
+            border-top: 1px solid #cccccc;
+            border-bottom: 1px solid #cccccc;
+            border-radius: 2px;
+            .item-inner {
+                border: none;
+                .select{
+                    width: 100%;
+                    max-width: 100%;
+                }
+            }
+        }
+        .list {
+            padding:10px 5px 0;
+            width: 100%;
+            background-color: #fff;
+            margin-bottom: 0;
+        }
+        .upload-container {
+            background-color: #fff;
+            border-bottom: none;
+            min-height: 80px;
+            .item-inner {
+                border: none;
+            }
+            .button {
+                box-shadow: none;
+                border-radius: 50%;
+                border: 2px solid #c6c6c6;
+                width: 44px;
+                height: 44px;
+                .icon {
+                    color: #707070;
+                    font-size: 20px;
+                }
+            }
+            .item-input:last-child {
+                border: none;
+            }
+            p {
+                font-size: 11px;
+                color: #707070;
+            }
+        }
+
+        .share-post {
+                        border: 1px solid rgba(221, 221, 221, 0.25);
+                        margin: 0 10px 10px;
+                        border-radius: 2px;
+                        span{display: block; white-space: normal;}
+                    }
+        .fileContainer {
+            overflow: hidden;
+            position: relative;
+        }
+        .fileContainer [type=file] {
+            cursor: inherit;
+            display: block;
+            filter: alpha(opacity=0);
+            min-height: 100%;
+            min-width: 100%;
+            opacity: 0;
+            position: absolute;
+            right: 0;
+            text-align: right;
+            top: 0;
+        }
+        .file-name {
+            font-size: 12px;
+            text-align: center;
+            display: block;
+        }
+        /* Example stylistic flourishes */
+        .fileContainer {
+            background: #f5f5f5;
+            box-shadow: none;
+            border-radius: 50%;
+            border: 2px solid #c6c6c6;
+            width: 44px;
+            height: 44px;
+            display: inline-block;
+            margin-top: 4px;
+            .icon {
+                color: #707070;
+                padding: 11px 13px 13px 11px;
+                font-size: 20px;
+            }
+        }
+        .fileContainer [type=file] {
+            cursor: pointer;
+            width: 44px;
+            height: 44px;
+        }
+        .photo-edit-post {
+            .item {
+                background: transparent;
+                padding: 0;
+                .item-inner {
+                    padding: 0;
+                    .label {
+                        margin: 13px 0;
+                        text-align: center;
+                        img {
+                            max-height: 134px;
+                        }
+                    }
+                    
+                }
+            }
+        }
+        .post-img {
+            .label {
+                margin: 0;
+            }
+        }
+        .share-thought {
+            padding-left: 0;
+            word-break: break-all;
+            .input-wrapper {
+                padding-left: 16px;
+            }
+        }
+        .share-post-text{
+            padding: 15px 10px;
+        }
+    }
+}

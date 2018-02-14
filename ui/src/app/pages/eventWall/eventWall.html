@@ -1,0 +1,426 @@
+<div class="spin-wrap vision-spin" style="display: none">
+  <div class="sk-folding-cube">
+    <div class="sk-cube1 sk-cube"></div>
+    <div class="sk-cube2 sk-cube"></div>
+    <div class="sk-cube4 sk-cube"></div>
+    <div class="sk-cube3 sk-cube"></div>
+  </div>
+</div>
+<div class="page-loader-section layout-row layout-align-center-center" *ngIf="!event">
+  <div class="page-loader ">Loading...</div>
+</div>
+<section class="content-header" *ngIf="event">
+  <h1> Event Name </h1>
+</section>
+
+<section class="content" *ngIf="event">
+  <!--<div class="row" (window:scroll)="onScrollList($event)">-->
+  <div class="row">
+    <div class="col-md-8" style="padding-right:0">
+      <div class="nav-tabs-custom layout-column">
+        <ul class="nav nav-tabs layout-row layout-align-space-between">
+          <li class="" [class.actives]="tMessage"><a href="#message" data-toggle="tab" aria-expanded="false" (click)="setMsgLinkQuesType(1,1)"><i class="fa fa-inbox">&nbsp;</i><span class="hide-xs">Message</span></a></li>
+          <li class="" [class.actives]="tPhoto"><a href="#photos" data-toggle="tab" aria-expanded="false" (click)="setMsgLinkQuesType(0,2)"><i class="fa fa-photo">&nbsp;</i><span class="hide-xs">Photos</span></a></li>
+          <li class="" [class.actives]="tVideo"><a href="#videos" data-toggle="tab" aria-expanded="false" (click)="setMsgLinkQuesType(0,3)"><i class="fa fa-video-camera">&nbsp;</i><span class="hide-xs">Videos</span> </a></li>
+          <li class="" [class.actives]="tLink"><a href="#link" data-toggle="tab" aria-expanded="false" (click)="setMsgLinkQuesType(5,4)"><i class="fa fa-link">&nbsp;</i><span class="hide-xs">Link</span> </a></li>
+          <li class="" [class.actives]="tDocument"><a href="#document" data-toggle="tab" aria-expanded="false" (click)="setMsgLinkQuesType(0,5)"><i class="fa fa-file">&nbsp;</i><span class="hide-xs">Document</span></a></li>
+          <li class="" [class.actives]="tAudio"><a href="#audio" data-toggle="tab" aria-expanded="false" (click)="setMsgLinkQuesType(0,6)"><i class="fa fa-music">&nbsp;</i><span class="hide-xs">Audio</span></a></li>
+          <li class="" [class.actives]="tQuestion"><a href="#question" data-toggle="tab" aria-expanded="false" (click)="setMsgLinkQuesType(2,7)"><i class="fa fa-question-circle">&nbsp;</i><span class="hide-xs">Question</span></a></li>
+        </ul>
+          <div class="layout-column">
+          <div class="tab-content status-content">
+<!-- Message -->
+            <div class="tab-pane active" id="message" [class.showtab]="tMessage" [class.hidetab]="!tMessage">
+              <div class="layout-row">
+                <div class="flex-10 flex-xs-25"><span class="user-img" *ngIf="!user?.photo"><img src="public/dist/img/text-user.png" alt="" /></span>
+                  <span class="user-img" *ngIf="user?.photo"><img src="public/files/ProfilePicture/{{user.photo}}" alt="" /></span></div>
+                <div class="flex-90"><textarea [(ngModel)]="message.message.message" cols="5" placeholder="Share your thoughts..."></textarea></div>
+              </div>
+            </div>
+            <!--Photo-->
+
+            <div class="tab-pane" id="photos" [class.showtab]="tPhoto" [class.hidetab]="!tPhoto">
+              <div class="layout-row p-15">
+                <div class="flex-10 flex-xs-25"><span class="user-img" *ngIf="!user?.photo"><img src="public/dist/img/text-user.png" alt="" /></span>
+                  <span class="user-img" *ngIf="user?.photo"><img src="public/files/ProfilePicture/{{user.photo}}" alt="" /></span></div>
+                <div class="flex-90"><textarea [(ngModel)]="message.name.name" cols="5" placeholder="Write something about photo..."></textarea></div>
+              </div>
+              <div class="layout-row img-preview layout-align-center-center">
+                <img class="image" height='100%' width='100%' alt="No Preview">
+              </div>
+              <div class="layout-row two-pane" id="hide_photos" [class.showtab]="tmainPhoto" [class.hidetab]="!tmainPhoto">
+                <div class="pane-left flex-50 layout-column layout-align-center-center">
+                  <div class="info-value custom-upload">
+                    <input #upImage type="file" (change)="photoChangeEvent($event,$event)" accept="image/*" />
+                    <div class="upload-sign layout-column layout-align-center-center">
+                      <i class="fa fa-image">&nbsp;</i>
+                      <span>Upload Photo</span>
+                    </div>
+                  </div>
+                  <span class="error_file_message">{{error.photo}}</span>
+                </div>
+                <div class="pane-right flex-50 layout-column layout-align-center-center">
+                  <div class="info-value layout-column layout-align-center-center" (click)="tmainPhoto = !tmainPhoto;tlinkPhoto = !tlinkPhoto">
+                    <i class="fa fa-link">&nbsp;</i>
+                    <span>embed photo</span>
+                  </div>
+                </div>
+              </div>
+              <div class="layout-column" id="show_photos" style="padding:15px;" [class.showtab]="tlinkPhoto" [class.hidetab]="!tlinkPhoto">
+                <span class="em-link" *ngIf="message.embedLink.photo!=''">{{message.embedLink.photo}}</span>
+                <div class="layout-row layout-align-start inline-pd">
+                  <div class="flex-50"><input [(ngModel)]="message.embedLink.title" placeholder="Paste a link here..." type="text" class="btn-block"
+                    /></div>
+                  <div class=""><button class="btn btn-small post-btn" (click)="addPhotoEmbedLink()">Add</button></div>
+                  <div class=""><button class="btn btn-danger btn-small" (click)="clearEmbedLink(1)">Cancel</button></div>
+                </div>
+              </div>
+              <div class="layout-row layout-align-center-center">
+                <span class="p-5 text-muted"> Note : Upload only jpg/png/gif/tif files.</span>
+              </div>
+            </div>
+<!--Video-->
+            <div class="tab-pane" id="videos" [class.showtab]="tVideo" [class.hidetab]="!tVideo">
+              <div class="layout-row p-15">
+                <div class="flex-10 flex-xs-25"><span class="user-img" *ngIf="!user?.photo"><img src="public/dist/img/text-user.png" alt="" /></span>
+                  <span class="user-img" *ngIf="user?.photo"><img src="public/files/ProfilePicture/{{user.photo}}" alt="" /></span></div>
+                <div class="flex-90"><textarea [(ngModel)]="message.name.name" cols="5" placeholder="Write something about video..."></textarea></div>
+              </div>
+              <div class="layout-row two-pane" id="hide_videos" [class.showtab]="tmainVideo" [class.hidetab]="!tmainVideo">
+                <div class="pane-left flex-50 layout-column layout-align-center-center">
+                  <div class="info-value custom-upload">
+                    <input #upVideo type="file" (change)="videoChangeEvent($event)" accept="video/mp4,video/x-m4v,video/*" />
+                    <div class="upload-sign layout-column layout-align-center-center">
+                      <i class="fa fa-video-camera"></i>
+                      <span>Upload video</span>
+                      <span class="photo-upload-name" *ngIf="upVideo">{{upVideo.value}}</span>
+                    </div>
+                  </div>
+                  <span class="error_file_message" *ngIf="error.video">{{error.video}}</span>
+                  <span class="error_file_message" *ngIf="error.videoSize">{{error.videoSize}}</span>
+                </div>
+                <div class="pane-right flex-50 layout-column layout-align-center-center">
+                  <div class="info-value layout-column layout-align-center-center" (click)="tmainVideo = !tmainVideo;tlinkVideo = !tlinkVideo">
+                    <i class="fa fa-link"></i>
+                    <span>embed video</span>
+                  </div>
+                </div>
+              </div>
+              <div class="layout-column" id="show_videos" style="padding:15px;" [class.showtab]="tlinkVideo" [class.hidetab]="!tlinkVideo">
+                <div class="em-link" *ngIf="message.embedLink.video!=''" embedDirective>https://www.youtube.com/watch?v={{message.embedLink.video}}</div>
+                <div class="layout-row layout-align-start inline-pd">
+
+                  <div class="flex-50"><input [(ngModel)]="message.embedLink.title" placeholder="Paste a link here..." type="text" class="btn-block"
+                    /></div>
+                  <div class=""><button class="btn btn-small post-btn" (click)="addVideoEmbedLink()">Add</button></div>
+                  <div class=""><button class="btn btn-danger btn-small" (click)="clearEmbedLink(2)">Cancel</button></div>
+                </div>
+              </div>
+              <div class="layout-row layout-align-center-center">
+                <span class="p-5 text-muted"> Note : Upload only mp4/webm/ogg/mov files.</span>
+              </div>
+            </div>
+            <!--Link-->
+
+            <div class="tab-pane" id="link" [class.showtab]="tLink" [class.hidetab]="!tLink">
+              <div class="layout-column">
+                <div class="layout-row p-15">
+                  <div class="flex-10 flex-xs-25"><span class="user-img" *ngIf="!user?.photo"><img src="public/dist/img/text-user.png" alt="" /></span>
+                    <span class="user-img" *ngIf="user?.photo"><img src="public/files/ProfilePicture/{{user.photo}}" alt="" /></span></div>
+                  <div class="flex-90"><textarea [(ngModel)]="message.link.title" cols="5" placeholder="Write something about link..."></textarea></div>
+                </div>
+                <div class="layout-row p-15 layout-align-start ">
+                  <div class="flex-100"><input [(ngModel)]="message.link.description" placeholder="Paste a link here..." type="text" class="btn-block"
+                    /></div>
+                </div>
+              </div>
+            </div>
+
+            <!--Document-->
+
+            <div class="tab-pane" id="document" [class.showtab]="tDocument" [class.hidetab]="!tDocument">
+              <div class="layout-row p-15">
+                <div class="flex-10 flex-xs-25"><span class="user-img" *ngIf="!user?.photo"><img src="public/dist/img/text-user.png" alt="" /></span>
+                  <span class="user-img" *ngIf="user?.photo"><img src="public/files/ProfilePicture/{{user.photo}}" alt="" /></span></div>
+                <div class="flex-90"><textarea [(ngModel)]="message.name.name" cols="5" placeholder="Write something about document..."></textarea></div>
+              </div>
+              <div class="layout-column layout-align-center-center pane-left two-pane">
+                <div class="info-value layout-align-center-center custom-upload">
+                  <input #upDoc type="file" (change)="documentChangeEvent($event)" accept="application/msword, application/vnd.ms-excel, application/vnd.ms-powerpoint,
+                                        text/plain, application/pdf" />
+                  <div class="upload-sign layout-column layout-align-center-center ">
+                    <i class="fa fa-file-text"></i>
+                    <span>Upload Document</span>
+                    <span class="photo-upload-name" *ngIf="upDoc">{{upDoc.value}}</span>
+                  </div>
+                </div>
+                <span class="error_file_message" *ngIf="error.document">{{error.document}}</span>
+                <span class="error_file_message" *ngIf="error.documentSize">{{error.documentSize}}</span>
+              </div>
+              <div class="layout-row layout-align-center-center">
+                <span class="p-5 text-muted"> Note : Upload only docx/doc/txt/pdf/xml/xlsx/ppt/xls files.</span>
+              </div>
+            </div>
+<!--Audio-->
+            <div class="tab-pane" id="audio" [class.showtab]="tAudio" [class.hidetab]="!tAudio">
+              <div class="layout-row p-15">
+                <div class="flex-10 flex-xs-25"><span class="user-img" *ngIf="!user?.photo"><img src="public/dist/img/text-user.png" alt="" /></span>
+                  <span class="user-img" *ngIf="user?.photo"><img src="public/files/ProfilePicture/{{user.photo}}" alt="" /></span></div>
+                <div class="flex-90"><textarea [(ngModel)]="message.name.name" cols="5" placeholder="Write something about audio..."></textarea></div>
+              </div>
+              <div class="layout-row two-pane" id="hide_audio" [class.showtab]="tmainAudio" [class.hidetab]="!tmainAudio">
+                <div class="pane-left flex-50 layout-column layout-align-center-center">
+                  <div class="info-value custom-upload">
+                    <input #upAudio type="file" (change)="audioChangeEvent($event)" accept="audio/*" />
+                    <div class="upload-sign layout-column layout-align-center-center">
+                      <i class="fa fa-music"></i>
+                      <span>Upload music</span>
+                      <span class="photo-upload-name" *ngIf="upAudio">{{upAudio.value}}</span>
+                    </div>
+                  </div>
+                  <span class="error_file_message" *ngIf="error.audio">{{error.audio}}</span>
+                  <span class="error_file_message" *ngIf="error.audioSize">{{error.audioSize}}</span>
+                </div>
+                <div class="pane-right flex-50 layout-column layout-align-center-center flex-60">
+                  <div class="info-value layout-column layout-align-center-center" (click)="tmainAudio = !tmainAudio;tlinkAudio = !tlinkAudio">
+                    <i class="fa fa-link"></i>
+                    <span>embed music</span>
+                  </div>
+                </div>
+              </div>
+              <div class="layout-column" id="show_audio" style="padding:15px;" [class.showtab]="tlinkAudio" [class.hidetab]="!tlinkAudio">
+                <span class="em-link" *ngIf="message.embedLink.audio!=''">{{message.embedLink.audio}}</span>
+                <div class="layout-row layout-align-start inline-pd">
+                  <div class="flex-50"><input [(ngModel)]="message.embedLink.title" placeholder="Paste a link here..." type="text" class="btn-block"
+                    /></div>
+                  <div class=""><button class="btn btn-small post-btn" (click)="addAudioEmbedLink()">Add</button></div>
+                  <div class=""><button class="btn btn-danger btn-small" (click)="clearEmbedLink(3)">Cancel</button></div>
+                </div>
+              </div>
+              <div class="layout-row layout-align-center-center">
+                <span class="p-5 text-muted"> Note : Upload only mpeg/ogg/wav/mp3 files.</span>
+              </div>
+            </div>
+            <!--Question-->
+
+            <div class="tab-pane" id="question" [class.showtab]="tQuestion" [class.hidetab]="!tQuestion">
+              <div class="layout-row">
+                <div class="flex-10 "><span class="user-img" *ngIf="!user?.photo"><img src="public/dist/img/text-user.png" alt="" /></span>
+                  <span class="user-img" *ngIf="user?.photo"><img src="public/files/ProfilePicture/{{user.photo}}" alt="" /></span></div>
+                <div class="flex-90"><textarea [(ngModel)]="message.question.question" cols="5" placeholder="Share your questions?..."></textarea></div>
+              </div>
+            </div>
+
+          </div>
+          <div class="chooes-option gray-gradient layout-row layout-align-space-between">
+            <div class="option-set">
+              <ul class="layout-row nav nav-tabs">
+              </ul>
+            </div>
+            <div class="layout-row option-btn">
+              <div class="tab-pane active" id="choose_category">
+                <div class="dropdown">
+                  Select Category&nbsp;<button class="btn cat-btn dropdown-toggle" type="button" data-toggle="dropdown">
+                                        {{categoryValue}} &nbsp;<span class="caret">&nbsp;</span>
+                                    </button>
+                  <ul class="dropdown-menu">
+                    <li><a (click)="catagories(1)">General</a></li>
+                    <li><a (click)="catagories(2)">Tip / Trick</a></li>
+                    <li><a (click)="catagories(3)">Joke / Humor</a></li>
+                    <li><a (click)="catagories(4)">Tutorial</a></li>
+                  </ul>
+                </div>
+              </div>
+              <div class="public-btn">
+                <div class="dropdown">
+                  <button class="btn dropdown-toggle" type="button" data-toggle="dropdown"><span class="fa fa-users">&nbsp;</span>{{selectedPostPrivacyType==1?"Public":selectedPostPrivacyType==2?"Private(Only Me)":selectedPostPrivacyType==3?"All Friends":selectedPostPrivacyType==4?"All Followers":selectedPostPrivacyType==5?"Custom":"All Friends And Followers"}}<span class="caret">&nbsp;</span></button>
+                  <ul class="dropdown-menu">
+                    <li *ngFor="let option of postPrivacyTypes;"><a (click)="onChangePostPrivacy(option)">{{option.label}}</a></li>
+                  </ul>
+                </div>
+              </div>
+              <div class=""><button class="btn post-btn btn-small" (click)="onPostAllTypeCollegeData()">Post</button></div>
+            </div>
+          </div>
+        </div>
+      </div>
+       <div class="box box-warning search-box-fx  modal-border-box">
+        <div class="box-header">
+          <div class="c-p" (click)="closeSearchBox()"><i class="fa fa-search"></i> <span>Search</span></div>
+          <div class="box-tools pull-right">
+            <button class="btn btn-box-tool" id="toggleSearch" (click)="closeSearchBox()"><i id="changeClass" class="fa fa-plus"></i></button>
+          </div>
+          <!-- /.box-tools -->
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body padding-0" id="togglingSearch" style="display:none">
+          <div class="layout-column pad-5-10 ">
+            <div class="search-wrap-cat layout-row layout-align-start-center">
+              <label class="flex-20 layout-row">Category</label>
+              <div class="tab-pane active flex-80 layout-row">
+                <div class="dropdown flex-100 layout-row sub-serc-icon">
+                  <button class="btn cat-btn dropdown-toggle flex-100 layout-row" type="button" data-toggle="dropdown">
+                                        {{searchCategoryValue}} &nbsp;&nbsp;<span class="caret">&nbsp;</span>
+                                    </button>
+                  <ul class="dropdown-menu">
+                    <li><a (click)="search_catagories(1)">General</a></li>
+                    <li><a (click)="search_catagories(2)">Tip / Trick</a></li>
+                    <li><a (click)="search_catagories(3)">Joke / Humor</a></li>
+                    <li><a (click)="search_catagories(4)">Tutorial</a></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="layout-column layout-align-space-between">
+              <div class="layout-row flex-45 layout-align-start-center sreach-wrap-post m-b-10">
+                <label class="flex-20 layout-row">Who Posted</label>
+                <div class="tab-pane flex-80 active">
+                  <div class="dropdown">
+                    <button class="btn cat-btn dropdown-toggle" type="button" data-toggle="dropdown">
+                                            {{whoPostedValue}} &nbsp;<span class="caret">&nbsp;</span>
+                                        </button>
+                    <ul class="dropdown-menu">
+                      <li><a (click)="search_who_posted(1)">All Members</a></li>
+                      <li><a (click)="search_who_posted(2)">All Friends</a></li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="layout-row flex-55 layout-align-start-center updates-date">
+                <label class="flex-25 layout-row">Time</label>
+                <label class="flex-10 layout-row">From</label>
+                 <i class="fa fa-calendar"></i>
+                <input class="form-control pull-right flex-35" (click)="openStartEndTime()" name="search-date-from-0" type="text">
+                <label class="flex-10 layout-row layout-align-center-center">To</label>
+                 <i class="fa fa-calendar"></i>
+                <input class="form-control pull-right flex-40" (click)="openStartEndTime()" name="search-date-to-0" type="text">
+              </div>
+            </div>
+            <div class="layout-row layout-align-end">
+              <button class="btn-wrap ser" (click)="getAllTypeOfSearchPost()">Search</button>
+              <button class="btn-wrap rest" (click)="resetSearch()">Reset</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+       <h4 class="filter-wrap"><i class="fa fa-filter" aria-hidden="true"></i> &nbsp;Filter By:</h4>
+      <div class="form-group">
+      </div>
+      <div class="well all-status light-gray-bg">
+        <ul class="display-flex text-center">
+          <li (click)="checkActiveClass('all')" [class.dev-active-link]='allLinkActive'><a (click)="getAllTypeOfPost()"><i class="fa fa-check-circle-o">&nbsp;</i><p class="hide-xs">all</p></a></li>
+          <li (click)="checkActiveClass('status')" [class.dev-active-link]='statusLinkActive'><a (click)="getPostTypeOfPost(1)"><i class="fa fa-commenting">&nbsp;</i><p class="hide-xs">Status</p></a></li>
+          <li (click)="checkActiveClass('photos')" [class.dev-active-link]='photosLinkActive'><a (click)="getPostTypeOfPost(3)"><i class="fa fa-camera">&nbsp;</i><p class="hide-xs">Photos</p></a></li>
+          <li (click)="checkActiveClass('videos')" [class.dev-active-link]='videosLinkActive'><a (click)="getPostTypeOfPost(4)"><i class="fa fa-video-camera">&nbsp;</i><p class="hide-xs">Videos</p></a></li>
+          <li (click)="checkActiveClass('links')" [class.dev-active-link]='linksLinkActive'><a (click)="getPostTypeOfPost(5)"><i class="fa fa-paperclip">&nbsp;</i><p class="hide-xs">Links</p></a></li>
+          <li (click)="checkActiveClass('documents')" [class.dev-active-link]='documentsLinkActive'><a (click)="getPostTypeOfPost(7)"><i class="fa fa-book">&nbsp;</i><p class="hide-xs">Document</p></a></li>
+          <li (click)="checkActiveClass('audio')" [class.dev-active-link]='audioLinkActive'><a (click)="getPostTypeOfPost(6)"><i class="fa fa-headphones">&nbsp;</i><p class="hide-xs">Audio</p></a></li>
+        </ul>
+      </div>
+      <div class="spinner-lazy-block" *ngIf="contentLoading">
+    <div class="spinner-lazy">
+      <div class="bounce1"></div>
+      <div class="bounce2"></div>
+      <div class="bounce3"></div>
+    </div>
+  </div>
+    </div>
+    <div class="col-md-4">
+    <div class="box box-danger box-orange subject-wall-popup">
+      <div class="box-header with-border ">
+        <div class="box-title">Joined Members</div><span style="float: right">{{eventMemberCount}}</span>
+      </div>
+      <div class="box-body">
+        <ul class="users-list clearfix layout-row layout-wrap">
+          <!--<li *ngFor="let current_members of current_member | slice:0:6;let f = index" [class.clear-both]="f == 3" class="user-profile-data">
+            <span (mouseover)="currentStudentPopupOpen($event,current_members.currentMember._id)" [class.active]="current_members.status==3"> 
+                          <a *ngIf="current_members.currentMember._id!=null" class="member-border display-full c-p" (click)="getProfileById(current_members.currentMember._id)">
+                                <img *ngIf="current_members.currentMember.photo" src="public/files/ProfilePicture/{{current_members.currentMember.photo}}" style="height: 50px; width: 50px;" alt="User Image">
+                                <img *ngIf="!current_members.currentMember.photo" src="public/files/ProfilePicture/no_image.png" style="height: 50px; width: 50px;" alt="User Image">
+                            </a>
+                        </span>
+            <div class="setting-page flex-100 layout-row current-student-popup">
+              <div class="setting-page flex-100 layout-row" *ngIf="studentUser.userDetails">
+                <a *ngIf="studentUser.userDetails.photo" class="member-border display-full c-p" (click)="getProfileById(current_members.currentMember._id)">
+                                                <img src="public/files/ProfilePicture/{{studentUser.userDetails.photo}}" style="height: 50px; width: 50px;" alt="User Image">
+                                            </a>
+                <a *ngIf="!studentUser.userDetails.photo" class="member-border display-full c-p" (click)="getProfileById(current_members.currentMember._id)">
+                                                <img src="public/files/ProfilePicture/no_image.png" style="height: 50px; width: 50px;" alt="User Image">
+                                            </a>
+                <h4 *ngIf="studentUser.userDetails && studentUser.userDetails?.fname">{{studentUser.userDetails.fname}}</h4>
+              </div>
+              <div class="setting-page flex-100 layout-row" style="width:100%" *ngIf="studentUser.is_logged_user == false">
+                <button *ngIf="studentUser.current_friends_status_code == 6" (click)="addAsFriend(studentUser)" type="button" class="btn bg-orange btn-flat flex-40 flex-xs-100">Add as Friend</button>
+                <button *ngIf="studentUser.current_friends_status_code == 3" type="button" class="btn disabled bg-orange btn-flat flex-40 flex-xs-100">Already Friend</button>
+                <button *ngIf="studentUser.current_friends_status_code == 1" (click)="cancelRequestedFriend(studentUser)" type="button" class="btn bg-orange btn-flat flex-40 flex-xs-100">Cancel Request</button>
+                <button *ngIf="studentUser.current_friends_status_code == 2" type="button" class="btn bg-orange btn-flat flex-40 flex-xs-100"
+                  (click)="getFriendList()">Confirm Request</button>
+                <button *ngIf="studentUser.following_friend_status_code == 6" (click)="setFollow(studentUser)" type="button" class="btn bg-orange btn-flat flex-40 flex-xs-100">Follow</button>
+                <button *ngIf="studentUser.following_friend_status_code == 3" (click)="setUnFollow(studentUser)" type="button" class="btn bg-orange btn-flat flex-40 flex-xs-100">UnFollow</button>
+              </div>
+            </div>
+          </li>-->
+        </ul>
+        <div class="no-count-section" *ngIf="!eventMemberCount">
+          <i class="fa fa-exclamation-circle" aria-hidden="true"></i>&nbsp; No Joined Members found
+        </div>
+      </div>
+      <div class="box-footer text-center" *ngIf="eventMemberCount">
+        <a class="uppercase" >View more</a>
+      </div>
+    </div>
+    <div class="box box-danger box-orange subject-wall-popup">
+      <div class="box-header with-border ">
+        <div class="box-title">Invited Members</div><span style="float: right">{{eventMemberCount}}</span>
+      </div>
+      <div class="box-body">
+        <ul class="users-list clearfix layout-row layout-wrap">
+          <!--<li *ngFor="let current_members of current_member | slice:0:6;let f = index" [class.clear-both]="f == 3" class="user-profile-data">
+            <span (mouseover)="currentStudentPopupOpen($event,current_members.currentMember._id)" [class.active]="current_members.status==3"> 
+                          <a *ngIf="current_members.currentMember._id!=null" class="member-border display-full c-p" (click)="getProfileById(current_members.currentMember._id)">
+                                <img *ngIf="current_members.currentMember.photo" src="public/files/ProfilePicture/{{current_members.currentMember.photo}}" style="height: 50px; width: 50px;" alt="User Image">
+                                <img *ngIf="!current_members.currentMember.photo" src="public/files/ProfilePicture/no_image.png" style="height: 50px; width: 50px;" alt="User Image">
+                            </a>
+                        </span>
+            <div class="setting-page flex-100 layout-row current-student-popup">
+              <div class="setting-page flex-100 layout-row" *ngIf="studentUser.userDetails">
+                <a *ngIf="studentUser.userDetails.photo" class="member-border display-full c-p" (click)="getProfileById(current_members.currentMember._id)">
+                                                <img src="public/files/ProfilePicture/{{studentUser.userDetails.photo}}" style="height: 50px; width: 50px;" alt="User Image">
+                                            </a>
+                <a *ngIf="!studentUser.userDetails.photo" class="member-border display-full c-p" (click)="getProfileById(current_members.currentMember._id)">
+                                                <img src="public/files/ProfilePicture/no_image.png" style="height: 50px; width: 50px;" alt="User Image">
+                                            </a>
+                <h4 *ngIf="studentUser.userDetails && studentUser.userDetails?.fname">{{studentUser.userDetails.fname}}</h4>
+              </div>
+              <div class="setting-page flex-100 layout-row" style="width:100%" *ngIf="studentUser.is_logged_user == false">
+                <button *ngIf="studentUser.current_friends_status_code == 6" (click)="addAsFriend(studentUser)" type="button" class="btn bg-orange btn-flat flex-40 flex-xs-100">Add as Friend</button>
+                <button *ngIf="studentUser.current_friends_status_code == 3" type="button" class="btn disabled bg-orange btn-flat flex-40 flex-xs-100">Already Friend</button>
+                <button *ngIf="studentUser.current_friends_status_code == 1" (click)="cancelRequestedFriend(studentUser)" type="button" class="btn bg-orange btn-flat flex-40 flex-xs-100">Cancel Request</button>
+                <button *ngIf="studentUser.current_friends_status_code == 2" type="button" class="btn bg-orange btn-flat flex-40 flex-xs-100"
+                  (click)="getFriendList()">Confirm Request</button>
+                <button *ngIf="studentUser.following_friend_status_code == 6" (click)="setFollow(studentUser)" type="button" class="btn bg-orange btn-flat flex-40 flex-xs-100">Follow</button>
+                <button *ngIf="studentUser.following_friend_status_code == 3" (click)="setUnFollow(studentUser)" type="button" class="btn bg-orange btn-flat flex-40 flex-xs-100">UnFollow</button>
+              </div>
+            </div>
+          </li>-->
+        </ul>
+        <div class="no-count-section" *ngIf="!eventMemberCount">
+          <i class="fa fa-exclamation-circle" aria-hidden="true"></i>&nbsp; No Invited Members found
+        </div>
+      </div>
+      <div class="box-footer text-center" *ngIf="eventMemberCount">
+        <a class="uppercase" >View more</a>
+      </div>
+    </div>
+  </div>
+  </div>
+</section>
+
+<div class="modal fade modal-align-fix dialog-like-wrapper " id="postCustomShareModel">
+  <ba-post-custom-privacy-model *ngIf="showCustomPrivacymodel" (complete)="onCloseCustomPrivacyModel($event)"></ba-post-custom-privacy-model>
+</div>
+<!-- post share model  -->
+<div class="modal fade modal-align-fix dialog-like-wrapper " id="postShareModel">
+  <ba-post-share-model *ngIf="showPostShareModel" [postData]="sharePostData" (complete)="onPostShareModelClose($event)"></ba-post-share-model>
+</div>

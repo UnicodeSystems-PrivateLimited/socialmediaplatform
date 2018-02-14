@@ -1,0 +1,426 @@
+<!--<div class="col-sm-3"><h5><a [routerLink]="['Admin.Master']">Click</a></h5></div>
+<div class="col-sm-9">
+    <router-outlet></router-outlet>
+</div>
+-->
+
+
+
+
+
+<div class="wrapper" style="background-color:#e5e5e5;">
+    <header class="main-header">
+        <nav role="navigation" class="navbar navbar-static-top">
+            <div class="container">
+                <div class="layout-row">
+                    <div class="flex-20  hidden-xs">
+                        <a class="logo">
+                            <!-- mini logo for sidebar mini 50x50 pixels -->
+                            <span class="header-logo logo-mini"><b>S</b><span>N</span></span>
+                            <!-- logo for regular state and mobile devices -->
+                            <span class="header-logo logo-lg"><b>Student</b><span>Network</span>&nbsp;<b>Admin</b></span>
+                        </a>
+                    </div>
+                     <div class="flex-10 layout-row layout-align-center-center nav-toggle-icon visible-flex-xs nav-toggle-icon" (click)="toggleNav()">
+                        <i class="fa" aria-hidden="true" [class.fa-times]="toggleState" [class.fa-bars]="!toggleState"></i>
+
+                    </div>
+                     <div class="flex-20 visible-xs">
+                        <a class="logo">
+                            <span class="header-logo logo-mini"><b>S</b><span>N</span></span>
+
+                            <span class="header-logo logo-lg"><b>Student</b><span>Network</span>&nbsp;<b>Admin</b></span>
+                        </a>
+                    </div>
+                    <!-- Header Navbar: style can be found in header.less -->
+
+                    <!-- Sidebar toggle button-->
+                    <!--                                <a role="button" data-toggle="offcanvas" class="sidebar-toggle" href="#">
+                                                        <span class="sr-only">Toggle navigation</span>
+                                                    </a>-->
+                    <!-- Navbar Right Menu -->
+                    <div class="flex-80">
+                        <div class="layout-row layout-align-space-between">
+                            <div class="collapse navbar-collapse" id="navbar-collapse">
+                                <ul class="nav navbar-nav layout-row">
+
+
+                                </ul>
+                            </div>
+                            <div class="navbar-custom-menu nav-options">
+                                <ul class="nav navbar-nav layout-row layout-align-space-between ">
+                                    <!-- Messages: style can be found in dropdown.less-->
+<!--                                    <li class="flex-40 layout-align-center-center search-input-block">
+                                        <form  class="navbar-form navbar-left" role="search">
+                                            <div class="form-group nav-search input-left-icon">
+                                                <span class="fa fa-search">&nbsp;</span>
+                                                <input  type="text" class="form-control hello" id="navbar-search-input" placeholder="Search here" autocomplete="off">
+                                            </div>
+                                        </form>
+                                        <div  class="user-search-list-wrap">
+
+                                        </div>
+                                    </li>-->
+<!--                                    <li  class="layout-align-center-center">
+                                        <a data-toggle="control-sidebar">&#124;</a>
+                                    </li>-->
+                                    <li class="dropdown messages-menu layout-align-center-center">
+<!--                                        <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                                            <i class="fa fa-users"></i>
+                                            <span class="label label-danger">4</span>
+                                        </a>-->
+                                        <ul class="dropdown-menu">
+                                            <li class="header">You have 4 messages</li>
+                                            <li>
+                                                <!-- inner menu: contains the actual data -->
+                                                <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 200px;"><ul class="menu" style="overflow: hidden; width: 100%; height: 200px;">
+                                                        <li><!-- start message -->
+                                                            <a href="#">
+                                                                <div class="pull-left">
+                                                                    <img alt="User Image" class="img-circle" src="theme/dist/img/user2-160x160.jpg">
+                                                                </div>
+                                                                <h4>
+                                                                    Support Team
+                                                                    <small><i class="fa fa-clock-o"></i> 5 mins</small>
+                                                                </h4>
+                                                                <p>Why not buy a new awesome theme?</p>
+                                                            </a>
+                                                        </li>
+                                                        <!-- end message -->
+                                                        <li>
+                                                            <a href="#">
+                                                                <div class="pull-left">
+                                                                    <img alt="User Image" class="img-circle" src="theme/dist/img/user3-128x128.jpg">
+                                                                </div>
+                                                                <h4>
+                                                                    AdminLTE Design Team
+                                                                    <small><i class="fa fa-clock-o"></i> 2 hours</small>
+                                                                </h4>
+                                                                <p>Why not buy a new awesome theme?</p>
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="#">
+                                                                <div class="pull-left">
+                                                                    <img alt="User Image" class="img-circle" src="theme/dist/img/user4-128x128.jpg">
+                                                                </div>
+                                                                <h4>
+                                                                    Developers
+                                                                    <small><i class="fa fa-clock-o"></i> Today</small>
+                                                                </h4>
+                                                                <p>Why not buy a new awesome theme?</p>
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="#">
+                                                                <div class="pull-left">
+                                                                    <img alt="User Image" class="img-circle" src="theme/dist/img/user3-128x128.jpg">
+                                                                </div>
+                                                                <h4>
+                                                                    Sales Department
+                                                                    <small><i class="fa fa-clock-o"></i> Yesterday</small>
+                                                                </h4>
+                                                                <p>Why not buy a new awesome theme?</p>
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="#">
+                                                                <div class="pull-left">
+                                                                    <img alt="User Image" class="img-circle" src="theme/dist/img/user4-128x128.jpg">
+                                                                </div>
+                                                                <h4>
+                                                                    Reviewers
+                                                                    <small><i class="fa fa-clock-o"></i> 2 days</small>
+                                                                </h4>
+                                                                <p>Why not buy a new awesome theme?</p>
+                                                            </a>
+                                                        </li>
+                                                    </ul><div class="slimScrollBar" style="background: rgb(0, 0, 0) none repeat scroll 0% 0%; width: 3px; position: absolute; top: 0px; opacity: 0.4; display: block; border-radius: 7px; z-index: 99; right: 1px;"></div><div class="slimScrollRail" style="width: 3px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: rgb(51, 51, 51) none repeat scroll 0% 0%; opacity: 0.2; z-index: 90; right: 1px;"></div></div>
+                                            </li>
+                                            <li class="footer"><a href="#">See All Messages</a></li>
+                                        </ul>
+                                    </li>
+                                    <!-- Notifications: style can be found in dropdown.less -->
+                                    <li class="dropdown notifications-menu layout-align-center-center">
+<!--                                        <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                                            <i class="fa fa-wechat"></i>
+                                            <span class="label label-danger">10</span>
+                                        </a>-->
+                                        <ul class="dropdown-menu">
+                                            <li class="header">You have 10 notifications</li>
+                                            <li>
+                                                <!-- inner menu: contains the actual data -->
+                                                <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 200px;"><ul class="menu" style="overflow: hidden; width: 100%; height: 200px;">
+                                                        <li>
+                                                            <a href="#">
+                                                                <i class="fa fa-users text-aqua"></i> 5 new members joined today
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="#">
+                                                                <i class="fa fa-warning text-yellow"></i> Very long description here that may not fit into the
+                                                                page and may cause design problems
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="#">
+                                                                <i class="fa fa-users text-red"></i> 5 new members joined
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="#">
+                                                                <i class="fa fa-shopping-cart text-green"></i> 25 sales made
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="#">
+                                                                <i class="fa fa-user text-red"></i> You changed your username
+                                                            </a>
+                                                        </li>
+                                                    </ul><div class="slimScrollBar" style="background: rgb(0, 0, 0) none repeat scroll 0% 0%; width: 3px; position: absolute; top: 0px; opacity: 0.4; display: block; border-radius: 7px; z-index: 99; right: 1px;"></div><div class="slimScrollRail" style="width: 3px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: rgb(51, 51, 51) none repeat scroll 0% 0%; opacity: 0.2; z-index: 90; right: 1px;"></div></div>
+                                            </li>
+                                            <li class="footer"><a href="#">View all</a></li>
+                                        </ul>
+                                    </li>
+                                    <!-- Tasks: style can be found in dropdown.less -->
+                                    <li class="dropdown tasks-menu layout-align-center-center">
+<!--                                        <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                                            <i class="fa fa-bell"></i>
+                                            <span class="label label-danger">9</span>
+                                        </a>-->
+                                        <ul class="dropdown-menu">
+                                            <li class="header">You have 9 tasks</li>
+                                            <li>
+                                                <!-- inner menu: contains the actual data -->
+                                                <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 200px;"><ul class="menu" style="overflow: hidden; width: 100%; height: 200px;">
+                                                        <li><!-- Task item -->
+                                                            <a href="#">
+                                                                <h3>
+                                                                    Design some buttons
+                                                                    <small class="pull-right">20%</small>
+                                                                </h3>
+                                                                <div class="progress xs">
+                                                                    <div aria-valuemax="100" aria-valuemin="0" aria-valuenow="20" role="progressbar" style="width: 20%" class="progress-bar progress-bar-aqua">
+                                                                        <span class="sr-only">20% Complete</span>
+                                                                    </div>
+                                                                </div>
+                                                            </a>
+                                                        </li>
+                                                        <!-- end task item -->
+                                                        <li><!-- Task item -->
+                                                            <a href="#">
+                                                                <h3>
+                                                                    Create a nice theme
+                                                                    <small class="pull-right">40%</small>
+                                                                </h3>
+                                                                <div class="progress xs">
+                                                                    <div aria-valuemax="100" aria-valuemin="0" aria-valuenow="20" role="progressbar" style="width: 40%" class="progress-bar progress-bar-green">
+                                                                        <span class="sr-only">40% Complete</span>
+                                                                    </div>
+                                                                </div>
+                                                            </a>
+                                                        </li>
+                                                        <!-- end task item -->
+                                                        <li><!-- Task item -->
+                                                            <a href="#">
+                                                                <h3>
+                                                                    Some task I need to do
+                                                                    <small class="pull-right">60%</small>
+                                                                </h3>
+                                                                <div class="progress xs">
+                                                                    <div aria-valuemax="100" aria-valuemin="0" aria-valuenow="20" role="progressbar" style="width: 60%" class="progress-bar progress-bar-red">
+                                                                        <span class="sr-only">60% Complete</span>
+                                                                    </div>
+                                                                </div>
+                                                            </a>
+                                                        </li>
+                                                        <!-- end task item -->
+                                                        <li><!-- Task item -->
+                                                            <a href="#">
+                                                                <h3>
+                                                                    Make beautiful transitions
+                                                                    <small class="pull-right">80%</small>
+                                                                </h3>
+                                                                <div class="progress xs">
+                                                                    <div aria-valuemax="100" aria-valuemin="0" aria-valuenow="20" role="progressbar" style="width: 80%" class="progress-bar progress-bar-yellow">
+                                                                        <span class="sr-only">80% Complete</span>
+                                                                    </div>
+                                                                </div>
+                                                            </a>
+                                                        </li>
+                                                        <!-- end task item -->
+                                                    </ul><div class="slimScrollBar" style="background: rgb(0, 0, 0) none repeat scroll 0% 0%; width: 3px; position: absolute; top: 0px; opacity: 0.4; display: block; border-radius: 7px; z-index: 99; right: 1px;"></div><div class="slimScrollRail" style="width: 3px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: rgb(51, 51, 51) none repeat scroll 0% 0%; opacity: 0.2; z-index: 90; right: 1px;"></div></div>
+                                            </li>
+                                            <li class="footer">
+                                                <a href="#">View all tasks</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <!-- User Account: style can be found in dropdown.less -->
+                                    <li class="dropdown user user-menu img-full layout-align-center-center" >
+                                        <a data-toggle="dropdown" class="dropdown-toggle nav-user" href="#" >
+                                            <!--hello-->
+
+                                            <img class="img-circle" src="theme/files/ProfilePicture/no_image.png" alt="no_image.png">
+                                            <!--<span class="hidden-xs"> <span *ngIf="user.fname">Hi,{{user.fname}}</span> <span *ngIf="user.lname">{{user.lname}}</span></span>-->
+                                        </a>
+                                        <ul class="dropdown-menu profile-menu-drop">
+                                            <!-- User image -->
+                                            <li class="user-header">
+
+                                                <img  class="img-circle" src="theme/files/ProfilePicture/no_image.png" alt="no_image.png">
+
+                                                <p>
+                                                    <span></span> <span></span>
+                                                    <!--<small>Member since Nov. 2012</small>-->
+                                                </p>
+                                            </li>
+                                            <!-- Menu Body -->
+                                            <li class="user-body">
+                                                <!-- /.row -->
+                                            </li>
+                                            <!-- Menu Footer-->
+                                            <li class="user-footer">
+                                                <div class="pull-left">
+                                                    <a class="btn btn-default btn-flat" [routerLink]="['Admin.Profile']">Profile</a>
+                                                </div>
+                                                <div class="pull-right">
+                                                    <a [routerLink]="['../User.logout']" class="btn btn-default btn-flat">Sign out</a>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <!-- Control Sidebar Toggle Button -->
+                                    <!--                                    <li class="layout-align-center-center">
+                                                                            <a data-toggle="control-sidebar" href="#"><i class="fa fa-ellipsis-v"></i></a>
+                                                                        </li>-->
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <!-- Left side column. contains the logo and sidebar -->
+    <div class="container container-setting">
+        <div class="layout-row flex-100">
+            <aside class="main-sidebar flex-20 admin_layout" [class.toggle-main-sidenav]="toggleState">
+                <!-- sidebar: style can be found in sidebar.less -->
+                <section class="sidebar " style="height: auto;">
+                    <h3 class="heading"> <i class="fa fa-suitcase" aria-hidden="true"></i>Admin</h3>
+                    <!-- Sidebar user panel -->
+
+
+                    <!-- search form -->
+                    <!--            <form class="sidebar-form" method="get" action="#">
+                                    <div class="input-group">
+                                        <input type="text" placeholder="Search..." class="form-control" name="q">
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-flat" id="search-btn" name="search" type="submit"><i class="fa fa-search"></i>
+                                            </button>
+                                        </span>
+                                    </div>
+                                </form>-->
+
+
+                    <!-- /.search form -->
+                    <!-- sidebar menu: : style can be found in sidebar.less -->
+                    <ul class="sidebar-menu">
+
+                        <li class="treeview">
+                            <a (click)="toggleGroup=!toggleGroup" class="c-p" >
+                                <i class="fa fa-table" aria-hidden="true"></i>
+                                <span>Master Table</span>
+                                <i class="fa pull-right" [class.fa-angle-down]="!toggleGroup" [class.fa-angle-up]="toggleGroup"></i>
+                            </a>
+                            <ul class="treeview-menu" [class.toggleMenu]="toggleGroup">
+                                <li><a  [routerLink]="['./Admin.subject']"><i class="fa fa-circle"></i>Subject</a></li>
+                                <li><a [routerLink]="['./Admin.college']"><i class="fa fa-circle"></i>College</a></li>
+                                <li><a [routerLink]="['./Admin.degree']"><i class="fa fa-circle"></i>Degree</a></li>
+
+                            </ul>
+
+                        </li>
+                        <li class="treeview">
+                            <a (click)="toggleBlog=!toggleBlog" class="c-p" >
+                                <i class="fa fa-users"></i>
+                                <span>Blog</span>
+                                <i class="fa pull-right" [class.fa-angle-down]="!toggleBlog" [class.fa-angle-up]="toggleBlog"></i>
+                            </a>
+                            <ul class="treeview-menu" [class.toggleMenu]="toggleBlog">
+                                <li><a [routerLink]="['./Admin.blogCategory']"><i class="fa fa-circle"></i>Blog Category</a></li>
+                                <li><a [routerLink]="['./Admin.blogItems']"><i class="fa fa-circle"></i>Blog Items</a></li>
+                            </ul>
+
+                        </li>
+                        <li class="treeview" >
+                            <a (click)="toggleNewsletter=!toggleNewsletter" class="c-p" >
+                                <i class="fa fa-newspaper-o" aria-hidden="true"></i>
+                                <span>Newsletter</span>
+                                <i class="fa pull-right" [class.fa-angle-down]="!toggleNewsletter" [class.fa-angle-up]="toggleNewsletter"></i>
+                            </a>
+                            <ul class="treeview-menu" [class.toggleMenu]="toggleNewsletter">
+                                <li><a [routerLink]="['./Admin.newsletterSubscription']"><i class="fa fa-circle"></i>Newsletter subscription</a></li>
+                                <li><a [routerLink]="['./Admin.template']"><i class="fa fa-circle"></i>Template</a></li>
+                                <li><a [routerLink]="['./Admin.scheduling']"><i class="fa fa-circle"></i>Scheduling</a></li>
+                            </ul>
+
+                        </li>
+                        <li class="treeview">
+                            <a [routerLink]="['Admin.EmailTemplate']">
+                                <i class="fa fa-envelope-o" aria-hidden="true"></i>
+                                <span>Email Template</span>
+                            </a>
+                        </li>
+                        <li class="treeview">
+                            <a [routerLink]="['./Admin.Skills']">
+                                <i class="fa fa-cogs" aria-hidden="true"></i>
+                                <span>Skills</span>
+                            </a>
+                        </li>
+                        <li class="treeview">
+                            <a [routerLink]="['./Admin.setting']">
+                                <i class="fa fa-users" aria-hidden="true"></i>
+                                <span>User Management</span>
+                            </a>
+                        </li>
+                      
+
+
+
+
+                    </ul>
+                </section>
+                <!-- /.sidebar -->
+            </aside>
+            <!-- Content Wrapper. Contains page content -->
+            <div class="content-wrapper flex-80">
+                <!-- Content Header (Page header) -->
+                <router-outlet></router-outlet>
+                <!-- /.content -->
+            </div>
+            <!-- /.content-wrapper -->
+        </div>
+    </div>
+    <!-- Main Footer -->
+    <footer class="main-footer">
+        <!-- To the right -->
+        <div class="pull-right hidden-xs">
+
+        </div>
+        <!-- Default to the left -->
+        <strong>Copyright &copy; 2015 <a href="#">Company</a>.</strong> All rights reserved.
+    </footer>
+
+    <!-- Control Sidebar -->
+
+    <!-- /.control-sidebar -->
+    <!-- Add the sidebar's background. This div must be placed
+         immediately after the control sidebar -->
+    <div class="control-sidebar-bg"></div>
+</div>
+
+<!-- ./wrapper -->
+
+

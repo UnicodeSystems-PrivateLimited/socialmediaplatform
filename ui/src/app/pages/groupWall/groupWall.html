@@ -1,0 +1,718 @@
+<div class="spin-wrap vision-spin" style="display: none">
+  <div class="sk-folding-cube">
+    <div class="sk-cube1 sk-cube"></div>
+    <div class="sk-cube2 sk-cube"></div>
+    <div class="sk-cube4 sk-cube"></div>
+    <div class="sk-cube3 sk-cube"></div>
+  </div>
+</div>
+<div class="page-loader-section layout-row layout-align-center-center" *ngIf="!group">
+  <div class="page-loader ">Loading...</div>
+</div>
+<section class="content-header" *ngIf="group">
+  <h1><span>Group - {{group.title}}</span> <span class="text_lower">in</span> 
+    <span class="c-p" *ngIf="group.subject_id" (click)="getSubjectWall(group.subject_id._id)">{{group.subject_id.name}}</span>
+    <span class="c-p" *ngIf="group.college_id" (click)="getCollegeWall(group.college_id._id)">{{group.college_id.name}}</span>
+    <span class="c-p" *ngIf="group.degree_id" (click)="getDegreeWall(group.degree_id._id)">{{group.degree_id.name}}</span> </h1>
+</section>
+
+<section class="content" *ngIf="group">
+  <div class="row" (window:scroll)="onScrollList($event)">
+    <div class="col-md-8" style="padding-right:0">
+      <div  *ngIf="page.is_member"  class="nav-tabs-custom layout-column">
+        <ul class="nav nav-tabs layout-row layout-align-space-between">
+          <li class="" [class.actives]="tMessage"><a href="#message" data-toggle="tab" aria-expanded="false" (click)="setMsgLinkQuesType(1,1)"><i class="fa fa-inbox">&nbsp;</i><span class="hide-xs">Message</span></a></li>
+          <li class="" [class.actives]="tPhoto"><a href="#photos" data-toggle="tab" aria-expanded="false" (click)="setMsgLinkQuesType(0,2)"><i class="fa fa-photo">&nbsp;</i><span class="hide-xs">Photos</span></a></li>
+          <li class="" [class.actives]="tVideo"><a href="#videos" data-toggle="tab" aria-expanded="false" (click)="setMsgLinkQuesType(0,3)"><i class="fa fa-video-camera">&nbsp;</i><span class="hide-xs">Videos</span> </a></li>
+          <li class="" [class.actives]="tLink"><a href="#link" data-toggle="tab" aria-expanded="false" (click)="setMsgLinkQuesType(5,4)"><i class="fa fa-link">&nbsp;</i><span class="hide-xs">Link</span> </a></li>
+          <li class="" [class.actives]="tDocument"><a href="#document" data-toggle="tab" aria-expanded="false" (click)="setMsgLinkQuesType(0,5)"><i class="fa fa-file">&nbsp;</i><span class="hide-xs">Document</span></a></li>
+          <li class="" [class.actives]="tAudio"><a href="#audio" data-toggle="tab" aria-expanded="false" (click)="setMsgLinkQuesType(0,6)"><i class="fa fa-music">&nbsp;</i><span class="hide-xs">Audio</span></a></li>
+          <li class="" [class.actives]="tQuestion"><a href="#question" data-toggle="tab" aria-expanded="false" (click)="setMsgLinkQuesType(2,7)"><i class="fa fa-question-circle">&nbsp;</i><span class="hide-xs">Question</span></a></li>
+        </ul>
+        <div class="layout-column">
+          <div class="tab-content status-content">
+              <span (click)="getEmojiIcon()" class="emoji-icons cp"><i class="fa fa-smile-o c-p" tooltipPlacement="left" tooltip="Add Emoji" aria-hidden="true"></i></span>              
+            <!-- Message -->
+            <div class="tab-pane active" id="message" [class.showtab]="tMessage" [class.hidetab]="!tMessage">
+              <div class="layout-row">
+                <div class="flex-10 flex-xs-25"><span class="user-img" *ngIf="!user?.photo"><img src="public/dist/img/text-user.png" alt="" /></span>
+                  <span class="user-img" *ngIf="user?.photo"><img src="public/files/ProfilePicture/{{user.photo}}" alt="" /></span></div>
+                <div class="flex-90"><textarea [(ngModel)]="message.message.message" cols="5" placeholder="Share your thoughts..."></textarea></div>
+              </div>
+            </div>
+            <!--Photo-->
+
+            <div class="tab-pane" id="photos" [class.showtab]="tPhoto" [class.hidetab]="!tPhoto">
+              <div class="layout-row p-15">
+                <div class="flex-10 flex-xs-25"><span class="user-img" *ngIf="!user?.photo"><img src="public/dist/img/text-user.png" alt="" /></span>
+                  <span class="user-img" *ngIf="user?.photo"><img src="public/files/ProfilePicture/{{user.photo}}" alt="" /></span></div>
+                <div class="flex-90"><textarea [(ngModel)]="message.name.name" cols="5" placeholder="Write something about photo..."></textarea></div>
+              </div>
+              <div class="layout-row img-preview layout-align-center-center">
+                <img class="image" height='100%' width='100%' alt="No Preview">
+              </div>
+              <div class="layout-row two-pane" id="hide_photos" [class.showtab]="tmainPhoto" [class.hidetab]="!tmainPhoto">
+                <div class="pane-left flex-50 layout-column layout-align-center-center">
+                  <div class="info-value custom-upload">
+                    <input #upImage type="file" (change)="photoChangeEvent($event,$event)" accept="image/*" />
+                    <div class="upload-sign layout-column layout-align-center-center">
+                      <i class="fa fa-image">&nbsp;</i>
+                      <span>Upload Photo</span>
+                    </div>
+                  </div>
+                  <span class="error_file_message">{{error.photo}}</span>
+                </div>
+                <div class="pane-right flex-50 layout-column layout-align-center-center">
+                  <div class="info-value layout-column layout-align-center-center" (click)="tmainPhoto = !tmainPhoto;tlinkPhoto = !tlinkPhoto">
+                    <i class="fa fa-link">&nbsp;</i>
+                    <span>embed photo</span>
+                  </div>
+                </div>
+              </div>
+              <div class="layout-column" id="show_photos" style="padding:15px;" [class.showtab]="tlinkPhoto" [class.hidetab]="!tlinkPhoto">
+                <span class="em-link" *ngIf="message.embedLink.photo!=''">{{message.embedLink.photo}}</span>
+                <div class="layout-row layout-align-start inline-pd">
+                  <div class="flex-50"><input [(ngModel)]="message.embedLink.title" placeholder="Paste a link here..." type="text" class="btn-block"
+                    /></div>
+                  <div class=""><button class="btn btn-small post-btn" (click)="addPhotoEmbedLink()">Add</button></div>
+                  <div class=""><button class="btn btn-danger btn-small" (click)="clearEmbedLink(1)">Cancel</button></div>
+                </div>
+              </div>
+              <div class="layout-row layout-align-center-center">
+                <span class="p-5 text-muted"> Note : Upload only jpg/png/gif/tif files.</span>
+              </div>
+            </div>
+            <!--Video-->
+            <div class="tab-pane" id="videos" [class.showtab]="tVideo" [class.hidetab]="!tVideo">
+              <div class="layout-row p-15">
+                <div class="flex-10 flex-xs-25"><span class="user-img" *ngIf="!user?.photo"><img src="public/dist/img/text-user.png" alt="" /></span>
+                  <span class="user-img" *ngIf="user?.photo"><img src="public/files/ProfilePicture/{{user.photo}}" alt="" /></span></div>
+                <div class="flex-90"><textarea [(ngModel)]="message.name.name" cols="5" placeholder="Write something about video..."></textarea></div>
+              </div>
+              <div class="layout-row two-pane" id="hide_videos" [class.showtab]="tmainVideo" [class.hidetab]="!tmainVideo">
+                <div class="pane-left flex-50 layout-column layout-align-center-center">
+                  <div class="info-value custom-upload">
+                    <input #upVideo type="file" (change)="videoChangeEvent($event)" accept="video/mp4,video/x-m4v,video/*" />
+                    <div class="upload-sign layout-column layout-align-center-center">
+                      <i class="fa fa-video-camera"></i>
+                      <span>Upload video</span>
+                      <span class="photo-upload-name" *ngIf="upVideo">{{upVideo.value}}</span>
+                    </div>
+                  </div>
+                  <span class="error_file_message" *ngIf="error.video">{{error.video}}</span>
+                  <span class="error_file_message" *ngIf="error.videoSize">{{error.videoSize}}</span>
+                </div>
+                <div class="pane-right flex-50 layout-column layout-align-center-center">
+                  <div class="info-value layout-column layout-align-center-center" (click)="tmainVideo = !tmainVideo;tlinkVideo = !tlinkVideo">
+                    <i class="fa fa-link"></i>
+                    <span>embed video</span>
+                  </div>
+                </div>
+              </div>
+              <div class="layout-column" id="show_videos" style="padding:15px;" [class.showtab]="tlinkVideo" [class.hidetab]="!tlinkVideo">
+                <div class="em-link" *ngIf="message.embedLink.video!=''" embedDirective>https://www.youtube.com/watch?v={{message.embedLink.video}}</div>
+                <div class="layout-row layout-align-start inline-pd">
+
+                  <div class="flex-50"><input [(ngModel)]="message.embedLink.title" placeholder="Paste a link here..." type="text" class="btn-block"
+                    /></div>
+                  <div class=""><button class="btn btn-small post-btn" (click)="addVideoEmbedLink()">Add</button></div>
+                  <div class=""><button class="btn btn-danger btn-small" (click)="clearEmbedLink(2)">Cancel</button></div>
+                </div>
+              </div>
+              <div class="layout-row layout-align-center-center">
+                <span class="p-5 text-muted"> Note : Upload only mp4/webm/ogg/mov files.</span>
+              </div>
+            </div>
+            <!--Link-->
+
+            <div class="tab-pane" id="link" [class.showtab]="tLink" [class.hidetab]="!tLink">
+              <div class="layout-column">
+                <div class="layout-row p-15">
+                  <div class="flex-10 flex-xs-25"><span class="user-img" *ngIf="!user?.photo"><img src="public/dist/img/text-user.png" alt="" /></span>
+                    <span class="user-img" *ngIf="user?.photo"><img src="public/files/ProfilePicture/{{user.photo}}" alt="" /></span></div>
+                  <div class="flex-90"><textarea [(ngModel)]="message.link.title" cols="5" placeholder="Write something about link..."></textarea></div>
+                </div>
+                <div class="layout-row p-15 layout-align-start ">
+                  <div class="flex-100"><input [(ngModel)]="message.link.description" placeholder="Paste a link here..." type="text" class="btn-block"
+                    /></div>
+                </div>
+              </div>
+            </div>
+
+            <!--Document-->
+
+            <div class="tab-pane" id="document" [class.showtab]="tDocument" [class.hidetab]="!tDocument">
+              <div class="layout-row p-15">
+                <div class="flex-10 flex-xs-25"><span class="user-img" *ngIf="!user?.photo"><img src="public/dist/img/text-user.png" alt="" /></span>
+                  <span class="user-img" *ngIf="user?.photo"><img src="public/files/ProfilePicture/{{user.photo}}" alt="" /></span></div>
+                <div class="flex-90"><textarea [(ngModel)]="message.name.name" cols="5" placeholder="Write something about document..."></textarea></div>
+              </div>
+              <div class="layout-column layout-align-center-center pane-left two-pane">
+                <div class="info-value layout-align-center-center custom-upload">
+                  <input #upDoc type="file" (change)="documentChangeEvent($event)" accept="application/msword, application/vnd.ms-excel, application/vnd.ms-powerpoint,
+                                        text/plain, application/pdf" />
+                  <div class="upload-sign layout-column layout-align-center-center ">
+                    <i class="fa fa-file-text"></i>
+                    <span>Upload Document</span>
+                    <span class="photo-upload-name" *ngIf="upDoc">{{upDoc.value}}</span>
+                  </div>
+                </div>
+                <span class="error_file_message" *ngIf="error.document">{{error.document}}</span>
+                <span class="error_file_message" *ngIf="error.documentSize">{{error.documentSize}}</span>
+              </div>
+              <div class="layout-row layout-align-center-center">
+                <span class="p-5 text-muted"> Note : Upload only docx/doc/txt/pdf/xml/xlsx/ppt/xls files.</span>
+              </div>
+            </div>
+            <!--Audio-->
+            <div class="tab-pane" id="audio" [class.showtab]="tAudio" [class.hidetab]="!tAudio">
+              <div class="layout-row p-15">
+                <div class="flex-10 flex-xs-25"><span class="user-img" *ngIf="!user?.photo"><img src="public/dist/img/text-user.png" alt="" /></span>
+                  <span class="user-img" *ngIf="user?.photo"><img src="public/files/ProfilePicture/{{user.photo}}" alt="" /></span></div>
+                <div class="flex-90"><textarea [(ngModel)]="message.name.name" cols="5" placeholder="Write something about audio..."></textarea></div>
+              </div>
+              <div class="layout-row two-pane" id="hide_audio" [class.showtab]="tmainAudio" [class.hidetab]="!tmainAudio">
+                <div class="pane-left flex-50 layout-column layout-align-center-center">
+                  <div class="info-value custom-upload">
+                    <input #upAudio type="file" (change)="audioChangeEvent($event)" accept="audio/*" />
+                    <div class="upload-sign layout-column layout-align-center-center">
+                      <i class="fa fa-music"></i>
+                      <span>Upload music</span>
+                      <span class="photo-upload-name" *ngIf="upAudio">{{upAudio.value}}</span>
+                    </div>
+                  </div>
+                  <span class="error_file_message" *ngIf="error.audio">{{error.audio}}</span>
+                  <span class="error_file_message" *ngIf="error.audioSize">{{error.audioSize}}</span>
+                </div>
+                <div class="pane-right flex-50 layout-column layout-align-center-center flex-60">
+                  <div class="info-value layout-column layout-align-center-center" (click)="tmainAudio = !tmainAudio;tlinkAudio = !tlinkAudio">
+                    <i class="fa fa-link"></i>
+                    <span>embed music</span>
+                  </div>
+                </div>
+              </div>
+              <div class="layout-column" id="show_audio" style="padding:15px;" [class.showtab]="tlinkAudio" [class.hidetab]="!tlinkAudio">
+                <span class="em-link" *ngIf="message.embedLink.audio!=''">{{message.embedLink.audio}}</span>
+                <div class="layout-row layout-align-start inline-pd">
+                  <div class="flex-50"><input [(ngModel)]="message.embedLink.title" placeholder="Paste a link here..." type="text" class="btn-block"
+                    /></div>
+                  <div class=""><button class="btn btn-small post-btn" (click)="addAudioEmbedLink()">Add</button></div>
+                  <div class=""><button class="btn btn-danger btn-small" (click)="clearEmbedLink(3)">Cancel</button></div>
+                </div>
+              </div>
+              <div class="layout-row layout-align-center-center">
+                <span class="p-5 text-muted"> Note : Upload only mpeg/ogg/wav/mp3 files.</span>
+              </div>
+            </div>
+            <!--Question-->
+
+            <div class="tab-pane" id="question" [class.showtab]="tQuestion" [class.hidetab]="!tQuestion">
+              <div class="layout-row">
+                <div class="flex-10 "><span class="user-img" *ngIf="!user?.photo"><img src="public/dist/img/text-user.png" alt="" /></span>
+                  <span class="user-img" *ngIf="user?.photo"><img src="public/files/ProfilePicture/{{user.photo}}" alt="" /></span></div>
+                <div class="flex-90"><textarea [(ngModel)]="message.question.question" cols="5" placeholder="Share your questions?..."></textarea></div>
+              </div>
+            </div>
+            <div *ngIf="emojicomponent" class="emoji-section float-right">
+                <emoji-icons (complete)="onAddEmoji($event)"></emoji-icons>
+            </div>
+          </div>
+          <div class="chooes-option gray-gradient layout-row layout-align-space-between">
+            <div class="option-set">
+              <ul class="layout-row nav nav-tabs">
+              </ul>
+            </div>
+            <div class="layout-row option-btn">
+              <div class="tab-pane active" id="choose_category">
+                <div class="dropdown">
+                  Select Category&nbsp;<button class="btn cat-btn dropdown-toggle" type="button" data-toggle="dropdown">
+                                        {{categoryValue}} &nbsp;<span class="caret">&nbsp;</span>
+                                    </button>
+                  <ul class="dropdown-menu">
+                    <li><a (click)="catagories(1)">General</a></li>
+                    <li><a (click)="catagories(2)">Tip / Trick</a></li>
+                    <li><a (click)="catagories(3)">Joke / Humor</a></li>
+                    <li><a (click)="catagories(4)">Tutorial</a></li>
+                  </ul>
+                </div>
+              </div>
+              <div class="public-btn">
+                <div class="dropdown">
+                  <button class="btn dropdown-toggle" type="button" data-toggle="dropdown"><span class="fa fa-users">&nbsp;</span>{{selectedPostPrivacyType==1?"Public":selectedPostPrivacyType==2?"Private(Only Me)":selectedPostPrivacyType==3?"All Friends":selectedPostPrivacyType==4?"All Followers":selectedPostPrivacyType==5?"Custom":"All Friends And Followers"}}<span class="caret">&nbsp;</span></button>
+                  <ul class="dropdown-menu">
+                    <li *ngFor="let option of postPrivacyTypes;"><a (click)="onChangePostPrivacy(option)">{{option.label}}</a></li>
+                  </ul>
+                </div>
+              </div>
+              <div class=""><button class="btn post-btn btn-small" (click)="onPostAllTypeData()">Post</button></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="!page.is_member">You are not a member of this group. Please Join group to be an active member of this group. Thank you.
+        </div>
+      <div class="box box-warning search-box-fx  modal-border-box">
+        <div class="box-header">
+          <div class="c-p" (click)="closeSearchBox()"><i class="fa fa-search"></i> <span>Search</span></div>
+          <div class="box-tools pull-right">
+            <button class="btn btn-box-tool" id="toggleSearch" (click)="closeSearchBox()"><i id="changeClass" class="fa fa-plus"></i></button>
+          </div>
+          <!-- /.box-tools -->
+        </div>
+        <!-- /.box-header -->
+       <div id="togglingSearch" style="display:none">
+          <div class="layout-column pad-5-10 ">
+            <div class="search-wrap-cat layout-row layout-align-start-center">
+              <label class="flex-20 layout-row">Category</label>
+              <div class="tab-pane active flex-80 layout-row">
+                <div class="dropdown flex-100 layout-row sub-serc-icon">
+                  <button class="btn cat-btn dropdown-toggle flex-100 layout-row" type="button" data-toggle="dropdown">
+                                        {{searchCategoryValue}} &nbsp;&nbsp;<span class="caret">&nbsp;</span>
+                                    </button>
+                  <ul class="dropdown-menu">
+                    <li><a (click)="search_catagories(0)">All</a></li>
+                    <li><a (click)="search_catagories(1)">General</a></li>
+                    <li><a (click)="search_catagories(2)">Tip / Trick</a></li>
+                    <li><a (click)="search_catagories(3)">Joke / Humor</a></li>
+                    <li><a (click)="search_catagories(4)">Tutorial</a></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="layout-column layout-align-space-between">
+              <div class="layout-row flex-45 layout-align-start-center sreach-wrap-post m-b-10">
+                <label class="flex-20 layout-row">Who Posted</label>
+                <div class="tab-pane flex-80 active">
+                  <div class="dropdown">
+                    <button class="btn cat-btn dropdown-toggle" type="button" data-toggle="dropdown">
+                                            {{whoPostedValue}} &nbsp;<span class="caret">&nbsp;</span>
+                                        </button>
+                    <ul class="dropdown-menu">
+                      <li><a (click)="search_who_posted(1)">All Members</a></li>
+                      <li><a (click)="search_who_posted(2)">All Friends</a></li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="layout-row flex-55 layout-align-start-center updates-date">
+                <label class="flex-25 layout-row">Time</label>
+                <label class="flex-10 layout-row">From</label>
+                <i class="fa fa-calendar"></i>
+                <input id='scheduleDate1' (click)="onFromDateSelect()" class="form-control pull-right flex-35" name="search-date-from-0" type="text">
+                <label class="flex-10 layout-row layout-align-center-center">To</label>
+                <i class="fa fa-calendar"></i>
+                <input id='scheduleDate2' (click)="onToDateSelect()" class="form-control pull-right flex-40" name="search-date-to-0" type="text">
+              </div>
+            </div>
+            <div class="search-flter-detail-container">
+              <label>Search By :-</label>
+              <ul class="search-flter-detail">
+                <li *ngIf="searchCategoryValue">Category <span>{{searchCategoryValue}}</span></li>
+                <li *ngIf="whoPostedValue">Who Posted <span>{{whoPostedValue}}</span></li>
+                <li *ngIf="startSearchDate">From Date <span>{{startSearchDate}}</span></li>
+                <li *ngIf="endSearchDate">To Date <span>{{endSearchDate}}</span></li>
+              </ul>
+            </div>
+            <div class="layout-row layout-align-end">
+              <button class="btn-wrap ser" (click)="searchPost()">Search</button>
+              <button class="btn-wrap rest" (click)="resetSearch()">Reset</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <h4 class="filter-wrap"><i class="fa fa-filter" aria-hidden="true"></i> &nbsp;Filter By:</h4>
+      <div class="form-group">
+      </div>
+      <div class="well all-status light-gray-bg">
+        <ul class="display-flex text-center">
+          <li (click)="checkActiveClass('all')" [class.dev-active-link]='allLinkActive'><a (click)="getPosts(10)"><i class="fa fa-check-circle-o">&nbsp;</i><p class="hide-xs">all</p></a></li>
+          <li (click)="checkActiveClass('status')" [class.dev-active-link]='statusLinkActive'><a (click)="getPosts(1)"><i class="fa fa-commenting">&nbsp;</i><p class="hide-xs">Status</p></a></li>
+          <li (click)="checkActiveClass('photos')" [class.dev-active-link]='photosLinkActive'><a (click)="getPosts(3)"><i class="fa fa-camera">&nbsp;</i><p class="hide-xs">Photos</p></a></li>
+          <li (click)="checkActiveClass('videos')" [class.dev-active-link]='videosLinkActive'><a (click)="getPosts(4)"><i class="fa fa-video-camera">&nbsp;</i><p class="hide-xs">Videos</p></a></li>
+          <li (click)="checkActiveClass('links')" [class.dev-active-link]='linksLinkActive'><a (click)="getPosts(5)"><i class="fa fa-paperclip">&nbsp;</i><p class="hide-xs">Links</p></a></li>
+          <li (click)="checkActiveClass('documents')" [class.dev-active-link]='documentsLinkActive'><a (click)="getPosts(7)"><i class="fa fa-book">&nbsp;</i><p class="hide-xs">Document</p></a></li>
+          <li (click)="checkActiveClass('audio')" [class.dev-active-link]='audioLinkActive'><a (click)="getPosts(6)"><i class="fa fa-headphones">&nbsp;</i><p class="hide-xs">Audio</p></a></li>
+          <li (click)="checkActiveClass('question')" [class.dev-active-link]='questionLinkActive'><a (click)="getPosts(2)"><i class="fa fa-question-circle">&nbsp;</i><p class="hide-xs">Question</p></a></li>
+        </ul>
+      </div>
+      <div class="no-data" *ngIf="post_data.length == 0">No members have posted on this wall</div>
+      <div class="page-loader-section layout-row layout-align-center-center" *ngIf="loader">
+         <div class="page-loader ">Loading...</div>
+      </div>
+      <div class="post layout-column" *ngFor="let posts of post_data; let j=index">
+          <div class="timeline-item flex-100">
+           <div class="user-block layout-row layout-align-start-start">
+             <div class="layout-row layout-align-start-start flex-80">
+                <span class="timeline-header-img" *ngIf="posts.created_by && posts.created_by._id!=null" >
+                        <img (click)="getProfileById(posts.created_by._id)" class=" " src="public/files/ProfilePicture/{{posts.created_by.photo}}" alt="User Image" *ngIf="posts.created_by.photo">
+                        <img (click)="getProfileById(posts.created_by._id)" class=" " src="public/files/ProfilePicture/no_image.png" alt="User Image" *ngIf="!posts.created_by.photo">
+                </span>
+                <div class="layout-column">
+                <span class="timeline-header username">
+                        <a *ngIf="posts.created_by && posts.created_by._id!=null" class="c-p">
+                            <span class="color-red"  (click)="getProfileById(posts.created_by._id)">{{posts.created_by | nameFilter}}</span>
+                      <span class="post-type" *ngIf="posts.origin_creator">shared</span>
+                        <span class="post-type" *ngIf="!posts.origin_creator && posts.post_type!=8">posted</span>
+                      <span class="post-type" *ngIf="posts.post_type == 1"> a message</span>
+                      <span class="post-type" *ngIf="posts.post_type == 2"> a question</span>
+                      <span class="post-type" *ngIf="posts.post_type == 3"> a photo</span>
+                      <span class="post-type" *ngIf="posts.post_type == 4"> a video</span>
+                      <span class="post-type" *ngIf="posts.post_type == 5"> a link</span>
+                      <span class="post-type"  *ngIf="posts.post_type == 6"> an audio</span>
+                      <span class="post-type" *ngIf="posts.post_type == 7"> a document</span>
+                      <!--<span class="post-type" *ngIf="posts.post_type==8 && !posts.origin_creator"> has joined the subject</span>-->
+                      <span class="post-type" *ngIf="posts.post_type==8 && posts.origin_creator"> a post</span>
+                      <span class="post-type" *ngIf="posts.origin_creator && posts.created_by._id !== posts.origin_creator._id"> of <a (click)="getProfileById(posts.origin_creator._id)" class="color-red c-p">{{posts.origin_creator | nameFilter}}</a></span>
+                    </a>
+                  </span>
+         
+                <span class="description">{{getCategory(posts.catagory)}}  |  
+                  <span *ngIf="posts.created_on">{{posts.created_on | datetime}}</span>
+                    <span *ngIf="posts.privacy"> |
+                    <span *ngIf="posts.privacy == 1" >Public</span>
+                    <span *ngIf="posts.privacy == 2">Private</span>
+                    <span *ngIf="posts.privacy == 3">All Friends</span>
+                    <span *ngIf="posts.privacy == 4">All Followers</span>
+                    <span *ngIf="posts.privacy == 5">Custom</span>
+                    <span *ngIf="posts.privacy == 6">All Friends And Followers</span>
+                  </span>
+                </span>
+              </div>
+              
+        </div><!--flex-80-->
+          <div class="layout-row  flex-20 layout-align-end">
+            <button class="btn bg-orange btn-flat" (click)="page.onClickUnFollow(posts.created_by._id)" type="button" *ngIf="(posts.created_by._id!=page.userIdGlobal) && (posts.created_by._id | followunfollowstatus)">UnFollow</button>
+            <button class="btn bg-orange btn-flat" (click)="page.onClickFollow(posts.created_by._id)" type="button" *ngIf="(posts.created_by._id!=page.userIdGlobal) && !(posts.created_by._id | followunfollowstatus)">Follow</button>
+          </div>
+        </div>
+      </div> <!--timeline-item-->
+        <div class="post-link" posts *ngIf="posts.link[0]">
+          <p class="message text-formatting" *ngIf="posts.shared_title" embedDirective>{{posts.shared_title}}</p>
+          <div class="full-link">
+            <span class="message text-formatting" *ngIf="posts.link[0].title" embedDirective>{{posts.link[0].title}}</span><br>
+            <span>Link:</span><a href="{{posts.link[0].description}}" target="_blank" class="title link-tx" *ngIf="posts.link[0].description" embedDirective>{{posts.link[0].description}}</a>
+          </div>
+          <span *ngIf="posts.created_by._id==page.userIdGlobal && posts.post_type!=8" class="edit-post-btn" (click)="editPost(posts)"><i class="fa fa-pencil-square-o"></i></span>
+          <span *ngIf="posts.created_by._id==isResult" tooltip="Delete Post" tooltipPlacement="right" class="rem-post-btn" (click)="deletePostModel(posts._id,j)"><i class="fa fa-trash"></i></span>
+        </div>
+        <div class="post-document" posts *ngIf="posts.document[0]">
+          <p class="message text-formatting" *ngIf="posts.shared_title" embedDirective>{{posts.shared_title}}</p>
+            <p class="message text-formatting" *ngIf="posts.name && posts.name !=null" embedDirective>{{posts.name}}</p><br>
+          <div class="full-document">
+            <h4 class="message text-formatting" *ngIf="posts.document[0].file_name">{{posts.document[0].file_name | documentNameFilter}}</h4><br>
+            <a *ngIf="posts.created_by && posts.created_by._id!=null" href="public/files/GroupWall/Documents/{{posts.origin_creator?posts.origin_creator._id:posts.created_by._id}}/{{posts.document[0].file_name}}"
+              target="_blank" class="pdflink">
+                            <span class="title" *ngIf="posts.document[0].file_name">
+                                <span *ngIf="posts.document[0].file_name.split('.').pop() == 'txt' || posts.document[0].file_name.split('.').pop() == 'text'">
+                                    <i class="fa fa-file-text fa-4x">&nbsp;</i>
+                                </span>
+                                <span *ngIf="posts.document[0].file_name.split('.').pop() == 'pdf'">
+                                    <i class="fa fa-file-pdf-o fa-4x">&nbsp;</i>
+                                </span>
+                                <span *ngIf="posts.document[0].file_name.split('.').pop() == 'doc' || posts.document[0].file_name.split('.').pop() == 'dot' || posts.document[0].file_name.split('.').pop() == 'word' || posts.document[0].file_name.split('.').pop() == 'wiz' || posts.document[0].file_name.split('.').pop() == 'w6w' || posts.document[0].file_name.split('.').pop() == 'docx'">
+                                    <i class="fa fa-file-word-o fa-4x">&nbsp;</i>
+                                </span>
+                                <span *ngIf="posts.document[0].file_name.split('.').pop() == 'xls' || posts.document[0].file_name.split('.').pop() == 'xlm' || posts.document[0].file_name.split('.').pop() == 'xll' || posts.document[0].file_name.split('.').pop() == 'xlc' || posts.document[0].file_name.split('.').pop() == 'xlb' || posts.document[0].file_name.split('.').pop() == 'xlw' || posts.document[0].file_name.split('.').pop() == 'xlsx'">
+                                    <i class="fa fa-file-excel-o fa-4x">&nbsp;</i>
+                                </span>
+                                <span *ngIf="posts.document[0].file_name.split('.').pop() == 'ppt' || posts.document[0].file_name.split('.').pop() == 'pot' || posts.document[0].file_name.split('.').pop() == 'pps' || posts.document[0].file_name.split('.').pop() == 'ppa' || posts.document[0].file_name.split('.').pop() == 'pwz' ">
+                                    <i class="fa fa-file-powerpoint-o fa-4x">&nbsp;</i>
+                                </span>
+                                <span *ngIf="posts.document[0].file_name.split('.').pop() == 'xml'">
+                                    <i class="fa fa-file-o fa-4x">&nbsp;</i>
+                                </span>
+                            </span>
+                        </a><br>
+          </div>
+          <a *ngIf="posts.created_by && posts.created_by._id!=null" href="public/files/GroupWall/Documents/{{posts.origin_creator?posts.origin_creator._id:posts.created_by._id}}/{{posts.document[0].file_name}}"
+            target="_blank" class="pdflink">&nbsp;Open/Download</a>
+          <span *ngIf="posts.created_by._id==page.userIdGlobal" class="edit-post-btn" (click)="editPost(posts)"><i class="fa fa-pencil-square-o"></i></span>
+          <span *ngIf="posts.created_by._id==isResult" tooltip="Delete Post" tooltipPlacement="right" class="rem-post-btn" (click)="deletePostModel(posts._id,j)"><i class="fa fa-trash"></i></span>
+        </div>
+        <div class="post-question" posts *ngIf="posts.question">
+          <p class="message text-formatting" *ngIf="posts.shared_title" embedDirective>{{posts.shared_title}}</p>
+          <div class="full-question">
+            <span class="message text-formatting" embedDirective>{{posts.question}}</span>
+          </div>
+          <span *ngIf="posts.created_by._id==page.userIdGlobal" class="edit-post-btn" (click)="editPost(posts)"><i class="fa fa-pencil-square-o"></i></span>
+          <span *ngIf="posts.created_by._id==isResult" tooltip="Delete Post" tooltipPlacement="right" class="rem-post-btn" (click)="deletePostModel(posts._id,j)"><i class="fa fa-trash"></i></span>
+        </div>
+        <div class="post-message" posts *ngIf="posts.message">
+          <p class="message text-formatting" *ngIf="posts.shared_title" embedDirective>{{posts.shared_title}}</p>
+          <div class="full-message">
+            <span class="message text-formatting" embedDirective>{{posts.message}}</span>
+          </div>
+          <span *ngIf="(posts.created_by._id==page.userIdGlobal) && (posts.post_type != 8)" class="edit-post-btn" (click)="editPost(posts)"><i class="fa fa-pencil-square-o"></i></span>
+          <span *ngIf="posts.created_by._id==isResult" tooltip="Delete Post" tooltipPlacement="right" class="rem-post-btn" (click)="deletePostModel(posts._id,j)"><i class="fa fa-trash"></i></span>
+        </div>
+        <div class="post-audio" *ngIf="posts.audio[0]">
+          <p class="message text-formatting" *ngIf="posts.shared_title" embedDirective>{{posts.shared_title}}</p>
+          <div class="full-audio" (click)="openPhotoPopUp(posts._id)">
+            <span class="message text-formatting" *ngIf="posts.name && posts.name !=null" embedDirective>{{posts.name}}</span><br>
+            <h4 class="message text-formatting" *ngIf="posts.audio[0].file_name">{{posts.audio[0].file_name | documentNameFilter}}</h4><br>
+            <audio controls *ngIf="posts.audio[0].title==null && (posts.created_by && posts.created_by._id!=null)">
+              <source src="public/files/GroupWall/Audios/{{posts.origin_creator?posts.origin_creator._id:posts.created_by._id}}/{{posts.audio[0].file_name}}"
+                type="audio/ogg">
+            </audio>
+            <audio controls *ngIf="posts.audio[0].title!=null && (posts.created_by && posts.created_by._id!=null)">
+              <source src="{{posts.audio[0].title}}" type="audio/mp4">
+            </audio>
+          </div>
+          <span *ngIf="posts.created_by._id==page.userIdGlobal && posts.audio[0].title== null" class="edit-post-btn" (click)="editPost(posts)"><i class="fa fa-pencil-square-o"></i></span>
+          <span *ngIf="posts.created_by._id==isResult" class="rem-post-btn" tooltip="Delete Post" tooltipPlacement="right" (click)="deletePostModel(posts._id,j)"><i class="fa fa-trash"></i></span>
+        </div>
+        <div class="post-video" posts *ngIf="posts.video[0]">
+          <p class="message text-formatting" *ngIf="posts.shared_title" (click)="getDetailVideoView(posts._id)" embedDirective>{{posts.shared_title}}</p>
+          <div class="full-video layout-column " (click)="getDetailVideoView(posts._id)">
+            <span class="message text-formatting" *ngIf="posts.name && posts.name !=null" embedDirective>{{posts.name}}</span><br>
+            <iframe *ngIf="posts.video[0].title!=null && (posts.created_by && posts.created_by._id!=null)" width="560" height="315" [src]="posts.video[0]?.title | youtubeSafeUrl"
+              frameborder="0" allowfullscreen>
+
+            </iframe>
+            <video #cmp width="100%" height="100%" controls *ngIf="posts.video[0].title==null && (posts.created_by && posts.created_by._id!=null)">
+              <source src="public/files/GroupWall/Videos/{{posts.origin_creator?posts.origin_creator._id:posts.created_by._id}}/{{posts.video[0].file_name}}"
+                type="video/mp4">
+            </video>
+          </div>
+          <span *ngIf="posts.created_by._id==page.userIdGlobal && posts.video[0].title== null" class="edit-post-btn" (click)="editPost(posts)"><i class="fa fa-pencil-square-o"></i></span>
+          <span *ngIf="posts.created_by._id==isResult" tooltip="Delete Post" tooltipPlacement="right" class="rem-post-btn" (click)="deletePostModel(posts._id,j)"><i class="fa fa-trash"></i></span>
+        </div>
+        <div class="post-img" posts *ngIf="posts.photo[0]">
+          <p class="message text-formatting" *ngIf="posts.shared_title" embedDirective>{{posts.shared_title}}</p>
+          <div class="full-img" (click)="openPhotoPopUp(posts._id)">
+            <span class="message text-formatting" *ngIf="posts.name" embedDirective>{{posts.name}}</span>
+            <img *ngIf="posts.photo[0].title== null &&(posts.created_by && posts.created_by._id!=null)" class="img-responsive" src="public/files/GroupWall/Photos/{{posts.origin_creator?posts.origin_creator._id:posts.created_by._id}}/{{posts.photo[0].file_name}}"
+              alt="Photo">
+            <img *ngIf="posts.photo[0].title!=null &&(posts.created_by && posts.created_by._id!=null)" class="img-responsive" src="{{posts.photo[0].title}}"
+              alt="Photo">
+          </div>
+          <span *ngIf="posts.created_by._id==page.userIdGlobal && posts.photo[0].title== null" class="edit-post-btn" (click)="editPost(posts)"><i class="fa fa-pencil-square-o"></i></span>
+          <span *ngIf="posts.created_by._id==isResult" tooltip="Delete Post" tooltipPlacement="right" class="rem-post-btn" (click)="deletePostModel(posts._id,j)"><i class="fa fa-trash"></i></span>
+        </div>
+        <!--post footer-->
+        <div class="post-btm layout-row layout-align-space-between-center">
+          <ul *ngIf="posts.likes" class="list-inline smile-dropdown flex-xs-30 layout-row">
+            <li>
+              <img class="toggleImage-{{j}}" (click)="addLike(posts._id,posts,j)" src="public/dist/img/{{posts.likes|likeFilterPipe:posts._id}}"
+                style="height: 20px ;width: 20px" /> {{posts.likes.length}}
+              <span class="c-p" *ngIf="posts.likes.length > 0" (click)="onViewLikeClick(posts._id)">View</span>
+            </li>
+          </ul>
+          <ul class="list-inline user-acitvity flex-xs-45 layout-row">
+            <li (click)=toggleComment(posts.comments,posts._id) class="c-p"><a class="link-black text-sm"><i class="fa fa-commenting margin-r-5 fa-1x"></i><span> {{posts.comments.length}}&nbsp;</span>Comment<span *ngIf="posts.comments.length>1">s</span></a></li>
+            <li *ngIf="posts.created_by && posts.created_by._id!=null" (click)="openAddPostToJournalModal(posts._id)" class="c-p"><a class="link-black text-sm"><i class="fa fa-file-text margin-r-5 fa-1x"></i>Journal</a></li>
+            <li class="">
+              <a (click)="onShareClick(posts._id)" class="link-black text-sm c-p"><i class="fa  fa-share margin-r-5 fa-1x"></i> Share
+                </a>
+            </li>
+            <li *ngIf="posts.created_by._id!=page.userIdGlobal" class="">
+                <a (click)="onReportClickModal(posts._id)" class="link-black text-sm c-p"><i class="fa fa-flag"></i> Report
+                </a>
+            </li> 
+          </ul>
+          <div class="post-share-toggle" [class.display-share]="sharing[posts._id]">
+            <ul>
+              <li (click)="share(posts)">Internal Share</li>
+              <li (click)="externalShare(posts)">External Share</li>
+            </ul>
+          </div>
+        </div>
+        <div class="post-toggle-area" [class.display-comment]="togglePostComment[posts._id]">
+          <div class="post-comment-section">
+            <div class="post-comment-body">
+              <div class="comenter-like-day c-p prev-com" *ngIf="prevComment[posts._id] && oldComment[posts._id] && prevComment[posts._id].length!=oldComment[posts._id].length"
+                (click)="loadPrevComment(posts._id)">View Previous Messages</div>
+              <ul class="post-comment-list" angular2-auto-scroll lock-y-offset="2000" observe-attributes>
+                <li class="layout-row" *ngFor="let comment of prevComment[posts._id];let j=index">
+                  <div *ngIf="comment.comment_by && comment.comment_by._id!=null" (click)="getProfileById(comment.comment_by._id)" class="post-comment-img  layout-align-start layout-row flex-xs-30 flex-10 c-p">
+                    <img *ngIf="comment.comment_by.photo" class="" alt="User Image" src="public/files/ProfilePicture/{{comment.comment_by.photo}}">
+                    <img *ngIf="!comment.comment_by.photo" class="" alt="User Image" src="public/files/ProfilePicture/no_image.png">
+                  </div>
+                  <div class="post-comment-body layout-column flex-xs-70 flex-90">
+                    <div class="layout-row layout-align-space-between" *ngIf="comment.comment_by && comment.comment_by._id!=null">
+                      <div (click)="getProfileById(comment.comment_by._id)" class="flex-50 flex-xs-50  comment-by c-p">{{comment.comment_by | nameFilter}}</div>
+                      <span class="flex-50 flex-xs-50 layout-align-end-center layout-row">{{comment.date | datetime}}</span>
+                    </div>
+                    <div class="post-comment-text" *ngIf="editCommentToggle!=comment._id" [innerHtml]="comment.body">
+                    </div>
+                    <div *ngIf="editCommentToggle==comment._id">
+                      <form (ngSubmit)="editComment(posts._id,comment._id,posts,j)" class="layout-row">
+                        <div class="input-group flex-90 layout-row" *ngIf="postComment[posts._id]">
+                          <div id="edit-inline-editor-{{posts._id}}" class="comment-editor-inline"></div>
+                          <span class="input-group-addon c-p" tooltip="Send" (click)="editComment(posts._id,comment._id,posts,j)"><i class="fa fa-paper-plane-o"></i></span>
+                        </div>
+                        <div class="flex-10 layout-align-center-center layout-row"><span class="c-p" (click)="closeCommentModal()"><i class="fa fa-close"></i></span></div>
+                      </form>
+                    </div>
+                  </div>
+                  <div class="delete layout-row del-edit-wrap">
+                    <span *ngIf="comment.comment_by._id==page.userIdGlobal" id="updateBtn" data-toggle="modal" (click)="openCommentModal(comment,posts._id)"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></span>
+                    <span *ngIf="comment.comment_by._id==page.userIdGlobal" class="delete" (click)="deleteCommentModel(posts._id,comment._id,j,posts)"
+                      tooltip="Delete Comment"><i class="fa fa-trash" aria-hidden="true"></i></span>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="post-comment-footer">
+              <form (ngSubmit)="addComment(posts._id,posts)">
+                <div class="input-group" *ngIf="postComment[posts._id]">
+                  <div id="inline-editor-{{posts._id}}" class="comment-editor-inline"></div>
+                  <span class="input-group-addon" tooltip="Send" (click)="addComment(posts._id,posts)"><i class="fa fa-paper-plane-o"></i></span>
+                </div>
+                <span class="error_file_message">{{errorCommentPost}}</span>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="modal fade modal-align-fix " id="postDeleteModal">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-body setting-page flex-100 layout-row">
+                <div class="modal-body layout-column flex-100 ">
+                  <div class="modal-body">
+                    <div class="upload-area flex-60 layout-align-start-center layout-row">
+                      <h4> Do you want to delete this post?</h4>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button class="add-btn cancel-btn" data-dismiss="modal">Cancel</button>
+                <button class="add-btn" data-dismiss="modal" (click)="deletePostById()">Yes</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="spinner-lazy-block" *ngIf="contentLoading">
+        <div class="spinner-lazy">
+          <div class="bounce1"></div>
+          <div class="bounce2"></div>
+          <div class="bounce3"></div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="box box-danger box-orange subject-wall-popup" *ngIf="members">
+        <div class="box-header with-border ">
+          <div class="box-title">Group Members</div><span class="count-num pull-right">{{members?.length}}</span>
+        </div>
+        <div class="box-body">
+          <ul class="users-list clearfix layout-row layout-wrap">
+            <li *ngFor="let member of members | slice:0:6;let f = index" [class.clear-both]="f == 3" class="user-profile-data">
+              <span (mouseover)="memberPopupOpen($event,member.user_id._id)" [class.active]="true">
+                <a *ngIf="member.user_id._id!=null" class="member-border display-full c-p" (click)="getProfileById(member.user_id._id)">
+                  <img *ngIf="member.user_id.photo" style="height: 50px; width: 50px;" src="public/files/ProfilePicture/{{member.user_id.photo}}"  alt="User Image">
+                  <img *ngIf="!member.user_id.photo" style="height: 50px; width: 50px;" src="public/files/ProfilePicture/no_image.png"  alt="User Image">
+                  {{member.user_id.fname}} {{member.user_id.lname}}
+                </a>                
+              </span>
+              <div class="setting-page flex-100 layout-row current-student-popup">
+                <div class="setting-page flex-100 layout-row" *ngIf="studentUser.userDetails">
+                  <a *ngIf="studentUser.userDetails.photo" class="member-border display-full c-p" (click)="getProfileById(member.user_id._id)">
+                      <img src="public/files/ProfilePicture/{{studentUser.userDetails.photo}}" alt="User Image">
+                  </a>
+                  <a *ngIf="!studentUser.userDetails.photo" class="member-border display-full c-p" (click)="getProfileById(member.user_id._id)">
+                      <img src="public/files/ProfilePicture/no_image.png" alt="User Image">
+                  </a>
+                  <div class="flex-100 layout-column">
+                    <h4 class="m-b-10 c-p" *ngIf="studentUser.userDetails && studentUser.userDetails?.fname" (click)="getProfileById(member.user_id._id)">{{studentUser.userDetails.fname}}<span *ngIf="studentUser.userDetails?.lname">&nbsp;{{studentUser.userDetails.lname}}</span></h4>
+                    <span class="font-12">{{studentUser.friendsCount}} Friends, {{studentUser.followersCount}} Followers, {{studentUser.followingsCount}} Following</span>
+                  </div>
+                </div>
+                <div class="setting-page flex-100 layout-row" style="width:100%" *ngIf="studentUser.is_logged_user == false">
+                  <button *ngIf="studentUser.current_friends_status_code == 6" (click)="addAsFriend(studentUser)" type="button" class="btn bg-orange btn-flat flex-40 flex-xs-100">Add as Friend</button>
+                  <button *ngIf="studentUser.current_friends_status_code == 3" type="button" class="btn disabled bg-orange btn-flat flex-40 flex-xs-100">Already Friend</button>
+                  <button *ngIf="studentUser.current_friends_status_code == 1" (click)="cancelRequestedFriend(studentUser)" type="button" class="btn bg-orange btn-flat flex-40 flex-xs-100">Cancel Request</button>
+                  <button *ngIf="studentUser.current_friends_status_code == 2" type="button" class="btn bg-orange btn-flat flex-40 flex-xs-100"
+                    (click)="getFriendList()">Accept Request</button>
+                  <button *ngIf="studentUser.following_friend_status_code == 6" (click)="setFollow(studentUser)" type="button" class="btn bg-orange btn-flat flex-40 flex-xs-100">Follow</button>
+                  <button *ngIf="studentUser.following_friend_status_code == 3" (click)="setUnFollow(studentUser)" type="button" class="btn bg-orange btn-flat flex-40 flex-xs-100">UnFollow</button>
+                </div>
+              </div>
+            </li>
+          </ul>
+          <div class="no-count-section" *ngIf="members.length == 0">
+            <i class="fa fa-exclamation-circle" aria-hidden="true"></i>&nbsp;No group member found
+          </div>
+        </div>
+        <div class="box-footer text-center" *ngIf="members.length>0">
+          <a class="uppercase c-p" (click)="onViewMoreClick()">View more</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4" *ngIf="group">
+      <div class="box box-danger box-orange subject-wall-popup">
+        <div class="box-header with-border ">
+          <div class="box-title">Group Details</div>
+        </div>
+        <div class="box-body group_details">
+           <div class="group_Title col-md-12">{{group.title}}</div>
+         <div class="group_date col-md-12"><span class="col-md-9">Founded {{group.created_on | datetime}}</span> <span class="group_post col-md-3 text-right">Posts {{post_data?.length}}</span></div>
+          <div class="c-p group_member-name col-md-12" (click)="onViewMoreClick()">Members {{members?.length}}</div>
+         <div class="group_administer col-md-12">
+           <h5>Administration</h5>
+          <a class="group_img" (click)="getProfileById(group.created_by._id)">  
+            <div class="col-md-3">
+            <img *ngIf="group.created_by.photo" style="height: 50px; width: 50px;" src="public/files/ProfilePicture/{{group.created_by.photo}}"  alt="User Image">
+              
+              <img *ngIf="!group.created_by.photo" style="height: 50px; width: 50px;" src="public/files/ProfilePicture/no_image.png"  alt="User Image">
+            </div>
+            <div class="group_creator col-md-9">
+              <span class="group_name c-p">{{group.created_by.fname +' ' + group.created_by.lname}}</span>
+              <span class="group_admin">Group Admin</span>
+
+              </div>
+        </a> 
+       </div>   
+          <div class="group_disc col-md-12">
+            <h5>Description</h5> 
+          <p>{{group.description}}</p>  
+          </div>  
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- post share model  -->
+<div class="modal fade modal-align-fix dialog-like-wrapper " id="postShareModel">
+  <ba-post-share-model *ngIf="showPostShareModel" [postData]="sharePostData" (complete)="onPostShareModelClose($event)"></ba-post-share-model>
+</div>
+<!-- post external share model  -->
+<div class="modal fade modal-align-fix dialog-like-wrapper " id="postExternalShareModel">
+  <ba-post-external-share-model *ngIf="showPostExternalShareModel" [postData]="sharePostData" (complete)="onExternalShareModelClose($event)"></ba-post-external-share-model>
+</div>
+<!-- journal Model -->
+<div class="modal fade modal-align-fix " id="add-post-journal-modal">
+  <add-post-to-journal-modal *ngIf="addPostToJournal" [postId]="postid" (complete)="onCloseAddPostToJournal($event)"></add-post-to-journal-modal>
+</div>
+
+<!-- post edit model  -->
+<div class="modal fade modal-align-fix dialog-like-wrapper " id="postEditModel">
+  <ba-post-edit-model *ngIf="showPostEditModel" [postData]="editPostData"  (complete)="onPostEditModelClose($event)"></ba-post-edit-model>
+</div>
+<div class="modal fade modal-align-fix dialog-like-wrapper " id="postCustomShareModel">
+  <ba-post-custom-privacy-model *ngIf="showCustomPrivacymodel" [groupId]="groupId" (complete)="onCloseCustomPrivacyModel($event)"></ba-post-custom-privacy-model>
+</div>
+<div class="modal fade asset-detail-dialog " id="profileAssetImgModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeStateDialog(postid)"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body setting-page flex-100 layout-row">
+        <data-profile-Pic *ngIf="dialogState" [postId]="postid"></data-profile-Pic>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- like member list Model -->
+<div class="modal fade modal-align-fix " id="like-member-list">
+    <like-member-list *ngIf="likeMemberList" [postId]="postid" (complete)="onLikeClose($event)"></like-member-list>
+</div>
+<!-- Report Modal -->
+<div class="modal fade modal-align-fix" id="add-report-modal">
+    <report-info *ngIf="addReportInfo" [postId]="postid" (complete)="onCloseAddReport($event)"></report-info>
+ </div>

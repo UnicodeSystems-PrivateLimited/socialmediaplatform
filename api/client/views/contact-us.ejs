@@ -1,0 +1,204 @@
+﻿<html>
+
+<head>
+    <meta name="theme-color" content="#f3843e" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="BgXc-AqA-yKIF6FQJoPpBOR5F0NZMX_5jh7n6Mp-LqQ" />
+    <title>StribeIN | Contact Us</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <link rel="icon" type="image/jpg" sizes="96x96" href="assets/icon/favicon.jpg?v=2">
+    <link rel="icon" type="image/jpg" sizes="16x16" href="assets/icon/favicon.jpg?v=2">
+    <!-- Bootstrap 3.3.5 -->
+    <link rel="stylesheet" href="public/bootstrap/css/bootstrap.min.css">
+
+    <!-- select2 plugin cdn-->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.2-rc.1/css/select2.min.css" rel="stylesheet" />
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN"
+        crossorigin="anonymous">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="public/dist/css/AdminLTE.min.css">
+    <link rel="stylesheet" href="public/dist/css/skins/skin-blue.min.css">
+    <link rel="stylesheet" href="public/dist/css/skins/skin-yellow-light.css">
+    <link rel="stylesheet" href="public/dist/css/font-awesome.min.css">
+    <link rel="stylesheet" href="public/dist/css/snn_common_style.css">
+    <link rel="stylesheet" href="public/dist/css/styles.css">
+    <link rel="stylesheet" href="public/dist/css/ssn_style.css">
+    <link rel="stylesheet" href="public/dist/css/material.css">
+    <link rel="stylesheet" href="public/plugins/datatables/dataTables.bootstrap.css">
+    <link rel="stylesheet" href="public/plugins/datepicker/datepicker3.css">
+    <link rel="stylesheet" href="public/plugins/timepicker/bootstrap-timepicker.min.css">
+    <link rel="stylesheet" href="public/dist/css/responsive.css">
+    <link rel="stylesheet" href="public/plugins/animation-css/animate.min.css">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <script src="public/plugins/jQuery/jQuery-2.2.0.min.js"></script>
+    <script src="public/dist/js/jquery.toastmessage.js"></script>
+    <link rel="stylesheet" href="public/dist/css/jquery.toastmessage.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+    <script>
+         $(function () {
+                 $('form').submit(function (e) {
+                      e.preventDefault();
+                          var frmData = $('form').serializeArray();;
+                       console.log(frmData);
+                       if(frmData[0].value && frmData[1].value && frmData[2].value && frmData[3].value){
+                               if(validateEmail(frmData[1].value)){
+                                $.post('api/user/send/contactInformation', $('form').serialize(), function (data) {
+                                       if (data.status === 2) {
+                                        showSuccess("Thank you for contacting StribeIN. Please allow us some time to reconnect to address your  reason for connecting.Wish you have a wonderful day. Smile & Enjoy Life!",false);   
+                                         
+                                    } 
+                    }, 'json');
+                               }else{
+                                showError('Please enter a valid email!',false);
+                               }
+                       }else{
+                        showError('All fields required!',false);
+                       }
+             });
+             function showError(msg,sticky){
+                 $().toastmessage('showToast', {
+                text:msg ,
+                sticky: sticky,
+                position: 'center',
+                type: 'error',
+                closeText: '',
+                close: function () {
+                    console.log("toast is closed ...");
+                }
+            });
+            }
+        function showSuccess(msg,sticky){
+             $().toastmessage('showToast', {
+                text:msg ,
+                sticky: sticky,
+                position: 'center',
+                type: 'success',
+                closeText: '',
+                close: function () {
+                    window.location.reload(); 
+                }
+            });
+        }
+        function validateEmail(email) {
+    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(email);
+}
+        });
+    </script>
+</head>
+
+<body class="hold-transition skin-yellow-light sidebar-mini">
+    <div class="layout-column">
+        <div class=" setting-page-wrap">
+            <!-- <div class="custom1-modal-header layout-row layout-align-space-between" style="width:100%;">
+                <div class="h3 header-title">Contact Us</div>
+            </div> -->
+            <div class="custom1-modal-header layout-row layout-align-start-center custom-logo-header" style="width:100%;">
+                    <div class="layout-row m-l-15 layout-align-start-center flex-15 logo-section">
+                            <a class="logo" href="/login">
+                                <img height="42" src="public/files/logo/StribeIN-logo.png" width="42">
+                                <span class="header-logo logo-lg"><b>Stribe</b><span>IN</span></span>
+                                </a>
+                    </div>
+                <div class="h3 header-title">Contact Us</div>
+            
+            </div>
+        
+            <div class="tab-pane active" style="background: rgba(241, 241, 241, 0.4)">
+                <div class="layout-row layout-align-space-between contactinfo-section" style="padding:34px 15px 60px;">
+                    <div class="account-info flex-50 layout-column p-10">
+                        <div class="account-section-1 layout-column m-b-20">
+                            <form>
+                            <div class="center layout-column layout-align-center-start m-b-20">
+                                <span class="f-w-b">First Name</span>
+                                <input class="form-control" id="fname" name="fname" placeholder="Enter name " type="text">
+                            </div>
+                            <div class="center layout-column layout-align-center-start m-b-20">
+                                <span class="f-w-b">E-Mail</span>
+                                <input class="form-control" id="email" name="email" placeholder="Enter email" type="email">
+                            </div>
+                            <div class="center layout-column layout-align-center-start m-b-20">
+                                <span class="f-w-b">Subject</span>
+                                <input  class="form-control" id="subject" name="subject" placeholder="Enter email subject" type="text">
+                            </div>
+                            <div class="center layout-column layout-align-center-start m-b-20">
+                                <span class="f-w-b">Message</span>
+                                <textarea  class="form-control"  id="message" name="message" placeholder="message"></textarea>
+                            </div>
+                            <div class="layout-align-start-center layout-row">
+                                <input type="submit" value="Submit" class="setting-btn">
+                            </div>
+                        </form>
+                        </div>
+                    </div>
+                    <div class="account-info flex-50 layout-column location-info p-10">
+                        <div class="layout-column layout-align-center-center m-b-20  map-location-icon">
+                            <div class="layout-column layout-align-center-center">
+                                <p class="layout-column layout-align-center-center location-icon-text">
+                                    <i class="fa fa-map-marker"></i>
+                                    <span>Location</span>
+                                </p>
+        
+                                <p class="layout-column layout-align-center-center">
+                                    <span>QualQuant Signals</span>
+                                    <span>1099 Wall Street West, Suite 138</span>
+                                    <span>Lyndhurst, NJ 07071, USA</span>
+                                </p>
+                            </div>
+                        </div>
+        
+                        <div class="layout-row map-frame layout-align-center-center">
+                            <div style="width: 660px; height: 260px;">
+                                <div id="map" style="height:100%; width:100%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        
+        
+            </div>
+
+
+        </div>
+       
+        
+    </div><!--app-login-section-->
+
+    <div class="layout-column layout-align-start-start future-success" style="position:absolute; bottom:0;">
+        <div class="app-footer future-success-footer layout-row  p-10 ">
+                <div class="footer-text layout-row layout-align-space-between-center">
+                    <p class="layout-align-start layout-row layout-wrap">StribeIN © Copyright 2017</p>
+                    <p class="layout-align-end layout-row layout-wrap"><a href="/privacy">Privacy Policy</a> - <a href="/term">Terms of Services</a> - <a href="/contact">Contact Us</a> – <a href="/about">About StribeIN</a> - <a href="/faq">FAQ</a></p>
+                </div>
+        </div>
+    </div>
+    <script>
+        function initMap() {
+          var uluru = {lat: 40.806678, lng: -74.103263};
+          var map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 15,
+            center: uluru
+          });
+          var marker = new google.maps.Marker({
+            position: uluru,
+            map: map
+          });
+        }
+      </script>
+      <script async defer
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCg0wHL6JicnbXQLXUwtHL-t5iYEND-VUw&callback=initMap">
+      </script>
+    <!-- Bootstrap 3.3.5 -->
+    <script src="public/bootstrap/js/bootstrap.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="public/dist/js/app.min.js"></script>
+    <!-- custom jQuery -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.2-rc.1/js/select2.min.js"></script>
+    <script src="public/plugins/noty/jquery.noty.packaged.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/iCheck/1.0.2/icheck.min.js"></script>
+</body>
+
+</html>

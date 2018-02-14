@@ -1,0 +1,155 @@
+<div class="custom1-modal-header layout-row layout-align-space-between layout-xs-column">
+    <div class="h3 header-title"><i class="fa fa-users m-r-10" aria-hidden="true"></i>Group Member</div>
+    <div class="header-options layout-row layout-align-end">
+        <div class="modal-option option1 layout-row layout-align-center-center">
+            <i class="fa fa-plus-square c-green" aria-hidden="true"></i>
+            <span class="btn-title c-p" id="group-add-mem" data-toggle="modal" >Add Members</span>
+
+        </div>
+
+    </div>
+</div>
+<div class="layout-row layout-align-start-center layout-wrap layout-padding group-updates" *ngIf="group && group!=null" >
+
+     <div   class="box-wrap-em layout-row layout-wrap layout-align-space-between flex-30 m-b-20 m-r-10 flex-xs-45" *ngFor="#member of group.members;#i=index">
+       <span *ngIf="(member && otherGroup!=4)&& member.user_id" data-toggle="modal" class="g-e-del-btn" (click)="deleteGroupMemberModal(group._id,member.user_id._id)"><i class="fa fa-times-circle"></i></span>
+        <div *ngIf="member && member!=null" class=" layout-align-xs-center-center layout-xs-column flex-100 link-block layout-row layout-align-space-between border whit-bg college-b border-radius-3px" (click)="getProfileById(member.user_id._id)">
+
+            <div  class="flex-10 flex-xs-100">
+                <span  class="">
+                    <span  class="user-img mem-wrap-section" *ngIf="member.user_id && member.user_id.photo!=null">
+                           <!--<img *ngIf="member.user_id.photo" alt="" src="theme/files/ProfilePicture/{{member.user_id.photo}}">-->
+                           <img alt="" src="theme/files/ProfilePicture/{{member.user_id.photo}}" height="50px" width="50px">
+                    </span>
+                    <span  class="user-img mem-wrap-section" *ngIf="member.user_id && member.user_id.photo==null">
+                        <!--<img *ngIf="member.user_id.photo" alt="" src="theme/files/ProfilePicture/{{member.user_id.photo}}">-->
+                        <img alt="" src="theme/files/ProfilePicture/no_image.png" height="50px" width="50px">
+                    </span>
+                </span>
+            </div>
+
+
+            <div   class="content-block-desc layout-column flex-80 layout-wrap layout-row flex-xs-100" >
+
+                <div  class="detaial flex-80 c-p flex-xs-100" >
+                    <h3 class="content-block-desc-title memb-name" >{{member.user_id.fname}}</h3>
+                    <!--<h5 class="content-block-desc-sub-title date-joing">4 days ago</h5>-->
+                </div>
+            </div> 
+        </div>
+    </div> 
+    <div class="no-g-e-block" *ngIf="group.members == ''">
+        <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
+        <span>No Member Added</span>
+    </div>
+
+    <!--    <div class="layout-row layout-wrap layout-align-space-between flex-30 m-b-20 m-r-10">
+            <div  class="flex-100 link-block layout-row layout-align-space-between border whit-bg college-b border-radius-3px">
+    
+                <div  class="flex-10 flex-xs-25">
+                    <span  class="user-img">
+                        <img *ngIf="member.user_id.photo" alt="" src="theme/files/ProfilePicture/{{member.user_id.photo}}">
+                        <img  alt="" src="theme/dist/img/text-user.png">
+                    </span>
+                </div>
+    
+    
+                <div  class="content-block-desc layout-column flex-80 layout-wrap layout-row" >
+    
+                    <div  class="detaial flex-80 c-p" >
+                        <h3 class="content-block-desc-title memb-name" >rashmi</h3>
+                        <h5 class="content-block-desc-sub-title date-joing">4 days ago</h5>
+                    </div>
+                </div> 
+            </div>
+        </div> -->
+</div>
+<div class="modal fade modal-align-fix" id = "addGroupMember" (click)="clearGroupMemberList()">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeAddMembersModel()"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Add Member</h4>
+            </div>
+
+            <div class="modal-body setting-page flex-100 layout-row">
+                <div class="modal-body layout-column flex-100">
+                    <div class="form-group">
+                        <label for="albumTitle">Select Member</label>
+                        <input type="text" [(ngModel)]="userSearchField.name" (keyup)="friendSearch($event)" (focus)="friendSearch($event)" class="form-control" placeholder="Search Member"  required="required">
+                        <span class="error_file_message">{{errorAddMember}}</span>
+                        <ul class="user-search-list abso box-bor" *ngIf="userSearchList" >
+                            <li class="layout-row layout-align-space-between search-li" *ngFor="#user of userSearchList" (click)="addToGroup(user._id,user)" >
+                                <div class="search-result-left layout-row">
+                                    <div class="search-thumb">
+                                        <img *ngIf="user.photo" alt="User Image" class="img-circle" src="theme/files/ProfilePicture/{{user.photo}}">
+                                        <img *ngIf="!user.photo" alt="User Image" class="img-circle" src="theme/files/ProfilePicture/no_image.png">
+                                    </div>
+                                    <div class="result-title">{{user.fname}}</div>
+                                </div>
+                                <div class="search-result-right">
+                                    <div class="result-icon">
+                                        <i aria-hidden="true" class="fa fa-user-plus"></i>
+                                    </div>
+                                </div>
+                            </li>                                                
+                        </ul>
+                    </div>
+                    <div class="">
+                        <ul class="group-mem-list layout-row layout-align-space-between layout-wrap">
+                            <li class="layout-row layout-align-space-between search-li flex-32" *ngFor="#user of tmpMembers" >
+                                <div class="search-result-left layout-row">
+                                    <div class="search-thumb">
+                                        <img *ngIf="user.photo" alt="User Image" class="img-circle" src="theme/files/ProfilePicture/{{user.photo}}">
+                                        <img *ngIf="!user.photo" alt="User Image" class="img-circle" src="theme/files/ProfilePicture/no_image.png">
+                                    </div>
+                                    <div class="result-title layout-align-center-center layout-row">{{user.fname}}</div>
+                                </div>
+                            </li>                                                
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+                <button class="add-btn cancel-btn" data-dismiss="modal" (click)="closeAddMembersModel()">Cancel</button>
+                <button class="add-btn"  (click)="addMembers()" >Save</button>
+            </div>
+
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+<div class="modal fade modal-align-fix " id = "groupMemberRemoveModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+
+            <div class="modal-body setting-page flex-100 layout-row">
+                <div class="modal-body layout-column flex-100 ">
+
+
+
+
+
+                    <div class="modal-body">
+
+                        <div class="upload-area flex-60 layout-align-start-center layout-row">
+                            <h4>Do you really want to remove this member?</h4> 
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+                <button class="add-btn cancel-btn" data-dismiss="modal">Cancel</button>
+                <button class="add-btn" data-dismiss="modal" (click)="deleteGroupMember()" >Yes</button>
+            </div>
+
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>

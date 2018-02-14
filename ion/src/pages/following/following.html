@@ -1,0 +1,65 @@
+<!--
+  Generated template for the Following page.
+
+  See http://ionicframework.com/docs/v2/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar class="gradient">
+    <!--<button ion-button menuToggle>
+        <ion-icon name="menu"></ion-icon>
+    </button>-->
+    <ion-title>
+      <h1 class="header-title" text-center><span *ngIf="!followingsOfFriend" class="header-title">Me</span> Following</h1>
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content>
+  <ion-spinner icon="spiral" *ngIf="loader"></ion-spinner>
+  <ion-list>
+    <div *ngIf="followingsOfFriend">
+      <div *ngIf="followingsOfFriend.length > 0">
+        <ion-item text-wrap *ngFor="let following of followingsOfFriend" (click)="getfollowingsOfFriendProfileById(following.following_id)">
+          <ion-avatar item-left>
+            <img *ngIf="following.photo" src="{{dataService.apiBaseUrl}}public/files/ProfilePicture/{{following.photo}}">
+            <img *ngIf="!following.photo" src="{{dataService.apiBaseUrl}}public/files/ProfilePicture/no_image.png">
+          </ion-avatar>
+          <ion-label>
+            <h2>{{ following.name }}</h2>
+          </ion-label>
+        </ion-item>
+      </div>
+      <div *ngIf="followingsOfFriend.length == 0">
+        <ion-item>
+          No Following found.
+        </ion-item>
+      </div>
+    </div>
+    <div *ngIf="followings && !followingsOfFriend">
+      <div *ngIf="followings.length > 0">
+        <ion-item text-wrap *ngFor="let following of followings; let i= index ">
+          <ion-avatar item-left (click)="getProfileById(following.following_id)">
+            <img *ngIf="following.photo" src="{{dataService.apiBaseUrl}}public/files/ProfilePicture/{{following.photo}}">
+            <img *ngIf="!following.photo" src="{{dataService.apiBaseUrl}}public/files/ProfilePicture/no_image.png">
+          </ion-avatar>
+          <h2 (click)="getProfileById(following.following_id)">{{ following.name }}</h2>
+          <button item-right ion-button (click)="setUnFollow(following.following_id,i)">UnFollow</button>
+        </ion-item>
+      </div>
+      <div *ngIf="followings.length == 0">
+        <ion-card>
+          <ion-card-content>
+            <ion-row text-wrap>
+              <ion-label>You are not following anyone as of yet. Search for members to start following.</ion-label>
+            </ion-row>
+            <ion-row>
+              <button ion-button (click)="goToMemberPage()">Search Members</button>
+            </ion-row>
+          </ion-card-content>
+        </ion-card>
+      </div>
+    </div>
+  </ion-list>
+</ion-content>

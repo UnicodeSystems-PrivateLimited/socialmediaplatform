@@ -1,0 +1,20 @@
+page-privacy {
+    .toolbar-background-ios {
+        border: none;
+    }
+    .header {
+        &::after {
+            background-image: none;
+            height: 0;
+        }
+        .header-title {
+            margin: 0;
+        }
+        .toolbar {
+            min-height: 54px;
+        }
+    }
+    h4 {
+        font-size: 1.8rem;
+    }
+}

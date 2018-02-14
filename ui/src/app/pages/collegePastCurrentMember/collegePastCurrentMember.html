@@ -1,0 +1,111 @@
+<div class="spin-wrap vision-spin" style="display: none">
+  <div class="sk-folding-cube">
+    <div class="sk-cube1 sk-cube"></div>
+    <div class="sk-cube2 sk-cube"></div>
+    <div class="sk-cube4 sk-cube"></div>
+    <div class="sk-cube3 sk-cube"></div>
+  </div>
+</div>
+<section class="content col-md-12">
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="box">
+        <div class="box-header">
+          <div class="col-md-8" style="padding-left: 0;">
+            <h3 class="box-title" style="margin-top: 8px;" *ngIf="filterName">{{filterName}} <span *ngIf="collegeName" class="c-p" (click)="getCollegeWall()">in {{collegeName}}</span></h3>
+          </div>
+          <div class="col-md-4">
+            <div class="box box-danger box-orange subject-wall-popup sb-past-drop" style="margin-bottom:0">
+              <div class=" with-border ">
+                <div class="public-btn">
+                  <div class="dropdown">
+                    <button class="btn dropdown-toggle" type="button" data-toggle="dropdown" style="color:#000 !important;">
+                                <span class="fa fa-users">&nbsp;</span>{{selectMembers[selectedTypyMember-1].label}}<span class="caret">&nbsp;</span>
+                            </button>
+                    <ul class="dropdown-menu">
+                      <li *ngFor="let list of selectMembers;">
+                        <a (click)="showStudents(list.value)">{{list.label}}</a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="box-body">
+          <div id="example2_wrapper" class="dataTables_wrapper form-inline dt-bootstrap drop-pase">
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="table-responsive">
+                  <div *ngIf="currentMemberCount" class="flex-100 layout-row layout-row-space-between-center layout-wrap">
+                    <div *ngFor="let user of current_member" class="flex-24 member-detail-container c-p">
+                      <div *ngIf="user" class="member-user-image" (click)="getProfileById(user._id)">
+                        <img *ngIf="user && user.photo" src="public/files/ProfilePicture/{{user.photo}}" alt="" />
+                        <img *ngIf="user && !user.photo" src="public/files/ProfilePicture/no_image.png" alt="" />
+                      </div>
+                      <div *ngIf="user" width="45%" class="member-details pc-tal">
+                        <p (click)="getProfileById(user._id)" class="member-name c-p">{{user.fname+' '+user.lname}}</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div *ngIf="pastMemberCount" class="flex-100 layout-row layout-row-space-between-center layout-wrap">
+
+                    <div *ngFor="let  user of past_member" class="flex-24 member-detail-container c-p">
+                      <div *ngIf="user" class="member-user-image" (click)="getProfileById(user._id)">
+                        <img *ngIf="user.photo" src="public/files/ProfilePicture/{{user.photo}}" alt="" />
+                        <img *ngIf="!user.photo" src="public/files/ProfilePicture/no_image.png" alt="" />
+                      </div>
+                      <div *ngIf="user" width="45%" class="member-details pc-tal">
+                        <p (click)="getProfileById(user._id)" class="member-name c-p">{{user.fname+' '+user.lname}}</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div *ngIf="futureMemberCount" class="flex-100 layout-row layout-row-space-between-center layout-wrap">
+                    <div *ngFor="let  user of future_member" class="flex-24 member-detail-container c-p">
+                      <div *ngIf="user" class="member-user-image" (click)="getProfileById(user._id)">
+                        <img *ngIf="user.photo" src="public/files/ProfilePicture/{{user.photo}}" alt="" />
+                        <img *ngIf="!user.photo" src="public/files/ProfilePicture/no_image.png" alt="" />
+                      </div>
+                      <div *ngIf="user" width="45%" class="member-details pc-tal">
+                        <p (click)="getProfileById(user._id)" class="member-name c-p">{{user.fname+' '+user.lname}}</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div *ngIf="friendMemberCount" class="flex-100 layout-row layout-row-space-between-center layout-wrap">
+                    <div *ngFor="let  user of friend_member" class="flex-24 member-detail-container c-p">
+                      <div *ngIf="user" class="member-user-image" (click)="getProfileById(user._id)">
+                        <img *ngIf="user.photo" src="public/files/ProfilePicture/{{user.photo}}" alt="" />
+                        <img *ngIf="!user.photo" src="public/files/ProfilePicture/no_image.png" alt="" />
+                      </div>
+                      <div *ngIf="user" width="45%" class="member-details pc-tal">
+                        <p (click)="getProfileById(user._id)" class="member-name c-p">{{user.fname+' '+user.lname}}</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div *ngIf="allMemberCount" class="flex-100 layout-row layout-row-space-between-center layout-wrap">
+                    <div *ngFor="let  user of all_member" class="flex-24 member-detail-container c-p">
+                      <div *ngIf="user.user_id" class="member-user-image" (click)="getProfileById(user.user_id._id)">
+                        <img *ngIf="user.user_id.photo" src="public/files/ProfilePicture/{{user.user_id.photo}}" alt="" />
+                        <img *ngIf="!user.user_id.photo" src="public/files/ProfilePicture/no_image.png" alt="" />
+                      </div>
+                      <div *ngIf="user" width="45%" class="member-details pc-tal">
+                        <p (click)="getProfileById(user.user_id._id)" class="member-name c-p">{{user.user_id.fname+' '+user.user_id.lname}}</p>
+                        <p *ngIf="user.user_status == 1">Current Student</p>
+                        <p *ngIf="user.user_status == 2">Past Member</p>
+                        <p *ngIf="user.user_status == 3">Future Member</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div *ngIf="!currentMemberCount && !futureMemberCount && !pastMemberCount && !friendMemberCount && !allMemberCount">
+                    <i class="fa fa-exclamation-circle" aria-hidden="true"></i>&nbsp; No Students found
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

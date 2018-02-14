@@ -1,0 +1,117 @@
+<style>
+    :host(.page1Container) {
+        display: inline-block;
+        width: 100%;
+        -webkit-transition: all cubic-bezier(0, 0, 0.39, 1.07) 0.2s;
+        transition: all cubic-bezier(0, 0, 0.39, 1.07) 0.2s;
+    }
+    
+    :host(.page1Container.ng-enter) {
+        opacity: 0;
+        transform: translate3d(100%, 0, 0);
+    }
+    
+    :host(.page1Container.ng-enter-active) {
+        opacity: 1;
+        transform: none;
+    }
+</style>
+<p class="member-name c-p fx-bck" (click)="getOwnProfileById()"><i class="fa fa-arrow-circle-o-left" aria-hidden="true"></i></p>
+<section class="content connection-list">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title"><span *ngIf="connectionId == 1">Friend's List</span></h3>
+                    <h3 class="box-title"><span *ngIf="connectionId == 2"><span *ngIf="page.user.name">{{page.user.name}}</span> is Following</span></h3>
+                    <h3 class="box-title"><span *ngIf="connectionId == 3"><span *ngIf="page.user.name">{{page.user.name+"'s"}} Followers</span></span></h3>
+                </div>
+
+                <div class="box-body">
+                    <div id="example2_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-hover text-center search-result-member" cellspacing="0" width="100%">
+                                        <tbody>
+
+                                            <div *ngIf="friends && !followings && !followers">
+                                                <div *ngIf="friends && friends!=''">
+                                                    <tr *ngFor="let user of friends">
+                                                        <td width="10%" (click)="getProfileById(user.friend_id)">
+                                                            <img *ngIf="user.photo" src="public/files/ProfilePicture/{{user.photo}}" alt="" />
+                                                            <img *ngIf="!user.photo" src="public/files/ProfilePicture/no_image.png" alt="" />
+                                                        </td>
+                                                        <td width="45%" class="member-details pc-tal">
+                                                            <p (click)="getProfileById(user.friend_id)" class="member-name c-p">{{user.name}}</p>
+
+                                                        </td>
+                                                        <td width="45%">
+
+                                                        </td>
+                                                    </tr>
+                                                </div>
+                                                <div class="no-count-section" *ngIf="friends=='' || friends == 0">
+                                                    <i class="fa fa-exclamation-circle" aria-hidden="true"></i>&nbsp; No
+                                                    Friends
+                                                </div>
+                                            </div>
+                                            <div *ngIf="!friends && followings && !followers">
+                                                <div *ngIf="followings && followings!=''">
+                                                    <tr *ngFor="let  user of followings">
+                                                        <td width="10%" (click)="getProfileById(user.following_id)">
+                                                            <img *ngIf="user.photo" src="public/files/ProfilePicture/{{user.photo}}" alt="" />
+                                                            <img *ngIf="!user.photo" src="public/files/ProfilePicture/no_image.png" alt="" />
+                                                        </td>
+                                                        <td width="45%" class="member-details pc-tal">
+                                                            <p (click)="getProfileById(user.following_id)" class="member-name c-p">{{user.name}}</p>
+
+                                                        </td>
+                                                        <td width="45%">
+
+                                                        </td>
+                                                    </tr>
+                                                </div>
+                                                <div class="no-count-section" *ngIf="followings=='' || followings == 0">
+                                                    <i class="fa fa-exclamation-circle" aria-hidden="true"></i>&nbsp; You are not following anyone as of yet. Search for members to start following.&nbsp;<a class="text-orange c-p" [routerLink]="['MemberListComponent',{tab:3}]">‘Click Here’</a>
+                                                </div>
+                                            </div>
+                                            <div *ngIf="!friends && !followings && followers">
+                                                <div *ngIf="followers && followers!=''">
+                                                    <tr *ngFor="let  user of followers">
+                                                        <td width="10%" (click)="getProfileById(user.follower_id)">
+                                                            <img *ngIf="user.photo" src="public/files/ProfilePicture/{{user.photo}}" alt="" />
+                                                            <img *ngIf="!user.photo" src="public/files/ProfilePicture/no_image.png" alt="" />
+                                                        </td>
+                                                        <td width="45%" class="member-details pc-tal">
+                                                            <p (click)="getProfileById(user.follower_id)" class="member-name c-p">{{user.name}}</p>
+
+                                                        </td>
+                                                        <td width="45%">
+
+                                                        </td>
+                                                    </tr>
+                                                </div>
+                                                <div class="no-count-section" *ngIf="followers=='' || followers == 0">
+                                                    <i class="fa fa-exclamation-circle" aria-hidden="true"></i>&nbsp; No
+                                                    Followers
+                                                </div>
+                                            </div>
+                                            <div *ngIf="!friends && !followings && !followers">
+                                                <div class="no-count-section">
+                                                    <i aria-hidden="true" class="fa fa-exclamation-circle"></i>&nbsp; No Member exist
+                                                </div>
+                                            </div>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

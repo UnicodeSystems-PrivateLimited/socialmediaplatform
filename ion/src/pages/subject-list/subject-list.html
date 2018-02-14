@@ -1,0 +1,336 @@
+<!--
+  Generated template for the SubjectList page.
+
+  See http://ionicframework.com/docs/v2/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header class="header">
+    <ion-navbar class="gradient">
+        <ion-row>
+            
+            <ion-col text-right no-padding class="display-flex">
+                    <button ion-button icon-only class="add-journal-btn help" (click)="onHelpClick()">
+                            <ion-icon name="help-circle"></ion-icon>
+                          </button>
+                <button ion-button icon-only class="add-journal-btn" (click)="addSCD()">
+          <ion-icon class="add-journal" color="white" name="add-circle"></ion-icon>
+        </button>
+            </ion-col>
+        </ion-row>
+    </ion-navbar>
+</ion-header>
+
+<ion-content class="subject-list">
+    <ion-searchbar placeholder="{{title}}" (ionInput)="onInput()" [(ngModel)]="searchInput.name"></ion-searchbar>
+    <ion-item *ngIf="heading" text-wrap class="sub-title">{{heading}}</ion-item>
+    <ion-spinner icon="spiral" *ngIf="loader"></ion-spinner>
+    <!--subject search list-->
+    <ion-item-group *ngIf="searchSubject.length!=0">
+        <ion-item-divider class="subject-heading" color="light">
+            <img height="25px" width="25px" src="{{dataService.apiBaseUrl}}public/files/logo/subject.png" />Subjects</ion-item-divider>
+        <ion-item text-wrap *ngFor="let searchsub of searchSubject">
+            <span (click)="goTosubject(searchsub._id)" class="subject-name">{{searchsub.name}}</span>
+            <span class="joined-status" *ngIf="searchsub.members|getscdjoinstatusflter">{{searchsub.members|getscdjoinstatusflter}}</span>
+        </ion-item>
+        <ion-item *ngIf="searchInput.name" (click)="onViewMore(2)" class="search-all">
+            View more for {{searchInput.name}}
+        </ion-item>
+    </ion-item-group>
+
+    <!--subject search list not Added-->
+    <ion-item-group *ngIf="searchSubjectLength==0">
+        <ion-item-divider class="subject-heading" color="light">
+            <img height="25px" width="25px" src="{{dataService.apiBaseUrl}}public/files/logo/subject.png" />Subjects</ion-item-divider>
+        <ion-item (click)="addItem(1)" class="search-all">
+            <span class="">Add Subject</span>
+        </ion-item>
+    </ion-item-group>
+
+    <!--college search list-->
+    <ion-item-group *ngIf="searchCollege.length!=0">
+        <ion-item-divider class="subject-heading" color="light">
+            <img height="25px" width="25px" src="{{dataService.apiBaseUrl}}public/files/logo/college.png" />Colleges</ion-item-divider>
+        <ion-item text-wrap *ngFor="let searchcoll of searchCollege">
+            <span (click)="goTocollege(searchcoll._id)" class="subject-name">{{searchcoll.name}}</span>
+            <span class="joined-status" *ngIf="searchcoll.members|getscdjoinstatusflter">{{searchcoll.members|getscdjoinstatusflter}}</span>
+        </ion-item>
+        <ion-item *ngIf="searchInput.name" (click)="onViewMore(3)" class="search-all">
+            View more for {{searchInput.name}}
+        </ion-item>
+    </ion-item-group>
+
+    <!--college search list not Added-->
+    <ion-item-group *ngIf="searchCollegeLength==0">
+        <ion-item-divider class="subject-heading" color="light">
+            <img height="25px" width="25px" src="{{dataService.apiBaseUrl}}public/files/logo/college.png" />Colleges</ion-item-divider>
+        <ion-item (click)="addItem(2)" class="search-all">
+            <span>Add College</span>
+        </ion-item>
+    </ion-item-group>
+
+    <!--degree search list-->
+    <ion-item-group *ngIf="searchDegree.length!=0">
+        <ion-item-divider class="subject-heading" color="light">
+            <img height="25px" width="25px" src="{{dataService.apiBaseUrl}}public/files/logo/degree.png" />Degrees</ion-item-divider>
+        <ion-item text-wrap *ngFor="let searchdeg of searchDegree">
+            <span (click)="goTodegree(searchdeg._id)" class="subject-name">{{searchdeg.name}}</span>
+            <span class="joined-status" *ngIf="searchdeg.members|getscdjoinstatusflter">{{searchdeg.members|getscdjoinstatusflter}}</span>
+        </ion-item>
+        <ion-item *ngIf="searchInput.name" (click)="onViewMore(4)" class="search-all">
+            View more for {{searchInput.name}}
+        </ion-item>
+    </ion-item-group>
+
+    <!--degree search list not Added-->
+    <ion-item-group *ngIf="searchDegreeLength==0">
+        <ion-item-divider class="subject-heading" color="light">
+            <img height="25px" width="25px" src="{{dataService.apiBaseUrl}}public/files/logo/degree.png" />Degrees</ion-item-divider>
+        <ion-item (click)="addItem(3)" class="search-all">
+            <span>Add Degree</span>
+        </ion-item>
+    </ion-item-group>
+
+
+    <!--subject list-->
+    <ion-item-group *ngIf="currentSubject.length && !searchActive">
+        <ion-item-divider class="subject-heading" color="light">
+            <img height="25px" width="25px" src="{{dataService.apiBaseUrl}}public/files/logo/currently-taking.png" />Current Subject</ion-item-divider>
+        <ion-item text-wrap *ngFor="let currrentsub of currentSubject">
+            <span (click)="goTosubject(currrentsub.subject_id)" class="subject-name">{{currrentsub.name}}</span>
+            <span *ngIf="currrentsub.post.length" item-end class="last-visit">
+        <span>{{currrentsub.post[0].post_id.created_on|date:'shortTime'}}</span>
+            </span>
+            <span *ngIf="currrentsub.post.length" item-end class="last-visit">
+        <span>{{currrentsub.post[0].post_id.created_on|date}}</span>
+            </span>
+            <span *ngIf="(currrentsub.post|recentPostCountPipe:currrentsub.last_visit:userDetails.userID)>0" item-end class="counter">
+        <span>{{currrentsub.post|recentPostCountPipe:currrentsub.last_visit:userDetails.userID}}</span>
+            </span>
+        </ion-item>
+    </ion-item-group>
+
+    <ion-item-group *ngIf="futureSubject.length && !searchActive">
+        <ion-item-divider class="subject-heading" color="light">
+            <img height="25px" width="25px" src="{{dataService.apiBaseUrl}}public/files/logo/future-subject.png" />Future Subject</ion-item-divider>
+        <ion-item text-wrap *ngFor="let futureSub of futureSubject">
+            <span (click)="goTosubject(futureSub.subject_id)" class="subject-name">{{futureSub.name}}</span>
+            <span *ngIf="futureSub.post.length" item-end class="last-visit">
+        <span>{{futureSub.post[0].post_id.created_on|date:'shortTime'}}</span>
+            </span>
+            <span *ngIf="futureSub.post.length" item-end class="last-visit">
+        <span>{{futureSub.post[0].post_id.created_on|date}}</span>
+            </span>
+            <span *ngIf="(futureSub.post|recentPostCountPipe:futureSub.last_visit:userDetails.userID)>0" item-end class="counter">
+        <span>{{futureSub.post|recentPostCountPipe:futureSub.last_visit:userDetails.userID}}</span>
+            </span>
+        </ion-item>
+    </ion-item-group>
+    <ion-item-group *ngIf="pastSubject.length && !searchActive">
+        <ion-item-divider class="subject-heading" color="light">
+            <img height="25px" width="25px" src="{{dataService.apiBaseUrl}}public/files/logo/past-subject.png" />Past Subject</ion-item-divider>
+        <ion-item text-wrap *ngFor="let pastSub of pastSubject">
+            <span (click)="goTosubject(pastSub.subject_id)">{{pastSub.name}}</span>
+            <span *ngIf="pastSub.post.length" item-end class="last-visit">
+        <span>{{pastSub.post[0].post_id.created_on|date:'shortTime'}}</span>
+            </span>
+            <span *ngIf="pastSub.post.length" item-end class="last-visit">
+        <span>{{pastSub.post[0].post_id.created_on|date}}</span>
+            </span>
+            <span *ngIf="(pastSub.post|recentPostCountPipe:pastSub.last_visit:userDetails.userID)>0" item-end class="counter">
+        <span>{{pastSub.post|recentPostCountPipe:pastSub.last_visit:userDetails.userID}}</span>
+            </span>
+        </ion-item>
+    </ion-item-group>
+    <ion-item-group *ngIf="subjectExpertsList.length && !searchActive">
+        <ion-item-divider class="subject-heading" color="light">
+            <img height="25px" width="25px" src="{{dataService.apiBaseUrl}}public/files/logo/subject-expert.png" />Subject Expert</ion-item-divider>
+        <ion-item text-wrap *ngFor="let expertSub of subjectExpertsList">
+            <span (click)="goTosubject(expertSub.subject_id)" class="subject-name">{{expertSub.name}}</span>
+            <span *ngIf="expertSub.post.length" item-end class="last-visit">
+        <span>{{expertSub.post[0].post_id.created_on|date:'shortTime'}}</span>
+            </span>
+            <span *ngIf="expertSub.post.length" item-end class="last-visit">
+        <span>{{expertSub.post[0].post_id.created_on|date}}</span>
+            </span>
+            <span *ngIf="(expertSub.post|recentPostCountPipe:expertSub.last_visit:userDetails.userID)>0" item-end class="counter">
+        <span>{{expertSub.post|recentPostCountPipe:expertSub.last_visit:userDetails.userID}}</span>
+            </span>
+        </ion-item>
+    </ion-item-group>
+    <ion-item-group *ngIf="subjectTeacherList.length && !searchActive">
+        <ion-item-divider class="subject-heading" color="light">
+            <img height="25px" width="25px" src="{{dataService.apiBaseUrl}}public/files/logo/subject-teacher.png" />Subject Teacher</ion-item-divider>
+        <ion-item text-wrap *ngFor="let teacherSub of subjectTeacherList">
+            <span (click)="goTosubject(teacherSub.subject_id)" class="subject-name">{{teacherSub.name}}</span>
+            <span *ngIf="teacherSub.post.length" item-end class="last-visit">
+        <span>{{teacherSub.post[0].post_id.created_on|date:'shortTime'}}</span>
+            </span>
+            <span *ngIf="teacherSub.post.length" item-end class="last-visit">
+        <span>{{teacherSub.post[0].post_id.created_on|date}}</span>
+            </span>
+            <span *ngIf="(teacherSub.post|recentPostCountPipe:teacherSub.last_visit:userDetails.userID)>0" item-end class="counter">
+        <span>{{teacherSub.post|recentPostCountPipe:teacherSub.last_visit:userDetails.userID}}</span>
+            </span>
+        </ion-item>
+    </ion-item-group>
+    <ion-item-group *ngIf="justInterestedList.length && !searchActive">
+        <ion-item-divider class="subject-heading" color="light">
+            <img height="25px" width="25px" src="{{dataService.apiBaseUrl}}public/files/logo/just-interested.png" />Just Interested</ion-item-divider>
+        <ion-item text-wrap *ngFor="let justIntSub of justInterestedList">
+            <span (click)="goTosubject(justIntSub.subject_id)" class="subject-name">{{justIntSub.name}}</span>
+            <span *ngIf="justIntSub.post.length" item-end class="last-visit">
+        <span>{{justIntSub.post[0].post_id.created_on|date:'shortTime'}}</span>
+            </span>
+            <span *ngIf="justIntSub.post.length" item-end class="last-visit">
+        <span>{{justIntSub.post[0].post_id.created_on|date}}</span>
+            </span>
+            <span *ngIf="(justIntSub.post|recentPostCountPipe:justIntSub.last_visit:userDetails.userID)>0" item-end class="counter">
+        <span>{{justIntSub.post|recentPostCountPipe:justIntSub.last_visit:userDetails.userID}}</span>
+            </span>
+        </ion-item>
+    </ion-item-group>
+
+    <ion-item-group *ngIf="subjectLength==0 && !searchActive">
+        <ion-item-divider class="subject-heading" color="light">
+            <img height="25px" width="25px" src="{{dataService.apiBaseUrl}}public/files/logo/subject.png" />Subjects</ion-item-divider>
+        <ion-item text-wrap>
+            You have not enrolled in any subject. Click + sign to enroll and join the conversation.
+        </ion-item>
+    </ion-item-group>
+
+
+    <!--college list-->
+    <ion-item-group *ngIf="currentCollege.length!=0 && !searchActive">
+        <ion-item-divider class="subject-heading" color="light">
+            <img height="25px" width="25px" src="{{dataService.apiBaseUrl}}public/files/logo/college.png" />Current College</ion-item-divider>
+        <ion-item text-wrap *ngFor="let currrentcol of currentCollege">
+            <span (click)="goTocollege(currrentcol.college_id)" class="subject-name">{{currrentcol.name}}</span>
+            <span *ngIf="currrentcol.post.length" item-end class="last-visit">
+        <span>{{currrentcol.post[0].post_id.created_on|date:'shortTime'}}</span>
+            </span>
+            <span *ngIf="currrentcol.post.length" item-end class="last-visit">
+        <span>{{currrentcol.post[0].post_id.created_on|date}}</span>
+            </span>
+            <span *ngIf="(currrentcol.post|recentPostCountPipe:currrentcol.last_visit:userDetails.userID)>0" item-end class="counter">
+        <span>{{currrentcol.post|recentPostCountPipe:currrentcol.last_visit:userDetails.userID}}</span>
+            </span>
+        </ion-item>
+    </ion-item-group>
+
+    <ion-item-group *ngIf="pastCollege.length!=0 && !searchActive">
+        <ion-item-divider class="subject-heading" color="light">
+            <img height="25px" width="25px" src="{{dataService.apiBaseUrl}}public/files/logo/college.png" />Past College</ion-item-divider>
+        <ion-item text-wrap *ngFor="let pastCol of pastCollege">
+            <span (click)="goTocollege(pastCol.college_id)" class="subject-name">{{pastCol.name}}</span>
+            <span *ngIf="pastCol.post.length" item-end class="last-visit">
+        <span>{{pastCol.post[0].post_id.created_on|date:'shortTime'}}</span>
+            </span>
+            <span *ngIf="pastCol.post.length" item-end class="last-visit">
+        <span>{{pastCol.post[0].post_id.created_on|date}}</span>
+            </span>
+            <span *ngIf="(pastCol.post|recentPostCountPipe:pastCol.last_visit:userDetails.userID)>0" item-end class="counter">
+        <span>{{pastCol.post|recentPostCountPipe:pastCol.last_visit:userDetails.userID}}</span>
+            </span>
+        </ion-item>
+    </ion-item-group>
+
+    <ion-item-group *ngIf="futureCollege.length!=0 && !searchActive">
+        <ion-item-divider class="subject-heading" color="light">
+            <img height="25px" width="25px" src="{{dataService.apiBaseUrl}}public/files/logo/college.png" />Future College</ion-item-divider>
+        <ion-item text-wrap *ngFor="let futureCol of futureCollege">
+            <span (click)="goTocollege(futureCol.college_id)" class="subject-name">{{futureCol.name}}</span>
+            <span *ngIf="futureCol.post.length" item-end class="last-visit">
+        <span>{{futureCol.post[0].post_id.created_on|date:'shortTime'}}</span>
+            </span>
+            <span *ngIf="futureCol.post.length" item-end class="last-visit">
+        <span>{{futureCol.post[0].post_id.created_on|date}}</span>
+            </span>
+            <span *ngIf="(futureCol.post|recentPostCountPipe:futureCol.last_visit:userDetails.userID)>0" item-end class="counter">
+        <span>{{futureCol.post|recentPostCountPipe:futureCol.last_visit:userDetails.userID}}</span>
+            </span>
+        </ion-item>
+    </ion-item-group>
+
+    <ion-item-group *ngIf="collegeLength==0 && !searchActive">
+        <ion-item-divider class="subject-heading" color="light">
+            <img height="25px" width="25px" src="{{dataService.apiBaseUrl}}public/files/logo/college.png" />Colleges</ion-item-divider>
+        <ion-item text-wrap>
+            You have not enrolled in any college. Click + sign to enroll and join the conversation.
+        </ion-item>
+    </ion-item-group>
+
+    <!--degree list-->
+    <ion-item-group *ngIf="currentDegree.length!=0 && !searchActive">
+        <ion-item-divider class="subject-heading" color="light">
+            <img height="25px" width="25px" src="{{dataService.apiBaseUrl}}public/files/logo/degree.png" />Current Degree</ion-item-divider>
+        <ion-item text-wrap *ngFor="let currrentDeg of currentDegree">
+            <span (click)="goTodegree(currrentDeg.degree_id)" class="subject-name">{{currrentDeg.name}}</span>
+            <span *ngIf="currrentDeg.post.length" item-end class="last-visit">
+        <span>{{currrentDeg.post[0].post_id.created_on|date:'shortTime'}}</span>
+            </span>
+            <span *ngIf="currrentDeg.post.length" item-end class="last-visit">
+        <span>{{currrentDeg.post[0].post_id.created_on|date}}</span>
+            </span>
+            <span *ngIf="(currrentDeg.post|recentPostCountPipe:currrentDeg.last_visit:userDetails.userID)>0" item-end class="counter">
+        <span>{{currrentDeg.post|recentPostCountPipe:currrentDeg.last_visit:userDetails.userID}}</span>
+            </span>
+        </ion-item>
+    </ion-item-group>
+
+    <ion-item-group *ngIf="pastDegree.length!=0 && !searchActive">
+        <ion-item-divider class="subject-heading" color="light">
+            <img height="25px" width="25px" src="{{dataService.apiBaseUrl}}public/files/logo/degree.png" />Past Degree</ion-item-divider>
+        <ion-item text-wrap *ngFor="let pastDeg of pastDegree">
+            <span (click)="goTodegree(pastDeg.degree_id)" class="subject-name">{{pastDeg.name}}</span>
+            <span *ngIf="pastDeg.post.length" item-end class="last-visit">
+        <span>{{pastDeg.post[0].post_id.created_on|date:'shortTime'}}</span>
+            </span>
+            <span *ngIf="pastDeg.post.length" item-end class="last-visit">
+        <span>{{pastDeg.post[0].post_id.created_on|date}}</span>
+            </span>
+            <span *ngIf="(pastDeg.post|recentPostCountPipe:pastDeg.last_visit:userDetails.userID)>0" item-end class="counter">
+        <span>{{pastDeg.post|recentPostCountPipe:pastDeg.last_visit:userDetails.userID}}</span>
+            </span>
+        </ion-item>
+    </ion-item-group>
+
+    <ion-item-group *ngIf="futureDegree.length!=0 && !searchActive">
+        <ion-item-divider class="subject-heading" color="light">
+            <img height="25px" width="25px" src="{{dataService.apiBaseUrl}}public/files/logo/degree.png" />Future Degree</ion-item-divider>
+        <ion-item text-wrap *ngFor="let futureDeg of futureDegree">
+            <span (click)="goTodegree(futureDeg.degree_id)" class="subject-name">{{futureDeg.name}}</span>
+            <span *ngIf="futureDeg.post.length" item-end class="last-visit">
+        <span>{{futureDeg.post[0].post_id.created_on|date:'shortTime'}}</span>
+            </span>
+            <span *ngIf="futureDeg.post.length" item-end class="last-visit">
+        <span>{{futureDeg.post[0].post_id.created_on|date}}</span>
+            </span>
+            <span *ngIf="(futureDeg.post|recentPostCountPipe:futureDeg.last_visit:userDetails.userID)>0" item-end class="counter">
+        <span>{{futureDeg.post|recentPostCountPipe:futureDeg.last_visit:userDetails.userID}}</span>
+            </span>
+        </ion-item>
+    </ion-item-group>
+
+    <ion-item-group *ngIf="degreeLength==0 && !searchActive">
+        <ion-item-divider class="subject-heading" color="light">
+            <img height="25px" width="25px" src="{{dataService.apiBaseUrl}}public/files/logo/degree.png" />Degrees</ion-item-divider>
+        <ion-item text-wrap>
+            You have not enrolled in any degree. Click + sign to enroll and join the conversation.
+        </ion-item>
+    </ion-item-group>
+
+</ion-content>
+<ion-grid class="my-overlay" *ngIf="showOverlay">
+    <ion-row justify-content-center>
+        <ion-col (click)="onHideOverlay()">Don't Show Again</ion-col>
+    </ion-row>
+    <ion-row class="bg-transparent" *ngIf="searchType == 1">
+            <ion-col><img src="assets/imgs/subject-list-guide.png"></ion-col>
+        </ion-row>
+    <ion-row class="bg-transparent" *ngIf="searchType == 3">
+            <ion-col><img src="assets/imgs/college-list.png"></ion-col>
+        </ion-row>
+    <ion-row class="bg-transparent" *ngIf="searchType == 2">
+            <ion-col><img src="assets/imgs/degree-list.png"></ion-col>
+        </ion-row>
+</ion-grid>

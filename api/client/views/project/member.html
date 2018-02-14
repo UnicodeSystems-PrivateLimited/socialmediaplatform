@@ -1,0 +1,107 @@
+<div class="row">
+    <div class="col-md-12">
+        <!-- USERS LIST -->
+        <div class="box box-info">
+            <div class="box-header with-border">
+                <button class="btn btn-primary " (click)=addMemberForm(!isOpen)><i class="fa fa-user-plus"></i> Add Member</button>
+
+                <div class="box-tools pull-right">
+                    <span class="label label-danger">8 New Members</span>
+                    <button data-widget="collapse" class="btn btn-box-tool" type="button"><i class="fa fa-minus"></i>
+                    </button>
+                    <button data-widget="remove" class="btn btn-box-tool" type="button"><i class="fa fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body no-padding">
+                <ul class="users-list clearfix proj-member-lists">
+                    <li *ngFor="#member of members">
+                        <div class="box box-default proj-member-box">
+                            <div class="box-header with-border  proj-member-head">
+                                <img class="img-circle member-img" src="theme/dist/img/user2-160x160.jpg" alt="User Image">
+                                <div class="pm-head-layout">
+                                    <span class="member-name" *ngIf="member.user">{{member.user.name}}</span>
+                                    <span class="member-designation">{{member.role}}</span>
+                                </div>
+                            </div>
+                            <!-- /.box-header -->
+                            <div class="box-body">
+                                <ul class="proj-member-details">
+                                    <li><i class="fa fa-user text-blue"></i> Username</li>
+                                    <li *ngIf="member.user"><i class="fa fa-envelope-o text-blue"></i> {{member.user.local.email}}</li>
+                                </ul>
+                                <!-- /.col -->
+                                <!-- /.row -->
+                            </div>
+                            <!-- /.box-body -->
+                            <div class="box-footer no-padding proj-member-bottom">
+                                <ul class="nav nav-pills nav-stacked row">
+                                    <li class="col-sm-6"><a href="#">Some Deatail </a></li>
+                                    <li class="col-sm-6"><a href="#">Some Deatail</a></li>
+                                </ul>
+                            </div>
+                            <!-- /.footer -->
+                        </div>
+                        <!-- /.box -->
+                    </li>
+                </ul>
+                <!-- /.users-list -->
+            </div>
+            <!-- /.box-body -->
+            <!--                <div class="box-footer text-center">
+                                                      <a class="uppercase" href="javascript::">View All Users</a>
+                                                    </div>-->
+            <!-- /.box-footer -->
+        </div>
+        <!--/.box -->
+    </div>
+    <!-- /.col -->
+</div>
+
+<!--start member sidebar form-->
+
+
+<!-- The Right Sidebar -->
+<aside class="control-sidebar control-sidebar-light member-control-sidebar" [class.control-sidebar-open]="isOpen">
+
+    <div class="box box-info">
+        <div class="box-header with-border">
+            <h3 class="box-title">Add Member Details</h3>
+        </div>
+        <!-- /.box-header -->
+        <!-- form start -->
+        <form class="form">
+            <div class="box-body">
+                <div class="form-group">
+                    {{diagnostic}}
+                    <label>Select Name</label>
+                    <select class="form-control js-name-multiple" multiple="multiple" [(ngModel)]="memToAdd.memIds">
+                        <option *ngFor="#nonMember of nonMembers" value="{{nonMember._id}}">{{nonMember.name}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Select Role</label>
+                    <select class="form-control js-role-single " [(ngModel)]="memToAdd.role">
+                        <option *ngFor="#role of roles" value="{{role._id}}">{{role.name}}</option>
+                    </select>
+                </div>
+            </div>
+            <!-- /.box-body -->
+            <div class="box-footer">
+                <button type="submit" class="btn btn-default" (click)=addMemberForm(!isOpen)>Cancel</button>
+                <button type="submit" class="btn btn-info pull-right"><i class="fa fa-plus-circle"></i>&nbsp;Add</button>
+            </div>
+            <!-- /.box-footer -->
+        </form>
+    </div>
+    <!-- /.box -->
+    <!-- Content of the sidebar goes here -->
+</aside>
+<!-- The sidebar's background -->
+<!-- This div must placed right after the sidebar for it to work-->
+<div class="control-sidebar-bg"></div>
+
+
+
+<!--end member sidebar form-->

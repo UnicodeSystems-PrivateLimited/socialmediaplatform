@@ -1,0 +1,34 @@
+<!--
+  Generated template for the CreateListModal page.
+
+  See http://ionicframework.com/docs/v2/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar class="gradient">
+    <ion-title>Create List</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-item>
+        <ion-label stacked>Enter list name</ion-label>
+        <ion-input type="text" [(ngModel)]="listData.title"></ion-input>
+      </ion-item>
+    </ion-row>
+  </ion-grid>
+
+
+  <ion-row margin-vertical class="share-btn">
+    <ion-col col-6 no-padding text-center>
+      <button ion-button text-uppercase *ngIf="!listId" color="primary" (click)="addList()">Add</button>
+      <button ion-button text-uppercase *ngIf="listId" color="primary" (click)="editList()">Update</button>
+    </ion-col>
+    <ion-col col-6 no-padding text-uppercase text-center>
+      <button ion-button text-uppercase color="dark-blue" (click)="dismiss()">Cancel</button>
+    </ion-col>
+  </ion-row>
+</ion-content>

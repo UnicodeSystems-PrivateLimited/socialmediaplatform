@@ -1,0 +1,78 @@
+page-event-view {
+    .toolbar-background-ios {
+        border: none;
+    }
+    .header {
+        &::after {
+            background-image: none;
+            height: 0;
+        }
+        .header-title {
+            margin: 0;
+        }
+        .toolbar {
+            min-height: 54px;
+        }
+    }
+    .content {
+        background-color: #dfdfdf;
+        .search-friend {
+            background-color: #f0eced;
+            position: relative;
+            .item-inner {
+                border: none;
+            }
+            .label {
+                margin: 0;
+            }
+            .searchbar {
+                padding: 0;
+                .searchbar-input-container {
+                    .searchbar-input {
+                        background-color: transparent;
+                        box-shadow: none;
+                        padding: 6px 34px;
+                    }
+                }
+                .searchbar-search-icon {
+                    top: 10px;
+                    left: 0;
+                }
+            }
+        }
+        .header-filter {
+            background-color: #fff;
+            margin: 0 5px 10px;
+            .item {
+                padding: 0;
+                text-align: center;
+                background-color: transparent;
+                color: #868686;
+                .item-inner {
+                    border: none;
+                    padding: 0;
+                    font-size: 12px;
+                }
+                .label {
+                    margin: 13px 0;
+                }
+            }
+            .icon,
+            i {
+                display: block;
+                font-size: 20px;
+            }
+            span {
+                display: block;
+            }
+            .arrow-slide {
+                align-items: center;
+                display: flex;
+                max-width: 30px;
+            }
+            .filter-active {
+                color: #ff7b2b;
+            }
+        }
+    }
+}

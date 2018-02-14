@@ -1,0 +1,81 @@
+<!--
+  Generated template for the ChatDesc page.
+
+  See http://ionicframework.com/docs/v2/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<!--
+  Generated template for the Chat page.
+
+  See http://ionicframework.com/docs/v2/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar class="gradient">
+    <ion-list>
+      <ion-item  *ngIf="chatGlobalService.cBuddy && chatGlobalService.cBuddy.user ">
+          <ion-avatar item-left>
+              <img *ngIf="chatGlobalService.cBuddy.user.photo" src="{{dataService.apiBaseUrl}}public/files/ProfilePicture/{{chatGlobalService.cBuddy?.user.photo}}">
+              <img *ngIf="!chatGlobalService.cBuddy.user.photo" src="{{dataService.apiBaseUrl}}public/files/ProfilePicture/no_image.png">
+            </ion-avatar>
+            <ion-label>
+              <h2>{{chatGlobalService.cBuddy.user.fname}}</h2>
+              <h2 *ngIf="chatGlobalService.cBuddy?.status == 1">Online</h2>
+              <h2 *ngIf="chatGlobalService.cBuddy?.status == 0">Offline</h2>
+            </ion-label>
+      </ion-item>
+    </ion-list>
+    <!--<ion-buttons end>
+      <button ion-button icon-only (click)="presentPopover($event)">
+        <ion-icon name="more"></ion-icon>
+      </button>
+    </ion-buttons>-->
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+    <ion-spinner icon="spiral" *ngIf="loader"></ion-spinner>
+    <div *ngIf="!loader">
+     <div *ngIf="chatGlobalService.cBuddy && chatGlobalService.cBuddy.user">
+       
+      <ion-item *ngFor="let msgh of chatGlobalService.defaultHistory[chatGlobalService.clientPref + chatGlobalService.cBuddy.id]?.messages" class="direct-chat-msg" [class.direct-chat-msg-bg]="msgh.to['_id'] == chatGlobalService.userIdGlobal">
+          <!--<ion-avatar item-left *ngIf="msgh.from && msgh.from.photo">
+              <img *ngIf="msgh.from._id==cBuddy.id && cBuddy.user " src="{{dataService.apiBaseUrl}}public/files/ProfilePicture/{{cBuddy?.user.photo}}">
+              <img *ngIf="msgh.from._id!=cBuddy.id" src="{{dataService.apiBaseUrl}}public/files/ProfilePicture/{{msgh?.from.photo}}">
+            </ion-avatar>-->
+          <!--<ion-avatar item-left *ngIf="msgh.from && !msgh.from.photo">
+              <img src="{{dataService.apiBaseUrl}}public/files/ProfilePicture/no_image.png" >
+            </ion-avatar>-->
+            <h2 [class.pre-chat-text]="msgh.from._id!=chatGlobalService.cBuddy.id" [class.post-chat-text]="msgh.from._id==chatGlobalService.cBuddy.id"> <span class="pre-msg"><span text-left>{{msgh?.body}}</span> <span class="msg-time">{{msgh?.date | datetimefilterpipe}}</span></span></h2>
+      </ion-item>
+      <div *ngIf="chatGlobalService.textBoxes.inBoxes[chatGlobalService.clientPref + chatGlobalService.cBuddy.id] && chatGlobalService.textBoxes.inBoxes[chatGlobalService.clientPref + chatGlobalService.cBuddy.id].length > 0">
+      <ion-item *ngFor="let msg of chatGlobalService.textBoxes.inBoxes[chatGlobalService.clientPref + chatGlobalService.cBuddy.id]"  class="direct-chat-msg"  [class.direct-chat-msg-bg]="msg.self == true">
+        <h2 [class.pre-chat-text]="msg.from!=chatGlobalService.cBuddy.id" [class.post-chat-text]="msg.from==chatGlobalService.cBuddy.id" *ngIf="msg.data.body"><span class="pre-msg"><span text-left>{{msg.data.body}} </span><span class="msg-time">{{msg?.date | datetimefilterpipe}}</span></span></h2>
+      </ion-item>
+      </div>
+      </div>
+    </div>
+</ion-content>
+
+
+<ion-footer>
+  <ion-toolbar>
+    <form>
+      <ion-row class="align-center">
+        <ion-col width-60>
+          <input (keypress)="chatInputAction($event)" *ngIf="chatGlobalService.cBuddy && chatGlobalService.cBuddy.user" [(ngModel)]="chatGlobalService.textBoxes.outBoxes[chatGlobalService.clientPref+chatGlobalService.cBuddy.id].text" class="messageDraft" type="text" name="message" placeholder="Type a message">
+        </ion-col>
+        <ion-col width-20 center text-center>
+          <ion-buttons>
+            <button (click)="sendData()" type="submit" ion-button icon-only >
+               <ion-icon  name="send"></ion-icon>
+            </button>
+          </ion-buttons>
+        </ion-col>
+      </ion-row>
+    </form>
+  </ion-toolbar>
+</ion-footer>

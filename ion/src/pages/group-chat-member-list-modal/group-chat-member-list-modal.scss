@@ -1,0 +1,36 @@
+page-group-chat-member-list-modal {
+  .header {
+    &::after {
+      background: none;
+      height: 0;
+    }
+    .header-title {
+      margin: 0;
+    }
+    .toolbar {
+      padding: 0;
+      min-height: 40px;
+      .toolbar-background {
+        border: none;
+      }
+    }
+  }
+  ion-col div {
+    background-color: #F9FAFB;
+    padding: 5px;
+    border: 1px solid #ddd;
+    background-color: #f0f5ff;
+    border: 1px solid #e6e9ee;
+    border-radius: 2px;
+    padding: 5px;
+    text-align: center;
+  }
+  .remove-member {
+    background-color: transparent;
+    box-shadow: none;
+    i {
+      color: #4d6d80;
+      font-size: 20px;
+    }
+  }
+}

@@ -1,0 +1,81 @@
+page-custom-share-modal {
+    .header-md::after {
+        background: none !important;
+        height: 0;
+    }
+    .gradient {
+        h1 {
+            margin: 0 !important;
+        }
+    }
+    .content {
+        background-color: #dfdfdf;
+        .search-friend {
+            padding: 0;
+            .searchbar-input {
+                background-color: #f0eced;
+            }
+            .item-inner {
+                padding: 0;
+                .label {
+                    margin: 0;
+                }
+                .searchbar {
+                    padding: 0;
+                }
+            }
+        }
+        .scroll-content {
+            background: #dfdfdf;
+            .item {
+                background-color: transparent;
+            }
+        }
+        ion-list-header {
+            border-bottom: 1px solid #e0dede !important;
+            background: #f0eced !important;
+        }
+    }
+    .customshare-list {
+        ion-item {
+            h4 {
+                font-size: 13px;
+                color: #4a4f5c;
+                margin: 0;
+            }
+            p {
+                font-size: 10px;
+                color: #a0a6b4;
+                margin-top: 2px;
+            }
+            .item-button {
+                padding: 0 1.1em;
+                height: 3.6rem;
+            }
+        }
+        .checkbox {
+            margin: 9px 12px 9px 4px !important;
+            .checkbox-icon {
+                border-radius: 50%;
+                border-width: 1px;
+            }
+            .checkbox-inner {
+                top: 1px;
+            }
+        }
+        ion-list-header .item-input ion-input {
+            color: #3a444b;
+        }
+        ion-list-header ion-icon {
+            color: #3a444b;
+        }
+    }
+    .custom-share-btn {
+        .item-inner {
+            border: none;
+        }
+        .label {
+            margin: 0;
+        }
+    }
+}

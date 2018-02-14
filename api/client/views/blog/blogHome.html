@@ -1,0 +1,122 @@
+<style>
+
+
+    :host(.page1Container) {
+        display: inline-block;
+
+        width: 100%;
+        -webkit-transition: all cubic-bezier(0, 0, 0.39, 1.07) 0.2s;
+        transition: all cubic-bezier(0, 0, 0.39, 1.07) 0.2s;
+    }
+
+    :host(.page1Container.ng-enter) {
+        opacity: 0;
+       transform: translate3d(100%, 0, 0);
+    }
+
+    :host(.page1Container.ng-enter-active) {
+        opacity: 1;
+        transform: none;
+    }
+
+</style>
+
+<div class="custom1-modal layout-column" (window:scroll)="onScrollList($event)">
+    <div class="custom1-modal-header layout-row layout-align-space-between">
+        <div class="h3 header-title">Blog</div>
+        <div class="header-options layout-row">
+            <div class="modal-option option1 layout-row layout-align-center-center">
+                <!--                <i class="fa fa-plus-square c-green" aria-hidden="true"></i>
+                                <span class="btn-title">Create New</span>-->
+            </div>
+            <div class="modal-option option2 layout-row layout-align-center-center">
+                <!--                <i class="fa fa-cog"></i>
+                                <span class="btn-title">Option</span>-->
+            </div>
+        </div>
+    </div>
+    <div class="custom1-modal-body layout-row layout-align-space-between layout-xs-column">
+        <div class="layout-column flex-65 flex-xs-100 flex-order-xs-1" *ngIf="blog && !blogbyCategory">
+            <ul class="blog-post-list" *ngFor="#blogs of blog">
+                <li>
+                    <h3 [routerLink]="['Blog.post',{id:blogs._id}]" class="blog-post-title" >{{blogs.title}}</h3>
+                    <ul class="blog-post-meta" >
+                        <li class="meta-active">
+                            <i class="fa fa-calendar" aria-hidden="true"></i>
+                            <span class="post-date" *ngIf="blogs.created_on">{{blogs.created_on | amDateFormat:'LL'}}</span>
+                        </li>
+                        <li>
+                            <span class="post-meta-head">Category: </span>
+                            <span class="post-meta-title" *ngIf="blogs.category_id">{{blogs.category_id.title}}</span>
+                            <span class="post-meta-title" *ngIf="!blogs.category_id">No Category</span>
+                        </li>
+
+                    </ul>
+                    <div class="blog-post-content-body" *ngIf="blogs.body">
+                        <div [innerHTML]="blogs.body | slice:0:500 "></div>
+                    </div>
+                    
+                    <a class="btn read-more-btn" [routerLink]="['Blog.post',{id:blogs._id}]">READ MORE..</a>
+                </li>
+            </ul>
+        </div>
+        <div class="layout-column flex-65 flex-xs-100" *ngIf="blogbyCategory">
+            <ul class="blog-post-list" *ngFor="#blogs of blogbyCategory">
+                <li>
+                    <h3 [routerLink]="['Blog.post',{id:blogs._id}]" class="blog-post-title" >{{blogs.title}}</h3>
+                    <ul class="blog-post-meta" >
+                        <li class="meta-active">
+                            <i class="fa fa-calendar" aria-hidden="true"></i>
+                            <span class="post-date" *ngIf="blogs.created_on">{{blogs.created_on | amDateFormat:'LL'}}</span>
+                        </li>
+                        <li>
+                            <span class="post-meta-head">Category: </span>
+                            <span class="post-meta-title" *ngIf="blogs.category_id">{{blogs.category_id.title}}</span>
+                            <span class="post-meta-title" *ngIf="!blogs.category_id">No Category</span>
+                        </li>
+                    </ul>
+                    <div class="blog-post-content-body" *ngIf="blogs.body">
+                        <div [innerHTML]="blogs.body | slice:0:500 "> {{blogs.body}}</div>
+                    </div>
+                    
+                    <a class="btn read-more-btn" [routerLink]="['Blog.post',{id:blogs._id}]">READ MORE..</a>
+                </li>
+            </ul>
+        </div>
+        <div class="layout-column flex-30 flex-xs-100 layout-xs-100">
+            <div class="box box-warning box-solid border blog-categories flex-xs-45" *ngIf="category">
+                <div class="box-header with-border box-header-bg border-radius-3px">
+                    <h3 class="box-title semi-bold">Blog Categories</h3>
+                    <!-- /.box-tools -->
+                </div><!-- /.box-header -->
+                <div class="box-body padding-0">
+                    <div class="">
+                        <ul class="clearfix blog-categories-list layout-column " >
+                            <li *ngFor="#cat of category" (click)="getBlogByCategoryId(cat._id)">{{cat.title}}</li>
+                            <li (click)="getBlogByCategoryId(null)">No Category</li>
+                        </ul>
+                    </div>
+                </div><!-- /.box-body -->
+            </div>
+            <div class="box box-warning box-solid border blog-recent-post flex-xs-45">
+                <div class="box-header with-border box-header-bg border-radius-3px">
+                    <h3 class="box-title semi-bold">Recent Post</h3>
+                    <!-- /.box-tools -->
+                </div><!-- /.box-header -->
+                <div class="box-body padding-0">
+                    <div class="" *ngIf="Recentblog">
+                        <ul class=" clearfix blog-recent-post-list" >
+                            <li *ngFor="#Recent of Recentblog">
+                                <div class="recent-post-list-title" [routerLink]="['Blog.post',{id:Recent._id}]"> {{Recent.title}}</div>
+                                <div class="recent-post-list-date"> {{Recent.created_on | amDateFormat:'LL'}} </div>
+
+                            </li>
+                        </ul>
+                    </div>
+                </div><!-- /.box-body -->
+            </div>
+
+
+        </div>
+    </div>
+</div>

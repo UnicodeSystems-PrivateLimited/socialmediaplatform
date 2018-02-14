@@ -1,0 +1,348 @@
+<!--
+  Generated template for the Events page.
+
+  See http://ionicframework.com/docs/v2/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header class="header gradient">
+  <ion-navbar>
+    <ion-row>
+      <ion-col width-80>
+        <ion-title>
+          <h1 class="header-title" text-center>Events</h1>
+        </ion-title>
+      </ion-col>
+      <ion-col width-20 text-right>
+        <button ion-button icon-only class="add-event-btn" (click)="openAddEvent()">
+          <ion-icon class="add-event" color="white" name="add-circle"  ></ion-icon>
+        </button>
+      </ion-col>
+    </ion-row>
+
+  </ion-navbar>
+  <ion-toolbar no-border-top>
+    <ion-segment [(ngModel)]="tab">
+      <ion-segment-button value="myEvent">
+        My Events
+      </ion-segment-button>
+      <ion-segment-button value="public">
+        Public
+      </ion-segment-button>
+      <ion-segment-button value="invited">
+        Invited
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="cards-bg">
+  <ion-grid class="search-container">
+    <ion-row no-padding>
+      <ion-col col-12 no-padding (click)="advancesearch()">
+        <ion-item>
+          <ion-icon name="search"></ion-icon> Advanced Search...
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="accordian" class="advance-search-item">
+      <ion-col col-12 no-padding>
+        <ion-item>
+          <ion-label fixed>Title</ion-label>
+          <ion-input type="text" value=""></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label>Joined &amp; not Joined</ion-label>
+          <ion-select (ngModelChange)="selectCatagory($event)" [(ngModel)]="catagory">
+            <ion-option value="1">Joined</ion-option>
+            <ion-option value="2">Not Joined</ion-option>
+          </ion-select>
+        </ion-item>
+        <ion-item>
+          <ion-label>Public &amp; Private</ion-label>
+          <ion-select (ngModelChange)="search_who_posted($event)" [(ngModel)]="who_posted">
+            <ion-option value="1">Public</ion-option>
+            <ion-option value="2">Private</ion-option>
+          </ion-select>
+        </ion-item>
+        <ion-item>
+          <ion-label>Short By</ion-label>
+          <ion-select (ngModelChange)="search_who_posted($event)" [(ngModel)]="who_posted">
+            <ion-option value="1">Latest Post</ion-option>
+            <ion-option value="2">Events Name</ion-option>
+            <ion-option value="3">Latest Created Events</ion-option>
+          </ion-select>
+        </ion-item>
+        <ion-item>
+          <ion-label>Short Order</ion-label>
+          <ion-select (ngModelChange)="search_who_posted($event)" [(ngModel)]="who_posted">
+            <ion-option value="1">Assending</ion-option>
+            <ion-option value="2">Dessending</ion-option>
+          </ion-select>
+        </ion-item>
+        <ion-item>
+          <ion-label>Select who Posted</ion-label>
+          <ion-select (ngModelChange)="search_who_posted($event)" [(ngModel)]="who_posted">
+            <ion-option value="1">Assending</ion-option>
+          </ion-select>
+        </ion-item>
+      </ion-col>
+      <ion-col width-50 class="advancesearch-btn">
+        <ion-item>
+          <button ion-text ion-button color="dark-blue" (click)="resetSearch()">Reset</button>
+        </ion-item>
+      </ion-col>
+      <ion-col width-50 text-right class="advancesearch-btn">
+        <ion-item>
+          <button ion-text ion-button color="primary" (click)="getAllTypeOfSearchPost()">Search</button>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <div [ngSwitch]="tab" class="main-content">
+    <ion-list *ngSwitchCase="'myEvent'">
+      <h2 class="event-section-heading">College Event</h2>
+      <ion-card>
+        <ion-card-content no-padding>
+          <ion-row class="post-header">
+            <ion-col width-50 no-padding>
+              <ion-item>
+                <ion-avatar item-left>
+                  <img src="../www/img/profile-pic.jpg" alt="User Image">
+                </ion-avatar>
+                <p> Posted By <strong>VT Tiwari</strong> </p>
+              </ion-item>
+            </ion-col>
+            <ion-col width-50 no-padding>
+              <ion-item class="notification">
+                <ion-badge item-end>6</ion-badge>
+                Unread Message
+              </ion-item>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col col-4>
+              <!-- photo -->
+              <div class="post-img">
+                <img src="../www/img/post.jpg" alt="Photo">
+              </div>
+            </ion-col>
+            <ion-col col-8>
+              <!--Post-shared-title-->
+              <div class="post-text-container">
+                <ion-row class="post-text">
+                  <ion-col>
+                    <span class="name" (click)="openeventview()">Club Mixer</span>
+                    <span class="small">Public/Mixer</span>
+                  </ion-col>
+                  <ion-col>
+                    <ion-list>
+                      <ion-item class="eventaction">
+                        <ion-select [(ngModel)]="eventAction">
+                          <ion-option value="1">Attending</ion-option>
+                          <ion-option value="2">Interested</ion-option>
+                          <ion-option value="3">Not Attending</ion-option>
+                        </ion-select>
+                      </ion-item>
+                    </ion-list>
+                  </ion-col>
+                </ion-row>
+                <span><i class="fa fa-map-marker" aria-hidden="true"></i> London Buckingham Palace</span>
+                <span><i class="fa fa-calendar" aria-hidden="true" style="font-size: 13px;"></i> 5/31/2017 to 6/31/2017</span>
+                <span><i class="fa fa-clock-o" aria-hidden="true"></i> 6pm to 9pm</span>
+              </div>
+            </ion-col>
+          </ion-row>
+          <ion-item class="description">
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam commodo et magna non hendrerit. Quisque venenatis
+              non nulla vitae posuere. Vivamus nec enim ligula.</p>
+          </ion-item>
+          <ion-row class="event-btn">
+            <ion-col col-4>
+              <button ion-button color="white" round>50 Attending</button>
+            </ion-col>
+            <ion-col col-4>
+              <button ion-button color="white" round>2 Interested</button>
+            </ion-col>
+            <ion-col col-4>
+              <button ion-button color="white" round>16 Not Attending</button>
+            </ion-col>
+          </ion-row>
+        </ion-card-content>
+        <ion-row class="card-footer">
+          <ion-col col-9>
+            <p><a>Dipan</a>, <a>Harvey</a>, <a>Gaurav</a> and more friend are attending...</p>
+          </ion-col>
+          <ion-col col-3 text-right class="invite-btn">
+            <button ion-button icon-left clear small>
+              <div>Invite</div>
+            </button>
+          </ion-col>
+        </ion-row>
+      </ion-card>
+    </ion-list>
+
+    <ion-list *ngSwitchCase="'public'">
+      <h2 class="event-section-heading">College Event</h2>
+      <ion-card>
+        <ion-card-content no-padding>
+          <ion-row class="post-header">
+            <ion-col width-50 no-padding>
+              <ion-item>
+                <ion-avatar item-left>
+                  <img src="../www/img/profile-pic.jpg" alt="User Image">
+                </ion-avatar>
+                <p> Posted By <strong>VT Tiwari</strong> </p>
+              </ion-item>
+            </ion-col>
+            <ion-col width-50 no-padding>
+              <ion-item class="notification">
+                <ion-badge item-end>6</ion-badge>
+                Unread Message
+              </ion-item>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col col-4>
+              <!-- photo -->
+              <div class="post-img">
+                <img src="../www/img/post.jpg" alt="Photo">
+              </div>
+            </ion-col>
+            <ion-col col-8>
+              <!--Post-shared-title-->
+              <div class="post-text-container">
+                <ion-row class="post-text">
+                  <ion-col>
+                    <span class="name" (click)="openeventview()">Club Mixer</span>
+                    <span class="small">Public/Mixer</span>
+                  </ion-col>
+                  <ion-col>
+                    <ion-list>
+                      <ion-item class="eventaction">
+                        <ion-select [(ngModel)]="eventAction">
+                          <ion-option value="1">Attending</ion-option>
+                          <ion-option value="2">Interested</ion-option>
+                          <ion-option value="3">Not Attending</ion-option>
+                        </ion-select>
+                      </ion-item>
+                    </ion-list>
+                  </ion-col>
+                </ion-row>
+                <span><i class="fa fa-map-marker" aria-hidden="true"></i> London Buckingham Palace</span>
+                <span><i class="fa fa-calendar" aria-hidden="true" style="font-size: 13px;"></i> 5/31/2017 to 6/31/2017</span>
+                <span><i class="fa fa-clock-o" aria-hidden="true"></i> 6pm to 9pm</span>
+              </div>
+            </ion-col>
+          </ion-row>
+          <ion-item class="description">
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam commodo et magna non hendrerit. Quisque venenatis
+              non nulla vitae posuere. Vivamus nec enim ligula.</p>
+          </ion-item>
+          <ion-row class="event-btn">
+            <ion-col col-4>
+              <button ion-button color="white" round>50 Attending</button>
+            </ion-col>
+            <ion-col col-4>
+              <button ion-button color="white" round>2 Interested</button>
+            </ion-col>
+            <ion-col col-4>
+              <button ion-button color="white" round>16 Not Attending</button>
+            </ion-col>
+          </ion-row>
+        </ion-card-content>
+        <ion-row class="card-footer">
+          <ion-col col-9>
+            <p><a>Dipan</a>, <a>Harvey</a>, <a>Gaurav</a> and more friend are attending...</p>
+          </ion-col>
+          <ion-col col-3 text-right class="invite-btn">
+            <button ion-button icon-left clear small>
+              <div>Invite</div>
+            </button>
+          </ion-col>
+        </ion-row>
+      </ion-card>
+    </ion-list>
+
+    <ion-list *ngSwitchCase="'invited'">
+      <h2 class="event-section-heading">College Event</h2>
+      <ion-card>
+        <ion-card-content no-padding>
+          <ion-row class="post-header">
+            <ion-col width-50 no-padding>
+              <ion-item>
+                <ion-avatar item-left>
+                  <img src="../www/img/profile-pic.jpg" alt="User Image">
+                </ion-avatar>
+                <p> Posted By <strong>VT Tiwari</strong> </p>
+              </ion-item>
+            </ion-col>
+            <ion-col width-50 no-padding>
+              <ion-item class="notification">
+                <ion-badge item-end>6</ion-badge>
+                Unread Message
+              </ion-item>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col col-4>
+              <!-- photo -->
+              <div class="post-img">
+                <img src="../www/img/post.jpg" alt="Photo">
+              </div>
+            </ion-col>
+            <ion-col col-8>
+              <!--Post-shared-title-->
+              <div class="post-text-container">
+                <ion-row class="post-text">
+                  <ion-col>
+                    <span class="name" (click)="openeventview()">Club Mixer</span>
+                    <span class="small">Public/Mixer</span>
+                  </ion-col>
+                  <ion-col>
+                    <ion-list>
+                      <ion-item class="eventaction">
+                        <ion-select [(ngModel)]="eventAction">
+                          <ion-option value="1">Attending</ion-option>
+                          <ion-option value="2">Interested</ion-option>
+                          <ion-option value="3">Not Attending</ion-option>
+                        </ion-select>
+                      </ion-item>
+                    </ion-list>
+                  </ion-col>
+                </ion-row>
+                <span><i class="fa fa-map-marker" aria-hidden="true"></i> London Buckingham Palace</span>
+                <span><i class="fa fa-calendar" aria-hidden="true" style="font-size: 13px;"></i> 5/31/2017 to 6/31/2017</span>
+                <span><i class="fa fa-clock-o" aria-hidden="true"></i> 6pm to 9pm</span>
+              </div>
+            </ion-col>
+          </ion-row>
+          <ion-item class="description">
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam commodo et magna non hendrerit. Quisque venenatis
+              non nulla vitae posuere. Vivamus nec enim ligula.</p>
+          </ion-item>
+          <ion-row class="event-btn">
+            <ion-col col-4>
+              <button ion-button color="white" round>50 Attending</button>
+            </ion-col>
+            <ion-col col-4>
+              <button ion-button color="white" round>2 Interested</button>
+            </ion-col>
+            <ion-col col-4>
+              <button ion-button color="white" round>16 Not Attending</button>
+            </ion-col>
+          </ion-row>
+        </ion-card-content>
+        <ion-row class="card-footer">
+          <ion-col col-9>
+            <p><a>Dipan</a>, <a>Harvey</a>, <a>Gaurav</a> and more friend are attending...</p>
+          </ion-col>
+          <ion-col col-3 text-right class="invite-btn">
+            <button ion-button icon-left clear small>
+              <div>Invite</div>
+            </button>
+          </ion-col>
+        </ion-row>
+      </ion-card>
+    </ion-list>
+  </div>
+</ion-content>

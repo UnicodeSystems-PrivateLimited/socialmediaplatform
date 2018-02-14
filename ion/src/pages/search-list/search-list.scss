@@ -1,0 +1,171 @@
+page-search-list {
+  .header {
+    &::after {
+      background-image: none;
+      height: 0;
+    }
+    .toolbar {
+      min-height: 49px;
+      .toolbar-title {
+        padding: 0;
+        .header-title {
+          margin: 0;
+        }
+      }
+      .toolbar-background {
+        background: #f3843e;
+        background: -webkit-linear-gradient(left, #f33e3e 0%, #f3843e 100%);
+        background: -o-linear-gradient(left, #f33e3e 0%, #f3843e 100%);
+        background: linear-gradient(to right, #f33e3e 0%, #f3843e 100%);
+        filter: progid:DXImageTransform.Microsoft.gradien(tartColorstr='#f33e3e', endColorstr='#f3843e', GradientType=1);
+      }
+      .grid,
+      .col {
+        padding: 0 5px;
+      }
+      .item {
+        background-color: transparent;
+        padding-left: 0;
+        min-height: 2.4rem;
+        .item-inner {
+          border: none;
+        }
+        .label {
+          margin: 9px 8px 9px 0;
+        }
+      }
+      .menu-toggle {
+        padding: 0;
+      }
+      .searchbar-ios {
+        margin-top: -8px;
+      }
+      .header-icon {
+        text-align: right;
+        padding-right: 0;
+        top: 4px;
+        position: absolute;
+        width: 115px;
+        right: 0;
+        z-index: 10;
+        .label {
+          display: flex;
+          justify-content: space-between;
+          margin: 0;
+        }
+        .icon,
+        i {
+          font-size: 20px;
+          margin-top: 0px;
+          margin-bottom: 0px;
+          margin-right: 7px;
+          position: relative;
+          line-height: 40px;
+        }
+        .badge {
+          background-color: rgb(245, 61, 61);
+          position: absolute;
+          top: 0px;
+          left: 6px;
+          border-radius: 50%;
+          width: 14px;
+          height: 14px;
+          margin: 0;
+          font-size: 10px;
+          padding: 0;
+          align-items: center;
+          display: flex;
+          -webkit-justify-content: center;
+          -ms-flex-pack: center;
+          justify-content: center;
+        }
+      }
+      .bar-button-default {
+        color: #fff;
+        height: 25px;
+        float: left;
+      }
+      .bar-button-menutoggle {
+        min-width: 26px;
+        padding-right: 0;
+      }
+      .header-title {
+        font-size: 24px;
+        margin: 15px 0;
+      }
+      ion-searchbar {
+        width: 100%;
+        float: left;
+        height: 28px;
+      }
+      .searchbar-input-container {
+        border: none;
+        .searchbar-search-icon {
+          background-image: url("../img/search.svg");
+          background-size: 25px;
+          height: 25px;
+          top: 2px;
+          width: 25px;
+        }
+        .ion-search {
+          margin-left: 20px;
+        }
+        .item {
+          background-color: transparent;
+          box-shadow: none;
+        }
+        .itemd.item-block .item-inner {
+          border: none;
+        }
+        .searchbar-input {
+          background-color: transparent;
+          box-shadow: none;
+          padding: 6px 6px 6px 36px;
+          color: #fff;
+        }
+      }
+      .searchbar-md .searchbar-search-icon {
+        top: 8px;
+        left: 0;
+      }
+      .toolbar-background-ios {
+        border: none;
+      }
+       ::-webkit-input-placeholder {
+        color: #fff;
+        opacity: 0;
+      }
+       ::-moz-placeholder {
+        color: #fff;
+        opacity: 0;
+      }
+       :-ms-input-placeholder {
+        color: #fff;
+        opacity: 0;
+      }
+       :-moz-placeholder {
+        color: #fff;
+        opacity: 0;
+      }
+    }
+  }
+  .content {
+    background-color: #dfdfdf;
+    .item {
+      background-color: transparent;
+      border-bottom: 1px solid #bdbdbd;
+
+    }
+    .header-search-list {
+      background-color: #f0eced !important;
+      position: relative;
+      border-bottom: 1px solid #c0c0c0;
+      box-shadow: 0 0 1px #d5d5d5;
+    }
+    .search-all {
+      color: #e7783b;
+      border-bottom: none;
+      font-weight: bold;
+    }
+  }
+}

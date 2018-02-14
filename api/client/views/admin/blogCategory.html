@@ -1,0 +1,151 @@
+<div class="master-setting-page">
+    <div class="custom1-modal-header layout-row layout-align-space-between m-b-20">
+        <div class="h3 header-title">Blog Category</div>
+        <div class="header-options layout-row">
+            <div class="spinner-lazy-block myload" *ngIf="contentLoding">
+                <div class="spinner-lazy">
+                    <div class="bounce1"></div>
+                    <div class="bounce2"></div>
+                    <div class="bounce3"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="table-body">
+
+        <div class="serch-area flex-100 layout-row layout-align-space-between" >
+            <div class="flex-80">
+                <form (ngSubmit)="getCategory($event)">
+                    <div class="input-group flex-30">
+                        <input class="form-control" type="text" placeholder="Filter" [(ngModel)]="categoriesName.name"/>
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="submit">Go!</button>
+                        </span>
+                    </div>
+                    <span class="error_file_message">{{errorSearch}}</span>
+                </form>    
+            </div>
+            <div class="flex-20 layout-row layout-align-end-start">
+                <button class="add-btn-detail" id="detailBtn2" data-toggle="modal">ADD</button>
+            </div>
+        </div>
+
+        <div class="">
+
+
+            <table id="example2" class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>S.No</th>
+
+                        <th>Category</th>
+
+                        <th class="width-10">Edit</th>
+                        <th class="width-10">Delete</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+
+
+
+                    <tr *ngFor="#cat of category;#i=index">
+                        <td>{{i+1}}</td>
+
+                        <td>{{cat.title}}</td>
+                        <td><span class="row-edit-btn" id="updateBtn{{cat._id}}" data-toggle="modal" (click)="updateId(cat._id,cat.title)"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></span></td>
+                        <td> <span class="row-del-btn" (click)="deleteCategoryById(cat._id)"> <i class="fa fa-trash" aria-hidden="true"></i></span></td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+        <!--<pagination *ngIf="config.paging"
+                    class="pagination-sm"
+                    [(ngModel)]="page"
+                    [totalItems]="length"
+                    [itemsPerPage]="itemsPerPage"
+                    [maxSize]="maxSize"
+                    [boundaryLinks]="true"
+                    [rotate]="false"
+                    (pageChanged)="onChangeTable(config, $event)"
+                    (numPages)="numPages = $event">
+        </pagination>-->
+        <!--<pre *ngIf="config.paging" class="card card-block card-header">Page:  / </pre>-->
+        <!--<nav class="layout-row layout-align-center-center">
+                    <ul class="pagination" >
+                        <li class="page-item disabled">
+                            <a class="page-link"  aria-label="Previous" (click)="getAllCategoryPaginationPrevious()">
+                                <span aria-hidden="true">&laquo;&nbsp;Previous</span>
+                                <span class="sr-only">Previous</span>
+                            </a>
+                        </li>
+        
+                            <li class="page-item active">
+                                <a class="page-link" >1 <span class="sr-only">(current)</span></a>
+                            </li>    
+                            <li class="page-item"><a class="page-link" (click)="getAllSubjectPagination(2)">2</a></li>
+                            <li class="page-item"><a class="page-link" (click)="getAllSubjectPagination(3)">3</a></li>
+                            <li class="page-item"><a class="page-link" >4</a></li>
+                            <li class="page-item"><a class="page-link" >5</a></li>
+                        <li class="page-item" >
+                            <a class="page-link" aria-label="Next" (click)="getAllCategoryPaginationNext()">
+                              <span aria-hidden="true">Next&nbsp;&raquo;</span>
+                                <span class="sr-only">Next</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>-->
+
+
+
+
+    </div>
+</div>
+<div class="modal fade " id = "detailModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"  (click)="clearDetailModal()"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Add </h4>
+            </div>
+            <div class="modal-body setting-page ">
+
+                <div class="modal-body setting-page flex-100 layout-row">
+                    <label class="flex-20 layout-row layout-align-center-center">Cateogry</label>
+                    <input class="flex-70 pad-5-10" placeholder="Category" type="text" [(ngModel)]="title.title" />
+                </div>
+                <span class="error_file_message">{{errorAddCategory}}</span>
+            </div>
+            <div class="modal-footer">
+                <button class="add-btn cancel-btn" data-dismiss="modal" (click)="clearDetailModal()">Cancel</button>
+                <button class="add-btn" (click)="addCatagory()">Add</button>
+            </div>
+
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+<div class="modal fade " id = "EditdetailModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Edit Detail </h4>
+            </div>
+
+            <div class="modal-body setting-page flex-100 layout-row">
+                <label class="flex-20 layout-row layout-align-center-center">Category</label>
+                <input class="flex-70 pad-5-10" placeholder="Category" type="text" [(ngModel)]="title.title" value="{{title.title}}"/>
+            </div>
+            <span class="error_file_message">{{errorEditCategory}}</span>
+            <div class="modal-footer">
+                <button class="add-btn cancel-btn" data-dismiss="modal">Cancel</button>
+                <button class="add-btn" (click)="editCatagory()">Update</button>
+            </div>
+
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>

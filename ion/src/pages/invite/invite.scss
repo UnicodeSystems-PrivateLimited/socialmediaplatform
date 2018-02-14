@@ -1,0 +1,105 @@
+page-invite {
+     .header {
+        &::after {
+            background: none;
+            height: 0;
+        }
+        .header-title {
+            margin: 0;
+        }
+        .toolbar {
+            padding: 0;
+            min-height: 40px;
+            .toolbar-background {
+                border: none;
+            }
+        }
+        ion-navbar.toolbar {
+            min-height: 54px;
+        }
+        .segment {
+            .segment-button {
+                color: #fff;
+                border-bottom: 4px solid transparent;
+                opacity: 1;
+                height: 4.2rem;
+                i {
+                    font-size: 18px;
+                    line-height: 2rem;
+                    vertical-align: middle;
+                }
+            }
+            .segment-button.segment-activated {
+                border-bottom: 4px solid #feb101;
+            }
+        }
+        .toolbar-ios .segment-button {
+            max-width: initial !important;
+            line-height: 5.4rem;
+            height: 5.2rem;
+        }
+        .font-size-24 {
+            font-size: 24px !important;
+        }
+    }
+    .scroll-content{
+        padding: 0 4px !important; 
+    }
+    .card-content{
+        padding: 0px 0px 14px;
+    }
+    .member-list{
+        ion-col{
+          padding: 5px 4px;
+            &:nth-child(2n+1){
+                padding: 5px 0px 5px 14px;
+            }
+        }
+        .item{
+            padding-left: 0;
+            font-size: 1.5rem;
+            .checkbox-md{
+                margin: 9px 6px 9px 2px;
+                
+            }
+           
+        }
+       
+    }
+    .label-md {
+        margin: 9px 8px 9px 0;
+    }
+
+    .title-label{
+        min-height: 3rem;
+        ion-label{
+            margin: 8px  8px 2px 0px;
+        }
+    }
+
+    .external{
+        margin-bottom: 20px;
+    }
+
+    .item{
+        .item-button{
+            padding: 0 1.2rem;
+            height: 3.6rem;
+            font-size: 1.4rem;
+        }
+        .searchbar-md{
+            padding-left: 1px;
+        }
+    }
+
+    .external-card{
+        .item{
+            ion-label{
+                overflow: inherit; 
+                text-overflow: inherit; 
+                white-space: normal;
+            }
+        }
+    }
+    
+}

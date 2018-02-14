@@ -1,0 +1,64 @@
+<div class="account-bg fix-background">
+
+<div class="account-header">
+        <div class="header-logo">Student<span>Network</span></div>
+    </div>
+    <div class="login-box page-wrap">
+    <div class="custom1-modal-header layout-row layout-align-center-center custom-style">
+        <div class="h3 header-title">Contact Us</div>
+        <div class="header-options layout-row">
+
+        </div>
+    </div>
+       
+                <div class=" tab-pane active " id="Account_settings" [class.showtab]="tAccount_settings"  [class.hidetab]="!tAccount_settings">
+
+                    <div class="layout-row layout-align-space-between layout-wrap layout-xs-column fix-form" (click)="hideSearchResult()">
+                        <div class="account-info flex-100 flex-sm-70 flex-xs-100 layout-column ">
+                            <div class="layout-column m-b-20 padding-25" *ngIf="!(type=='Facebook' || type=='Google')">
+    
+                                <div class="center layout-row layout-align-center-center m-b-20">
+                                    <span class="flex-15 layout-align-start-center layout-row f-w-b">Name</span>
+                                    <input class="form-control flex-80 flex-xs-80" id="inputName" placeholder="Enter name " type="text">
+                                </div>
+                                <div class="center layout-row layout-align-center-center m-b-20">
+                                    <span class="flex-15 layout-align-start-center layout-row f-w-b">E-Mail</span>
+                                    <input  class="form-control flex-80 flex-xs-80" id="inputName" placeholder="Enter email" type="email">
+                                </div>
+                                <div class="center layout-row layout-align-center-center m-b-20">
+                                    <span class="flex-15 layout-align-start-center layout-row f-w-b">Contact no.</span>
+                                    <input class="form-control flex-80 flex-xs-80" id="inputName" placeholder="Contact Number" type="text">
+                                </div>
+                                <div class="center layout-row layout-align-center-center m-b-20">
+                                    <span class="flex-15 layout-align-start-center layout-row f-w-b">Comment</span>
+                                     <input class="form-control flex-80 flex-xs-80" id="inputName" placeholder="Comment" type="text">
+                                    <!-- <textarea  class="form-control flex-60 flex-xs-80" id="inputName" placeholder="Comment" type="text">
+                                    </textarea>-->
+                                </div>
+                                <div class="layout-align-center-center layout-row"><button class="setting-btn" (click)="saveUpdate()">Save</button>
+                                </div>
+                            </div>
+                             </div>
+                       
+                    </div>
+
+                </div>
+</div>
+ <div class="account-footer text-center fix">
+        <p>@Student Network Web, All Rights Reserved.  |   <a [routerLink]="['TermOfUseLoginComponent']">Terms of use </a>- <a [routerLink]="['PrivacyPolicyLoginComponent']">Privacy Policy</a> - <a [routerLink]="['FaqLoginComponent']">FAQ</a> - <a [routerLink]="['ContactUsLoginComponent']">Contact Us</a></p>
+    </div>
+</div>
+  <div class="spin-wrap vision-spin" *ngIf="contentLoding">
+    <!--                                                <div class="spinners">  
+                                                        <div class="double-bounce1"></div>
+                                                        <div class="double-bounce2"></div>
+                                                    </div>  -->
+    <div class="sk-folding-cube">
+        <div class="sk-cube1 sk-cube"></div>
+        <div class="sk-cube2 sk-cube"></div>
+        <div class="sk-cube4 sk-cube"></div>
+        <div class="sk-cube3 sk-cube"></div>
+    </div>
+</div>
+               
+

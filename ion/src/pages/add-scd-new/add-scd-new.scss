@@ -1,0 +1,107 @@
+add-scd-new {
+    .toolbar-background-ios {
+        border: none;
+    }
+    .header {
+        &::after {
+            background-image: none;
+            height: 0;
+        }
+        .header-title {
+            margin: 0;
+        }
+        .toolbar {
+            min-height: 54px;
+        }
+    }
+    .content {
+        background-color: #dfdfdf;
+        .item {
+            background-color: #fff;
+            margin-bottom: 0;
+
+
+            .item-inner {
+                padding-right: 8px;
+                border-bottom: 1px solid #dedede;
+                background-color: transparent;
+            }
+           
+        }
+        .share-btn {
+            margin: 15px 10px 0 16px;
+            .button {
+                width: 95%;
+                margin: 0;
+            }
+        }
+       
+    .item-select{
+        .label{
+            color: #000;            
+            }
+        .item-inner{
+            background-color: #fff;
+            padding-left: 10px;
+            
+        }
+    }
+    .update-status-btn{
+        padding: 0;
+        .item-inner{
+            padding-right: 0;
+        }
+    }
+    .select-category {
+        padding-left: 0;
+        background-color: #f5f5f5;
+        ion-input{
+            &.input{padding-left: 16px}
+        }
+    }
+    .select-degree-type{
+        margin: 20px 0px;
+        .item-inner{
+            background-color: transparent !important;
+        }
+    }
+    .post-img{
+        padding: 0;
+        text-align: center;
+        .item-inner{padding-right: 0;
+            ion-label{
+                &.label{
+                    margin: 16px 0px 12px ;
+                    text-align: center;
+                }
+            }
+        }
+        img{
+            width: 100px;
+            height: 100px;
+        }
+    }
+    .upload-img-scd{
+                button{
+                    &.button{
+                        box-shadow: none;
+                        border-radius: 50%;
+                        border: 2px solid #c6c6c6;
+                        width: 64px;
+                        height: 64px;
+                        font-size: 2.4rem;
+
+                        ion-icon{
+                            &.icon{
+                                font-size: 2.5rem;
+                            }
+                        }
+                    }
+                }
+                span{
+                    font-size: 11px;
+                    color: #707070;
+                }           
+        }
+    }
+}
